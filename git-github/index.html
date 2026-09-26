@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitとGitHub</title>
+    <!-- Noto Sans JP / Poppins / Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Poppins", "Noto Sans JP", "Oswald", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, hsl(120deg 15.98% 83.09%), hsl(120 17% 82% / 1));
+            background: lightgray;
+        }
+
+        .container {
+            width: min(90%, 1200px);
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 5em;
+            line-height: 1;
+            margin: 0;
+            padding: 0.5em 0;
+        }
+
+        span.small {
+            font-size: 0.6em;
+        }
+
+        .subtitle {
+            display: block;
+            font-size: 0.16em;
+            font-weight: normal;
+            padding-top: 10px;
+        }
+
+        .border {
+            height: 3px;
+            width: 4em;
+            background-color: green;
+        }
+
+        .hilight {
+            color: rgb(62, 112, 62);
+            font-weight: bold;
+        }
+
+        p.exp {
+            text-align: justify;
+            word-break: break-all;
+        }
+
+        p.exp .hilight {
+            font-size: 1.05em;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            min-width: 130px;
+            top: 1em;
+            width: 20%;
+            right: 0;
+            opacity: 0.5;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.25em;
+            width: 1em;
+            height: 1em;
+            background: url(img/logo-only.svg) no-repeat center/contain;
+        }
+
+        section>div {
+            padding-left: 1em;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 0.5em;
+            height: 0.5em;
+            background: green;
+            margin-right: 0.25em;
+            vertical-align: middle;
+        }
+
+        @media(min-width:768px) {
+            .logo {
+                top: 3em;
+                right: 1%;
+                opacity: 0.5;
+                width: 45%;
+                max-width: 300px;
+            }
+
+            p.exp {
+                column-count: 2;
+                line-height: 1.7;
+            }
+
+        }
+    </style>
+    <style>
+        :root { --green:#237a57; --mint:#e6f4ec; --line:#cfe1d7; --ink:#18332a; }
+        body { color:var(--ink); background:#f4f7f5; line-height:1.8; }
+        main, section { margin-top:3.5rem; }
+        .intro { padding:1.4rem 1.7rem; border-left:5px solid #f05033; background:#fff; border-radius:0 14px 14px 0; }
+        .jump { display:flex; gap:.7rem; flex-wrap:wrap; margin:1.5rem 0; }
+        .jump a,.button { display:inline-block; padding:.45rem 1rem; border:1px solid var(--line); border-radius:99px; color:var(--ink); background:white; text-decoration:none; font-weight:bold; }
+        .button { background:var(--green); border-color:var(--green); color:#fff; border-radius:8px; }
+        .flow { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; counter-reset:step; margin:1.5rem 0; }
+        .step { padding:1.2rem; background:#fff; border:1px solid var(--line); border-radius:14px; }
+        .step::before { counter-increment:step; content:counter(step,decimal-leading-zero); color:var(--green); font-weight:bold; letter-spacing:.08em; }
+        .step h4 { margin:.3rem 0; font-size:1.05rem; }
+        .step p { margin:0; font-size:.92rem; }
+        .install-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+        figure { margin:0; overflow:hidden; background:#fff; border:1px solid var(--line); border-radius:12px; }
+        figure img { display:block; width:100%; height:auto; }
+        figcaption { padding:.6rem .85rem; font-weight:bold; font-size:.88rem; }
+        .github-box { display:grid; grid-template-columns:1.15fr .85fr; gap:1.5rem; align-items:center; padding:1.7rem; border-radius:16px; background:#17222c; color:#fff; }
+        .github-box a { color:#b9f2d4; }
+        .mock { padding:1.3rem; background:white; color:#1f2933; border-radius:10px; box-shadow:0 8px 24px #0005; }
+        .mock-head { display:flex; gap:.6rem; align-items:center; font-weight:bold; margin-bottom:1rem; }
+        .mock-head img { width:28px; height:28px; }
+        .field { height:32px; margin:.3rem 0 .8rem; border:1px solid #b8c4cf; border-radius:6px; }
+        .continue { padding:.45rem; background:#1f883d; color:white; border-radius:6px; text-align:center; font-weight:bold; }
+        .usage { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+        .usage > *, .card { min-width:0; }
+        .card { padding:1.35rem; background:white; border:1px solid var(--line); border-radius:14px; }
+        pre { max-width:100%; overflow-x:auto; overflow-y:hidden; white-space:pre; padding:1rem; background:#17251f; color:#e9f7ef; border-radius:9px; line-height:1.7; }
+        .command-wrap { position:relative; margin:1em 0; }
+        .command-wrap pre { margin:0; padding-top:3.2rem; }
+        .copy-button { position:absolute; top:.55rem; right:.55rem; padding:.3rem .7rem; border:1px solid #709281; border-radius:6px; color:#e9f7ef; background:#244236; font:inherit; font-size:.8rem; cursor:pointer; }
+        .copy-button:hover { background:#32634f; }
+        .inline-copy { margin-left:.35rem; padding:.08rem .42rem; border:1px solid var(--line); border-radius:5px; color:var(--green); background:#fff; font:inherit; font-size:.72rem; cursor:pointer; vertical-align:middle; }
+        .daily { margin-top:1.2rem; padding:1.4rem; background:var(--mint); border-radius:14px; }
+        @media(max-width:720px) { .flow,.usage,.install-grid,.github-box { grid-template-columns:1fr; } .logo { top:12em; } }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img class="logo" src="./img/Git-Logo-2Color.svg" width="292" height="123" alt="">
+        <h1>
+            <span class="hilight">Git<span class="small">と</span>
+                <br>GitHub</span>
+            <div class="border"></div>
+            <span class="subtitle">作成中のコードのバックアップや履歴の管理を簡単にしよう！</span>
+        </h1>
+        <div class="intro"><strong>Git</strong> はPC内のファイル変更を記録する「タイムマシン」。<strong>GitHub</strong> は、その記録をインターネット上に保管できる場所です。間違えて上書きしても前の状態に戻せ、別のPCでも同じ作業を続けられます。</div>
+        <nav class="jump"><a href="#install">Git を入れる</a><a href="#github">GitHub に登録</a><a href="#start">使い始める</a></nav>
+        <section id="install">
+            <h2 class="hilight">インストール方法</h2>
+            <div>
+                <h3 class="hilight">Gitのインストール</h3>
+                <p>Windows向けの手順です。画面が少し違っても、基本は<strong>既定の選択のまま「Next」</strong>で進めて大丈夫です。</p>
+                <p><a class="button" href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows を公式サイトから入手する ↗</a></p>
+                <div class="flow">
+                    <article class="step"><h4>ダウンロード</h4><p>リンクを開き、ダウンロードされた <code>.exe</code> を実行します。</p></article>
+                    <article class="step"><h4>基本設定</h4><p>ライセンスからエディター選択までは、迷えば既定値のまま Next。</p></article>
+                    <article class="step"><h4>main を選ぶ</h4><p><strong>Override …</strong> を選び、入力欄を <code>main</code> にします。</p></article>
+                    <article class="step"><h4>PATH を設定</h4><p><strong>Git from the command line …</strong> を選択。PowerShellやVS Codeから使えます。</p></article>
+                    <article class="step"><h4>OpenSSL を選ぶ</h4><p>HTTPS 接続の設定では、<strong>Use the OpenSSL library</strong> を選択して Next。</p></article>
+                    <article class="step"><h4>残りは既定値</h4><p>改行、ターミナル、pull、認証、追加機能は既定値のまま進みます。</p></article>
+                    <article class="step"><h4>完了を確認</h4><p>Install 後、PowerShellで <code>git --version</code>。番号が出れば成功です。</p></article>
+                </div>
+                <div class="install-grid">
+                    <figure><img src="img/install1.png" alt="ライセンス画面"><figcaption>ライセンス画面：Next</figcaption></figure><figure><img src="img/install2.png" alt="コンポーネント選択画面"><figcaption>コンポーネント：既定値のまま</figcaption></figure>
+                    <figure><img src="img/install3.png" alt="既定エディター選択画面"><figcaption>エディター：迷えば既定値</figcaption></figure><figure><img src="img/install4.png" alt="初期ブランチ名設定画面"><figcaption>初期ブランチ名：main</figcaption></figure>
+                    <figure><img src="img/install5.png" alt="PATH設定画面"><figcaption>PATH：中央の推奨項目</figcaption></figure><figure><img src="img/install6.png" alt="HTTPS設定画面"><figcaption>HTTPS：OpenSSL を選択</figcaption></figure>
+                    <figure><img src="img/install7.png" alt="改行設定画面"><figcaption>改行：既定値のまま</figcaption></figure><figure><img src="img/install8.png" alt="ターミナル設定画面"><figcaption>ターミナル：MinTTY のまま</figcaption></figure>
+                    <figure><img src="img/install9.png" alt="pull設定画面"><figcaption>pull：Merge のまま</figcaption></figure><figure><img src="img/install10.png" alt="認証設定画面"><figcaption>認証：Credential Manager のまま</figcaption></figure>
+                    <figure><img src="img/install11.png" alt="追加機能設定画面"><figcaption>追加機能：既定値のまま Install</figcaption></figure>
+                </div>
+            </div>
+            <div>
+                <h3 class="hilight">GitHubへの登録</h3>
+                <div class="github-box">
+                    <div><h3>無料の個人アカウントを作ろう</h3><p>GitHubにコードを保管するには、メールアドレスを確認済みの個人アカウントが必要です。登録後は2段階認証も設定すると安心です。</p><p><a class="button" href="https://github.com/signup" target="_blank" rel="noopener">GitHub の登録画面を開く ↗</a></p><p>参考：<a href="https://docs.github.com/ja/account-and-profile/how-tos/account-management/creating-an-account-on-github" target="_blank" rel="noopener">GitHub 公式の登録ガイド</a></p></div>
+                    <div class="mock"><div class="mock-head"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub ロゴ">GitHub</div><label>メールアドレス</label><div class="field"></div><label>パスワード</label><div class="field"></div><div class="continue">Continue</div></div>
+                </div>
+                <div class="flow"><article class="step"><h4>登録ページを開く</h4><p><a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> にアクセス。Google／Appleで始めることもできます。</p></article><article class="step"><h4>情報を入力する</h4><p>メールアドレス、強力なパスワード、ユーザー名を入力し、案内に従います。</p></article><article class="step"><h4>メールを確認する</h4><p>届いた確認メールのリンクを開けば登録完了です。</p></article></div>
+            </div>
+        </section>
+        <section id="start">
+            <h2 class="hilight">使い方</h2>
+            <div>
+                <p>コマンドは PowerShell、Windows Terminal、または VS Code のターミナルで実行します。最初は次の2通りだけ知っていれば十分です。</p>
+                <div class="usage">
+                    <article class="card"><h3>新しく作ったフォルダを GitHub へ</h3><pre>git init
+git add .
+git commit -m "初回作成"
+gh repo create</pre><p><code>gh repo create</code> の質問では「既存のローカルリポジトリを push」「Private」「Yes」を選べばOK。先に <code>gh auth login</code> でログインします。</p></article>
+                    <article class="card"><h3>GitHub のプロジェクトをPCへ</h3><p><strong>方法1：GitHub CLIで取得する</strong></p><pre>gh repo clone ユーザー名/リポジトリ名
+cd リポジトリ名</pre><p>例：<code>gh repo clone octocat/my-website</code>。コピー済みのフォルダでは <code>git init</code> は不要です。</p><p><strong>方法2：GitHub側でリポジトリを作成してから取得する</strong></p><p>GitHubで <strong>New repository</strong> を選び、名前を決めて作成します。その後、リポジトリページの緑色の <strong>Code</strong> ボタンから HTTPS のURLをコピーし、次を実行します。</p><pre>git clone https://github.com/ユーザー名/リポジトリ名.git
+cd リポジトリ名</pre></article>
+                </div>
+                <div class="daily"><h3>ふだんの作業は、この4ステップ</h3><ol><li>作業前に <code>git status</code>。別PCでも作業したなら <code>git pull</code>。</li><li>ファイルを編集する。</li><li><code>git add .</code> → <code>git commit -m "変更内容"</code> で履歴に保存する。</li><li><code>git push</code> で GitHub に送る。</li></ol><pre>git status
+git add .
+git commit -m "スマホ表示を調整"
+git push</pre></div>
+                <article class="card" style="margin-top:1.2rem">
+                    <h3>前の状態を確認・安全に復元する</h3>
+                    <p>「少し前は正常だった」というときは、履歴から戻したい時点を探します。まずは<strong>過去の内容を確認するだけ</strong>にして、問題なければ現在の <code>main</code> に復元しましょう。</p>
+                    <div class="flow">
+                        <article class="step"><h4>履歴を一覧で見る</h4><p>変更の一覧を表示します。左端の英数字がコミットIDです。戻したい行の、先頭7〜8文字ほどを控えます。</p><pre>git log --oneline</pre></article>
+                        <article class="step"><h4>過去の状態を確認する</h4><p>控えたコミットIDを指定して、その時点のファイルを確認します。これは閲覧用なので、この状態で編集はしません。</p><pre>git switch --detach xxxxxxx</pre></article>
+                        <article class="step"><h4>必ず main へ戻る</h4><p>確認が済んだら、通常の作業場所である <code>main</code> に戻ります。この状態に戻してから復元を行います。</p><pre>git switch main</pre></article>
+                        <article class="step"><h4>内容を安全に復元する</h4><p>戻したいコミットIDの内容を、現在の作業フォルダへ取り出します。履歴そのものは消えません。</p><pre>git restore --source xxxxxxx -- .</pre></article>
+                    </div>
+                    <p><strong>復元後は、普段どおり保存して GitHub へ送ります。</strong> <code>xxxxxxxx</code> は、実際に戻したいコミットIDに置き換えてください。</p>
+                    <pre>git add .
+git commit -m "以前の状態に復元"
+git push</pre>
+                </article>
+                <article class="card" style="margin-top:1.2rem"><h3>送れないとき</h3><p>GitHub側にまだ受け取っていない変更がある場合は、先に <code>git pull</code>。未保存の作業があれば、先にコミットしてから実行します。</p></article>
+            </div>
+        </section>
+    </div>
+    <script>
+        async function copyCommand(text, button) {
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const area = document.createElement("textarea");
+                area.value = text;
+                document.body.appendChild(area);
+                area.select();
+                document.execCommand("copy");
+                area.remove();
+            }
+            button.textContent = "コピーしました";
+            setTimeout(() => { button.textContent = "コピー"; }, 1600);
+        }
+        document.querySelectorAll("pre").forEach((pre) => {
+            const wrap = document.createElement("div");
+            wrap.className = "command-wrap";
+            pre.parentNode.insertBefore(wrap, pre);
+            wrap.appendChild(pre);
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "copy-button";
+            button.textContent = "コピー";
+            button.addEventListener("click", () => copyCommand(pre.textContent.trim(), button));
+            wrap.appendChild(button);
+        });
+        document.querySelectorAll("code").forEach((code) => {
+            if (code.closest("pre") || !/^(git|gh)(\s|$)/.test(code.textContent.trim())) return;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "inline-copy";
+            button.textContent = "コピー";
+            button.addEventListener("click", () => copyCommand(code.textContent.trim(), button));
+            code.insertAdjacentElement("afterend", button);
+        });
+    </script>
+</body>
+
+</html>
