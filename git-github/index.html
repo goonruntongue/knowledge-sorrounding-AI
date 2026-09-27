@@ -570,6 +570,40 @@
 
         body.lightbox-open { overflow: hidden; }
 
+        #toTop {
+            position: fixed;
+            z-index: 900;
+            right: 1.4rem;
+            bottom: 1.4rem;
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border: 1px solid #ffffffaa;
+            border-radius: 50%;
+            color: #fff;
+            background: #237a57e8;
+            box-shadow: 0 8px 22px #18332a3d;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: opacity .22s ease, transform .22s ease, background .18s ease;
+        }
+
+        #toTop.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #toTop:hover { background: #195d41; }
+
+        #toTop:focus-visible {
+            outline: 3px solid #ffca7a;
+            outline-offset: 3px;
+        }
+
         @media(max-width:720px) {
 
             .flow,
@@ -599,6 +633,11 @@
 
             .lightbox__previous { left: .55rem; }
             .lightbox__next { right: .55rem; }
+
+            #toTop {
+                right: 1rem;
+                bottom: 1rem;
+            }
         }
 
         aside {
@@ -899,6 +938,7 @@ git push</pre>
             </div>
         </section>
     </div>
+    <button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
     <script>
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         document.querySelectorAll('a[href^="#"]').forEach((link) => {
@@ -913,6 +953,16 @@ git push</pre>
                 });
                 history.pushState(null, "", `#${targetId}`);
             });
+        });
+
+        const toTop = document.getElementById("toTop");
+        const updateToTopVisibility = () => {
+            toTop.classList.toggle("is-visible", window.scrollY > 360);
+        };
+        updateToTopVisibility();
+        window.addEventListener("scroll", updateToTopVisibility, { passive: true });
+        toTop.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
         });
 
         async function copyCommand(text, button) {
