@@ -1016,6 +1016,8 @@
             .git-lab-explorer__tab { min-width: 150px; }
             .git-lab-explorer__commandbar { gap: .55rem; overflow: hidden; white-space: nowrap; }
             .git-lab-input-row { flex-direction: column; }
+            /* iOS Safari は16px未満の入力欄をフォーカスすると自動ズームするため。 */
+            .git-lab-input, .git-lab-terminal-input { font-size: 16px; }
 
             .portal-link {
                 top: .7rem;
