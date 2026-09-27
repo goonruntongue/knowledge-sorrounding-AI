@@ -356,6 +356,75 @@
             border-radius: 14px;
         }
 
+        .basics-lead {
+            margin: .35rem 0 1.4rem;
+            font-size: 1.02rem;
+        }
+
+        .knowledge-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            align-items: center;
+            margin: 1.4rem 0;
+            padding: 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .knowledge-visual img {
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .knowledge-visual h4 {
+            margin: 0 0 .55rem;
+            color: var(--green);
+            font-size: 1.1rem;
+        }
+
+        .knowledge-visual p {
+            margin: 0;
+        }
+
+        .knowledge-grid,
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0 1.4rem;
+        }
+
+        .concept-card,
+        .command-card {
+            min-width: 0;
+            padding: 1.2rem;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .concept-card h4,
+        .command-card h4 {
+            margin: 0 0 .45rem;
+            font-size: 1.05rem;
+        }
+
+        .concept-card p,
+        .command-card p {
+            margin: 0;
+            font-size: .92rem;
+        }
+
+        .command-card code {
+            display: inline-block;
+            margin-bottom: .55rem;
+            color: var(--green);
+            font-weight: bold;
+        }
+
         .service-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -397,7 +466,10 @@
             .usage,
             .install-grid,
             .github-box,
-            .service-grid {
+            .service-grid,
+            .knowledge-visual,
+            .knowledge-grid,
+            .command-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -424,7 +496,7 @@
             <span class="subtitle">作成中のコードのバックアップや履歴の管理を簡単にしよう！</span>
         </h1>
         <div class="intro"><strong>Git</strong> はPC内のファイル変更を記録する「タイムマシン」。<strong>GitHub</strong> は、その記録をインターネット上に保管できる場所です。間違えて上書きしても前の状態に戻せ、別のPCでも同じ作業を続けられます。</div>
-        <nav class="jump"><a href="#install">Git を入れる</a><a href="#github">GitHub に登録</a><a href="#start">使い始める</a></nav>
+        <nav class="jump"><a href="#install">Git を入れる</a><a href="#github">GitHub に登録</a><a href="#basics">基礎知識</a><a href="#start">使い始める</a></nav>
         <section id="install">
             <h2 class="hilight">インストール方法</h2>
             <div>
@@ -533,6 +605,79 @@
                         <h4>メールを確認する</h4>
                         <p>届いた確認メールのリンクを開けば登録完了です。</p>
                     </article>
+                </div>
+            </div>
+        </section>
+        <section id="basics">
+            <h3 class="hilight">基礎知識</h3>
+            <p class="basics-lead">コマンドを覚える前に、Git が何を記録し、どこへ送っているのかを押さえましょう。最初は「PCの中で記録する」と「GitHubへ送る」を分けて考えると、迷いにくくなります。</p>
+
+            <div class="knowledge-visual">
+                <img src="img/terminal-guide.png" alt="ノートPCからターミナルへコマンドを入力するイメージ">
+                <div>
+                    <h4>ターミナルとは</h4>
+                    <p>文字でPCに指示を出すための画面です。Windowsなら PowerShell や Windows Terminal、VS Code の下部にある「ターミナル」を使えます。ここに <code>git status</code> のような命令を書いて Enter を押します。黒い画面でも、決められた命令を実行するための入力欄だと思えば大丈夫です。</p>
+                </div>
+            </div>
+
+            <div class="knowledge-grid">
+                <article class="concept-card">
+                    <h4>リポジトリとは</h4>
+                    <p>ファイルそのものと、その変更履歴をまとめて管理する「作業箱」です。Webサイトなら、HTML・画像・CSSなどを1つのリポジトリに入れます。Gitが履歴を管理する対象がリポジトリです。</p>
+                </article>
+                <article class="concept-card">
+                    <h4>ローカルとリモート</h4>
+                    <p><strong>ローカル</strong>は自分のPC内、<strong>リモート</strong>はインターネット上の保管場所です。このガイドではGitHubがリモートです。まずPC内で記録し、必要なタイミングでGitHubへ送ります。</p>
+                </article>
+            </div>
+
+            <div class="knowledge-visual">
+                <img src="img/local-remote-guide.png" alt="PC内のファイルとクラウド上のリポジトリが双方向につながるイメージ">
+                <div>
+                    <h4>PCの中と GitHub の関係</h4>
+                    <p><code>commit</code> まではPC内だけで完結します。<code>push</code> すると、記録した変更がGitHubにも届きます。反対に、GitHubや別のPCで増えた変更を手元へ取り込むのが <code>pull</code> です。</p>
+                </div>
+            </div>
+
+            <h4>よく使う操作の意味</h4>
+            <div class="command-grid">
+                <article class="command-card">
+                    <code>git init</code>
+                    <h4>初期化する</h4>
+                    <p>今あるフォルダを、Gitで履歴管理できる状態にします。新規フォルダで最初に1回だけ行う操作で、これだけではGitHubへは送られません。</p>
+                </article>
+                <article class="command-card">
+                    <code>git add .</code>
+                    <h4>スタンバイさせる</h4>
+                    <p>次に保存したい変更を「今回の記録に入れる」と選ぶ操作です。<code>.</code> は、このフォルダ内の変更をまとめて選ぶ意味です。</p>
+                </article>
+                <article class="command-card">
+                    <code>git commit -m "メモ"</code>
+                    <h4>PC内に保存する</h4>
+                    <p>スタンバイした変更を、説明メモ付きで履歴として固定します。ここではまだ自分のPC内に保存されているだけです。</p>
+                </article>
+                <article class="command-card">
+                    <code>git push</code>
+                    <h4>GitHubへ送る</h4>
+                    <p>PC内に保存したコミットを、GitHubのリモートリポジトリへ送ります。公開サイトの自動更新も、多くはこの操作がきっかけです。</p>
+                </article>
+                <article class="command-card">
+                    <code>git clone URL</code>
+                    <h4>リモートをPCへ複製する</h4>
+                    <p>すでにGitHubにあるリポジトリを、履歴ごと自分のPCへ持ってきます。別PCで作業を始めるときや、他人のプロジェクトを受け取るときに使います。</p>
+                </article>
+                <article class="command-card">
+                    <code>git pull</code>
+                    <h4>GitHubから取り込む</h4>
+                    <p>GitHub側や別のPCで増えた変更を、手元の作業フォルダへ取り込みます。作業前に行うと、最新の状態から始められます。</p>
+                </article>
+            </div>
+
+            <div class="knowledge-visual">
+                <img src="img/history-restore-guide.png" alt="複数の過去バージョンから以前の状態を取り出すイメージ">
+                <div>
+                    <h4><code>git restore</code>：前の内容を取り出す</h4>
+                    <p>過去のコミットに保存されているファイル内容を、現在の作業フォルダへ取り出す操作です。履歴そのものを消すのではなく、過去の内容を新しい変更として持ち帰れるので、比較的安全に戻せます。実際の手順は、このあとの「前の状態を確認・安全に復元する」で説明します。</p>
                 </div>
             </div>
         </section>
