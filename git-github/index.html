@@ -356,12 +356,48 @@
             border-radius: 14px;
         }
 
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .service {
+            min-width: 0;
+            padding: 1.2rem;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .service h4 {
+            margin: 0 0 .55rem;
+            color: var(--green);
+            font-size: 1.05rem;
+        }
+
+        .service p {
+            margin: 0;
+            font-size: .9rem;
+        }
+
+        .account-note {
+            margin-top: 1rem;
+            padding: 1rem 1.2rem;
+            border-left: 4px solid #f05033;
+            border-radius: 0 10px 10px 0;
+            background: #fff4ee;
+            font-size: .9rem;
+        }
+
         @media(max-width:720px) {
 
             .flow,
             .usage,
             .install-grid,
-            .github-box {
+            .github-box,
+            .service-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -572,6 +608,26 @@ git push</pre>
                     <h3>送れないとき</h3>
                     <p>GitHub側にまだ受け取っていない変更がある場合は、先に <code>git pull</code>。未保存の作業があれば、先にコミットしてから実行します。</p>
                 </article>
+                <section style="margin-top:3rem">
+                    <h3 class="hilight">GitHub アカウントの運用</h3>
+                    <p>GitHubアカウントは、コードを保管する場所であるだけでなく、開発に使うサービスをつなぐ共通の窓口にもなります。サービス側でGitHub連携を設定すると、リポジトリの更新を起点に作業や公開を自動化できます。</p>
+                    <div class="service-grid">
+                        <article class="service">
+                            <h4>AI コーディングエージェント</h4>
+                            <p>Codex や Claude Code などは、許可したGitHubリポジトリを読み取り、変更案やコミット・Pull Requestの作成を支援できます。ChatGPTやClaudeの通常利用にGitHubログインが必須というわけではありませんが、開発作業ではリポジトリ連携が役立ちます。</p>
+                        </article>
+                        <article class="service">
+                            <h4>ホスティングサービス</h4>
+                            <p>GitHub Pages、Netlify、Cloudflare Pagesなどは、リポジトリを連携して公開できます。公開対象のブランチを設定すれば、通常は <code>git push</code> をきっかけに最新サイトを自動デプロイします。</p>
+                        </article>
+                        <article class="service">
+                            <h4>バックエンドサービス</h4>
+                            <p>SupabaseやFirebaseでは、GitHub連携やGitHub Actionsを使い、データベースの変更・Edge Functions・Hostingのデプロイを管理できます。お問い合わせフォーム、予約、ログイン、リアルタイムチャットなどの機能を支える基盤になります。</p>
+                        </article>
+                    </div>
+                    <p class="account-note"><strong>大切なポイント：</strong>GitHubアカウントを作っただけで、AIが自動で公開したり、サイトが勝手に更新されたりはしません。各サービスでリポジトリへのアクセスを許可し、公開先・対象ブランチ・必要な環境変数を設定して初めて自動化されます。連携するリポジトリは必要なものだけに絞り、GitHubでは2段階認証を有効にしましょう。</p>
+                    <p>参考：<a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages</a> ／ <a href="https://docs.netlify.com/deploy/create-deploys/" target="_blank" rel="noopener">Netlify</a> ／ <a href="https://developers.cloudflare.com/pages/configuration/git-integration/" target="_blank" rel="noopener">Cloudflare Pages</a> ／ <a href="https://supabase.com/docs/guides/deployment" target="_blank" rel="noopener">Supabase</a> ／ <a href="https://firebase.google.com/docs/hosting/github-integration?hl=ja" target="_blank" rel="noopener">Firebase Hosting</a></p>
+                </section>
             </div>
         </section>
     </div>
