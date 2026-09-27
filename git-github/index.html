@@ -298,6 +298,56 @@
             gap: 1.2rem;
         }
 
+        .folder-terminal {
+            margin: 1.3rem 0;
+            padding: 1.35rem;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--mint);
+        }
+
+        .folder-terminal__intro {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .folder-terminal__intro img {
+            display: block;
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+        }
+
+        .folder-terminal h3 {
+            margin-top: 0;
+        }
+
+        .folder-terminal h4 {
+            margin: 0 0 .35rem;
+            color: var(--green);
+            font-size: 1rem;
+        }
+
+        .folder-terminal p {
+            margin: .35rem 0;
+        }
+
+        .folder-terminal__methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.1rem;
+        }
+
+        .folder-terminal__method {
+            min-width: 0;
+            padding: 1rem;
+            border-radius: 10px;
+            background: #fff;
+        }
+
         .usage>*,
         .card {
             min-width: 0;
@@ -613,7 +663,9 @@
             .service-grid,
             .knowledge-visual,
             .knowledge-grid,
-            .command-grid {
+            .command-grid,
+            .folder-terminal__intro,
+            .folder-terminal__methods {
                 grid-template-columns: 1fr;
             }
 
@@ -846,7 +898,31 @@
         <section id="start">
             <h2 class="hilight">使い方</h2>
             <div>
-                <p>コマンドは PowerShell、Windows Terminal、コマンドプロンプト、または VS Code のターミナルで実行できます。最初は次の2通りだけ知っていれば十分です。</p>
+                <div class="folder-terminal">
+                    <h3>まず、保存したいフォルダでターミナルを開く</h3>
+                    <p>Gitの命令は、<strong>どのフォルダに対して実行するか</strong>が大切です。Webサイトを保存したいフォルダを開いてからターミナルを使いましょう。違う場所で実行すると、意図しないフォルダにGitの記録が作られてしまいます。</p>
+                    <div class="folder-terminal__intro">
+                        <img src="img/explorer-cmd-guide.png" alt="エクスプローラーのアドレスバーに cmd と入力している説明図">
+                        <div>
+                            <h4>いちばん簡単：エクスプローラーから開く</h4>
+                            <p>保存したいフォルダをエクスプローラーで開きます。上部の<strong>アドレスバー</strong>をクリックし、<code>cmd</code> と入力して Enter を押します。</p>
+                            <p>そのフォルダを現在地にした<strong>コマンドプロンプト</strong>が開きます。黒い画面の行末が、今開いていたフォルダのパスになっていれば成功です。</p>
+                        </div>
+                    </div>
+                    <div class="folder-terminal__methods">
+                        <div class="folder-terminal__method">
+                            <h4>方法1：フォルダから直接開く</h4>
+                            <p>エクスプローラーで対象フォルダを開く → アドレスバーへ <code>cmd</code> → Enter。初めてなら、この方法が迷いにくくおすすめです。</p>
+                        </div>
+                        <div class="folder-terminal__method">
+                            <h4>方法2：開いたターミナルから移動する</h4>
+                            <p>PowerShell、Windows Terminal、コマンドプロンプトなどを先に開いた場合は、<code>cd</code> で対象フォルダへ移動します。パスに空白があることもあるので、全体を <code>" "</code> で囲みます。</p>
+                            <pre>cd "C:\Users\ユーザー名\Documents\my-website"</pre>
+                            <p>エクスプローラーでフォルダを右クリックし、「パスのコピー」を選ぶと、入力しやすくなります。</p>
+                        </div>
+                    </div>
+                </div>
+                <p>コマンドは PowerShell、Windows Terminal、コマンドプロンプト、または VS Code のターミナルで実行できます。準備ができたら、次の2通りの始め方を見ていきましょう。</p>
                 <div class="usage">
                     <article class="card">
                         <h3>新しく作ったフォルダを GitHub へ</h3>
