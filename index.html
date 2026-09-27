@@ -30,7 +30,7 @@
 </head>
 <body>
   <main>
-    <div id="hero-orb" class="hero-orb" aria-hidden="true"></div>
+    <img class="hero-orb" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <p class="eyebrow">KNOWLEDGE SURROUNDING AI</p>
     <h1>Web技術の周辺知識</h1>
     <p class="lead">AIを活用してつくる・学ぶための、実践的なガイドをまとめていく入口です。</p>
@@ -47,19 +47,5 @@
     </section>
   </main>
   <footer>Knowledge Surrounding AI</footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      if (!window.lottie) return;
-      const animation = window.lottie.loadAnimation({
-        container: document.getElementById("hero-orb"),
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        path: "globe-animation.json"
-      });
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) animation.pause();
-    });
-  </script>
 </body>
 </html>
