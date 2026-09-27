@@ -220,6 +220,16 @@
             height: auto;
         }
 
+        .install-grid figure {
+            cursor: zoom-in;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .install-grid figure:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px #18332a22;
+        }
+
         figcaption {
             padding: .6rem .85rem;
             font-weight: bold;
@@ -460,6 +470,102 @@
             font-size: .9rem;
         }
 
+        .lightbox {
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 1.25rem 4.5rem;
+            background: #0b1712df;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .24s ease, visibility 0s linear .24s;
+        }
+
+        .lightbox.is-open {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity .24s ease;
+        }
+
+        .lightbox__stage {
+            position: relative;
+            max-width: min(1100px, 100%);
+            max-height: 90vh;
+            transform: translateY(12px) scale(.965);
+            transition: transform .26s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .lightbox.is-open .lightbox__stage {
+            transform: translateY(0) scale(1);
+        }
+
+        .lightbox__image {
+            display: block;
+            max-width: 100%;
+            max-height: calc(90vh - 3rem);
+            border-radius: 8px;
+            box-shadow: 0 18px 55px #0009;
+        }
+
+        .lightbox__caption,
+        .lightbox__count {
+            color: #fff;
+            text-align: center;
+        }
+
+        .lightbox__caption {
+            margin-top: .65rem;
+            font-weight: bold;
+        }
+
+        .lightbox__count {
+            margin-top: .1rem;
+            color: #c9ded3;
+            font-size: .82rem;
+        }
+
+        .lightbox__button {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border: 1px solid #ffffff66;
+            border-radius: 50%;
+            color: #fff;
+            background: #10251bc9;
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background .18s ease, transform .18s ease;
+        }
+
+        .lightbox__button:hover {
+            background: #237a57;
+            transform: scale(1.08);
+        }
+
+        .lightbox__close {
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .lightbox__previous,
+        .lightbox__next {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox__previous { left: 1.1rem; }
+        .lightbox__next { right: 1.1rem; }
+
+        .lightbox__previous:hover,
+        .lightbox__next:hover { transform: translateY(-50%) scale(1.08); }
+
+        body.lightbox-open { overflow: hidden; }
+
         @media(max-width:720px) {
 
             .flow,
@@ -476,6 +582,19 @@
             .logo {
                 top: 12em;
             }
+
+            .lightbox {
+                padding: 1rem 3.35rem;
+            }
+
+            .lightbox__button {
+                width: 38px;
+                height: 38px;
+                font-size: 1.5rem;
+            }
+
+            .lightbox__previous { left: .55rem; }
+            .lightbox__next { right: .55rem; }
         }
 
         aside {
@@ -814,6 +933,73 @@ git push</pre>
             button.addEventListener("click", () => copyCommand(code.textContent.trim(), button));
             code.insertAdjacentElement("afterend", button);
         });
+
+        const installImages = [...document.querySelectorAll(".install-grid figure img")];
+        if (installImages.length) {
+            const lightbox = document.createElement("div");
+            lightbox.className = "lightbox";
+            lightbox.setAttribute("role", "dialog");
+            lightbox.setAttribute("aria-modal", "true");
+            lightbox.setAttribute("aria-label", "インストール手順の画像を拡大表示");
+            lightbox.innerHTML = `
+                <button class="lightbox__button lightbox__close" type="button" aria-label="閉じる">×</button>
+                <button class="lightbox__button lightbox__previous" type="button" aria-label="前の画像">‹</button>
+                <div class="lightbox__stage">
+                    <img class="lightbox__image" alt="">
+                    <div class="lightbox__caption"></div>
+                    <div class="lightbox__count"></div>
+                </div>
+                <button class="lightbox__button lightbox__next" type="button" aria-label="次の画像">›</button>`;
+            document.body.appendChild(lightbox);
+
+            const largeImage = lightbox.querySelector(".lightbox__image");
+            const caption = lightbox.querySelector(".lightbox__caption");
+            const count = lightbox.querySelector(".lightbox__count");
+            const closeButton = lightbox.querySelector(".lightbox__close");
+            const previousButton = lightbox.querySelector(".lightbox__previous");
+            const nextButton = lightbox.querySelector(".lightbox__next");
+            let currentIndex = 0;
+            let lastFocusedElement;
+
+            const setLightboxImage = (index) => {
+                currentIndex = (index + installImages.length) % installImages.length;
+                const image = installImages[currentIndex];
+                largeImage.src = image.currentSrc || image.src;
+                largeImage.alt = image.alt;
+                caption.textContent = image.closest("figure").querySelector("figcaption")?.textContent || image.alt;
+                count.textContent = `${currentIndex + 1} / ${installImages.length}`;
+            };
+
+            const openLightbox = (index) => {
+                lastFocusedElement = document.activeElement;
+                setLightboxImage(index);
+                lightbox.classList.add("is-open");
+                document.body.classList.add("lightbox-open");
+                closeButton.focus();
+            };
+
+            const closeLightbox = () => {
+                lightbox.classList.remove("is-open");
+                document.body.classList.remove("lightbox-open");
+                lastFocusedElement?.focus();
+            };
+
+            installImages.forEach((image, index) => {
+                image.closest("figure").addEventListener("click", () => openLightbox(index));
+            });
+            closeButton.addEventListener("click", closeLightbox);
+            previousButton.addEventListener("click", () => setLightboxImage(currentIndex - 1));
+            nextButton.addEventListener("click", () => setLightboxImage(currentIndex + 1));
+            lightbox.addEventListener("click", (event) => {
+                if (event.target === lightbox) closeLightbox();
+            });
+            document.addEventListener("keydown", (event) => {
+                if (!lightbox.classList.contains("is-open")) return;
+                if (event.key === "Escape") closeLightbox();
+                if (event.key === "ArrowLeft") setLightboxImage(currentIndex - 1);
+                if (event.key === "ArrowRight") setLightboxImage(currentIndex + 1);
+            });
+        }
     </script>
 </body>
 
