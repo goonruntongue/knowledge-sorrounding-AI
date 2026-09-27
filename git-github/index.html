@@ -699,7 +699,7 @@
                     <p><code>master</code> も技術的にはまったく問題なく使えますが、歴史的な名称で、古いリポジトリや個人のローカル Git 設定では残っていることがあります。これから個人開発を続けるなら、<code>main</code> に統一する判断で自然です。</p>
                 </aside>
             </div>
-            <div>
+            <div id="github">
                 <h3 class="hilight">GitHubへの登録</h3>
                 <div class="github-box">
                     <div>
@@ -900,6 +900,21 @@ git push</pre>
         </section>
     </div>
     <script>
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener("click", (event) => {
+                const targetId = decodeURIComponent(link.getAttribute("href").slice(1));
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                event.preventDefault();
+                target.scrollIntoView({
+                    behavior: prefersReducedMotion ? "auto" : "smooth",
+                    block: "start"
+                });
+                history.pushState(null, "", `#${targetId}`);
+            });
+        });
+
         async function copyCommand(text, button) {
             try {
                 await navigator.clipboard.writeText(text);
