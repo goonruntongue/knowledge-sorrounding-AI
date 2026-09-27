@@ -13,8 +13,9 @@
     body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#c9e9d9 0 180px,transparent 181px),#f4f7f5; font-family:"Noto Sans JP",sans-serif; }
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
     .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); /* aspect-ratio:1; */ pointer-events:none; }
-    .hero-orb--glow { z-index:-2; filter:blur(2px); opacity:.18; transform:scale(1.012); }
-    .hero-orb--image { z-index:-1; opacity:.71; }
+    .hero-orb--aura { z-index:-3; filter:blur(11px) saturate(1.2); opacity:.06; transform:scale(1.075); }
+    .hero-orb--glow { z-index:-2; filter:blur(3px); opacity:.18; transform:scale(1.03); }
+    .hero-orb--image { z-index:-1; opacity:.69; }
     .eyebrow { margin:0 0 .6rem; color:var(--blue); font:800 .85rem/1 Poppins,sans-serif; letter-spacing:.14em; }
     h1 { margin:0; color:var(--navy); font:800 clamp(2.3rem,7vw,4.8rem)/1.15 Poppins,"Noto Sans JP",sans-serif; letter-spacing:-.045em; }
     .heading-accent { color:var(--blue); }
@@ -33,6 +34,7 @@
 </head>
 <body>
   <main>
+    <img class="hero-orb hero-orb--aura" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <img class="hero-orb hero-orb--glow" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <img class="hero-orb hero-orb--image" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <p class="eyebrow">KNOWLEDGE SURROUNDING AI</p>
