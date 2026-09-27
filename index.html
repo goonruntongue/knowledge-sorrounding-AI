@@ -12,8 +12,7 @@
     * { box-sizing:border-box; }
     body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#c9e9d9 0 180px,transparent 181px),#f4f7f5; font-family:"Noto Sans JP",sans-serif; }
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
-    .hero-orb { position:absolute; z-index:-1; top:-5.5rem; right:-9rem; width:min(54vw,510px); aspect-ratio:1; opacity:.76; pointer-events:none; transform-origin:center; will-change:transform; animation:globe-float 7s ease-in-out infinite; }
-    @keyframes globe-float { 0%,100% { transform:translateY(0) rotate(-3deg); } 50% { transform:translateY(-14px) rotate(3deg); } }
+    .hero-orb { position:absolute; z-index:-1; top:-5.5rem; right:-9rem; width:min(54vw,510px); aspect-ratio:1; opacity:.76; pointer-events:none; }
     .eyebrow { margin:0 0 .6rem; color:var(--green); font:800 .85rem/1 Poppins,sans-serif; letter-spacing:.14em; }
     h1 { margin:0; font:800 clamp(2.3rem,7vw,4.8rem)/1.15 Poppins,"Noto Sans JP",sans-serif; letter-spacing:-.045em; }
     .lead { max-width:620px; margin:1.35rem 0 3rem; font-size:1.05rem; line-height:1.9; }
@@ -27,7 +26,6 @@
     .arrow { display:block; margin-top:1.2rem; color:var(--green); font-weight:800; }
     footer { width:min(90%,960px); margin:0 auto; padding:2rem 0; color:#5a7166; font-size:.82rem; }
     @media (max-width:640px) { .hero-orb { top:-2.5rem; right:-5.5rem; width:340px; opacity:.5; } }
-    @media (prefers-reduced-motion:reduce) { .hero-orb { animation:none; } }
   </style>
 </head>
 <body>
@@ -49,9 +47,9 @@
     </section>
   </main>
   <footer>Knowledge Surrounding AI</footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
   <script>
-    window.addEventListener("load", () => {
+    window.addEventListener("DOMContentLoaded", () => {
       if (!window.lottie) return;
       const animation = window.lottie.loadAnimation({
         container: document.getElementById("hero-orb"),
