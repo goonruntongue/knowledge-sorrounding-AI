@@ -696,6 +696,191 @@
             outline-offset: 3px;
         }
 
+        .git-lab-dock {
+            position: sticky;
+            z-index: 850;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 5em;
+            padding: .7rem 1rem;
+            border-top: 1px solid var(--line);
+            background: #f4f7f5ed;
+            box-shadow: 0 -5px 24px #18332a14;
+            backdrop-filter: blur(10px);
+        }
+
+        .git-lab-launch,
+        .git-lab-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            min-height: 42px;
+            padding: .55rem 1.05rem;
+            border: 0;
+            border-radius: 8px;
+            color: #fff;
+            background: var(--green);
+            box-shadow: 0 5px 14px #237a5740;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform .18s ease, background .18s ease;
+        }
+
+        .git-lab-launch { border-radius: 99px; }
+        .git-lab-launch span { color: #c9f0dc; font-size: .77rem; font-weight: normal; }
+        .git-lab-launch:hover, .git-lab-action:hover { background: #195d41; transform: translateY(-2px); }
+
+        .git-lab-modal {
+            position: fixed;
+            z-index: 1200;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background: #07110ce0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s ease;
+        }
+
+        .git-lab-modal.is-open { opacity: 1; pointer-events: auto; }
+
+        .git-lab-window {
+            width: min(94vw, 820px);
+            max-height: min(88vh, 760px);
+            overflow: auto;
+            border: 1px solid #ffffff66;
+            border-radius: 16px;
+            background: #f7faf8;
+            box-shadow: 0 24px 70px #0009;
+            transform: translateY(14px) scale(.975);
+            transition: transform .26s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .git-lab-modal.is-open .git-lab-window { transform: translateY(0) scale(1); }
+
+        .git-lab-titlebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .8rem 1rem;
+            color: #fff;
+            background: #17382b;
+        }
+
+        .git-lab-close {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #ffffff55;
+            border-radius: 50%;
+            color: #fff;
+            background: transparent;
+            font: inherit;
+            font-size: 1.35rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .git-lab-content { padding: clamp(1rem, 3vw, 1.6rem); }
+        .git-lab-view[hidden] { display: none; }
+
+        .git-lab-explorer {
+            overflow: hidden;
+            border: 1px solid #cfd9d3;
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .git-lab-explorer__toolbar {
+            display: flex;
+            gap: .7rem;
+            align-items: center;
+            padding: .7rem;
+            border-bottom: 1px solid #dce5df;
+            background: #f4f7f5;
+        }
+
+        .git-lab-explorer__address {
+            flex: 1;
+            padding: .45rem .65rem;
+            border: 2px solid #4d97dc;
+            border-radius: 6px;
+            color: #17382b;
+            background: #fff;
+            font-family: Consolas, monospace;
+        }
+
+        .git-lab-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            margin-left: 2px;
+            vertical-align: -.15em;
+            background: #17382b;
+            animation: cursor-blink 1s step-end infinite;
+        }
+
+        .git-lab-explorer__files {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .85rem;
+            min-height: 200px;
+            padding: 1.1rem;
+        }
+
+        .git-lab-file {
+            display: grid;
+            place-items: center;
+            min-height: 76px;
+            border-radius: 8px;
+            color: #426758;
+            background: #e9f5ed;
+            font-size: .82rem;
+            text-align: center;
+        }
+
+        .git-lab-notice, .git-lab-result {
+            margin: 1rem 0 0;
+            padding: .9rem 1rem;
+            border-left: 4px solid #f0a13a;
+            border-radius: 0 9px 9px 0;
+            background: #fff7e9;
+        }
+
+        .git-lab-terminal { overflow: hidden; border-radius: 10px; color: #e8f8ef; background: #10231a; }
+        .git-lab-terminal__head { padding: .55rem .9rem; color: #b6d4c1; background: #18372a; font-size: .78rem; }
+        .git-lab-output { min-height: 165px; max-height: 260px; overflow: auto; padding: 1rem; font: .88rem/1.65 Consolas, "Courier New", monospace; white-space: pre-wrap; }
+
+        .git-lab-task {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .git-lab-task p { margin: .35rem 0; }
+        .git-lab-task code { color: var(--green); font-weight: bold; }
+
+        .git-lab-input-row { display: flex; gap: .55rem; align-items: stretch; }
+        .git-lab-input { min-width: 0; flex: 1; padding: .7rem .8rem; border: 1px solid #6b8f7c; border-radius: 7px; font: .88rem Consolas, "Courier New", monospace; }
+        .git-lab-input:focus { outline: 3px solid #9bd2b8; outline-offset: 2px; }
+        .git-lab-message { min-height: 1.8em; margin: .6rem 0 0; color: #a33e28; font-size: .88rem; }
+        .git-lab-result { border-left-color: var(--green); background: #e6f4ec; }
+        .git-lab-result strong { color: #195d41; }
+        .git-lab-choices { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .7rem; }
+        .git-lab-choice { padding: .5rem .8rem; border: 1px solid #7da68d; border-radius: 8px; color: #195d41; background: #fff; font: inherit; font-weight: bold; cursor: pointer; }
+
+        @keyframes cursor-blink { 50% { opacity: 0; } }
+        body.git-lab-open { overflow: hidden; }
+
         @media(max-width:720px) {
 
             section>div {
@@ -734,8 +919,13 @@
 
             #toTop {
                 right: 1rem;
-                bottom: 1rem;
+                bottom: 6rem;
             }
+
+            .git-lab-dock { min-height: 4.6em; }
+            .git-lab-launch span { display: none; }
+            .git-lab-explorer__files { grid-template-columns: repeat(2, 1fr); min-height: 155px; }
+            .git-lab-input-row { flex-direction: column; }
 
             .portal-link {
                 top: .7rem;
@@ -1075,6 +1265,9 @@ git push</pre>
             <span>Git と GitHub の初心者ガイド</span>
         </footer>
     </div>
+    <div class="git-lab-dock">
+        <button id="gitLabLaunch" class="git-lab-launch" type="button">Gitを体験してみる <span>安全なシミュレーション</span></button>
+    </div>
     <button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
     <script>
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1204,6 +1397,183 @@ git push</pre>
                 if (event.key === "Escape") closeLightbox();
                 if (event.key === "ArrowLeft") setLightboxImage(currentIndex - 1);
                 if (event.key === "ArrowRight") setLightboxImage(currentIndex + 1);
+            });
+        }
+
+        const gitLabLaunch = document.getElementById("gitLabLaunch");
+        if (gitLabLaunch) {
+            const gitLab = document.createElement("div");
+            gitLab.className = "git-lab-modal";
+            gitLab.setAttribute("role", "dialog");
+            gitLab.setAttribute("aria-modal", "true");
+            gitLab.setAttribute("aria-label", "Git操作シミュレーション");
+            gitLab.innerHTML = `
+                <div class="git-lab-window">
+                    <div class="git-lab-titlebar"><strong>Gitを体験してみる</strong><button class="git-lab-close" type="button" aria-label="閉じる">×</button></div>
+                    <div class="git-lab-content">
+                        <section class="git-lab-view git-lab-explorer-view">
+                            <div class="git-lab-explorer">
+                                <div class="git-lab-explorer__toolbar"><span>←　→　↑</span><div class="git-lab-explorer__address">cmd<span class="git-lab-cursor"></span></div></div>
+                                <div class="git-lab-explorer__files"><div class="git-lab-file">📁 images</div><div class="git-lab-file">📄 index.html</div><div class="git-lab-file">🎨 style.css</div><div class="git-lab-file">📁 scripts</div></div>
+                            </div>
+                            <div class="git-lab-notice"><strong>対象フォルダのエクスプローラーで、アドレスバーに <code>cmd</code> を入力した直後です。</strong><br>Enterキーを押すと、このフォルダを現在地にしたコマンドプロンプトが開きます。</div>
+                            <button class="git-lab-action git-lab-start" type="button">Enterキーを押す</button>
+                        </section>
+                        <section class="git-lab-view git-lab-terminal-view" hidden>
+                            <div class="git-lab-terminal"><div class="git-lab-terminal__head">コマンド プロンプト — 練習用（実際のGitやGitHubには接続しません）</div><div class="git-lab-output"></div></div>
+                            <div class="git-lab-task"></div>
+                            <div class="git-lab-input-row"><input class="git-lab-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Gitコマンドを入力"><button class="git-lab-action git-lab-run" type="button">実行</button></div>
+                            <p class="git-lab-message" aria-live="polite"></p>
+                        </section>
+                    </div>
+                </div>`;
+            document.body.appendChild(gitLab);
+
+            const labExplorer = gitLab.querySelector(".git-lab-explorer-view");
+            const labTerminal = gitLab.querySelector(".git-lab-terminal-view");
+            const labStart = gitLab.querySelector(".git-lab-start");
+            const labClose = gitLab.querySelector(".git-lab-close");
+            const labOutput = gitLab.querySelector(".git-lab-output");
+            const labTask = gitLab.querySelector(".git-lab-task");
+            const labInput = gitLab.querySelector(".git-lab-input");
+            const labRun = gitLab.querySelector(".git-lab-run");
+            const labMessage = gitLab.querySelector(".git-lab-message");
+            const prompt = "C:\\Users\\you\\Documents\\my-website>";
+            const steps = [
+                { command: "git init", title: "このフォルダをGitの新規リポジトリにする", text: "次を入力して Enter してください。", output: "Initialized empty Git repository in C:/Users/you/Documents/my-website/.git/", result: "<strong>成功：</strong>このフォルダに <code>.git</code> という履歴管理用の場所ができました。まだGitHubには何も送られていません。次は、初回保存に入れるファイルをスタンバイさせます。" },
+                { command: "git add .", title: "変更をステージングする", text: "このフォルダにあるファイルを、次のコミットに入れる準備をします。", output: "", result: "<strong>成功：</strong>ファイルを削除・送信したわけではありません。「次の保存にこれらを入れる」とGitへ伝えた状態です。次はPC内の履歴として保存します。" },
+                { command: "git commit -m \"初回作成\"", title: "最初の状態をPC内に保存する", text: "説明メモを付けて、最初のコミットを作ります。", output: "[main (root-commit) a1f4d72] 初回作成\n 3 files changed, 42 insertions(+)", result: "<strong>成功：</strong>PC内に「初回作成」という復元できる履歴ができました。次はGitHub側にも保管場所を作ります。" },
+                { command: "gh repo create", title: "GitHubにリモートリポジトリを作る", text: "GitHub CLIに、GitHub上の保管場所を作ってもらいます。", output: "? What would you like to do?  Create a new repository on GitHub", result: "<strong>GitHub CLIの質問が始まりました。</strong>下の選択肢で、公開範囲と「今あるコミットを送る」設定を選びます。", choice: true },
+                { command: "git add .", title: "書き換えたファイルをもう一度ステージングする", text: "ここでは <code>index.html</code> を書き換えたことにします。変更を次のコミットへ入れましょう。", output: "", result: "<strong>成功：</strong>2回目の変更が、次の保存のスタンバイに入りました。" },
+                { command: "git commit -m \"見出しを更新\"", title: "2回目の状態をPC内に保存する", text: "変更内容が分かるメモを付けてコミットします。", output: "[main b7e2c91] 見出しを更新\n 1 file changed, 2 insertions(+), 1 deletion(-)", result: "<strong>成功：</strong>「初回作成」と「見出しを更新」の2つの履歴をPC内に持てました。次はGitHubへ送ります。" },
+                { command: "git push", title: "2回目のコミットをGitHubへ送る", text: "PC内の最新コミットを、GitHubのリポジトリへ反映します。", output: "To github.com:you/my-website.git\n   a1f4d72..b7e2c91  main -> main", result: "<strong>成功：</strong>GitHub側も最新版になりました。ここから、前の状態を安全に取り出す練習に進みます。" },
+                { command: "git log --oneline", title: "履歴を一覧で確認する", text: "まず、戻したい時点のコミットIDを探します。", output: "b7e2c91 (HEAD -> main, origin/main) 見出しを更新\na1f4d72 初回作成", result: "<strong>成功：</strong>左端の7文字がコミットIDです。今回は初回作成の <code>a1f4d72</code> を確認してみます。" },
+                { command: "git switch --detach a1f4d72", title: "過去の状態を確認する", text: "初回作成時点のファイルを表示して確認します。", output: "HEAD is now at a1f4d72 初回作成", result: "<strong>成功：</strong>初回作成時点の内容を確認できます。これは閲覧用の状態なので、編集せず、必ず <code>main</code> に戻ります。" },
+                { command: "git switch main", title: "通常の作業場所 main に戻る", text: "復元の前に、現在の作業場所へ戻します。", output: "Switched to branch 'main'\nYour branch is up to date with 'origin/main'.", result: "<strong>成功：</strong>最新の作業場所に戻りました。次で、初回作成時点の内容を安全に取り出します。" },
+                { command: "git restore --source a1f4d72 -- .", title: "初回作成時点の内容を取り出す", text: "履歴を消さずに、過去の内容を現在の作業フォルダへ戻します。", output: "Restored files from a1f4d72 into the working tree.", result: "<strong>完了：</strong>初回作成時点のファイル内容が、現在の作業フォルダへ戻りました。この後は <code>git add .</code> → <code>git commit</code> → <code>git push</code> で、復元した状態を新しい履歴としてGitHubへ送れます。" }
+            ];
+            let stepIndex = 0;
+            let outputLines = [];
+            let lastResult = "";
+            let choiceStage = 0;
+            let lastFocus;
+
+            const normalize = (value) => value.trim().replace(/\s+/g, " ");
+            const addOutput = (...lines) => { outputLines.push(...lines.filter(Boolean)); };
+            const renderTerminal = () => {
+                const step = steps[stepIndex];
+                labOutput.textContent = outputLines.join("\n");
+                labOutput.scrollTop = labOutput.scrollHeight;
+                labMessage.textContent = "";
+                if (!step) {
+                    labTask.innerHTML = `${lastResult}<button class="git-lab-action git-lab-restart" type="button">最初から体験する</button>`;
+                    labInput.hidden = true;
+                    labRun.hidden = true;
+                    labTask.querySelector(".git-lab-restart").addEventListener("click", resetLab);
+                    return;
+                }
+                labInput.hidden = false;
+                labRun.hidden = false;
+                const progress = `ステップ ${stepIndex + 1} / ${steps.length}`;
+                let choiceHtml = "";
+                if (step.choice && choiceStage === 1) choiceHtml = `<div class="git-lab-choices"><button class="git-lab-choice" type="button" data-choice="private">Private（個人用）を選ぶ</button></div>`;
+                if (step.choice && choiceStage === 2) choiceHtml = `<div class="git-lab-choices"><button class="git-lab-choice" type="button" data-choice="push">既存のローカルコミットを GitHub へ送る</button></div>`;
+                labTask.innerHTML = `<small>${progress}</small><h3>${step.title}</h3><p>${step.text}</p><p>入力するコマンド：<code>${step.command}</code></p>${lastResult}${choiceHtml}`;
+                labTask.querySelectorAll("[data-choice]").forEach((button) => button.addEventListener("click", () => chooseRepoOption(button.dataset.choice)));
+                if (choiceStage) {
+                    labInput.disabled = true;
+                    labRun.disabled = true;
+                } else {
+                    labInput.disabled = false;
+                    labRun.disabled = false;
+                    labInput.placeholder = step.command;
+                    labInput.focus();
+                }
+            };
+
+            const explainUnexpected = (command) => {
+                if (/^git add\b/.test(command)) return "<code>git add</code> は変更を次のコミットへ入れるスタンバイ操作です。今は「" + steps[stepIndex].command + "」を先に実行しましょう。";
+                if (/^git commit\b/.test(command)) return "<code>git commit</code> はステージング済みの変更をPC内の履歴に保存します。まず今の手順を完了してください。";
+                if (/^git push\b/.test(command)) return "<code>git push</code> はコミット済みの履歴をGitHubへ送る操作です。先に必要なコミットとリポジトリ作成を行います。";
+                if (/^git log\b/.test(command)) return "<code>git log</code> は履歴を確認するコマンドです。コミットを作った後なら使えます。今回は後半で実行します。";
+                if (/^git (restore|switch)\b/.test(command)) return "過去版の確認・復元は、まず <code>git log --oneline</code> でコミットIDを確認してから行います。";
+                if (/^(gh repo create|gh repo clone|git clone)\b/.test(command)) return "GitHub関連のコマンドですね。この練習では、ローカルで最初のコミットを作ってから <code>gh repo create</code> を使う順番です。";
+                return "この練習画面ではそのコマンドは実行しません。安全なシミュレーションなので、案内されたコマンドを入力して進めてください。";
+            };
+
+            const runCommand = () => {
+                const step = steps[stepIndex];
+                const command = normalize(labInput.value);
+                if (!command || !step || choiceStage) return;
+                if (command !== step.command) {
+                    labMessage.innerHTML = explainUnexpected(command);
+                    return;
+                }
+                addOutput(`${prompt} ${command}`, step.output);
+                labInput.value = "";
+                lastResult = `<div class="git-lab-result">${step.result}</div>`;
+                if (step.choice) {
+                    choiceStage = 1;
+                } else {
+                    stepIndex += 1;
+                }
+                renderTerminal();
+            };
+
+            const chooseRepoOption = (choice) => {
+                if (choice === "private") {
+                    choiceStage = 2;
+                    addOutput("✓ Repository visibility: Private");
+                    lastResult = `<div class="git-lab-result"><strong>選択しました：</strong>リポジトリは自分と許可した人だけが見られる Private になります。次に、今PCにある最初のコミットをGitHubへ送ります。</div>`;
+                }
+                if (choice === "push") {
+                    addOutput("✓ Created repository github.com/you/my-website", "✓ Pushed commits to origin/main", "", "--- index.html の見出しを書き換えたことにします ---");
+                    choiceStage = 0;
+                    stepIndex += 1;
+                    lastResult = `<div class="git-lab-result"><strong>成功：</strong>GitHub上に <code>my-website</code> が作られ、最初の履歴も送られました。ここからファイルを変更して、もう一度保存・送信する流れを体験します。</div>`;
+                }
+                renderTerminal();
+            };
+
+            const resetLab = () => {
+                stepIndex = 0;
+                choiceStage = 0;
+                lastResult = "";
+                outputLines = [`Microsoft Windows [Version 10.0]`, "", `${prompt}`];
+                labExplorer.hidden = false;
+                labTerminal.hidden = true;
+            };
+
+            const openLab = () => {
+                lastFocus = document.activeElement;
+                resetLab();
+                gitLab.classList.add("is-open");
+                document.body.classList.add("git-lab-open");
+                labStart.focus();
+            };
+
+            const closeLab = () => {
+                gitLab.classList.remove("is-open");
+                document.body.classList.remove("git-lab-open");
+                lastFocus?.focus();
+            };
+
+            const startTerminal = () => {
+                labExplorer.hidden = true;
+                labTerminal.hidden = false;
+                renderTerminal();
+            };
+
+            gitLabLaunch.addEventListener("click", openLab);
+            labStart.addEventListener("click", startTerminal);
+            labClose.addEventListener("click", closeLab);
+            labRun.addEventListener("click", runCommand);
+            labInput.addEventListener("keydown", (event) => { if (event.key === "Enter") runCommand(); });
+            gitLab.addEventListener("click", (event) => { if (event.target === gitLab) closeLab(); });
+            document.addEventListener("keydown", (event) => {
+                if (!gitLab.classList.contains("is-open")) return;
+                if (event.key === "Escape") closeLab();
+                if (event.key === "Enter" && !labExplorer.hidden && event.target !== labStart) startTerminal();
             });
         }
     </script>
