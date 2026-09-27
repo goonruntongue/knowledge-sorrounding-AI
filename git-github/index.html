@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitとGitHub</title>
+    <link rel="icon" href="img/logo-only.svg" type="image/svg+xml">
     <!-- Noto Sans JP / Poppins / Oswald -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
@@ -64,6 +65,47 @@
 
         .container {
             position: relative;
+        }
+
+        .portal-link {
+            position: absolute;
+            z-index: 2;
+            top: 1rem;
+            left: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: .4rem .8rem;
+            border: 1px solid var(--line);
+            border-radius: 99px;
+            color: var(--green);
+            background: #ffffffd9;
+            box-shadow: 0 3px 12px #18332a14;
+            font-size: .82rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background .18s ease, transform .18s ease;
+        }
+
+        .portal-link:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .guide-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 4rem;
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--line);
+            color: #5a7166;
+            font-size: .86rem;
+        }
+
+        .guide-footer .portal-link {
+            position: static;
         }
 
         .logo {
@@ -694,6 +736,16 @@
                 right: 1rem;
                 bottom: 1rem;
             }
+
+            .portal-link {
+                top: .7rem;
+                font-size: .75rem;
+            }
+
+            .guide-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
 
         aside {
@@ -707,6 +759,7 @@
 <body>
     <div class="container">
         <img class="logo" src="./img/Git-Logo-2Color.svg" width="292" height="123" alt="">
+        <a class="portal-link" href="../">← ポータルへ戻る</a>
         <h1>
             <span class="hilight">Git<span class="small">と</span>
                 <br>GitHub</span>
@@ -1017,6 +1070,10 @@ git push</pre>
                 </section>
             </div>
         </section>
+        <footer class="guide-footer">
+            <a class="portal-link" href="../">← Web技術の周辺知識へ戻る</a>
+            <span>Git と GitHub の初心者ガイド</span>
+        </footer>
     </div>
     <button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
     <script>
