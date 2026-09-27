@@ -926,6 +926,10 @@
             padding: 0 1rem 1rem;
             color: #e8f8ef;
             font: .88rem/1.65 Consolas, "Courier New", monospace;
+            overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
         }
 
         .git-lab-terminal__prompt { flex: 0 0 auto; white-space: pre; }
@@ -1018,6 +1022,8 @@
             .git-lab-input-row { flex-direction: column; }
             /* iOS Safari は16px未満の入力欄をフォーカスすると自動ズームするため。 */
             .git-lab-input, .git-lab-terminal-input { font-size: 16px; }
+            .git-lab-terminal__entry { scrollbar-width: thin; }
+            .git-lab-terminal-input { min-width: 24ch; flex: 0 0 24ch; }
 
             .portal-link {
                 top: .7rem;
@@ -1535,6 +1541,7 @@ git push</pre>
             const labInput = gitLab.querySelector(".git-lab-input");
             const labTerminalInput = gitLab.querySelector(".git-lab-terminal-input");
             const labTerminalPrompt = gitLab.querySelector(".git-lab-terminal__prompt");
+            const labTerminalEntry = gitLab.querySelector(".git-lab-terminal__entry");
             const labRun = gitLab.querySelector(".git-lab-run");
             const labMessage = gitLab.querySelector(".git-lab-message");
             const prompt = "C:\\Users\\you\\Documents\\my-website>";
@@ -1679,8 +1686,18 @@ git push</pre>
             labClose.addEventListener("click", closeLab);
             labRun.addEventListener("click", runCommand);
             labInput.addEventListener("keydown", (event) => { if (event.key === "Enter") runCommand(); });
-            labInput.addEventListener("input", () => { labTerminalInput.value = labInput.value; });
-            labTerminalInput.addEventListener("input", () => { labInput.value = labTerminalInput.value; });
+            const showTerminalInputEnd = () => {
+                labTerminalInput.scrollLeft = labTerminalInput.scrollWidth;
+                labTerminalEntry.scrollLeft = labTerminalEntry.scrollWidth;
+            };
+            labInput.addEventListener("input", () => {
+                labTerminalInput.value = labInput.value;
+                showTerminalInputEnd();
+            });
+            labTerminalInput.addEventListener("input", () => {
+                labInput.value = labTerminalInput.value;
+                showTerminalInputEnd();
+            });
             labTerminalInput.addEventListener("keydown", (event) => { if (event.key === "Enter") runCommand(); });
             gitLab.addEventListener("click", (event) => { if (event.target === gitLab) closeLab(); });
             document.addEventListener("keydown", (event) => {
