@@ -1554,6 +1554,7 @@ git push</pre>
             let lastResult = "";
             let choiceStage = 0;
             let lastFocus;
+            let labInitialized = false;
 
             const normalize = (value) => value.trim().replace(/\s+/g, " ");
             const addOutput = (...lines) => { outputLines.push(...lines.filter(Boolean)); };
@@ -1649,10 +1650,14 @@ git push</pre>
 
             const openLab = () => {
                 lastFocus = document.activeElement;
-                resetLab();
+                if (!labInitialized) {
+                    resetLab();
+                    labInitialized = true;
+                }
                 gitLab.classList.add("is-open");
                 document.body.classList.add("git-lab-open");
-                labStart.focus();
+                if (labTerminal.hidden) labStart.focus();
+                else if (!labInput.hidden && !labInput.disabled) labInput.focus();
             };
 
             const closeLab = () => {
