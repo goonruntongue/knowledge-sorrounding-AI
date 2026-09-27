@@ -1,4 +1,4 @@
-const CACHE_NAME = "web-knowledge-portal-v2";
+const CACHE_NAME = "web-knowledge-portal-v3";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./globe-pwa.svg", "./pwa-icon-192.png", "./pwa-icon-512.png"];
 
 self.addEventListener("install", (event) => {
