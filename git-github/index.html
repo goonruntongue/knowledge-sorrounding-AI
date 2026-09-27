@@ -798,14 +798,42 @@
             background: #fff;
         }
 
+        .git-lab-explorer__tabs {
+            display: flex;
+            align-items: end;
+            height: 42px;
+            padding: 0 .65rem;
+            background: #e9f1f6;
+        }
+
+        .git-lab-explorer__tab {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            height: 37px;
+            min-width: 190px;
+            padding: 0 .8rem;
+            border: 1px solid #d1dce3;
+            border-bottom: 0;
+            border-radius: 8px 8px 0 0;
+            color: #283c47;
+            background: #fff;
+            font-size: .82rem;
+        }
+
+        .git-lab-explorer__tab::before { content: "📁"; }
+        .git-lab-explorer__new-tab { padding: 0 .8rem .55rem; color: #456; font-size: 1.15rem; }
+
         .git-lab-explorer__toolbar {
             display: flex;
-            gap: .7rem;
+            gap: .65rem;
             align-items: center;
             padding: .7rem;
             border-bottom: 1px solid #dce5df;
-            background: #f4f7f5;
+            background: #f8fafb;
         }
+
+        .git-lab-explorer__nav { color: #60737e; letter-spacing: .12em; white-space: nowrap; }
 
         .git-lab-explorer__address {
             flex: 1;
@@ -827,23 +855,57 @@
             animation: cursor-blink 1s step-end infinite;
         }
 
+        .git-lab-explorer__commandbar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: .52rem .8rem;
+            border-bottom: 1px solid #dce5df;
+            color: #546a75;
+            background: #fff;
+            font-size: .76rem;
+        }
+
+        .git-lab-explorer__body { display: grid; grid-template-columns: 150px 1fr; min-height: 200px; }
+
+        .git-lab-explorer__sidebar {
+            padding: .5rem .35rem;
+            border-right: 1px solid #dce5df;
+            background: #f8fafb;
+            color: #405963;
+            font-size: .76rem;
+        }
+
+        .git-lab-explorer__sidebar span {
+            display: block;
+            padding: .42rem .55rem;
+            border-radius: 4px;
+        }
+
+        .git-lab-explorer__sidebar span:first-child { background: #dce9ef; }
+
         .git-lab-explorer__files {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: .85rem;
+            grid-template-columns: 1fr 100px 80px;
+            align-content: start;
             min-height: 200px;
-            padding: 1.1rem;
+            padding: .7rem 1rem;
         }
 
         .git-lab-file {
-            display: grid;
-            place-items: center;
-            min-height: 76px;
-            border-radius: 8px;
-            color: #426758;
-            background: #e9f5ed;
+            min-height: 33px;
+            padding: .35rem .4rem;
+            border-bottom: 1px solid #edf1ee;
+            color: #42565f;
+            background: transparent;
             font-size: .82rem;
-            text-align: center;
+        }
+
+        .git-lab-file--head {
+            min-height: 26px;
+            color: #55717f;
+            background: #f7f9fa;
+            font-size: .72rem;
         }
 
         .git-lab-notice, .git-lab-result {
@@ -924,7 +986,11 @@
 
             .git-lab-dock { min-height: 4.6em; }
             .git-lab-launch span { display: none; }
-            .git-lab-explorer__files { grid-template-columns: repeat(2, 1fr); min-height: 155px; }
+            .git-lab-explorer__body { grid-template-columns: 108px 1fr; }
+            .git-lab-explorer__files { grid-template-columns: 1fr 65px; min-height: 155px; padding: .55rem; }
+            .git-lab-explorer__files .git-lab-file:nth-child(3n) { display: none; }
+            .git-lab-explorer__tab { min-width: 150px; }
+            .git-lab-explorer__commandbar { gap: .55rem; overflow: hidden; white-space: nowrap; }
             .git-lab-input-row { flex-direction: column; }
 
             .portal-link {
@@ -1413,8 +1479,13 @@ git push</pre>
                     <div class="git-lab-content">
                         <section class="git-lab-view git-lab-explorer-view">
                             <div class="git-lab-explorer">
-                                <div class="git-lab-explorer__toolbar"><span>←　→　↑</span><div class="git-lab-explorer__address">cmd<span class="git-lab-cursor"></span></div></div>
-                                <div class="git-lab-explorer__files"><div class="git-lab-file">📁 images</div><div class="git-lab-file">📄 index.html</div><div class="git-lab-file">🎨 style.css</div><div class="git-lab-file">📁 scripts</div></div>
+                                <div class="git-lab-explorer__tabs"><div class="git-lab-explorer__tab">my-website　×</div><span class="git-lab-explorer__new-tab">＋</span></div>
+                                <div class="git-lab-explorer__toolbar"><span class="git-lab-explorer__nav">←　→　↑　⟳</span><div class="git-lab-explorer__address">cmd<span class="git-lab-cursor"></span></div></div>
+                                <div class="git-lab-explorer__commandbar"><span>⊕　新規作成</span><span>✂　コピー</span><span>↗　共有</span><span>⇅　並べ替え</span><span>⋯</span></div>
+                                <div class="git-lab-explorer__body">
+                                    <nav class="git-lab-explorer__sidebar"><span>⌂　ホーム</span><span>▣　ギャラリー</span><span>🖥　デスクトップ</span><span>↓　ダウンロード</span><span>▤　ドキュメント</span></nav>
+                                    <div class="git-lab-explorer__files"><div class="git-lab-file git-lab-file--head">名前</div><div class="git-lab-file git-lab-file--head">更新日時</div><div class="git-lab-file git-lab-file--head">種類</div><div class="git-lab-file">📁 images</div><div class="git-lab-file">今日</div><div class="git-lab-file">フォルダー</div><div class="git-lab-file">⌘ index.html</div><div class="git-lab-file">今日</div><div class="git-lab-file">HTML</div><div class="git-lab-file">⌘ style.css</div><div class="git-lab-file">今日</div><div class="git-lab-file">CSS</div></div>
+                                </div>
                             </div>
                             <div class="git-lab-notice"><strong>対象フォルダのエクスプローラーで、アドレスバーに <code>cmd</code> を入力した直後です。</strong><br>Enterキーを押すと、このフォルダを現在地にしたコマンドプロンプトが開きます。</div>
                             <button class="git-lab-action git-lab-start" type="button">Enterキーを押す</button>
