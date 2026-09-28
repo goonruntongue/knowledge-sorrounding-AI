@@ -32,7 +32,14 @@ window.LabUI = (() => {
     diff: '<path d="M12 3v8M8 7h8M4 17h16"/>',
     external: '<path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
     refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/>',
-    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
+    wave: '<path d="M6 10v4M9 7v10M12 4v16M15 7v10M18 10v4"/>',
+    warn: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16v.5"/>',
+    at: '<circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/>',
+    laptop: '<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/>',
+    slash: '<path d="M16 4 8 20"/>',
+    cloudterm: '<path d="M7.5 18.5A4 4 0 0 1 6.9 10.6 5.5 5.5 0 0 1 17.4 9.2 3.9 3.9 0 0 1 17.5 17c-.5 1-1.5 1.5-2.5 1.5H7.5Z"/><path d="m9.5 12 2 1.8-2 1.8M13 15.5h2.5"/>'
   };
   const icon = (name, cls = "") => brand[name] ? mark(name, cls) : '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths[name] + "</svg>";
   /* App marks: repository SVG logos (ChatGPT-Logo.svg / Claude-ai-icon.svg). GitHub mark: img/github.svg (see img/README.md). */
@@ -118,7 +125,7 @@ window.ChatGPTLessons = (() => {
   function diffCard(file, before, after) {
     return '<div class="diff-card"><div class="diff-head">' + icon("file") + '<span>' + file + '</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div><div class="diff"><del><i>3</i>− ' + before + '</del><ins><i>3</i>+ ' + after + '</ins></div></div>';
   }
-  const skillSteps = ["Skillsを開いて、作業手順を追加しましょう。","作成用スキルを選びましょう。","覚えてほしい手順を依頼して送信しましょう。","作成されたスキルの内容と保存先を確認しましょう。","新しいチャットを開きましょう。","@でスキルを選び、依頼を書いて送信しましょう。","スキルに沿った結果を確認できました。"];
+  const skillSteps = ["Skillsを開いて、作業手順を追加しましょう。","作成用スキルを選びましょう。","覚えてほしい手順を依頼して送信しましょう。","作成されたスキルの内容と保存先を確認しましょう。","新しいチャットを開きましょう。","/ でスキルを選び、依頼を書いて送信しましょう。","スキルに沿った結果を確認できました。"];
   const pluginSteps = ["Pluginsを開きましょう。","GitHubを検索して詳細を開きましょう。","機能を確認して＋でインストールしましょう。","外部アカウントを接続する流れを体験しましょう。","接続先とアクセス範囲を確認しましょう。","導入後は、新しいチャットを開きましょう。","@でGitHubを選び、依頼を書いて送信しましょう。","プラグインを使った結果を確認できました。"];
   function reset(value) {
     course = value; step = 0; screen = "ChatGPT"; selected = "Chat"; task = 0; feedback = ""; input = ""; mention = false; installed = false; connected = false; menu = false; search = ""; skillRoute = "create";
@@ -160,24 +167,32 @@ window.ChatGPTLessons = (() => {
     }
     const want = course === "modes" && step === 0 ? scenarios[task].mode : "";
     const toggle = '<div class="seg" role="group" aria-label="Chat / Work">' + ["Chat", "Work"].map(m => ui("mode-" + m, m, { cls: "seg-btn", pressed: selected === m, guide: want === m && selected !== m, tip: m + " に切り替え" })).join("") + "</div>";
-    return '<header class="app-top"><div class="top-left"><span class="model-pill">ChatGPT <b>5.6</b>' + icon("chevron", "chev") + '</span></div>' + toggle + '<div class="top-right"><span class="ghost">' + icon("external") + '共有</span><span class="avatar sm">S</span></div></header>';
+    return '<header class="app-top"><div class="top-left"></div>' + toggle + '<div class="top-right"><span class="ghost">' + icon("external") + '共有</span><span class="avatar sm">S</span></div></header>';
   }
-  function composer({ placeholder = "質問してみましょう", value = "", disabled = false, send = "send", sendGuide = false, sendTip = "依頼を送信", chip = "", popup = "", left = "", readonly = false, areaGuide = false, areaTip = "" } = {}) {
-    const codex = screen === "Codex";
-    const bottomLeft = codex ? '<span class="chip">' + icon("folder") + 'my-website' + icon("chevron", "chev") + '</span><span class="chip">' + icon("home") + 'ローカル' + icon("chevron", "chev") + '</span>' : '<span class="chip round">' + icon("plus") + '</span>' + left;
-    const bottomRight = codex ? '<span class="chip">承認を求める' + icon("chevron", "chev") + '</span><span class="chip">GPT-5.6' + icon("chevron", "chev") + '</span>' : '<span class="chip round">' + icon("mic") + '</span>';
-    return '<div class="composer-wrap">' + popup + '<div class="composer' + (codex ? " codex" : "") + '">' + (chip ? '<div class="chip-row">' + chip + "</div>" : "") +
+  function composer({ placeholder, value = "", disabled = false, send = "send", sendGuide = false, sendTip = "依頼を送信", chip = "", popup = "", readonly = false, areaGuide = false, areaTip = "" } = {}) {
+    const codex = screen === "Codex", work = !codex && selected === "Work";
+    if (!placeholder) placeholder = codex ? "何でもどうぞ" : work ? "Work モードで作成" : "質問してみましょう";
+    const permChip = '<span class="chip perm">' + icon("shield") + "承認を求める</span>";
+    const modelChip = '<span class="chip model">' + icon("moon") + "GPT-5.6 Luna 軽" + icon("chevron", "chev") + "</span>";
+    const hasText = !!value.trim();
+    const sendBtn = ui(send, icon(hasText || sendGuide ? "up" : "wave"), { cls: "send" + (hasText || sendGuide ? "" : " voice"), guide: sendGuide, disabled, tip: sendTip });
+    const project = '<span class="tray-item">' + icon("folder") + (codex ? "my-website" : "プロジェクトを選択") + "</span>";
+    const tray = codex ? '<div class="tray above">' + project + "</div>" : work ? '<div class="tray below">' + project + '<span class="tray-item">' + icon("at") + 'プラグイン</span><span class="tray-right">' + icon("laptop") + "</span></div>" : "";
+    return '<div class="composer-wrap">' + popup + '<div class="composer-stack">' + (codex ? tray : "") + '<div class="composer' + (codex ? " codex" : "") + '">' + (chip ? '<div class="chip-row">' + chip + "</div>" : "") +
       '<textarea id="learn-prompt" class="' + (areaGuide ? "guided" : "") + '" aria-label="練習用チャット入力欄" placeholder="' + placeholder + '"' + (areaTip ? ' data-tip="' + escape(areaTip) + '"' : "") + (disabled ? " disabled" : "") + (readonly ? " readonly" : "") + ">" + escape(value) + "</textarea>" +
-      '<div class="composer-bar"><div class="bar-left">' + (codex ? '<span class="chip round">' + icon("plus") + '</span>' : "") + bottomLeft + '</div><div class="bar-right">' + bottomRight +
-      ui(send, icon("up"), { cls: "send", guide: sendGuide, disabled, tip: sendTip }) + "</div></div></div>" +
+      '<div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + "</span>" + permChip + '</div><div class="bar-right">' + modelChip + '<span class="chip round plain">' + icon("mic") + "</span>" + sendBtn + "</div></div></div>" + (codex ? "" : tray) + "</div>" +
       (codex ? "" : '<p class="disclaimer">ChatGPT の回答は必ずしも正しいとは限りません。重要な情報は確認するようにしてください。</p>') + "</div>";
   }
   function mentionPopup(name, show) {
-    return '<div class="popover mention-results" id="mention-results"' + (show ? "" : " hidden") + '><span class="pop-label">導入済み</span>' +
-      ui("mention", (course === "skills" ? icon("sparkle") : '<span class="plug-ic sm">' + icon("github") + "</span>") + "<span><b>" + name + "</b><small>" + (course === "skills" ? "スキル · このプロジェクト" : "プラグイン · 接続済み") + "</small></span>", { cls: "pop-item", guide: true, tip: "候補から選んで指定" }) + "</div>";
+    const skills = course === "skills";
+    return '<div class="popover mention-results" id="mention-results"' + (show ? "" : " hidden") + '><span class="pop-label">' + (skills ? "スキル" : "プラグイン") + "</span>" +
+      ui("mention", (skills ? icon("sparkle") : '<span class="plug-ic sm">' + icon("github") + "</span>") + "<span><b>" + (skills ? "$" : "@") + name + "</b><small>" + (skills ? "スキル · このプロジェクト" : "プラグイン · 接続済み") + "</small></span>", { cls: "pop-item", guide: true, tip: "候補から選んで指定" }) +
+      (skills ? '<span class="pop-item static">' + icon("sparkle") + "<span><b>$skill-creator</b><small>スキルを作成する</small></span></span>" : '<span class="pop-item static"><span class="plug-ic sm">' + icon("file") + "</span><span><b>@Docs</b><small>プラグイン</small></span></span>") + "</div>";
   }
+  const trigger = value => (course === "skills" ? /[\/$]/.test(value) : value.includes("@"));
+  const stripTrigger = value => value.replace(/[@\/$][^\s　]*\s*/, "");
   function greeting() {
-    return '<div class="empty-state"><h1>' + (screen === "Codex" ? "次は何をつくりますか？" : selected === "Work" ? "何を仕上げましょうか？" : "お手伝いできることはありますか？") + "</h1></div>";
+    return '<div class="empty-state">' + (screen === "Codex" ? icon("cloudterm", "cloud") : "") + "<h1>" + (screen === "Codex" ? "何を作成しましょうか？" : selected === "Work" ? "何に取り組みましょうか？" : "お手伝いできることはありますか？") + "</h1></div>";
   }
   /* ---------- courses ---------- */
   function modeContent() {
@@ -202,9 +217,9 @@ window.ChatGPTLessons = (() => {
     if (step === 3) return '<div class="thread">' + userMsg(name + " " + (input || "依頼文整理スキルを作成")) + botMsg('<div class="activity"><div class="tool-row">' + icon("file") + '<span>' + (skillRoute === "create" ? ".agents/skills/request-organizer/SKILL.md を作成" : "依頼文整理 / SKILL.md を取得（教材配布データ）") + "</span></div></div><p>" + (skillRoute === "create" ? "スキルの作成案です。" : "配布内容を確認してください。") + "保存先：<b>" + (skillRoute === "create" ? "このプロジェクト内" : "自分用のスキル一覧") + '</b></p><div class="code-card"><div class="code-head">' + icon("file") + 'SKILL.md</div><pre>name: request-organizer\ndescription: 依頼文の整理に使う\n\n1. 目的を取り出す\n2. 対象ファイルを明確にする\n3. 変更内容と条件を分ける\n4. 不明点は推測せず質問する</pre></div>') +
       lab('<p>自分が繰り返したい手順になっているか確認します。</p>' + button("save-skill", "内容を確認して" + (skillRoute === "create" ? "保存" : "導入") + "（練習）", true, "SKILL.md を読んだら進む")) + "</div>" + composer({ disabled: true });
     if (step === 4) return '<div class="thread">' + botMsg('<p class="success">' + icon("check") + ' スキルを登録しました（練習）</p><p>スキル一覧：<b>依頼文整理</b> / ' + (skillRoute === "create" ? "このプロジェクト" : "自分用") + "</p>") + lab("<p>次はチャット欄から呼び出して使ってみましょう。</p>" + hint("サイドバーの「新しいチャット」を開く")) + "</div>" + composer({ disabled: true });
-    if (step === 5) return '<div class="thread">' + greeting() + lab("<p>課題：「見出しを変えて。色はそのまま」を、スキルで整理します。</p>" + hint(mention ? "依頼を書いて送信" : "入力欄に @ を入力し、候補を選ぶ") + button("example", "依頼文の例を入力")) + "</div>" +
-      composer({ chip: mention ? '<span class="token">' + icon("sparkle") + "依頼文整理</span>" : "", placeholder: "@を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!input.replace(/@/g, "").trim(), popup: mentionPopup("依頼文整理", input.includes("@") && !mention), areaGuide: !mention ? !input.includes("@") : !input.replace(/@/g, "").trim(), areaTip: mention ? "依頼内容を書く" : "@ を入力すると候補が出ます" });
-    return '<div class="thread">' + userMsg("@依頼文整理 " + input) + botMsg('<p><b>依頼文整理</b>を使って整理しました。</p><table class="kv"><tr><th>目的</th><td>見出しを変更する</td></tr><tr><th>対象ファイル</th><td>未指定</td></tr><tr><th>変更内容</th><td>新しい見出しの文章は未指定</td></tr><tr><th>条件</th><td>色は変えない</td></tr></table><p>確認したいこと：どのファイルの見出しを、何という文章に変えますか？</p>') +
+    if (step === 5) return '<div class="thread">' + greeting() + lab("<p>課題：「見出しを変えて。色はそのまま」を、スキルで整理します。</p>" + hint(mention ? "依頼を書いて送信" : "入力欄に / を入力し、候補を選ぶ") + button("example", "依頼文の例を入力")) + "</div>" +
+      composer({ chip: mention ? '<span class="token">' + icon("sparkle") + "$依頼文整理</span>" : "", placeholder: "/ を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!stripTrigger(input).trim(), popup: mentionPopup("依頼文整理", trigger(input) && !mention), areaGuide: !mention ? !trigger(input) : !stripTrigger(input).trim(), areaTip: mention ? "依頼内容を書く" : "/ または $ を入力すると候補が出ます" });
+    return '<div class="thread">' + userMsg("$依頼文整理 " + input) + botMsg('<p><b>依頼文整理</b>を使って整理しました。</p><table class="kv"><tr><th>目的</th><td>見出しを変更する</td></tr><tr><th>対象ファイル</th><td>未指定</td></tr><tr><th>変更内容</th><td>新しい見出しの文章は未指定</td></tr><tr><th>条件</th><td>色は変えない</td></tr></table><p>確認したいこと：どのファイルの見出しを、何という文章に変えますか？</p>') +
       lab("<p>スキルの「不明点を推測しない」という手順も反映されています。</p>" + button("again", "もう一度練習")) + "</div>" + composer({ disabled: true });
   }
   function pluginCard(guide) {
@@ -219,7 +234,7 @@ window.ChatGPTLessons = (() => {
     if (step === 4) return '<div class="page"><div class="modal-card"><div class="modal-head"><span class="plug-ic">' + icon("github") + '</span><b>GitHub がアクセスを要求しています</b></div><dl class="kv-list"><dt>アカウント</dt><dd>student-demo</dd><dt>対象</dt><dd>school-festival</dd><dt>この練習で使う情報</dt><dd>選んだリポジトリのREADMEを読む</dd></dl><label class="check-row"><input id="scope-check" type="checkbox"> 接続先と表示されたアクセス範囲を確認しました</label><div class="modal-actions">' + ui("cancel-connect", "戻って確認する", { cls: "secondary" }) + ui("authorize", "接続を完了", { cls: "primary", guide: true, tip: "上のチェックを入れてから完了" }) + '</div></div>' + lab('<p class="lab-note">実際の認証画面・要求される権限はサービスにより異なります。このチェック欄は確認手順を学ぶための再現です。</p>') + "</div>";
     if (step === 5) return '<div class="page"><div class="detail-head"><span class="plug-ic lg">' + icon("github") + '</span><div><h2>GitHub</h2><p class="success">' + icon("check") + ' 接続済み · student-demo</p></div></div>' + lab("<p>新しいチャットで、プラグインを指定して頼んでみましょう。</p>" + hint("サイドバーの「新しいチャット」を開く")) + "</div>";
     if (step === 6) return '<div class="thread">' + greeting() + lab("<p>課題：GitHubのschool-festivalリポジトリのREADMEを要約します。</p>" + hint(mention ? "何を調べるか書いて送信" : "入力欄に @ を入力し、GitHubを選ぶ") + button("example", "依頼文の例を入力")) + "</div>" +
-      composer({ chip: mention ? '<span class="token">' + icon("github") + "GitHub</span>" : "", placeholder: "@を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!input.replace(/@/g, "").trim(), popup: mentionPopup("GitHub", input.includes("@") && !mention), areaGuide: !mention ? !input.includes("@") : !input.replace(/@/g, "").trim(), areaTip: mention ? "調べたいことを書く" : "@ を入力すると候補が出ます" });
+      composer({ chip: mention ? '<span class="token">' + icon("github") + "@GitHub</span>" : "", placeholder: "@を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!stripTrigger(input).trim(), popup: mentionPopup("GitHub", trigger(input) && !mention), areaGuide: !mention ? !trigger(input) : !stripTrigger(input).trim(), areaTip: mention ? "調べたいことを書く" : "@ を入力すると候補が出ます" });
     return '<div class="thread">' + userMsg("@GitHub " + input) + botMsg('<div class="activity"><div class="tool-row">' + icon("github") + "<span>student-demo/school-festival の README.md を取得</span></div></div><p>文化祭の案内サイトです。<b>index.html</b>がトップページ、<b>css/style.css</b>がデザインを担当します。公開前に開催日時とアクセス情報を確認します。</p><div class=\"source-row\"><span class=\"source\">" + icon("github") + "school-festival / README.md</span></div>") +
       lab("<p>プラグインで情報にアクセスし、その情報に基づいて回答する流れを体験しました。</p>" + button("again", "もう一度練習")) + "</div>" + composer({ disabled: true });
   }
@@ -237,7 +252,7 @@ window.ChatGPTLessons = (() => {
     if (thread && thread.querySelector(".msg")) thread.scrollTop = thread.scrollHeight;
     const text = root.querySelector("#learn-prompt");
     if (text) {
-      text.addEventListener("input", () => { input = text.value; const results = root.querySelector("#mention-results"); if (results) results.hidden = mention || !input.includes("@") || (course === "skills" && step === 2); const sendBtn = root.querySelector('[data-learn="send"]'); if (sendBtn && (course !== "skills" || step !== 2)) sendBtn.classList.toggle("guided", mention && !!input.replace(/@/g, "").trim()); if (sendBtn && course === "skills" && step === 2) sendBtn.classList.toggle("guided", !!input.trim()); text.classList.toggle("guided", course === "skills" && step === 2 ? !input.trim() : (!mention ? !input.includes("@") : !input.replace(/@/g, "").trim())); tour.update(); });
+      text.addEventListener("input", () => { input = text.value; const results = root.querySelector("#mention-results"); if (results) results.hidden = mention || !trigger(input) || (course === "skills" && step === 2); const sendBtn = root.querySelector('[data-learn="send"]'); if (sendBtn && (course !== "skills" || step !== 2)) sendBtn.classList.toggle("guided", mention && !!stripTrigger(input).trim()); if (sendBtn && course === "skills" && step === 2) sendBtn.classList.toggle("guided", !!input.trim()); text.classList.toggle("guided", course === "skills" && step === 2 ? !input.trim() : (!mention ? !trigger(input) : !stripTrigger(input).trim())); tour.update(); });
       text.addEventListener("keydown", event => { if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) { event.preventDefault(); act("send"); } });
     }
     root.querySelector("#plugin-search")?.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); act("search"); } });
@@ -270,16 +285,16 @@ window.ChatGPTLessons = (() => {
     }
     if (action === "cancel-connect") step = 3;
     if (action === "new-chat") { step = course === "skills" ? 5 : 6; input = ""; mention = false; }
-    if (action === "mention") { mention = true; input = input.replace(/@[^\s　]*\s*/, ""); }
+    if (action === "mention") { mention = true; input = stripTrigger(input); }
     if (action === "example") {
       input = course === "skills" ? (step === 2 ? (skillRoute === "create" ? "「依頼文整理」をこのプロジェクト用に作って。目的・対象ファイル・変更内容・条件に整理し、不明点は質問して。" : "教材で配布された「依頼文整理」を自分用のスキルとして導入してください。") : "見出しを変えて。色はそのまま。") : "school-festivalのREADMEを要約して。";
-      if (!(course === "skills" && step === 2) && !mention) input = "@ " + input;
+      if (!(course === "skills" && step === 2) && !mention) input = (course === "skills" ? "/ " : "@ ") + input;
     }
     if (action === "send") {
       if (!input.trim()) feedback = "依頼内容を入力してください。例文も使えます。";
       else if (course === "skills" && step === 2) { step = 3; }
-      else if (!mention) feedback = "@の候補から使う機能を選んでください。文字を打つだけでなく、選択する操作を体験しましょう。";
-      else if (!input.replace(/@/g, "").trim()) feedback = "機能を選んだら、依頼内容も書きましょう。";
+      else if (!mention) feedback = (course === "skills" ? "/ の候補からスキルを選んでください。" : "@ の候補からプラグインを選んでください。") + "文字を打つだけでなく、選択する操作を体験しましょう。";
+      else if (!stripTrigger(input).trim()) feedback = "機能を選んだら、依頼内容も書きましょう。";
       else if (course === "skills" && installed) step = 6;
       else if (course === "plugins" && installed && connected) step = 7;
     }
