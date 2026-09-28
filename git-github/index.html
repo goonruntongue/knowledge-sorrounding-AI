@@ -1124,6 +1124,14 @@
             background: transparent !important;
         }
     </style>
+    <style>
+        .page-pagination { display:flex; align-items:stretch; gap:.75rem; margin-left:auto; }
+        .page-pagination a { display:flex; flex-direction:column; gap:.08rem; min-width:13rem; padding:.55rem .8rem; border:1px solid #b7d8ca; border-radius:14px; color:#1d6849; background:#f7fffb; text-decoration:none; transition:transform .18s ease,background .18s ease; }
+        .page-pagination a:hover { background:#eafff3; transform:translateY(-2px); }
+        .page-pagination span { font-size:.7rem; font-weight:700; }
+        .page-pagination strong { font-size:.82rem; }
+        @media (max-width:720px) { .page-pagination { width:100%; margin-left:0; } .page-pagination a { width:100%; } }
+    </style>
     <style>body,body * { font-family: "Poppins", "Noto Sans JP", sans-serif !important; }</style>
 </head>
 
@@ -1444,6 +1452,9 @@ git push</pre>
         <footer class="guide-footer">
             <a class="portal-link" href="../index.html">ポータルへ戻る</a>
             <span>Git と GitHub の初心者ガイド</span>
+            <nav class="page-pagination" aria-label="学習ページの移動">
+                <a href="../vscode/index.html"><span>次のページ</span><strong>VS Codeをはじめよう →</strong></a>
+            </nav>
         </footer>
     </div>
     <div class="git-lab-dock">
