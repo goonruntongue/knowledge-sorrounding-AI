@@ -28,7 +28,7 @@
         h1 {
             font-size: clamp(4.5rem, calc(4.5rem + 2.5rem * (100vw - 320px) / 880px), 7rem);
             line-height: 1;
-            letter-spacing: -.045em;
+            letter-spacing: -.03em;
             margin: 0;
             padding: clamp(3.8rem, 7vw, 4.8rem) 0 .15em;
             display: flex;
@@ -61,6 +61,14 @@
         .hilight {
             color: rgb(62, 112, 62);
             font-weight: bold;
+        }
+
+        h1 .hilight {
+            white-space: nowrap;
+        }
+
+        h1 br {
+            display: none;
         }
 
         p.exp {
@@ -999,6 +1007,14 @@
                 padding-top: 3.6rem;
             }
 
+            h1 .hilight {
+                white-space: normal;
+            }
+
+            h1 br {
+                display: initial;
+            }
+
             .intro {
                 padding: .8rem .9rem;
                 line-height: 1.8;
@@ -1090,8 +1106,7 @@
         <img class="logo" src="./img/Git-Logo-2Color.svg" width="292" height="123" alt="">
         <a class="portal-link" href="../index.html">← ポータルへ戻る</a>
         <h1>
-            <span class="hilight">Git<span class="small">と</span>
-                <br>GitHub</span>
+            <span class="hilight">Git<span class="small">と</span><br>GitHub</span>
             <div class="border"></div>
             <span class="subtitle">作成中のコードのバックアップや履歴の管理を簡単にしよう！</span>
         </h1>
