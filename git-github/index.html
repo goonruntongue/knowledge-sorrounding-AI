@@ -566,6 +566,15 @@
             font-size: .9rem;
         }
 
+        .git-tip {
+            margin: 1rem 0 1.4rem;
+            padding: 1rem 1.2rem;
+            border-left: 4px solid var(--blue);
+            border-radius: 0 10px 10px 0;
+            background: #edf5f8;
+            font-size: .9rem;
+        }
+
         .lightbox {
             position: fixed;
             z-index: 1000;
@@ -1189,6 +1198,7 @@
                     <p><strong>ローカル</strong>は自分のPC内、<strong>リモート</strong>はインターネット上の保管場所です。このガイドではGitHubがリモートです。まずPC内で記録し、必要なタイミングでGitHubへ送ります。</p>
                 </article>
             </div>
+            <p class="git-tip"><strong>豆知識：作業フォルダは移動しても大丈夫</strong><br>通常のGitリポジトリは、フォルダ内の <code>.git</code> に履歴を持っています。履歴はコミットIDなどでつながっており、特定の絶対パスに固定されるわけではないため、<code>.git</code> を含めてフォルダごと移動すれば、移動先でもそのままGitを使えます。<br><small>※ <code>git worktree</code> やサブモジュールを使っている場合は、パスを参照する設定があるため、移動前に確認しましょう。</small></p>
 
             <div class="knowledge-visual">
                 <img src="img/local-remote-guide.png" alt="PC内のファイルとクラウド上のリポジトリが双方向につながるイメージ">
