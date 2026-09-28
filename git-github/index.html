@@ -26,10 +26,11 @@
         }
 
         h1 {
-            font-size: 5em;
+            font-size: clamp(3rem, 7vw, 5.7rem);
             line-height: 1;
+            letter-spacing: -.045em;
             margin: 0;
-            padding: 0.5em 0;
+            padding: 5.8rem 0 2.4rem;
         }
 
         span.small {
@@ -981,6 +982,10 @@
         body.git-lab-open { overflow: hidden; }
 
         @media(max-width:720px) {
+
+            h1 {
+                padding-top: 5.1rem;
+            }
 
             section>div {
                 padding-left: 0;
