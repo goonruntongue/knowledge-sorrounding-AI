@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIエージェントをはじめよう | Knowledge Surrounding AI</title>
+<meta name="description" content="Codex、Claude Code、Google Antigravityを知り、フォルダ選択・権限・依頼・変更確認を練習する初心者ガイド。">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1"><script src="simulator.js?v=1" defer></script>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<a class="portal-link" href="../index.html">ポータルへ戻る</a>
+<div class="hero-grid"><div><p class="eyebrow">04 / YOUR FIRST AI AGENT</p><h1>一緒に考え、<br><em>つくるAI。</em></h1><p class="lead">AIエージェントをはじめよう</p><p>「ここを直して」と伝えると、ファイルを読み、編集し、結果を確かめる。あなたの制作を進める、もう一人の作業パートナーです。</p>
+<nav class="jump" aria-label="ページ内メニュー"><a href="#agents">3つの開発環境</a><a href="#install">インストール</a><a href="#codex">Codex編</a><a href="#claude">Claude Code編</a><a href="#tips">上手な頼み方</a></nav></div>
+<div class="hero-visual" aria-label="依頼、計画、編集、確認というAIとの共同作業の流れ"><div class="note">あなたのアイデア <span>✦</span><strong>見出しを変えて、<br>読みやすくして。</strong></div><div class="visual-path">↓</div><div class="mini-work"><div class="mini-top">● ● ● <span>my-website</span></div><p>✓ ファイルを読む</p><p>✓ 変更を考える</p><p>✓ コードを編集する</p><div class="mini-result">&lt;h1&gt; Hello, new idea! &lt;/h1&gt;</div></div><div class="review-note">最後に、あなたが確認。 ✓</div></div>
+</div></div></header>
+<main class="wrap">
+<section id="agents"><p class="eyebrow">01 / MEET THE AGENTS</p><h2>相談から、実際の制作へ。</h2><p class="section-lead">チャットで手順を教えてもらうだけでなく、許可した範囲で作業を進めてもらえます。このページでは、主要な3社の開発環境を紹介します。</p>
+<div class="cards"><article class="card codex-card"><div class="product-symbol">⌘</div><small>OPENAI</small><h3>Codex</h3><p>ChatGPTデスクトップアプリの開発用モード。プロジェクトのファイルや実行環境を使って制作を進めます。</p><a href="#codex">基本操作を知る ↓</a></article><article class="card claude-card"><div class="product-symbol">✳</div><small>ANTHROPIC</small><h3>Claude Code</h3><p>ClaudeデスクトップアプリのCodeタブから利用。作業フォルダ、権限、依頼内容を指定して始めます。</p><a href="#claude">基本操作を知る ↓</a></article><article class="card google-card"><div class="product-symbol">✦</div><small>GOOGLE</small><h3>Antigravity</h3><p>複数のエージェントの作業を管理できる開発環境。Antigravity 2.0は独立したデスクトップアプリです。</p><a href="https://www.antigravity.google/docs/overview" target="_blank" rel="noopener">公式の紹介を読む ↗</a></article></div>
+<div class="flow"><span>依頼する</span><b>→</b><span>AIが作業する</span><b>→</b><span>変更を確認する</span><b>→</b><span>改善を伝える</span></div></section>
+<section id="install"><p class="eyebrow">02 / INSTALL</p><h2>公式サイトから、はじめよう。</h2><p class="section-lead">Windowsの場合も、最初はアプリのインストールから。アカウントやプラン、組織の設定によって利用できる機能は異なります。</p>
+<div class="cards"><article class="card"><h3>ChatGPT / Codex</h3><ol><li><a href="https://chatgpt.com/download/" target="_blank" rel="noopener">ChatGPTの公式ダウンロード</a>を開き、Windows用を選ぶ。</li><li>案内に従ってインストールし、ChatGPTアカウントでログイン。</li><li>アプリの切り替えメニューから<strong>Codex</strong>を選ぶ。</li></ol><p class="muted">旧版のChatGPT Classicとは表示や機能が異なります。</p></article><article class="card"><h3>Claude / Claude Code</h3><ol><li><a href="https://claude.ai/download" target="_blank" rel="noopener">Claudeの公式ダウンロード</a>で、PCに合うWindows用を選ぶ。</li><li>インストール後、Claudeアカウントでログイン。</li><li><strong>Code（&lt;/&gt;）</strong>タブを選ぶ。追加セットアップが表示されたら案内に従う。</li></ol></article><article class="card"><h3>Google Antigravity</h3><ol><li><a href="https://antigravity.google/download" target="_blank" rel="noopener">Antigravityの公式ダウンロード</a>を開く。</li><li><strong>Antigravity 2.0</strong>のWindows用から、PCに合う版をインストール。</li><li>アプリの案内に従ってGoogleアカウントでログインし、プロジェクトを作る。</li></ol><p class="muted">IDE版もあります。ここで紹介しているのはエージェント管理用の2.0です。</p></article></div></section>
+<section id="codex"><p class="eyebrow">03 / CODEX</p><h2>作業場所と、任せる範囲を決める。</h2><div class="two-col"><div><h3>まずは作品フォルダを選択</h3><p>Codexに切り替え、プロジェクト追加やフォルダ選択から、自分の作品フォルダを開きます。新しいタスクを作成し、そのフォルダが作業場所になっていることを確認します。</p><pre class="tree">my-website/
+├─ index.html
+└─ css/
+   └─ style.css</pre><p>フォルダの選択は「どの作品を扱うか」の指定です。権限の選択は「どこまで操作を任せるか」の指定です。</p></div><div class="permission-list"><article><h3>承認を求める</h3><p>作業領域内の読み書きや通常のコマンドは進められます。領域外へのアクセスやネットワーク利用など、境界を越える操作で承認を求めます。</p></article><article><h3>代わりに承認</h3><p>対象となる承認依頼を、レビュー用のエージェントが判断します。依頼内容や許可範囲を確認する仕組みで、すべての操作を無条件に許可する意味ではありません。</p></article><article><h3>フルアクセス</h3><p>ファイルやネットワークへの制限を広く解除します。何にアクセスする作業かを理解して選びましょう。初回の教材では「承認を求める」で練習できます。</p></article></div></div></section>
+<section id="claude"><p class="eyebrow">04 / CLAUDE CODE</p><h2>Codeタブから、作品につなぐ。</h2><div class="two-col"><div><h3>ローカル → フォルダ → 依頼</h3><p>上部の<strong>&lt;/&gt;（Code）</strong>へ切り替え、入力欄の上で<strong>ローカル</strong>と<strong>フォルダ</strong>を指定します。ローカルは自分のPCで作業するという意味です。</p><div class="claude-diagram"><span>✳ Claude <b>&lt;/&gt; Code</b></span><div class="diagram-space">何をつくりましょう？</div><div>▱ ローカル　 ▱ my-website</div><div class="diagram-input">やってほしいことを入力…</div><small>＋　権限：プラン ▾</small></div></div><div class="permission-list"><article><h3>自動（Auto）</h3><p>依頼との整合性をバックグラウンドでチェックし、承認の手間を減らします。利用条件や組織の設定によって表示されないことがあります。</p></article><article><h3>編集を受け入れる（Accept edits）</h3><p>ファイル編集や一部の基本的なファイル操作を自動承認します。それ以外のコマンドでは承認を求めることがあります。</p></article><article><h3>プラン（Plan）</h3><p>ファイルを調べて作業計画を提案します。ソースコードは編集しません。計画を確認したら編集可能なモードへ切り替えて実行します。</p></article></div></div><p class="note-box">一つずつ自分で承認したい場合は、手動（Manual）も選べます。画面の名称や配置は、アプリの更新・OS・言語設定で変わることがあります。</p></section>
+<section id="tips"><p class="eyebrow">05 / WORK TOGETHER</p><h2>「何を、どう変えるか」を伝えよう。</h2><div class="two-col"><article class="card"><h3>そのまま試せる依頼文</h3><pre class="prompt-example"># 目的
+トップページの見出しを変えたいです。
+
+# 変更内容
+index.htmlのh1を
+「はじめてのAI制作」にしてください。
+
+# 条件
+ほかの文章やレイアウトは変えないでください。
+変更後に、変更箇所と確認結果を教えてください。</pre></article><div class="tips"><article><b>01　変更点を読む</b><p>完了メッセージだけでなく、差分（変更前と変更後）とブラウザ表示を確認します。</p></article><article><b>02　途中でも指示を直せる</b><p>意図がずれたら停止して、「色はそのままで」と具体的に補足しましょう。</p></article><article><b>03　Gitで区切りを残す</b><p>作業前後に変更を確認してコミット。AIの編集も、履歴があれば比較しやすくなります。</p></article></div></div></section>
+<section class="practice-intro"><p class="eyebrow">LET'S TRY</p><h2>まずは、ここで練習。</h2><p>下のランチャーからCodexかClaude Codeを選びます。フォルダを選び、権限を設定し、見出しの変更を依頼して、結果を確認してみましょう。</p><p class="muted">実際のアプリへのログインやファイル変更は行いません。画面と応答は学習用の再現です。</p></section>
+<details class="sources"><summary>公式資料・情報の確認日（2026年9月28日）</summary><ul><li><a href="https://help.openai.com/en/articles/20001276-moving-to-the-new-chatgpt-desktop-app">ChatGPTデスクトップアプリとCodex</a></li><li><a href="https://developers.openai.com/codex/security/">Codexのアクセスと承認</a></li><li><a href="https://code.claude.com/docs/en/desktop">Claude Codeデスクトップの操作・権限</a></li><li><a href="https://www.antigravity.google/docs/overview">Antigravity 2.0概要</a></li></ul></details>
+<footer class="guide-footer"><a class="portal-link" href="../index.html">ポータルへ戻る</a><nav class="pagination" aria-label="学習ページの移動"><a href="../markdown/index.html" rel="prev"><small>前のページ</small><strong>← Markdownをはじめよう</strong></a></nav></footer>
+</main>
+<div class="agents-lab-dock"><button id="launch" type="button">AIエージェントを体験してみる <span>Codex / Claude Code</span></button></div>
+<button id="toTop" type="button" title="ページの先頭へ戻る" aria-label="ページの先頭へ戻る" tabindex="-1">↑</button>
+<dialog id="lab" aria-labelledby="lab-title"><header class="lab-header"><h2 id="lab-title">AIエージェント体験室</h2><button id="close" type="button" aria-label="練習を閉じる">×</button></header><div class="lab-tabs"><button data-app="codex" aria-pressed="true">Codex</button><button data-app="claude" aria-pressed="false">Claude Code</button><button id="restart">最初から</button></div><div class="lesson" aria-live="polite"><span id="progress"></span><strong id="instruction"></strong></div><div id="simulation"></div><footer class="lab-footer">練習用・実際のアカウントやファイルには影響しません</footer></dialog>
+</body></html>
