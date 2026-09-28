@@ -4,25 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Knowledge Surrounding AI</title>
-  <meta name="theme-color" content="#f5eafa">
+  <meta name="theme-color" content="#237a57">
   <link rel="icon" href="globe-pwa.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{--ink:#3d3b5c;--violet:#7461bc;--blue:#5d9ed4;--pink:#de7fae;--line:#ffffffaa;--paper:#fffaff}*{box-sizing:border-box}body{min-height:100vh;margin:0;color:var(--ink);background:radial-gradient(circle at 4% 10%,#ffe9ae99 0 13rem,transparent 28rem),radial-gradient(circle at 96% 2%,#bde9ffbb 0 17rem,transparent 31rem),radial-gradient(circle at 75% 82%,#f5cde7aa 0 14rem,transparent 28rem),linear-gradient(135deg,#fdf6fb 0%,#edf8ff 48%,#f9f3ff 100%);font-family:"Noto Sans JP",sans-serif}.wrap{width:min(90%,1050px);margin:auto}main{position:relative;isolation:isolate;padding:clamp(3.5rem,8vw,6.8rem) 0 4.5rem;overflow:hidden}.hero-orb{position:absolute;z-index:-1;right:-4rem;width:min(51vw,510px);pointer-events:none}.hero-orb--aura{--orb-opacity:.1;top:0;filter:blur(18px) saturate(1.2);opacity:var(--orb-opacity);transform:scale(1.1)}.hero-orb--glow{--orb-opacity:.18;top:0;filter:blur(4px) hue-rotate(290deg) saturate(.8);opacity:var(--orb-opacity);transform:scale(1.04)}.hero-orb--image{--orb-opacity:.72;top:.4rem;opacity:var(--orb-opacity)}.hero{position:relative;min-height:300px;padding:2.3rem 2.5rem;border:1px solid var(--line);border-radius:28px;background:linear-gradient(115deg,#fff8fcdd 0%,#f7efffd4 45%,#e8f7ffb6 100%);box-shadow:0 20px 60px #6a579422;backdrop-filter:blur(12px)}.hero::after{content:"";position:absolute;right:25%;bottom:-9px;width:38%;height:8px;border-radius:50%;background:#907bc844;filter:blur(5px)}.eyebrow{margin:0 0 1rem;color:var(--pink);font:700 .78rem Outfit,sans-serif;letter-spacing:.14em}.hero h1,h2{font-family:Outfit,"Noto Sans JP",sans-serif}.hero h1{max-width:11ch;margin:0;color:#514b80;font-size:clamp(3rem,6.5vw,5.4rem);line-height:1.06;letter-spacing:-.055em}.hero h1 em{font-style:normal;color:#d275aa}.lead{max-width:36rem;margin:1.25rem 0 0;color:#5a5874;font-size:1.02rem;line-height:1.9}.hero-note{display:inline-flex;gap:.45rem;align-items:center;margin-top:1.35rem;padding:.4rem .7rem;border:1px solid #e8c8dc;border-radius:999px;color:#906b85;background:#fff8fccc;font:500 .72rem "DM Mono",monospace}.hero-note i{width:7px;height:7px;border-radius:50%;background:#8ed6bf;box-shadow:0 0 8px #8ed6bf}.guide-area{margin-top:3rem}.guide-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.2rem}.guide-head p{margin:0;color:var(--violet);font:700 .76rem Outfit,sans-serif;letter-spacing:.13em}.guide-head h2{margin:.25rem 0 0;color:#4d496c;font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.035em}.guide-count{color:#9d91a9;font:500 .75rem "DM Mono",monospace}.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.menu a{position:relative;min-height:225px;overflow:hidden;padding:1.55rem;border:1px solid #fff;border-radius:22px;color:var(--ink);background:#fffcffba;box-shadow:0 12px 28px #62518617;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}.menu a::before{content:"";position:absolute;right:-2rem;bottom:-2.5rem;width:12rem;height:12rem;border-radius:50%;background:linear-gradient(140deg,#bde6ff99,#e5c5f799)}.menu a:nth-child(2)::before{background:linear-gradient(140deg,#ffe0acaa,#e9c6ed99)}.menu a:hover{box-shadow:0 18px 36px #62518628;transform:translateY(-5px)}.number,.title,.description,.arrow{position:relative;z-index:1}.number{display:block;color:#8f70ae;font:700 .75rem Outfit,sans-serif;letter-spacing:.12em}.title{display:block;margin-top:2.65rem;color:#4f4a76;font:700 1.7rem/1.2 Outfit,"Noto Sans JP",sans-serif;letter-spacing:-.035em}.description{display:block;max-width:25rem;margin-top:.65rem;color:#706d85;font-size:.9rem;line-height:1.75}.arrow{position:absolute;right:1.35rem;bottom:1.25rem;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#d578a8,#7f89cf);font-size:1.2rem;transition:transform .2s ease}.menu a:hover .arrow{transform:rotate(-12deg) translateX(3px)}footer{padding:1.8rem 0 2.5rem;border-top:1px solid #ffffffaa;color:#8b849a;font:500 .8rem "DM Mono",monospace}.footer-inner{display:flex;justify-content:space-between;gap:1rem}.footer-inner span:last-child{color:#b777a0}@media(max-width:720px){main{padding-top:3.2rem}.hero{min-height:520px;padding:1.9rem 1.45rem}.hero-orb{top:13rem;right:-4.3rem;width:390px}.hero-orb--aura{top:13rem}.hero-orb--glow{top:13rem}.hero-orb--image{top:13.4rem}.hero h1{font-size:clamp(3rem,13vw,4.5rem)}.lead{font-size:.94rem}.guide-area{margin-top:2.4rem}.menu{grid-template-columns:1fr}.menu a{min-height:205px}.title{margin-top:2.25rem}.footer-inner{display:block}.footer-inner span+span{display:block;margin-top:.45rem}}@media(prefers-reduced-motion:reduce){.menu a,.arrow{transition:none}}
+    :root { --ink:#18332a; --green:#237a57; --blue:#2c5f7d; --navy:#163d58; --mint:#e6f4ec; --line:#cfe1d7; }
+    * { box-sizing:border-box; }
+    body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#c9e9d9 0 180px,transparent 181px),#f4f7f5; font-family:"Noto Sans JP",sans-serif; }
+    main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
+    .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); pointer-events:none; }
+    .hero-orb--aura { --orb-opacity:.06; z-index:-3; filter:blur(11px) saturate(1.2); opacity:var(--orb-opacity); transform:scale(1.075); }
+    .hero-orb--glow { --orb-opacity:.18; z-index:-2; filter:blur(3px); opacity:var(--orb-opacity); transform:scale(1.03); }
+    .hero-orb--image { --orb-opacity:.69; z-index:-1; opacity:var(--orb-opacity); }
+    main { animation:page-enter .46s cubic-bezier(.22,.75,.3,1) both; }
+    footer { animation:page-enter .46s .08s cubic-bezier(.22,.75,.3,1) both; }
+    .hero-orb--aura { animation:orb-aura-enter .7s .08s ease-out both; }
+    .hero-orb--glow { animation:orb-glow-enter .62s .08s ease-out both; }
+    .hero-orb--image { animation:orb-image-enter .54s .08s ease-out both; }
+    @keyframes page-enter { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes orb-aura-enter { from { opacity:0; transform:scale(.98); } to { opacity:var(--orb-opacity); transform:scale(1.075); } }
+    @keyframes orb-glow-enter { from { opacity:0; transform:scale(.98); } to { opacity:var(--orb-opacity); transform:scale(1.03); } }
+    @keyframes orb-image-enter { from { opacity:0; transform:scale(.98); } to { opacity:var(--orb-opacity); transform:scale(1); } }
+    .eyebrow { margin:0 0 .6rem; color:var(--blue); font:800 .85rem/1 Poppins,sans-serif; letter-spacing:.14em; }
+    h1 { margin:0; color:var(--navy); font:800 clamp(2.3rem,7vw,4.8rem)/1.15 Poppins,"Noto Sans JP",sans-serif; letter-spacing:-.045em; }
+    .heading-accent { color:var(--blue); }
+    .lead { max-width:620px; margin:1.35rem 0 3rem; font-size:1.05rem; line-height:1.9; }
+    h2 { margin:0 0 1rem; font-size:1.2rem; }
+    .menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; }
+    .menu a { display:block; min-height:180px; padding:1.5rem; border:1px solid var(--line); border-radius:16px; color:var(--ink); background:#fff; box-shadow:0 6px 24px #23482a0b; text-decoration:none; transition:transform .18s,box-shadow .18s; }
+    .menu a:hover { transform:translateY(-4px); box-shadow:0 12px 28px #23482a18; }
+    .number { display:block; margin-bottom:1.1rem; color:var(--green); font:800 .8rem Poppins,sans-serif; letter-spacing:.12em; }
+    .title { display:block; font-size:1.35rem; font-weight:800; }
+    .description { display:block; margin-top:.5rem; font-size:.92rem; line-height:1.7; }
+    .arrow { display:block; margin-top:1.2rem; color:var(--green); font-weight:800; }
+    footer { width:min(90%,960px); margin:0 auto; padding:2rem 0; color:#5a7166; font-size:.82rem; }
+    @media (max-width:640px) { .hero-orb { top:-2.5rem; right:-5.5rem; width:340px; } .hero-orb--aura { --orb-opacity:.04; } .hero-orb--glow { --orb-opacity:.12; } .hero-orb--image { --orb-opacity:.408; } }
+    @media (prefers-reduced-motion:reduce) { main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; } }
   </style>
 </head>
 <body>
-  <main class="wrap">
+  <main>
     <img class="hero-orb hero-orb--aura" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <img class="hero-orb hero-orb--glow" src="Sphere_rotating.gif" alt="" aria-hidden="true">
     <img class="hero-orb hero-orb--image" src="Sphere_rotating.gif" alt="" aria-hidden="true">
-    <header class="hero"><p class="eyebrow">KNOWLEDGE SURROUNDING AI</p><h1>Web技術の<br><em>周辺知識</em></h1><p class="lead">AIを活用してつくる・学ぶための、実践的なガイドをまとめていく入口です。少しずつ、手を動かしながら進めましょう。</p><span class="hero-note"><i></i> GROW AT YOUR OWN PACE</span></header>
-    <section class="guide-area" aria-labelledby="menu-title"><div class="guide-head"><div><p>GUIDE COLLECTION</p><h2 id="menu-title">ガイド一覧</h2></div><span class="guide-count">02 GUIDES</span></div><nav class="menu"><a href="git-github/index.html"><span class="number">01 / GIT &amp; GITHUB</span><span class="title">Git と GitHub</span><span class="description">インストール、アカウント登録、基本的な使い方を初学者向けに解説します。</span><span class="arrow">→</span></a><a href="vscode/index.html"><span class="number">02 / VS CODE</span><span class="title">VS Code をはじめよう</span><span class="description">IDEの考え方、インストール、便利な拡張機能を初学者向けに解説します。</span><span class="arrow">→</span></a></nav></section>
+    <p class="eyebrow">KNOWLEDGE SURROUNDING AI</p>
+    <h1>Web技術の<span class="heading-accent">周辺知識</span></h1>
+    <p class="lead">AIを活用してつくる・学ぶための、実践的なガイドをまとめていく入口です。</p>
+    <section aria-labelledby="menu-title"><h2 id="menu-title">ガイド一覧</h2><nav class="menu">
+      <a href="git-github/index.html"><span class="number">01 / GIT &amp; GITHUB</span><span class="title">Git と GitHub</span><span class="description">インストール、アカウント登録、基本的な使い方を初学者向けに解説します。</span><span class="arrow">ガイドを開く →</span></a>
+      <a href="vscode/index.html"><span class="number">02 / VS CODE</span><span class="title">VS Code をはじめよう</span><span class="description">IDEの考え方、インストール、便利な拡張機能を初学者向けに解説します。</span><span class="arrow">ガイドを開く →</span></a>
+    </nav></section>
   </main>
-  <footer><div class="wrap footer-inner"><span>KNOWLEDGE SURROUNDING AI</span><span>LEARN · CREATE · SHARE</span></div></footer>
+  <footer>Knowledge Surrounding AI</footer>
 </body>
 </html>
