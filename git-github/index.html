@@ -933,6 +933,29 @@
             font-size: .82rem;
         }
 
+        .git-lab-file-icon {
+            position: relative;
+            display: inline-block;
+            width: 13px;
+            height: 16px;
+            margin-right: .45rem;
+            vertical-align: -3px;
+            border: 1px solid #9daab3;
+            border-radius: 1px;
+            background: linear-gradient(135deg, #fff 0 65%, #dfe7eb 66% 100%);
+        }
+
+        .git-lab-file-icon::after {
+            content: "";
+            position: absolute;
+            right: 1px;
+            bottom: 2px;
+            left: 3px;
+            height: 2px;
+            background: #7ea8be;
+            box-shadow: 0 -4px #b7cfdb;
+        }
+
         .git-lab-file--head {
             min-height: 26px;
             color: #55717f;
@@ -1575,7 +1598,7 @@ git push</pre>
                                 <div class="git-lab-explorer__commandbar"><span>⊕　新規作成</span><span>✂　コピー</span><span>↗　共有</span><span>⇅　並べ替え</span><span>⋯</span></div>
                                 <div class="git-lab-explorer__body">
                                     <nav class="git-lab-explorer__sidebar"><span>⌂　ホーム</span><span>▣　ギャラリー</span><span>🖥　デスクトップ</span><span>↓　ダウンロード</span><span>▤　ドキュメント</span></nav>
-                                    <div class="git-lab-explorer__files"><div class="git-lab-file git-lab-file--head">名前</div><div class="git-lab-file git-lab-file--head">更新日時</div><div class="git-lab-file git-lab-file--head">種類</div><div class="git-lab-file">📁 images</div><div class="git-lab-file">今日</div><div class="git-lab-file">フォルダー</div><div class="git-lab-file">⌘ index.html</div><div class="git-lab-file">今日</div><div class="git-lab-file">HTML</div><div class="git-lab-file">⌘ style.css</div><div class="git-lab-file">今日</div><div class="git-lab-file">CSS</div></div>
+                                    <div class="git-lab-explorer__files"><div class="git-lab-file git-lab-file--head">名前</div><div class="git-lab-file git-lab-file--head">更新日時</div><div class="git-lab-file git-lab-file--head">種類</div><div class="git-lab-file">📁 images</div><div class="git-lab-file">今日</div><div class="git-lab-file">フォルダー</div><div class="git-lab-file"><span class="git-lab-file-icon" aria-hidden="true"></span>index.html</div><div class="git-lab-file">今日</div><div class="git-lab-file">HTML</div><div class="git-lab-file"><span class="git-lab-file-icon" aria-hidden="true"></span>style.css</div><div class="git-lab-file">今日</div><div class="git-lab-file">CSS</div></div>
                                 </div>
                             </div>
                             <div class="git-lab-notice"><strong>対象フォルダのエクスプローラーで、アドレスバーに <code>cmd</code> を入力した直後です。</strong><br>Enterキーを押すと、このフォルダを現在地にしたコマンドプロンプトが開きます。</div>
