@@ -92,6 +92,8 @@ button, input, textarea { font: inherit; color: inherit; }
   box-shadow: 0 2px 8px rgba(20, 24, 70, .35);
 }
 .brand-name { font-size: 16px; white-space: nowrap; }
+.editor-portal-link { display: inline-flex; align-items: center; gap: .35rem; padding: .4rem .8rem; border: 1px solid var(--border); border-radius: 99px; color: var(--accent); background: color-mix(in srgb, var(--surface) 88%, transparent); box-shadow: 0 3px 12px rgba(20, 38, 60, .12); font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; transition: background .18s ease, transform .18s ease; }
+.editor-portal-link:hover { background: var(--surface); transform: translateY(-2px); }
 
 .header-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 

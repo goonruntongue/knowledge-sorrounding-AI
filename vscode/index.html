@@ -15,7 +15,7 @@
     .wrap { width:min(1120px,90%); margin:auto; }
     .hero { overflow:hidden; position:relative; padding:5.8rem 0 4.6rem; color:white; background:linear-gradient(126deg,#061829 0%,#07395b 52%,#007acc 100%); }
     .hero::after { content:"</>"; position:absolute; right:-.05em; bottom:-.52em; color:#fff1; font:800 clamp(13rem,29vw,28rem)/1 Outfit,sans-serif; }
-    .back { position:relative; z-index:1; display:inline-flex; padding:.38rem .9rem; border:1px solid #ffffff55; border-radius:999px; color:#fff; text-decoration:none; font-size:.85rem; }
+    .back { position:relative; z-index:1; display:inline-flex; align-items:center; gap:.35rem; padding:.4rem .8rem; border:1px solid #bfeaff; border-radius:99px; color:var(--blue); background:#ffffffd9; box-shadow:0 3px 12px #00152533; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .18s ease,transform .18s ease; }.back:hover{background:#fff;transform:translateY(-2px)}
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:1.05fr .95fr; gap:2.5rem; align-items:center; margin-top:2.4rem; }
     .eyebrow { margin:0 0 .7rem; color:#8ed6ff; font:700 .82rem Outfit,sans-serif; letter-spacing:.13em; }
     h1,h2,h3,h4 { font-family:Outfit,"Noto Sans JP",sans-serif; line-height:1.25; }
@@ -40,7 +40,7 @@
 </head>
 <body>
   <header class="hero"><div class="wrap">
-    <a class="back" href="../index.html">← 学習ポータルへ戻る</a>
+    <a class="back" href="../index.html">ポータルへ戻る</a>
     <div class="hero-grid"><div><p class="eyebrow">CODE WITH CONFIDENCE</p><h1>VS Code<br>をはじめよう</h1><p class="lead">コードを書く、見つける、整える、実行する。開発に必要な道具を一つにまとめた、初めてのためのVS Codeガイドです。</p><nav class="jump"><a href="#ide">IDEってなに？</a><a href="#install">インストール</a><a href="#extensions">拡張機能</a></nav></div>
       <div class="editor" aria-label="VS Code風のエディター図"><div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="tab">index.html　×</span></div><div class="workspace"><div class="rail">▣<br>⌕<br>⑂<br>▱</div><div class="explorer"><strong>EXPLORER</strong><span>MY-WEBSITE</span><span class="file active">⌘ index.html</span><span class="file"># style.css</span><span class="file">▣ images</span></div><div class="code"><div><span class="ln">1</span><span class="tag">&lt;h1&gt;</span>Hello!<span class="tag">&lt;/h1&gt;</span></div><div><span class="ln">2</span><span class="tag">&lt;p</span> <span class="attr">class=</span><span class="string">"message"</span><span class="tag">&gt;</span></div><div><span class="ln">3</span>  My first website<span class="cursor"></span></div><div><span class="ln">4</span><span class="tag">&lt;/p&gt;</span></div></div></div></div>
     </div></div></header>
