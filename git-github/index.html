@@ -30,7 +30,7 @@
             line-height: 1;
             letter-spacing: -.045em;
             margin: 0;
-            padding: 5.8rem 0 .2em;
+            padding: clamp(3.8rem, 7vw, 4.8rem) 0 .15em;
             display: flex;
             flex-direction: column;
         }
@@ -42,10 +42,11 @@
         span.subtitle {
             order: -1;
             display: inline-block;
-            font-size: 0.15em;
-            font-weight: normal;
-            margin-bottom: 2em;
-            letter-spacing: 1px;
+            color: #6b8175;
+            font-size: 0.115em;
+            font-weight: 600;
+            margin-bottom: .9em;
+            letter-spacing: .08em;
         }
 
         .border {
@@ -189,18 +190,21 @@
         }
 
         .intro {
-            padding: 1em 0 0 .5em;
-            border-left: 0;
-            background: transparent;
-            font-size: .8em;
-            line-height: 2;
+            max-width: 58rem;
+            padding: .9rem 1.15rem 1rem;
+            border-left: 5px solid var(--green);
+            border-radius: 0 12px 12px 0;
+            background: var(--mint);
+            font-size: clamp(1rem, 1.25vw, 1.12rem);
+            font-weight: 500;
+            line-height: 1.9;
         }
 
         .jump {
             display: flex;
             gap: .7rem;
             flex-wrap: wrap;
-            margin: 1.5rem 0;
+            margin: .85rem 0 2rem;
         }
 
         .jump a,
@@ -993,6 +997,21 @@
 
             h1 {
                 padding-top: 3.6rem;
+            }
+
+            .intro {
+                padding: .8rem .9rem;
+                line-height: 1.8;
+            }
+
+            .jump {
+                gap: .45rem;
+                margin: .75rem 0 1.5rem;
+            }
+
+            .jump a {
+                padding: .38rem .75rem;
+                font-size: .82rem;
             }
 
             section>div {
