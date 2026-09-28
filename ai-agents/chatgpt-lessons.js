@@ -31,15 +31,21 @@ window.LabUI = (() => {
     layout: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M3 10h6"/>',
     diff: '<path d="M12 3v8M8 7h8M4 17h16"/>',
     external: '<path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
-    github: '<path d="M12 3a9 9 0 0 0-2.85 17.54c.45.08.62-.2.62-.44v-1.6c-2.5.55-3.03-1.06-3.03-1.06-.41-1.04-1-1.32-1-1.32-.82-.56.06-.55.06-.55.9.06 1.38.93 1.38.93.8 1.38 2.11.98 2.62.75.08-.58.31-.98.57-1.2-2-.23-4.1-1-4.1-4.45 0-.98.35-1.79.93-2.42-.1-.23-.4-1.15.09-2.4 0 0 .75-.24 2.47.92a8.6 8.6 0 0 1 4.5 0c1.72-1.16 2.47-.92 2.47-.92.49 1.25.18 2.17.09 2.4.58.63.93 1.44.93 2.42 0 3.46-2.1 4.22-4.11 4.44.32.28.61.83.61 1.67v2.48c0 .24.16.53.62.44A9 9 0 0 0 12 3Z"/>',
     refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/>',
     lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
   };
-  const icon = (name, cls = "") => '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths[name] + "</svg>";
-  const gptMark = '<span class="gpt-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v16M5.1 8l13.8 8M5.1 16l13.8-8"/></svg></span>';
-  const claudeMark = '<span class="claude-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M11 2h2v7.2l5.1-5.1 1.4 1.4L14.4 10.6H22v2h-7.6l5.1 5.1-1.4 1.4L13 14.9V22h-2v-7.1l-5.1 5.1-1.4-1.4 5.1-5.1H2v-2h7.6L4.5 5.5l1.4-1.4L11 9.2Z"/></svg></span>';
+  const icon = (name, cls = "") => brand[name] ? mark(name, cls) : '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths[name] + "</svg>";
+  /* App marks: repository SVG logos (ChatGPT-Logo.svg / Claude-ai-icon.svg). GitHub mark: img/github.svg (see img/README.md). */
+  const brand = { github: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" };
+  const mark = (name, cls = "") => '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="' + brand[name] + '"/></svg>';
+  const logo = (file, cls) => '<span class="' + cls + '" aria-hidden="true"><img src="' + file + '" alt="" draggable="false"></span>';
+  const gptMark = logo("ChatGPT-Logo.svg", "gpt-mark");
+  const codexMark = logo("ChatGPT-Logo.svg", "codex-mark");
+  const claudeMark = logo("Claude-ai-icon.svg", "claude-mark");
   const escape = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const traffic = '<span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+  const caption = '<span class="win-caption" aria-hidden="true"><i>&#x2500;</i><i>&#x2610;</i><i>&#x2715;</i></span>';
+  const winbar = (title, iconHtml = "") => '<div class="win-title"><span class="win-app">' + iconHtml + "<span>" + title + '</span></span>' + caption + "</div>";
+  const traffic = "";
   /* Floating tour tip: follows the first highlighted (.guided) control and says what to do there. */
   const tour = (() => {
     let root, tip, target, raf;
@@ -85,12 +91,12 @@ window.LabUI = (() => {
       update() { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }
     };
   })();
-  return { icon, gptMark, claudeMark, escape, traffic, tour };
+  return { icon, gptMark, codexMark, claudeMark, escape, traffic, caption, winbar, tour };
 })();
 
 window.ChatGPTLessons = (() => {
   const root = document.querySelector("#simulation");
-  const { icon, gptMark, escape, traffic, tour } = window.LabUI;
+  const { icon, gptMark, codexMark, escape, winbar, tour } = window.LabUI;
   tour.init(root);
   let course, step, screen, selected, task, feedback, input, mention, installed, connected, menu, search, skillRoute;
   const attr = (action, guide) => ' data-learn="' + action + '"' + (guide ? ' data-guided="true"' : "");
@@ -128,7 +134,7 @@ window.ChatGPTLessons = (() => {
     const newChatGuide = (course === "skills" && step === 4) || (course === "plugins" && step === 5);
     let nav;
     if (codex) {
-      nav = item("compose", "新しいチャット", newChatGuide ? "new-chat" : "", newChatGuide) + item("search", "検索", "", false, '<kbd>⌘G</kbd>') +
+      nav = item("compose", "新しいチャット", newChatGuide ? "new-chat" : "", newChatGuide) + item("search", "検索", "", false, '<kbd>Ctrl+G</kbd>') +
         item("puzzle", "プラグイン", course === "plugins" ? "open-plugins" : "", pluginsGuide) + item("sparkle", "スキル", course === "skills" ? "open-skills" : "", skillsGuide) + item("clock", "オートメーション", "") +
         '<p class="nav-section">' + icon("pin") + 'ピン留め</p><p class="nav-section">プロジェクト</p>' + item("folder", "my-website", "") +
         '<p class="nav-section">チャット</p><div class="recent">' + (installed && course === "skills" ? '<span>依頼文整理スキルの作成</span>' : "") + (installed && course === "plugins" ? '<span>GitHubプラグインの導入</span>' : "") + '<span>見出しの変更と確認</span><span>スタイルの調整</span></div>';
@@ -143,10 +149,10 @@ window.ChatGPTLessons = (() => {
     const codex = screen === "Codex";
     const needCodex = course === "modes" && step === 0 && scenarios[task].mode === "Codex" && !codex;
     const needChat = course === "modes" && step === 0 && scenarios[task].mode !== "Codex" && codex;
-    return ui("selector", (codex ? '<span class="codex-mark">' + icon("terminal") + "</span>" : gptMark) + "<span>" + screen + "</span>" + icon("chevron", "chev"), { cls, guide: (needCodex || needChat) && !menu, pressed: menu, tip: needCodex ? "メニューを開いて Codex に切り替え" : "メニューを開いて ChatGPT に戻る" }) +
+    return ui("selector", (codex ? codexMark : gptMark) + "<span>" + screen + "</span>" + icon("chevron", "chev"), { cls, guide: (needCodex || needChat) && !menu, pressed: menu, tip: needCodex ? "メニューを開いて Codex に切り替え" : "メニューを開いて ChatGPT に戻る" }) +
       (menu ? '<div class="popover product-menu" role="menu"><span class="pop-label">アプリを切り替え</span>' +
         ui("product-chatgpt", gptMark + "<span><b>ChatGPT</b><small>Chat / Work</small></span>" + (codex ? "" : icon("check", "trail")), { cls: "pop-item", guide: needChat, tip: "ChatGPT を選ぶ" }) +
-        ui("product-codex", '<span class="codex-mark">' + icon("terminal") + "</span><span><b>Codex</b><small>プロジェクト・ファイル・差分</small></span>" + (codex ? icon("check", "trail") : ""), { cls: "pop-item", guide: needCodex, tip: "Codex を選ぶ" }) + "</div>" : "");
+        ui("product-codex", codexMark + "<span><b>Codex</b><small>プロジェクト・ファイル・差分</small></span>" + (codex ? icon("check", "trail") : ""), { cls: "pop-item", guide: needCodex, tip: "Codex を選ぶ" }) + "</div>" : "");
   }
   function topbar() {
     if (screen === "Codex") {
@@ -224,7 +230,7 @@ window.ChatGPTLessons = (() => {
     document.querySelector("#instruction").textContent = course === "modes" ? (complete ? "使い分けの練習が完了しました。" : step === 0 ? "依頼に合う入口を選んで送信しましょう。" : "結果と、選んだ理由を確認しましょう。") : instructions[step];
     const body = course === "modes" ? (complete ? modeComplete() : modeContent()) : course === "skills" ? skillsContent() : pluginsContent();
     const mobileNav = (course === "modes" && step === 0 ? '<div class="brand-wrap">' + switcher("nav-item") + "</div>" : "") + ((course === "skills" && step === 0) ? ui("open-skills", icon("sparkle") + "スキル", { cls: "nav-item", guide: true, tip: "スキル一覧を開く" }) : (course === "plugins" && step === 0) ? ui("open-plugins", icon("puzzle") + "プラグイン", { cls: "nav-item", guide: true, tip: "プラグイン一覧を開く" }) : ((course === "skills" && step === 4) || (course === "plugins" && step === 5)) ? ui("new-chat", icon("compose") + "新しいチャット", { cls: "nav-item", guide: true, tip: "新しいチャットを開く" }) : "");
-    root.innerHTML = '<div class="app-window gpt' + (screen === "Codex" ? " codex" : "") + '"><div class="win-title">' + traffic + "<span>" + (screen === "Codex" ? "Codex" : "ChatGPT") + '</span></div><div class="app-body">' + sidebar() + '<section class="app-main"><div class="mobile-nav">' + mobileNav + "</div>" + topbar() + body +
+    root.innerHTML = '<div class="app-window gpt' + (screen === "Codex" ? " codex" : "") + '">' + winbar(screen === "Codex" ? "Codex" : "ChatGPT", gptMark) + '<div class="app-body">' + sidebar() + '<section class="app-main"><div class="mobile-nav">' + mobileNav + "</div>" + topbar() + body +
       (feedback ? '<p class="feedback" role="alert">' + escape(feedback) + "</p>" : "") + "</section></div></div>";
     root.querySelectorAll("[data-learn]").forEach(el => el.addEventListener("click", () => act(el.dataset.learn)));
     const thread = root.querySelector(".thread");
