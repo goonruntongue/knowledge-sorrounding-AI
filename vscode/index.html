@@ -102,7 +102,7 @@
           main.innerHTML = task("HTMLファイルを開く", "左ペインの index.html をクリックして、編集するコードを表示してください。") + empty();
         } else if (stage === 3) {
           side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>${saved ? "✓ 保存しました。次は Go Live です。" : "index.html を編集したら保存します。"}</p>`;
-          main.innerHTML = task("コードを書き換えて保存する", typing ? "文字を入力しています。入力が終わったら保存しましょう。" : changed ? "変更できました。<strong>Ctrl + S</strong> を押すか、保存ボタンをクリックしてください。" : "「コードを書き換える」を押すと、編集内容が変化します。") + editor() + `<button class="vscode-lab-next" data-action="edit" ${changed ? "disabled" : ""}>コードを書き換える</button> <button class="vscode-lab-next" data-action="save" ${changed && !saved && !typing ? "" : "disabled"}>Ctrl + S で保存</button>` + next("Go Liveで確認する", !saved);
+          main.innerHTML = task("コードを書き換えて保存する", typing ? "文字を入力しています。入力が終わったら保存しましょう。" : changed ? "変更できました。<strong>Ctrl + S</strong> を押すか、保存ボタンをクリックしてください。" : "「コードを書き換える」を押すと、編集内容が変化します。") + editor() + `<button class="vscode-lab-next" data-action="edit" ${changed ? "disabled" : ""}>コードを書き換える</button> <button class="vscode-lab-next" data-action="save" ${changed && !saved && !typing ? "" : "disabled"}>Ctrl + S で保存</button>`;
         } else {
           side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>右下の <strong>Go Live</strong> を押すとブラウザに表示されます。</p>`;
           main.innerHTML = task("Go Liveでブラウザに反映する", stage === 5 ? "ブラウザへの反映ができました。" : "画面右下のステータスバーにある Go Live を押して、Live Serverでプレビューします。") + (stage === 5 ? preview() : editor());
@@ -144,7 +144,7 @@
           if (action === "folder") folder = true;
           if (action === "file") { openedFile = true; stage = 3; }
           if (action === "edit") { changed = true; typing = true; typedText = ""; }
-          if (action === "save") saved = true;
+          if (action === "save") { saved = true; stage = 4; }
           if (action === "golive") stage = 5;
           if (["live", "folder", "file", "edit", "save"].includes(action)) revealNext = true;
           render();
@@ -162,7 +162,6 @@
         if (stage === 3 && !changed) return { selector: '[data-action="edit"]', text: "コードを書き換える" };
         if (stage === 3 && typing) return null;
         if (stage === 3 && !saved) return { selector: '[data-action="save"]', text: "Ctrl + S で保存" };
-        if (stage === 3) return { selector: "[data-next]", text: "Go Live へ進む" };
         if (stage === 4) return { selector: "#vscodeLabGoLive", text: "右下の Go Live をクリック" };
         return null;
       }
@@ -195,7 +194,7 @@
       function shut() { lab.classList.remove("is-open"); document.body.classList.remove("vscode-lab-modal-open"); lastFocus?.focus(); }
       launch.addEventListener("click", open); close.addEventListener("click", shut); restart.addEventListener("click", reset); goLive.addEventListener("click", () => { if (stage === 4) { stage = 5; render(); } }); window.addEventListener("resize", showCoach);
       lab.addEventListener("click", event => { if (event.target === lab) shut(); });
-      document.addEventListener("keydown", event => { if (!lab.classList.contains("is-open")) return; if (event.key === "Escape") shut(); if (stage === 3 && event.ctrlKey && event.key.toLowerCase() === "s") { event.preventDefault(); if (changed && !typing) { saved = true; revealNext = true; render(); } } });
+      document.addEventListener("keydown", event => { if (!lab.classList.contains("is-open")) return; if (event.key === "Escape") shut(); if (stage === 3 && event.ctrlKey && event.key.toLowerCase() === "s") { event.preventDefault(); if (changed && !typing) { saved = true; stage = 4; revealNext = true; render(); } } });
     })();
   </script>
 </body>
