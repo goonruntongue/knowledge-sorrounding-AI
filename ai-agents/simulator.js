@@ -88,7 +88,7 @@
     const done = '<div class="activity"><div class="tool-row">' + icon("file") + "<span>" + (app === "claude" ? "Read" : "読み取り") + ' index.html</span></div><div class="tool-row">' + icon("diff") + "<span>" + (app === "claude" ? "Edit" : "編集") + ' index.html</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div></div>';
     if (stage === 5) return html + botMsg(done + "<p>index.html の見出しを変更しました。ほかの文章やレイアウトは変更していません。</p>" + diffCard() + '<div class="msg-actions">' + ui("preview", icon("monitor") + "ブラウザで表示を確認", { cls: "secondary", guide: true, tip: "差分を読んだら表示を確認" }) + "</div>") + lab_('<p class="lab-note">差分は赤が変更前、緑が変更後です。</p>');
     return html + botMsg(done + "<p>index.html の見出しを変更しました。ほかの文章やレイアウトは変更していません。</p>" + diffCard()) +
-      lab_('<p class="success">' + icon("check") + " 依頼 → 作業 → 差分 → 表示確認まで完了！</p><p>実機でも変更点を確認して、よければGitに履歴を残しましょう。</p>" + control("reset", "別の権限でもう一度", true) + control("switch-app", app === "codex" ? "Claude Codeも試す" : "Codexも試す", true));
+      lab_('<p class="success">' + icon("check") + " 依頼 → 作業 → 差分 → 表示確認まで完了！</p><p>実機でも変更点を確認して、よければGitに履歴を残しましょう。</p>" + control("reset", "別の権限でもう一度", true));
   }
   function browserPane() {
     return '<aside class="browser-pane"><div class="browser-bar"><span class="nav-arrows">&#x2190; &#x2192;</span><span class="url">' + icon("lock") + "localhost:3000/index.html</span>" + icon("refresh") + '</div><div class="browser-page"><h3>' + title + "</h3><p>My first website</p></div></aside>";
