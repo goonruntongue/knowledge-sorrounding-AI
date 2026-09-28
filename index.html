@@ -16,7 +16,7 @@
     * { box-sizing:border-box; }
     body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#c9e9d9 0 180px,transparent 181px),#f4f7f5; font-family:"Noto Sans JP",sans-serif; }
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
-    .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); pointer-events:none; }
+    .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); /* aspect-ratio:1; */ pointer-events:none; }
     .hero-orb--aura { --orb-opacity:.06; z-index:-3; filter:blur(11px) saturate(1.2); opacity:var(--orb-opacity); transform:scale(1.075); }
     .hero-orb--glow { --orb-opacity:.18; z-index:-2; filter:blur(3px); opacity:var(--orb-opacity); transform:scale(1.03); }
     .hero-orb--image { --orb-opacity:.69; z-index:-1; opacity:var(--orb-opacity); }
@@ -42,8 +42,15 @@
     .description { display:block; margin-top:.5rem; font-size:.92rem; line-height:1.7; }
     .arrow { display:block; margin-top:1.2rem; color:var(--green); font-weight:800; }
     footer { width:min(90%,960px); margin:0 auto; padding:2rem 0; color:#5a7166; font-size:.82rem; }
-    @media (max-width:640px) { .hero-orb { top:-2.5rem; right:-5.5rem; width:340px; } .hero-orb--aura { --orb-opacity:.04; } .hero-orb--glow { --orb-opacity:.12; } .hero-orb--image { --orb-opacity:.408; } }
-    @media (prefers-reduced-motion:reduce) { main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; } }
+    @media (max-width:640px) {
+      .hero-orb { top:-2.5rem; right:-5.5rem; width:340px; }
+      .hero-orb--aura { --orb-opacity:.04; }
+      .hero-orb--glow { --orb-opacity:.12; }
+      .hero-orb--image { --orb-opacity:.408; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; }
+    }
   </style>
 </head>
 <body>
@@ -54,10 +61,23 @@
     <p class="eyebrow">KNOWLEDGE SURROUNDING AI</p>
     <h1>Web技術の<span class="heading-accent">周辺知識</span></h1>
     <p class="lead">AIを活用してつくる・学ぶための、実践的なガイドをまとめていく入口です。</p>
-    <section aria-labelledby="menu-title"><h2 id="menu-title">ガイド一覧</h2><nav class="menu">
-      <a href="git-github/index.html"><span class="number">01 / GIT &amp; GITHUB</span><span class="title">Git と GitHub</span><span class="description">インストール、アカウント登録、基本的な使い方を初学者向けに解説します。</span><span class="arrow">ガイドを開く →</span></a>
-      <a href="vscode/index.html"><span class="number">02 / VS CODE</span><span class="title">VS Code をはじめよう</span><span class="description">IDEの考え方、インストール、便利な拡張機能を初学者向けに解説します。</span><span class="arrow">ガイドを開く →</span></a>
-    </nav></section>
+    <section aria-labelledby="menu-title">
+      <h2 id="menu-title">ガイド一覧</h2>
+      <nav class="menu">
+        <a href="git-github/index.html">
+          <span class="number">01 / GIT &amp; GITHUB</span>
+          <span class="title">Git と GitHub</span>
+          <span class="description">インストール、アカウント登録、基本的な使い方を初学者向けに解説します。</span>
+          <span class="arrow">ガイドを開く →</span>
+        </a>
+        <a href="vscode/index.html">
+          <span class="number">02 / VS CODE</span>
+          <span class="title">VS Code をはじめよう</span>
+          <span class="description">IDEの考え方、インストール、便利な拡張機能を初学者向けに解説します。</span>
+          <span class="arrow">ガイドを開く →</span>
+        </a>
+      </nav>
+    </section>
   </main>
   <footer>Knowledge Surrounding AI</footer>
 </body>
