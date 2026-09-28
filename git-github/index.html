@@ -26,22 +26,25 @@
         }
 
         h1 {
-            font-size: clamp(3rem, 7vw, 5.7rem);
+            font-size: clamp(4.5rem, calc(4.5rem + 2.5rem * (100vw - 320px) / 880px), 7rem);
             line-height: 1;
             letter-spacing: -.045em;
             margin: 0;
-            padding: 5.8rem 0 2.4rem;
+            padding: 5.8rem 0 .2em;
+            display: flex;
+            flex-direction: column;
         }
 
         span.small {
             font-size: 0.6em;
         }
 
-        .subtitle {
-            display: block;
-            font-size: 0.16em;
+        span.subtitle {
+            order: -1;
+            display: inline-block;
+            font-size: 0.15em;
             font-weight: normal;
-            padding-top: 10px;
+            margin-bottom: 2em;
             letter-spacing: 1px;
         }
 
@@ -183,10 +186,11 @@
         }
 
         .intro {
-            padding: 1.4rem 1.7rem;
-            border-left: 5px solid #f05033;
-            background: #fff;
-            border-radius: 0 14px 14px 0;
+            padding: 1em 0 0 .5em;
+            border-left: 0;
+            background: transparent;
+            font-size: .8em;
+            line-height: 2;
         }
 
         .jump {
@@ -985,7 +989,7 @@
         @media(max-width:720px) {
 
             h1 {
-                padding-top: 5.1rem;
+                padding-top: 3.6rem;
             }
 
             section>div {
@@ -1006,7 +1010,7 @@
             }
 
             .logo {
-                top: 12em;
+                top: 5em;
             }
 
             .lightbox {
