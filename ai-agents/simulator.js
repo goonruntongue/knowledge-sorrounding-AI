@@ -5,8 +5,9 @@
   const progress = document.querySelector("#progress");
   const instruction = document.querySelector("#instruction");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const { icon, gptMark, claudeMark, escape, traffic } = window.LabUI;
   let app = "modes", stage = 0, mode = "ask", menu = "", timer, returnFocus;
-  let prompt = "", response = "", running = false, error = "";
+  let prompt = "", response = "", running = false, error = "", toolsShown = 0;
   const title = "はじめてのAI制作";
   const sample = "index.htmlのh1を「はじめてのAI制作」に変更してください。ほかの文章やレイアウトは変えず、変更箇所と確認結果を教えてください。";
   const modes = {
@@ -21,10 +22,12 @@
       ["auto", "自動", "バックグラウンドのチェックを通じて操作を進めます。実機では利用条件によって選べないことがあります。"]
     ]
   };
-  const escape = text => text.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const chosen = () => modes[app].find(m => m[0] === mode);
   const control = (action, label, enabled, guided = false) => '<button type="button" class="sim-control' + (guided ? " guided" : "") + '" data-action="' + action + '"' + (enabled ? "" : " disabled") + ">" + label + "</button>";
+  const ui = (action, label, { guide = false, cls = "", disabled = false, pressed } = {}) =>
+    '<button type="button" class="ui-btn ' + cls + (guide ? " guided" : "") + '" data-action="' + action + '"' + (disabled ? " disabled" : "") + (pressed !== undefined ? ' aria-pressed="' + pressed + '"' : "") + ">" + label + "</button>";
   const coach = text => '<div class="coach">' + text + "</div>";
+  const lab_ = html => '<div class="lab-layer">' + html + "</div>";
   const messages = [
     "開発用のモードに切り替えましょう。",
     "フォルダボタンから、練習用の作品を選びましょう。",
@@ -34,70 +37,136 @@
     "変更前後を確認して、ブラウザ表示を開きましょう。",
     "練習完了！別の権限や、もう一方のアプリも試せます。"
   ];
+  const mark = () => (app === "claude" ? claudeMark : gptMark);
+  const userMsg = text => '<div class="msg msg-user"><div class="bubble">' + escape(text) + "</div></div>";
+  const botMsg = html => '<div class="msg msg-bot">' + mark() + '<div class="msg-body">' + html + "</div></div>";
+  const toolRows = () => {
+    const rows = [
+      '<div class="tool-row">' + icon("file") + "<span>" + (app === "claude" ? "Read" : "読み取り") + " index.html</span></div>",
+      '<div class="tool-row">' + icon("diff") + "<span>" + (app === "claude" ? "Edit" : "編集") + ' index.html</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div>'
+    ];
+    return '<div class="activity">' + rows.slice(0, toolsShown).join("") + "</div>";
+  };
+  const diffCard = () => '<div class="diff-card"><div class="diff-head">' + icon("file") + '<span>index.html</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div><div class="diff"><del><i>3</i>− &lt;h1&gt;Hello!&lt;/h1&gt;</del><ins><i>3</i>+ &lt;h1&gt;' + title + "&lt;/h1&gt;</ins></div></div>";
   function cancelRun() { clearTimeout(timer); running = false; }
   function reset(nextApp = app) {
     cancelRun(); app = nextApp; stage = 0; mode = app === "codex" ? "ask" : "plan";
     if (["modes", "skills", "plugins"].includes(app)) window.ChatGPTLessons.reset(app);
-    menu = ""; prompt = ""; response = ""; error = ""; render();
+    menu = ""; prompt = ""; response = ""; error = ""; toolsShown = 0; render();
   }
-  function permissionPanel() {
-    return '<div class="panel-box"><h3>権限を選ぶ</h3>' + modes[app].map(([key,label,detail]) =>
-      '<label><input type="radio" name="mode" value="' + key + '"' + (mode === key ? " checked" : "") + '> <strong>' + label + '</strong><br><span class="mode-description">' + detail + '</span></label>').join("") +
-      control("permission-done", "この設定で進む", true) + "</div>";
+  /* ---------- popovers ---------- */
+  function folderPopover() {
+    return '<div class="popover picker" role="menu"><span class="pop-label">' + (app === "claude" ? "プロジェクトフォルダ" : "プロジェクトを開く") + '</span>' +
+      ui("select-folder", icon("folder") + "<span><b>my-website</b><small>~/Desktop/my-website</small></span>", { cls: "pop-item", guide: true }) +
+      '<span class="pop-item static">' + icon("folder") + "<span><b>フォルダを参照…</b><small>練習では選べません</small></span></span>" +
+      '<div class="pop-tree"><pre>my-website/\n├─ index.html\n└─ css/\n   └─ style.css</pre></div>' + coach("このフォルダを選びます") + "</div>";
   }
-  function stageContent() {
-    if (menu === "folder") return '<div class="panel-box"><h3>作品フォルダを選択（練習用）</h3><p>デスクトップ / my-website</p><pre>my-website/\n├─ index.html\n└─ css/\n   └─ style.css</pre>' + coach("このフォルダを選びます") + control("select-folder", "my-website を選択", true, true) + "</div>";
-    if (menu === "permission") return permissionPanel();
-    if (stage < 3) return '<p class="mode-description">練習用の新しいタスクです。下の赤枠を順番に操作してください。</p>';
-    if (stage === 3) return '<div class="panel-box"><h3>今回の課題</h3><p>index.htmlの見出し「Hello!」を「はじめてのAI制作」に変更します。</p>' + control("sample", "依頼文の例を入力", true) + '<p class="mode-description">例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</p></div>' + (error ? '<p role="alert">' + error + "</p>" : "");
-    if (running) return '<p class="typing" role="status">' + escape(response) + '</p>' + control("stop", "■ 作業を停止", true);
-    if (stage === 4 && app === "claude" && mode === "plan") return '<div class="panel-box"><h3>提案されたプラン</h3><p>1. index.htmlのh1を確認<br>2. 見出しの文字だけ変更<br>3. 差分と表示を確認</p><p>まだファイルは変更していません。確認したら実行モードを選びます。</p><div class="sim-choices">' + control("execute-edits", "編集を受け入れるで実行", true, true) + control("execute-auto", "自動で実行", true) + "</div></div>";
-    if (stage === 4) {
-      if (app === "codex") return '<div class="panel-box"><h3>外部アクセスの確認を体験</h3><p>作業フォルダ内のh1編集に毎回承認は必要ありません。ここでは追加で「HTML仕様の公式サイトを参照する」場面を練習します。</p>' + (mode === "ask" ? '<p>ネットワークアクセスを許可しますか？</p>' + control("approve", "今回のみ許可", true, true) + control("deny", "許可せず、手元のファイルで続ける", true) : '<p>' + (mode === "auto" ? "レビュー用エージェントが、依頼に沿う参照かを確認して承認する流れです。" : "この設定では、ネットワークアクセスの承認待ちをせず進みます。") + '</p>' + control("continue", "この設定での実行を体験", true, true)) + "</div>";
-      return '<div class="panel-box"><h3>' + chosen()[1] + 'で作業</h3><p>' + (mode === "auto" ? "依頼に沿う編集かをチェックしながら進みます。" : "ファイルの編集を自動承認して進みます。") + '</p>' + control("continue", "見出しの変更を実行", true, true) + "</div>";
+  function permissionPopover() {
+    return '<div class="popover picker perm" role="menu"><span class="pop-label">' + (app === "claude" ? "権限モード" : "承認") + "</span>" +
+      modes[app].map(([key, label, detail]) => '<label class="pop-item radio' + (mode === key ? " on" : "") + '"><input type="radio" name="mode" value="' + key + '"' + (mode === key ? " checked" : "") + '><span><b>' + label + "</b><small>" + detail + "</small></span>" + (mode === key ? icon("check", "trail") : "") + "</label>").join("") +
+      '<div class="pop-foot">' + ui("permission-done", "この設定で進む", { cls: "primary" }) + "</div></div>";
+  }
+  /* ---------- conversation ---------- */
+  function conversation() {
+    if (stage < 3) {
+      const text = app === "claude" ? "何をつくりましょうか？" : "次は何をつくりますか？";
+      return '<div class="empty-state">' + (app === "claude" ? claudeMark : "") + "<h1>" + text + "</h1>" + (app === "claude" ? '<p class="hint-line">タスクを入力して Enter で開始</p>' : "") + "</div>" + lab_('<p class="lab-note">練習用の新しいタスクです。下の赤枠を順番に操作してください。</p>');
     }
-    if (stage === 5) return '<p class="success">✓ index.htmlの見出しを変更しました</p><p>差分：赤が変更前、緑が変更後です。</p><div class="diff"><del>− &lt;h1&gt;Hello!&lt;/h1&gt;</del><ins>＋ &lt;h1&gt;' + title + '&lt;/h1&gt;</ins></div><p>ほかの文章やレイアウトは変更していません。</p>' + coach("変更点を読んだら、表示も確認") + control("preview", "ブラウザ表示を確認", true, true);
-    return '<div class="browser-preview"><small>練習用プレビュー / index.html</small><h3>' + title + '</h3><p>My first website</p></div><p class="success">✓ 依頼 → 作業 → 差分 → 表示確認まで完了！</p><p>実機でも変更点を確認して、よければGitに履歴を残しましょう。</p>' + control("reset", "別の権限でもう一度", true) + control("switch-app", app === "codex" ? "Claude Codeも試す" : "Codexも試す", true);
+    if (stage === 3) return '<div class="empty-state small"><h1>' + (app === "claude" ? "何をつくりましょうか？" : "次は何をつくりますか？") + "</h1></div>" + lab_('<div class="lab-card"><b>今回の課題</b><p>index.htmlの見出し「Hello!」を「' + title + '」に変更します。</p><small>例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</small>' + control("sample", "依頼文の例を入力", true) + "</div>" + (error ? '<p class="feedback" role="alert">' + error + "</p>" : ""));
+    let html = userMsg(prompt);
+    if (running) return html + botMsg(toolRows() + '<p class="typing" role="status">' + escape(response) + "</p>");
+    if (stage === 4 && app === "claude" && mode === "plan") {
+      return html + botMsg('<p>index.html を確認しました。変更は1行だけです。プランを提案します。</p><div class="plan-card"><div class="plan-head">' + icon("layout") + "プラン</div><ol><li>index.html の h1 を確認</li><li>見出しの文字だけ変更</li><li>差分と表示を確認</li></ol><p class=\"plan-note\">まだファイルは変更していません。実行するモードを選んでください。</p><div class=\"plan-actions\">" + ui("execute-edits", "編集を受け入れるで実行", { cls: "primary", guide: true }) + ui("execute-auto", "自動で実行", { cls: "secondary" }) + "</div></div>");
+    }
+    if (stage === 4) {
+      if (app === "codex") {
+        if (mode === "ask") return html + botMsg('<p>作業フォルダ内の h1 編集に毎回承認は必要ありません。ここでは追加で「HTML仕様の公式サイトを参照する」場面を練習します。</p><div class="approval-card"><div class="approval-head">' + icon("globe") + "<b>ネットワークアクセスの承認</b></div><code>curl https://html.spec.whatwg.org/</code><p>Codex が作業領域の外（インターネット）にアクセスしようとしています。</p><div class=\"approval-actions\">" + ui("deny", "許可しない", { cls: "secondary" }) + ui("approve", "今回のみ許可", { cls: "primary", guide: true }) + "</div></div>");
+        return html + botMsg('<div class="approval-card info"><div class="approval-head">' + icon("shield") + "<b>" + chosen()[1] + "</b></div><p>" + (mode === "auto" ? "レビュー用エージェントが、依頼に沿う参照かを確認して承認する流れです。" : "この設定では、ネットワークアクセスの承認待ちをせず進みます。") + "</p><div class=\"approval-actions\">" + ui("continue", "この設定での実行を体験", { cls: "primary", guide: true }) + "</div></div>");
+      }
+      return html + botMsg('<div class="approval-card info"><div class="approval-head">' + icon("shield") + "<b>" + chosen()[1] + "で作業</b></div><p>" + (mode === "auto" ? "依頼に沿う編集かをチェックしながら進みます。" : "ファイルの編集を自動承認して進みます。") + "</p><div class=\"approval-actions\">" + ui("continue", "見出しの変更を実行", { cls: "primary", guide: true }) + "</div></div>");
+    }
+    const done = '<div class="activity"><div class="tool-row">' + icon("file") + "<span>" + (app === "claude" ? "Read" : "読み取り") + ' index.html</span></div><div class="tool-row">' + icon("diff") + "<span>" + (app === "claude" ? "Edit" : "編集") + ' index.html</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div></div>';
+    if (stage === 5) return html + botMsg(done + "<p>index.html の見出しを変更しました。ほかの文章やレイアウトは変更していません。</p>" + diffCard() + '<div class="msg-actions">' + ui("preview", icon("monitor") + "ブラウザで表示を確認", { cls: "secondary", guide: true }) + "</div>") + lab_(coach("差分（赤が変更前、緑が変更後）を読んだら、表示も確認"));
+    return html + botMsg(done + "<p>index.html の見出しを変更しました。ほかの文章やレイアウトは変更していません。</p>" + diffCard()) +
+      lab_('<p class="success">' + icon("check") + " 依頼 → 作業 → 差分 → 表示確認まで完了！</p><p>実機でも変更点を確認して、よければGitに履歴を残しましょう。</p>" + control("reset", "別の権限でもう一度", true) + control("switch-app", app === "codex" ? "Claude Codeも試す" : "Codexも試す", true));
+  }
+  function browserPane() {
+    return '<aside class="browser-pane"><div class="browser-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="url">' + icon("lock") + "localhost:3000/index.html</span>" + icon("refresh") + '</div><div class="browser-page"><h3>' + title + "</h3><p>My first website</p></div></aside>";
+  }
+  /* ---------- shells ---------- */
+  function composer() {
+    const folderLabel = stage > 1 ? "my-website" : (app === "claude" ? "フォルダを選択" : "プロジェクトを開く");
+    const sendSlot = running ? ui("stop", icon("stop"), { cls: "send stop", guide: true }) : ui("send", icon("up"), { cls: "send", guide: stage === 3 && !!prompt.trim(), disabled: stage !== 3 });
+    const folderBtn = ui("folder", icon("folder") + "<span>" + folderLabel + "</span>" + icon("chevron", "chev"), { cls: "chip", guide: stage === 1 && !menu, disabled: stage !== 1, pressed: menu === "folder" });
+    const permBtn = ui("permission", (app === "claude" ? icon("shield") : "") + "<span>" + chosen()[1] + "</span>" + icon("chevron", "chev"), { cls: "chip", guide: stage === 2 && !menu, disabled: stage !== 2, pressed: menu === "permission" });
+    const envChip = '<span class="chip">' + icon("home") + "ローカル" + icon("chevron", "chev") + "</span>";
+    const modelChip = '<span class="chip">' + (app === "claude" ? "Claude Opus 5.5" : "GPT-5.6") + icon("chevron", "chev") + "</span>";
+    const popup = menu === "folder" ? folderPopover() : menu === "permission" ? permissionPopover() : "";
+    return '<div class="composer-wrap">' + (stage === 1 && !menu ? coach("フォルダをクリックして作品を紐づける") : "") + (stage === 2 && !menu ? coach("ここで任せる範囲を設定") : "") + (stage === 3 && prompt.trim() ? coach("内容を読んで送信") : "") + popup +
+      '<div class="composer ' + app + '"><textarea id="request" aria-label="AIへの依頼文" placeholder="' + (app === "claude" ? "Claude に任せたいタスクを入力" : "タスクを説明するか、質問を入力してください") + '"' + (stage === 3 ? "" : " disabled") + ">" + escape(prompt) + "</textarea>" +
+      '<div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + "</span>" + (app === "claude" ? envChip + folderBtn : folderBtn + envChip) + '</div><div class="bar-right">' + permBtn + modelChip + sendSlot + "</div></div></div>" +
+      (app === "claude" ? "" : '<p class="disclaimer">Codex は間違えることがあります。変更内容を確認してください。</p>') + "</div>";
+  }
+  function codexShell() {
+    if (stage === 0) {
+      const menuOpen = menu === "product";
+      return '<div class="app-window gpt"><div class="win-title">' + traffic + '<span>ChatGPT</span></div><div class="app-body"><aside class="app-side"><div class="brand-wrap">' +
+        ui("product-menu", gptMark + "<span>ChatGPT</span>" + icon("chevron", "chev"), { cls: "brand-btn", guide: !menuOpen, pressed: menuOpen }) +
+        (menuOpen ? '<div class="popover product-menu" role="menu"><span class="pop-label">アプリを切り替え</span><span class="pop-item static">' + gptMark + "<span><b>ChatGPT</b><small>Chat / Work</small></span>" + icon("check", "trail") + "</span>" + ui("activate", '<span class="codex-mark">' + icon("terminal") + "</span><span><b>Codex</b><small>プロジェクト・ファイル・差分</small></span>", { cls: "pop-item", guide: true }) + "</div>" : "") +
+        '</div><nav class="side-nav"><span class="nav-item static">' + icon("compose") + "<span>新しいチャット</span></span><span class=\"nav-item static\">" + icon("search") + "<span>チャットを検索</span></span><span class=\"nav-item static\">" + icon("image") + "<span>ライブラリ</span></span><hr><span class=\"nav-item static\">" + icon("folder") + "<span>プロジェクト</span></span><span class=\"nav-item static\">" + icon("sparkle") + "<span>スキル</span></span><span class=\"nav-item static\">" + icon("puzzle") + '<span>プラグイン</span></span><p class="nav-section">最近</p><div class="recent"><span>文化祭サイトの見出し案</span><span>企画書のたたき台</span></div></nav><div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside>' +
+        '<section class="app-main"><div class="mobile-nav">' + ui("activate", '<span class="codex-mark">' + icon("terminal") + "</span>Codex に切り替え", { cls: "nav-item", guide: true }) + '</div><header class="app-top"><div class="top-left"><span class="model-pill">ChatGPT <b>5.6</b>' + icon("chevron", "chev") + '</span></div><div class="seg"><span class="seg-btn" aria-pressed="true">Chat</span><span class="seg-btn" aria-pressed="false">Work</span></div><div class="top-right"><span class="avatar sm">S</span></div></header>' +
+        '<div class="thread"><div class="empty-state"><h1>お手伝いできることはありますか？</h1></div>' + lab_(coach(menuOpen ? "Codex を選ぶ" : "左上のメニューから Codex へ切り替え")) + '</div><div class="composer-wrap"><div class="composer"><textarea disabled placeholder="質問してみましょう"></textarea><div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + '</span></div><div class="bar-right"><span class="chip round">' + icon("mic") + '</span><span class="ui-btn send" aria-disabled="true">' + icon("up") + "</span></div></div></div></div></section></div></div>";
+    }
+    return '<div class="app-window gpt codex"><div class="win-title">' + traffic + '<span>Codex</span></div><div class="app-body"><aside class="app-side"><div class="brand-wrap"><span class="brand-btn static"><span class="codex-mark">' + icon("terminal") + "</span><span>Codex</span>" + icon("chevron", "chev") + '</span></div><nav class="side-nav"><span class="nav-item static">' + icon("compose") + "<span>新しいチャット</span></span><span class=\"nav-item static\">" + icon("search") + "<span>検索</span><kbd>⌘G</kbd></span><span class=\"nav-item static\">" + icon("puzzle") + "<span>プラグイン</span></span><span class=\"nav-item static\">" + icon("clock") + '<span>オートメーション</span></span><p class="nav-section">' + icon("pin") + 'ピン留め</p><p class="nav-section">プロジェクト</p>' + (stage > 1 ? '<span class="nav-item static on">' + icon("folder") + "<span>my-website</span></span>" : '<span class="nav-item static dim"><span>まだありません</span></span>') + '<p class="nav-section">チャット</p><div class="recent">' + (stage >= 4 ? "<span>" + escape(prompt.slice(0, 18)) + "…</span>" : "") + "<span>スタイルの調整</span></div></nav>" +
+      '<div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside><section class="app-main"><header class="app-top"><div class="top-left">' + (stage > 1 ? icon("folder") + "<b>my-website</b><span class=\"branch\">" + icon("branch") + "main</span>" : "<b>新しいチャット</b>") + '</div><div class="top-right">' + (stage >= 5 ? '<span class="ghost stat-pill"><b class="add">+1</b> <b class="del">−1</b></span>' : "") + '<span class="ghost">' + icon("dots") + '</span></div></header><div class="work-area' + (stage === 6 ? " split" : "") + '"><div class="thread">' + conversation() + "</div>" + (stage === 6 ? browserPane() : "") + "</div>" + composer() + "</section></div></div>";
+  }
+  function claudeShell() {
+    const tabs = '<div class="claude-tabs" role="tablist"><span class="ctab" aria-selected="' + (stage === 0) + '">' + icon("chat") + "チャット</span><span class=\"ctab\" aria-selected=\"false\">" + icon("briefcase") + "Cowork</span>" + (stage === 0 ? ui("activate", icon("code") + "Code", { cls: "ctab", guide: true, pressed: false }) : '<span class="ctab" aria-selected="true">' + icon("code") + "Code</span>") + "</div>";
+    const head = '<div class="win-title claude-title">' + traffic + tabs + '<span class="title-right"><span class="avatar sm">S</span></span></div>';
+    if (stage === 0) {
+      return '<div class="app-window claude">' + head + '<div class="app-body"><aside class="app-side"><nav class="side-nav"><span class="nav-item static">' + icon("compose") + "<span>新しいチャット</span></span><span class=\"nav-item static\">" + icon("search") + "<span>検索</span></span><span class=\"nav-item static\">" + icon("folder") + '<span>プロジェクト</span></span><p class="nav-section">最近</p><div class="recent"><span>文化祭サイトの構成</span><span>見出し案の相談</span></div></nav><div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside>' +
+        '<section class="app-main"><div class="mobile-nav">' + ui("activate", icon("code") + "Code タブへ切り替え", { cls: "nav-item", guide: true }) + '</div><div class="thread"><div class="empty-state">' + claudeMark + "<h1>こんにちは、Student</h1></div>" + lab_(coach("上部の </> Code タブへ切り替え")) + '</div><div class="composer-wrap"><div class="composer claude"><textarea disabled placeholder="Claude に話しかけてみましょう"></textarea><div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + '</span></div><div class="bar-right"><span class="chip">Claude Opus 5.5' + icon("chevron", "chev") + '</span><span class="ui-btn send" aria-disabled="true">' + icon("up") + "</span></div></div></div></div></section></div></div>";
+    }
+    const sessionRow = stage >= 4 ? '<span class="session on"><i class="dot ' + (running ? "busy" : "ok") + '"></i><span>' + escape(prompt.slice(0, 16)) + "…</span></span>" : '<span class="session on"><i class="dot"></i><span>新しいセッション</span></span>';
+    return '<div class="app-window claude">' + head + '<div class="app-body"><aside class="app-side"><div class="side-head">' + ui("noop", icon("plus") + "新しいセッション", { cls: "new-session", disabled: true }) + '</div><div class="side-filter"><span class="chip">' + icon("layout") + "プロジェクト別" + icon("chevron", "chev") + '</span></div><nav class="side-nav sessions"><p class="nav-section">' + (stage > 1 ? "my-website" : "グループなし") + "</p>" + sessionRow + '<span class="session"><i class="dot ok"></i><span>スタイルの調整</span></span></nav><div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside>' +
+      '<section class="app-main"><header class="app-top"><div class="top-left"><b>' + (stage >= 4 ? escape(prompt.slice(0, 22)) + "…" : "新しいセッション") + '</b></div><div class="top-right">' + (stage >= 5 ? '<span class="ghost stat-pill"><b class="add">+1</b> <b class="del">−1</b></span>' : "") + '<span class="ghost">Normal' + icon("chevron", "chev") + '</span><span class="ghost">' + icon("layout") + "ビュー</span></div></header>" +
+      '<div class="work-area' + (stage === 6 ? " split" : "") + '"><div class="thread">' + conversation() + "</div>" + (stage === 6 ? browserPane() : "") + "</div>" + composer() + "</section></div></div>";
   }
   function render() {
     document.querySelectorAll("[data-app]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.app === app)));
     if (["modes", "skills", "plugins"].includes(app)) { window.ChatGPTLessons.render(); return; }
     progress.textContent = stage < 6 ? "STEP " + (stage + 1) + " / 6" : "COMPLETE";
     instruction.textContent = messages[stage];
-    document.querySelectorAll("[data-app]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.app === app)));
-    const name = app === "codex" ? "Codex" : "Claude";
-    simulation.innerHTML = '<div class="app-shell ' + app + '"><aside class="app-sidebar"><div class="app-brand">' + name + '<span>☰</span></div><div class="fake-item">⌕ 検索</div><div class="fake-item">＋ 新しいタスク</div><p>プロジェクト</p><div class="fake-item">' + (stage > 1 ? "▱ my-website" : "まだありません") + '</div><p>練習用アカウント</p><div class="fake-item">Student</div></aside><div class="app-main"><div class="composer-row">' + control("activate", app === "codex" ? "ChatGPT ▾ → Codex" : "チャット　 /　 &lt;/&gt; Code", stage === 0, stage === 0) + '</div>' + (stage === 0 ? coach(app === "codex" ? "ここでCodexへ切り替え" : "ここでCodeへ切り替え") : "") +
-      '<div class="app-greeting"><span>' + (app === "claude" ? "✳ " : "✦ ") + '</span>' + (app === "claude" ? "何をつくりましょう？" : "次は何をつくりますか？") + '</div><div class="conversation">' + stageContent() + '</div><div class="composer">' +
-      (stage === 1 && !menu ? coach("フォルダをクリックして作品を紐づける") : "") +
-      '<div class="composer-row"><span class="sim-control">▱ ローカル</span>' + control("folder", "▱ " + (stage > 1 ? "my-website" : "フォルダなし"), stage === 1, stage === 1 && !menu) + '</div>' +
-      (stage === 2 && !menu ? coach("ここで任せる範囲を設定") : "") +
-      '<div class="input-box"><textarea id="request" aria-label="AIへの依頼文" placeholder="タスクを説明するか、質問を入力してください"' + (stage === 3 ? "" : " disabled") + '>' + escape(prompt) + '</textarea><div class="composer-row">' +
-      control("permission", chosen()[1] + " ▾", stage === 2, stage === 2 && !menu) +
-      control("send", "送信 ↑", stage === 3, stage === 3 && !!prompt.trim()) + '</div></div>' +
-      (stage === 3 && prompt.trim() ? coach("内容を読んで送信") : "") + '</div></div></div>';
+    simulation.innerHTML = app === "codex" ? codexShell() : claudeShell();
     simulation.querySelectorAll("[data-action]").forEach(b => b.addEventListener("click", () => act(b.dataset.action)));
-    simulation.querySelectorAll('[name="mode"]').forEach(r => r.addEventListener("change", () => { mode = r.value; }));
-    simulation.querySelector("#request").addEventListener("input", e => { prompt = e.target.value; });
-    simulation.querySelector("#request").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); act("send"); } });
+    simulation.querySelectorAll('[name="mode"]').forEach(r => r.addEventListener("change", () => { mode = r.value; render(); }));
+    const request = simulation.querySelector("#request");
+    if (request) {
+      request.addEventListener("input", e => { prompt = e.target.value; const s = simulation.querySelector('[data-action="send"]'); if (s) s.classList.toggle("guided", stage === 3 && !!prompt.trim()); });
+      request.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); act("send"); } });
+    }
   }
   function animate(done) {
-    cancelRun(); running = true; response = "";
+    cancelRun(); running = true; response = ""; toolsShown = 0;
     const message = "index.htmlを読み取りました。h1を「はじめてのAI制作」に変更しています…";
     let index = 0;
     const tick = () => {
       if (!lab.open) return;
       index = reduced ? message.length : index + 2;
-      response = message.slice(0,index); render();
-      if (index < message.length) timer = setTimeout(tick,45);
+      toolsShown = index >= message.length ? 2 : index > 12 ? 1 : 0;
+      response = message.slice(0, index); render();
+      if (index < message.length) timer = setTimeout(tick, 45);
       else { running = false; done(); render(); }
     };
     tick();
   }
   function act(action) {
-    if (action === "activate") stage = 1;
-    if (action === "folder") menu = "folder";
+    if (action === "noop") return;
+    if (action === "product-menu") menu = menu === "product" ? "" : "product";
+    if (action === "activate") { stage = 1; menu = ""; }
+    if (action === "folder") menu = menu === "folder" ? "" : "folder";
     if (action === "select-folder") { stage = 2; menu = ""; }
-    if (action === "permission") menu = "permission";
+    if (action === "permission") menu = menu === "permission" ? "" : "permission";
     if (action === "permission-done") { stage = 3; menu = ""; }
     if (action === "sample") prompt = sample;
     if (action === "send") {
@@ -107,16 +176,16 @@
     if (action === "execute-edits" || action === "execute-auto") {
       mode = action === "execute-edits" ? "edits" : "auto"; animate(() => { stage = 5; }); return;
     }
-    if (["approve","deny","continue"].includes(action)) { animate(() => { stage = 5; }); return; }
-    if (action === "stop") { cancelRun(); response = ""; }
+    if (["approve", "deny", "continue"].includes(action)) { animate(() => { stage = 5; }); return; }
+    if (action === "stop") { cancelRun(); response = ""; toolsShown = 0; }
     if (action === "preview") stage = 6;
     if (action === "reset") { reset(); return; }
     if (action === "switch-app") { reset(app === "codex" ? "claude" : "codex"); return; }
     render();
     requestAnimationFrame(() => {
-      const target = menu ? simulation.querySelector(".panel-box") : stage >= 4 ? simulation.querySelector(".conversation") : simulation.querySelector(".guided");
-      target?.scrollIntoView({block:"nearest",behavior:reduced ? "auto" : "smooth"});
-      if (action === "sample") simulation.querySelector("#request").focus();
+      const target = menu ? simulation.querySelector(".popover") : stage >= 4 ? simulation.querySelector(".thread .msg:last-of-type") : simulation.querySelector(".guided");
+      target?.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+      if (action === "sample") simulation.querySelector("#request")?.focus();
     });
   }
   document.querySelector("#launch").addEventListener("click", () => {
@@ -127,7 +196,7 @@
   document.querySelector("#restart").addEventListener("click", () => reset());
   document.querySelectorAll("[data-app]").forEach(b => b.addEventListener("click", () => reset(b.dataset.app)));
   const top = document.querySelector("#toTop");
-  const updateTop = () => { const visible = scrollY > 360; top.classList.toggle("is-visible",visible); top.tabIndex = visible ? 0 : -1; };
-  addEventListener("scroll",updateTop,{passive:true}); updateTop();
-  top.addEventListener("click", () => window.scrollTo({top:0,behavior:reduced ? "auto" : "smooth"}));
+  const updateTop = () => { const visible = scrollY > 360; top.classList.toggle("is-visible", visible); top.tabIndex = visible ? 0 : -1; };
+  addEventListener("scroll", updateTop, { passive: true }); updateTop();
+  top.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }));
 })();

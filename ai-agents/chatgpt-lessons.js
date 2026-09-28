@@ -1,116 +1,233 @@
 /* Local teaching simulation. No installation, authentication, network or filesystem actions. */
+window.LabUI = (() => {
+  const paths = {
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    up: '<path d="M12 19V5M5 12l7-7 7 7"/>',
+    mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    compose: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m21 16-5-5-9 9"/>',
+    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
+    sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M19 17l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z"/>',
+    puzzle: '<path d="M10 4a2 2 0 1 1 4 0v1h3a1 1 0 0 1 1 1v3h1a2 2 0 1 1 0 4h-1v3a1 1 0 0 1-1 1h-3v1a2 2 0 1 1-4 0v-1H7a1 1 0 0 1-1-1v-3H5a2 2 0 1 1 0-4h1V6a1 1 0 0 1 1-1h3Z"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    check: '<path d="m5 12 5 5L20 7"/>',
+    close: '<path d="M18 6 6 18M6 6l12 12"/>',
+    code: '<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',
+    chat: '<path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.5-4.5A8 8 0 1 1 21 12Z"/>',
+    briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+    terminal: '<path d="m4 17 6-6-6-6M12 19h8"/>',
+    file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    branch: '<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 7v10M18 10c0 4-12 2-12 7"/>',
+    stop: '<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    pin: '<path d="M12 17v5M8 3h8l-1 7 3 3H6l3-3Z"/>',
+    monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    home: '<path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/>',
+    shield: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/>',
+    dots: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+    layout: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M3 10h6"/>',
+    diff: '<path d="M12 3v8M8 7h8M4 17h16"/>',
+    external: '<path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
+    github: '<path d="M12 3a9 9 0 0 0-2.85 17.54c.45.08.62-.2.62-.44v-1.6c-2.5.55-3.03-1.06-3.03-1.06-.41-1.04-1-1.32-1-1.32-.82-.56.06-.55.06-.55.9.06 1.38.93 1.38.93.8 1.38 2.11.98 2.62.75.08-.58.31-.98.57-1.2-2-.23-4.1-1-4.1-4.45 0-.98.35-1.79.93-2.42-.1-.23-.4-1.15.09-2.4 0 0 .75-.24 2.47.92a8.6 8.6 0 0 1 4.5 0c1.72-1.16 2.47-.92 2.47-.92.49 1.25.18 2.17.09 2.4.58.63.93 1.44.93 2.42 0 3.46-2.1 4.22-4.11 4.44.32.28.61.83.61 1.67v2.48c0 .24.16.53.62.44A9 9 0 0 0 12 3Z"/>',
+    refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+  };
+  const icon = (name, cls = "") => '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths[name] + "</svg>";
+  const gptMark = '<span class="gpt-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v16M5.1 8l13.8 8M5.1 16l13.8-8"/></svg></span>';
+  const claudeMark = '<span class="claude-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M11 2h2v7.2l5.1-5.1 1.4 1.4L14.4 10.6H22v2h-7.6l5.1 5.1-1.4 1.4L13 14.9V22h-2v-7.1l-5.1 5.1-1.4-1.4 5.1-5.1H2v-2h7.6L4.5 5.5l1.4-1.4L11 9.2Z"/></svg></span>';
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const traffic = '<span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+  return { icon, gptMark, claudeMark, escape, traffic };
+})();
+
 window.ChatGPTLessons = (() => {
   const root = document.querySelector("#simulation");
-  const escape = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const { icon, gptMark, escape, traffic } = window.LabUI;
   let course, step, screen, selected, task, feedback, input, mention, installed, connected, menu, search, skillRoute;
-  const button = (action,label,guide=false) => '<button type="button" class="sim-control'+(guide?' guided':'')+'" data-learn="'+action+'">'+label+'</button>';
-  const hint = text => '<div class="coach">'+text+'</div>';
+  const attr = (action, guide) => ' data-learn="' + action + '"' + (guide ? ' data-guided="true"' : "");
+  const button = (action, label, guide = false) => '<button type="button" class="sim-control' + (guide ? " guided" : "") + '"' + attr(action) + ">" + label + "</button>";
+  const ui = (action, label, { guide = false, cls = "", disabled = false, pressed } = {}) =>
+    '<button type="button" class="ui-btn ' + cls + (guide ? " guided" : "") + '"' + attr(action) + (disabled ? " disabled" : "") + (pressed !== undefined ? ' aria-pressed="' + pressed + '"' : "") + ">" + label + "</button>";
+  const hint = text => '<div class="coach">' + text + "</div>";
+  const lab = html => '<div class="lab-layer">' + html + "</div>";
+  const userMsg = text => '<div class="msg msg-user"><div class="bubble">' + escape(text) + "</div></div>";
+  const botMsg = html => '<div class="msg msg-bot">' + gptMark + '<div class="msg-body">' + html + "</div></div>";
   const scenarios = [
-    {mode:"Chat",request:"文化祭サイトの見出し案を3つ相談したい。",why:"短い相談や案出しから始めたいので、Chatが自然な入口です。",result:'<h3>見出し案</h3><p>1. 好きが集まる、わたしたちの文化祭<br>2. 今日だけのワクワクを、ここに。<br>3. みんなでつくる、特別な一日</p><p>もう少し元気な雰囲気にすることもできます。</p>'},
-    {mode:"Work",request:"開催情報を整理し、先生に見せる企画書を仕上げてほしい。",why:"確認して使える成果物まで任せたいので、Workを選びます。",result:'<p>✓ 開催情報を整理 → 構成を作成 → 企画書を作成</p><div class="mock-document"><small>成果物のプレビュー（練習用）</small><h3>文化祭サイト企画書</h3><p>目的：来場者に企画と時間を伝える<br>構成：見どころ・タイムテーブル・アクセス<br>次の確認：学校名と開催日を先生に確認</p></div>'},
-    {mode:"Codex",request:"index.htmlのh1を変え、コードの差分と確認結果を見たい。",why:"ファイルや変更差分を見ながら開発したいので、Codexを選びます。",result:'<p>✓ index.htmlを確認 → h1を変更 → 変更箇所を確認</p><div class="diff"><del>− &lt;h1&gt;Hello!&lt;/h1&gt;</del><ins>＋ &lt;h1&gt;みんなの文化祭&lt;/h1&gt;</ins></div><p>確認結果の例：h1の文章のみ変更。他の要素は変更なし。</p>'}
+    { mode: "Chat", request: "文化祭サイトの見出し案を3つ相談したい。", why: "短い相談や案出しから始めたいので、Chatが自然な入口です。",
+      result: '<p>文化祭サイトの見出し案を3つ考えました。</p><ol><li><strong>好きが集まる、わたしたちの文化祭</strong></li><li><strong>今日だけのワクワクを、ここに。</strong></li><li><strong>みんなでつくる、特別な一日</strong></li></ol><p>もう少し元気な雰囲気にすることもできます。</p>' },
+    { mode: "Work", request: "開催情報を整理し、先生に見せる企画書を仕上げてほしい。", why: "確認して使える成果物まで任せたいので、Workを選びます。",
+      result: '<div class="work-plan"><div class="work-plan-head">' + icon("check") + ' 3つのステップが完了</div><ul><li>' + icon("check") + '開催情報を整理</li><li>' + icon("check") + '企画書の構成を作成</li><li>' + icon("check") + '企画書を作成</li></ul></div><p>企画書のドラフトができました。学校名と開催日は先生に確認してください。</p><div class="file-card"><span class="file-badge doc">DOC</span><div><strong>文化祭サイト企画書.docx</strong><small>目的・構成（見どころ / タイムテーブル / アクセス）・次の確認事項</small></div></div>' },
+    { mode: "Codex", request: "index.htmlのh1を変え、コードの差分と確認結果を見たい。", why: "ファイルや変更差分を見ながら開発したいので、Codexを選びます。",
+      result: '<div class="activity"><div class="tool-row">' + icon("file") + '<span>index.html を読み取り</span></div><div class="tool-row">' + icon("diff") + '<span>index.html を編集</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div></div><p>h1 の文章だけを変更しました。他の要素は変更していません。</p>' + diffCard("index.html", "&lt;h1&gt;Hello!&lt;/h1&gt;", "&lt;h1&gt;みんなの文化祭&lt;/h1&gt;") }
   ];
+  function diffCard(file, before, after) {
+    return '<div class="diff-card"><div class="diff-head">' + icon("file") + '<span>' + file + '</span><em class="stat"><b class="add">+1</b> <b class="del">−1</b></em></div><div class="diff"><del><i>3</i>− ' + before + '</del><ins><i>3</i>+ ' + after + '</ins></div></div>';
+  }
   const skillSteps = ["Skillsを開いて、作業手順を追加しましょう。","作成用スキルを選びましょう。","覚えてほしい手順を依頼して送信しましょう。","作成されたスキルの内容と保存先を確認しましょう。","新しいチャットを開きましょう。","@でスキルを選び、依頼を書いて送信しましょう。","スキルに沿った結果を確認できました。"];
   const pluginSteps = ["Pluginsを開きましょう。","GitHubを検索して詳細を開きましょう。","機能を確認して＋でインストールしましょう。","外部アカウントを接続する流れを体験しましょう。","接続先とアクセス範囲を確認しましょう。","導入後は、新しいチャットを開きましょう。","@でGitHubを選び、依頼を書いて送信しましょう。","プラグインを使った結果を確認できました。"];
   function reset(value) {
-    course=value;step=0;screen="ChatGPT";selected="Chat";task=0;feedback="";input="";mention=false;installed=false;connected=false;menu=false;search="";skillRoute="create";
+    course = value; step = 0; screen = "ChatGPT"; selected = "Chat"; task = 0; feedback = ""; input = ""; mention = false; installed = false; connected = false; menu = false; search = ""; skillRoute = "create";
   }
-  function toolbar() {
-    return '<div class="learn-toolbar">'+button("selector",screen+" ▾",course==="modes"&&step===0)+
-      (screen==="ChatGPT"?'<div class="mode-switch">'+["Chat","Work"].map(m=>'<button type="button" class="sim-control" data-learn="mode-'+m+'" aria-pressed="'+(selected===m)+'">'+m+'</button>').join("")+'</div>':'<span class="lab-mini">プロジェクト / my-website</span>')+
-      (menu?'<div class="product-menu">'+button("product-chatgpt","ChatGPT")+button("product-codex","Codex")+'</div>':"")+'</div>';
+  /* ---------- app chrome ---------- */
+  function sidebar() {
+    const codex = screen === "Codex";
+    const skillsGuide = course === "skills" && step === 0;
+    const pluginsGuide = course === "plugins" && step === 0;
+    const brand = '<div class="brand-wrap">' + switcher("brand-btn") + "</div>";
+    const item = (ic, label, action, guide, extra = "") => (action ? ui(action, icon(ic) + "<span>" + label + "</span>" + extra, { cls: "nav-item", guide }) : '<span class="nav-item static">' + icon(ic) + "<span>" + label + "</span>" + extra + "</span>");
+    const newChatGuide = (course === "skills" && step === 4) || (course === "plugins" && step === 5);
+    let nav;
+    if (codex) {
+      nav = item("compose", "新しいチャット", newChatGuide ? "new-chat" : "", newChatGuide) + item("search", "検索", "", false, '<kbd>⌘G</kbd>') +
+        item("puzzle", "プラグイン", course === "plugins" ? "open-plugins" : "", pluginsGuide) + item("sparkle", "スキル", course === "skills" ? "open-skills" : "", skillsGuide) + item("clock", "オートメーション", "") +
+        '<p class="nav-section">' + icon("pin") + 'ピン留め</p><p class="nav-section">プロジェクト</p>' + item("folder", "my-website", "") +
+        '<p class="nav-section">チャット</p><div class="recent">' + (installed && course === "skills" ? '<span>依頼文整理スキルの作成</span>' : "") + (installed && course === "plugins" ? '<span>GitHubプラグインの導入</span>' : "") + '<span>見出しの変更と確認</span><span>スタイルの調整</span></div>';
+    } else {
+      nav = item("compose", "新しいチャット", newChatGuide ? "new-chat" : "", newChatGuide) + item("search", "チャットを検索", "") + item("image", "ライブラリ", "") +
+        '<hr>' + item("folder", "プロジェクト", "") + item("sparkle", "スキル", course === "skills" ? "open-skills" : "", skillsGuide) + item("puzzle", "プラグイン", course === "plugins" ? "open-plugins" : "", pluginsGuide) +
+        '<p class="nav-section">最近</p><div class="recent"><span>文化祭サイトの見出し案</span><span>企画書のたたき台</span><span>アクセス案内の書き方</span></div>';
+    }
+    return '<aside class="app-side">' + brand + '<nav class="side-nav">' + nav + '</nav><div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside>';
   }
-  function composer(kind) {
-    const name=kind==="creator"?(skillRoute==="create"?"$skill-creator":"$skill-installer"):course==="skills"?"依頼文整理":"GitHub";
-    return '<div class="input-box">'+(kind==="creator"||mention?'<div class="mention-token">'+(kind==="creator"?"":"@ ")+name+'</div>':"")+
-      '<textarea id="learn-prompt" aria-label="練習用チャット入力欄" placeholder="'+(kind==="creator"?"覚えてほしい手順を入力":"@を入力して候補を選び、依頼を入力")+'">'+escape(input)+'</textarea>'+
-      '<div class="mention-results" id="mention-results" '+(kind!=="creator"&&input.includes("@")&&!mention?"":"hidden")+'><span class="lab-mini">導入済みの候補</span><br>'+button("mention","@ "+name,true)+'</div>'+
-      '<div class="composer-row">'+button("example","依頼文の例を入力")+button("send","送信 ↑",kind==="creator"||mention)+'</div></div>';
+  function switcher(cls) {
+    const codex = screen === "Codex";
+    return ui("selector", (codex ? '<span class="codex-mark">' + icon("terminal") + "</span>" : gptMark) + "<span>" + screen + "</span>" + icon("chevron", "chev"), { cls, guide: course === "modes" && step === 0, pressed: menu }) +
+      (menu ? '<div class="popover product-menu" role="menu"><span class="pop-label">アプリを切り替え</span>' +
+        ui("product-chatgpt", gptMark + "<span><b>ChatGPT</b><small>Chat / Work</small></span>" + (codex ? "" : icon("check", "trail")), { cls: "pop-item" }) +
+        ui("product-codex", '<span class="codex-mark">' + icon("terminal") + "</span><span><b>Codex</b><small>プロジェクト・ファイル・差分</small></span>" + (codex ? icon("check", "trail") : ""), { cls: "pop-item" }) + "</div>" : "");
   }
+  function topbar() {
+    if (screen === "Codex") {
+      return '<header class="app-top"><div class="top-left">' + icon("folder") + '<b>my-website</b><span class="branch">' + icon("branch") + 'main</span></div><div class="top-right"><span class="ghost">' + icon("diff") + '差分</span><span class="ghost">' + icon("dots") + '</span></div></header>';
+    }
+    const toggle = '<div class="seg" role="group" aria-label="Chat / Work">' + ["Chat", "Work"].map(m => ui("mode-" + m, m, { cls: "seg-btn", pressed: selected === m })).join("") + "</div>";
+    return '<header class="app-top"><div class="top-left"><span class="model-pill">ChatGPT <b>5.6</b>' + icon("chevron", "chev") + '</span></div>' + toggle + '<div class="top-right"><span class="ghost">' + icon("external") + '共有</span><span class="avatar sm">S</span></div></header>';
+  }
+  function composer({ placeholder = "質問してみましょう", value = "", disabled = false, send = "send", sendGuide = false, chip = "", popup = "", left = "", readonly = false } = {}) {
+    const codex = screen === "Codex";
+    const bottomLeft = codex ? '<span class="chip">' + icon("folder") + 'my-website' + icon("chevron", "chev") + '</span><span class="chip">' + icon("home") + 'ローカル' + icon("chevron", "chev") + '</span>' : '<span class="chip round">' + icon("plus") + '</span>' + left;
+    const bottomRight = codex ? '<span class="chip">承認を求める' + icon("chevron", "chev") + '</span><span class="chip">GPT-5.6' + icon("chevron", "chev") + '</span>' : '<span class="chip round">' + icon("mic") + '</span>';
+    return '<div class="composer-wrap">' + popup + '<div class="composer' + (codex ? " codex" : "") + '">' + (chip ? '<div class="chip-row">' + chip + "</div>" : "") +
+      '<textarea id="learn-prompt" aria-label="練習用チャット入力欄" placeholder="' + placeholder + '"' + (disabled ? " disabled" : "") + (readonly ? " readonly" : "") + ">" + escape(value) + "</textarea>" +
+      '<div class="composer-bar"><div class="bar-left">' + (codex ? '<span class="chip round">' + icon("plus") + '</span>' : "") + bottomLeft + '</div><div class="bar-right">' + bottomRight +
+      ui(send, icon("up"), { cls: "send", guide: sendGuide, disabled }) + "</div></div></div>" +
+      (codex ? "" : '<p class="disclaimer">ChatGPT の回答は必ずしも正しいとは限りません。重要な情報は確認するようにしてください。</p>') + "</div>";
+  }
+  function mentionPopup(name, show) {
+    return '<div class="popover mention-results" id="mention-results"' + (show ? "" : " hidden") + '><span class="pop-label">導入済み</span>' +
+      ui("mention", (course === "skills" ? icon("sparkle") : '<span class="plug-ic sm">' + icon("github") + "</span>") + "<span><b>" + name + "</b><small>" + (course === "skills" ? "スキル · このプロジェクト" : "プラグイン · 接続済み") + "</small></span>", { cls: "pop-item", guide: true }) + "</div>";
+  }
+  function greeting() {
+    return '<div class="empty-state"><h1>' + (screen === "Codex" ? "次は何をつくりますか？" : selected === "Work" ? "何を仕上げましょうか？" : "お手伝いできることはありますか？") + "</h1></div>";
+  }
+  /* ---------- courses ---------- */
   function modeContent() {
-    const s=scenarios[task];
-    return '<div class="panel-box"><h3>課題 '+(task+1)+' / 3</h3><p>'+s.request+'</p><p class="lab-mini">この課題で選びやすい入口を試しましょう。WorkとCodexの能力には重なりがあります。</p></div>'+
-      (step===0?hint("上の切り替えで、使うモードを選ぶ")+'<p>現在：<strong>'+selected+'</strong></p>'+button("try-mode","このモードで依頼を送る",true):
-      '<div class="mock-result">'+s.result+'</div><p class="learn-summary">'+s.why+'</p>'+button("next-mode",task<2?"次の依頼を試す":"3つの違いを確認",true));
+    const s = scenarios[task];
+    if (step === 0) {
+      return '<div class="thread">' + greeting() + lab('<div class="lab-card"><b>課題 ' + (task + 1) + ' / 3</b><p>' + s.request + '</p><small>この課題で選びやすい入口を試しましょう。WorkとCodexの能力には重なりがあります。</small></div>' + hint("Chat / Work の切り替え、または左上のメニューで Codex を選ぶ") + '<p class="lab-now">現在：<strong>' + selected + "</strong></p>") + "</div>" +
+        composer({ value: s.request, readonly: true, send: "try-mode", sendGuide: true, placeholder: "" });
+    }
+    return '<div class="thread">' + userMsg(s.request) + botMsg(s.result) + lab('<p class="learn-summary">' + s.why + "</p>" + button("next-mode", task < 2 ? "次の依頼を試す" : "3つの違いを確認", true)) + "</div>" + composer({ disabled: true });
+  }
+  function modeComplete() {
+    return '<div class="thread">' + lab('<div class="lab-card"><b>相談・成果物・開発</b><p>Chat：会話で考える<br>Work：成果物まで任せる<br>Codex：開発の詳細を見ながら進める</p><small>WorkとCodexの能力には重なりがあります。目的と見やすい画面で選びましょう。</small>' + button("again", "もう一度練習") + "</div>") + "</div>" + composer({ disabled: true });
   }
   function skillsContent() {
-    if(step===0)return '<p>同じ整理手順を何度も使えるように、Codexへスキルを導入する練習です。</p>'+hint("Skillsを開く");
-    if(step===1)return '<div class="panel-box"><h3>Skills</h3><p>既存のスキルを入れるか、自分用に作るかを選びます。</p><div class="plugin-card"><b>Skill Installer</b><p>配布済みのスキルを追加します。</p>'+button("installer","$skill-installer をチャットで使う",true)+'</div><div class="plugin-card"><b>Skill Creator</b><p>手順を説明して、自分用スキルを作成します。</p>'+button("creator","$skill-creator をチャットで使う")+'</div></div>';
-    if(step===2)return '<p>'+ (skillRoute==="create"?'「依頼文整理」という教材用スキルを作ります。目的と手順を書きましょう。':'教材として用意した「依頼文整理」を追加します。実機では、導入したいスキル名や配布元のURLを伝えます。')+'</p>'+composer("creator");
-    if(step===3)return '<div class="panel-box"><h3>'+(skillRoute==="create"?'作成案':'配布内容の確認')+'：依頼文整理</h3><p>保存先：'+(skillRoute==="create"?'このプロジェクト内':'自分用のスキル一覧')+'</p><pre>'+(skillRoute==="create"?'.agents/skills/request-organizer/SKILL.md':'依頼文整理 / SKILL.md（教材配布データ）')+'</pre><pre>name: request-organizer\ndescription: 依頼文の整理に使う\n\n1. 目的を取り出す\n2. 対象ファイルを明確にする\n3. 変更内容と条件を分ける\n4. 不明点は推測せず質問する</pre><p>自分が繰り返したい手順になっているか確認します。</p>'+button("save-skill","内容を確認して"+(skillRoute==="create"?"保存":"導入")+"（練習）",true)+'</div>';
-    if(step===4)return '<div class="panel-box"><h3 class="success">✓ スキルを登録しました（練習）</h3><p>Skills一覧：依頼文整理 / '+(skillRoute==="create"?'このプロジェクト':'自分用')+'</p><p>次はチャット欄から呼び出して使ってみましょう。</p>'+button("new-chat","＋ 新しいチャット",true)+'</div>';
-    if(step===5)return '<p>課題：「見出しを変えて。色はそのまま」を、スキルで整理します。</p>'+hint(mention?"依頼を書いて送信":"入力欄に @ を入力し、候補を選ぶ")+composer("use");
-    return '<div class="mock-result"><h3>✓ 依頼文整理を使った結果（例）</h3><p><b>目的：</b>見出しを変更する<br><b>対象ファイル：</b>未指定<br><b>変更内容：</b>新しい見出しの文章は未指定<br><b>条件：</b>色は変えない</p><p>確認したいこと：どのファイルの見出しを、何という文章に変えますか？</p></div><p>スキルの「不明点を推測しない」という手順も反映されています。</p>'+button("again","もう一度練習");
+    const name = skillRoute === "create" ? "$skill-creator" : "$skill-installer";
+    if (step === 0) return '<div class="thread">' + greeting() + lab('<p>同じ整理手順を何度も使えるように、Codexへスキルを導入する練習です。</p>' + hint("サイドバーの「スキル」を開く")) + "</div>" + composer({ disabled: true });
+    if (step === 1) return '<div class="page"><div class="page-head"><h2>スキル</h2><p>作業手順を再利用できる指示のセットです。チャットでは <code>$スキル名</code> で呼び出します。</p></div><div class="card-grid">' +
+      '<article class="app-card"><div class="card-top">' + icon("sparkle") + '<b>skill-installer</b><span class="tag">OpenAI</span></div><p>配布済みのスキルを名前やURLから追加します。</p>' + ui("installer", "チャットで使う", { cls: "primary", guide: true }) + '</article>' +
+      '<article class="app-card"><div class="card-top">' + icon("sparkle") + '<b>skill-creator</b><span class="tag">OpenAI</span></div><p>手順を説明して、自分用のスキルを作成します。</p>' + ui("creator", "チャットで使う", { cls: "secondary" }) + "</article></div>" + lab(hint("既存を入れるか、自分で作るかを選ぶ")) + "</div>";
+    if (step === 2) return '<div class="thread">' + greeting() + lab('<p>' + (skillRoute === "create" ? "「依頼文整理」という教材用スキルを作ります。目的と手順を書きましょう。" : "教材として用意した「依頼文整理」を追加します。実機では、導入したいスキル名や配布元のURLを伝えます。") + "</p>" + button("example", "依頼文の例を入力")) + "</div>" +
+      composer({ chip: '<span class="token">' + name + "</span>", placeholder: "覚えてほしい手順を入力", value: input, sendGuide: !!input.trim() });
+    if (step === 3) return '<div class="thread">' + userMsg(name + " " + (input || "依頼文整理スキルを作成")) + botMsg('<div class="activity"><div class="tool-row">' + icon("file") + '<span>' + (skillRoute === "create" ? ".agents/skills/request-organizer/SKILL.md を作成" : "依頼文整理 / SKILL.md を取得（教材配布データ）") + "</span></div></div><p>" + (skillRoute === "create" ? "スキルの作成案です。" : "配布内容を確認してください。") + "保存先：<b>" + (skillRoute === "create" ? "このプロジェクト内" : "自分用のスキル一覧") + '</b></p><div class="code-card"><div class="code-head">' + icon("file") + 'SKILL.md</div><pre>name: request-organizer\ndescription: 依頼文の整理に使う\n\n1. 目的を取り出す\n2. 対象ファイルを明確にする\n3. 変更内容と条件を分ける\n4. 不明点は推測せず質問する</pre></div>') +
+      lab('<p>自分が繰り返したい手順になっているか確認します。</p>' + button("save-skill", "内容を確認して" + (skillRoute === "create" ? "保存" : "導入") + "（練習）", true)) + "</div>" + composer({ disabled: true });
+    if (step === 4) return '<div class="thread">' + botMsg('<p class="success">' + icon("check") + ' スキルを登録しました（練習）</p><p>スキル一覧：<b>依頼文整理</b> / ' + (skillRoute === "create" ? "このプロジェクト" : "自分用") + "</p>") + lab("<p>次はチャット欄から呼び出して使ってみましょう。</p>" + hint("サイドバーの「新しいチャット」を開く")) + "</div>" + composer({ disabled: true });
+    if (step === 5) return '<div class="thread">' + greeting() + lab("<p>課題：「見出しを変えて。色はそのまま」を、スキルで整理します。</p>" + hint(mention ? "依頼を書いて送信" : "入力欄に @ を入力し、候補を選ぶ") + button("example", "依頼文の例を入力")) + "</div>" +
+      composer({ chip: mention ? '<span class="token">' + icon("sparkle") + "依頼文整理</span>" : "", placeholder: "@を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!input.replace(/@/g, "").trim(), popup: mentionPopup("依頼文整理", input.includes("@") && !mention) });
+    return '<div class="thread">' + userMsg("@依頼文整理 " + input) + botMsg('<p><b>依頼文整理</b>を使って整理しました。</p><table class="kv"><tr><th>目的</th><td>見出しを変更する</td></tr><tr><th>対象ファイル</th><td>未指定</td></tr><tr><th>変更内容</th><td>新しい見出しの文章は未指定</td></tr><tr><th>条件</th><td>色は変えない</td></tr></table><p>確認したいこと：どのファイルの見出しを、何という文章に変えますか？</p>') +
+      lab("<p>スキルの「不明点を推測しない」という手順も反映されています。</p>" + button("again", "もう一度練習")) + "</div>" + composer({ disabled: true });
+  }
+  function pluginCard(guide) {
+    return '<article class="app-card plugin">' + '<div class="card-top"><span class="plug-ic">' + icon("github") + '</span><div><b>GitHub</b><small>By OpenAI</small></div><span class="tag desk">Desktop only</span></div><p>リポジトリ・Issue・PRなどを扱う道具と作業手順のセット。</p>' + ui("details", "詳細を見る", { cls: "secondary", guide }) + "</article>";
   }
   function pluginsContent() {
-    if(step===0)return '<p>GitHubプラグインを追加し、教材用リポジトリのREADMEを読む流れを体験します。</p>'+hint("Pluginsを開く");
-    if(step===1)return '<div class="panel-box"><h3>Plugins</h3><label for="plugin-search">プラグイン名で検索</label><input class="search-field" id="plugin-search" value="'+escape(search)+'" placeholder="GitHub">'+button("search","検索",true)+'<div id="search-results">'+(search?(search.toLowerCase().includes("github")?'<div class="plugin-card"><b>GitHub</b><p>リポジトリ・Issue・PRなどを扱う道具</p>'+button("details","詳細を見る",true)+'</div>':'<p>教材では「GitHub」を検索してください。</p>'):"")+'</div></div>';
-    if(step===2)return '<div class="panel-box"><h3>GitHub</h3><p>リポジトリの情報や開発作業を扱うプラグインです。</p><p>この課題ではREADMEを読む機能を使います。</p>'+button("install","＋ インストール（練習）",true)+'</div>';
-    if(step===3)return '<div class="panel-box"><h3>✓ インストール済み</h3><p>道具は追加されましたが、まだアカウントには接続していません。</p>'+button("connect","GitHubに接続（練習）",true)+'</div>';
-    if(step===4)return '<div class="panel-box"><h3>接続内容を確認（教材用）</h3><p>アカウント：student-demo<br>対象：school-festival</p><div class="permission-scope"><p>この練習で使う情報：選んだリポジトリのREADMEを読む。</p><label><input id="scope-check" type="checkbox"> 接続先と表示されたアクセス範囲を確認しました</label></div><p class="lab-mini">実際の認証画面・要求される権限はサービスにより異なります。このチェック欄は確認手順を学ぶための再現です。</p>'+button("authorize","接続を完了（練習）",true)+button("cancel-connect","戻って確認する")+'</div>';
-    if(step===5)return '<div class="panel-box"><h3>✓ 接続済み（練習）</h3><p>新しいチャットで、プラグインを指定して頼んでみましょう。</p>'+button("new-chat","＋ 新しいチャット",true)+'</div>';
-    if(step===6)return '<p>課題：GitHubのschool-festivalリポジトリのREADMEを要約します。</p>'+hint(mention?"何を調べるか書いて送信":"入力欄に @ を入力し、GitHubを選ぶ")+composer("use");
-    return '<div class="mock-result"><h3>✓ GitHubを使った結果（教材用データ）</h3><p>参照：student-demo / school-festival / README.md</p><p>文化祭の案内サイトです。index.htmlがトップページ、css/style.cssがデザインを担当します。公開前に開催日時とアクセス情報を確認します。</p></div><p>プラグインで情報にアクセスし、その情報に基づいて回答する流れを体験しました。</p>'+button("again","もう一度練習");
+    if (step === 0) return '<div class="thread">' + greeting() + lab("<p>GitHubプラグインを追加し、教材用リポジトリのREADMEを読む流れを体験します。</p>" + hint("サイドバーの「プラグイン」を開く")) + "</div>" + composer({ disabled: true });
+    if (step === 1) return '<div class="page"><div class="page-head"><h2>プラグイン</h2><p>スキル・アプリ・テンプレートをまとめて追加します。</p></div><div class="search-row"><label class="search-box" for="plugin-search">' + icon("search") + '<input id="plugin-search" value="' + escape(search) + '" placeholder="プラグインを検索"></label>' + ui("search", "検索", { cls: "primary", guide: true }) + '</div><div class="pill-row"><span class="pill on">すべて</span><span class="pill">開発</span><span class="pill">ドキュメント</span><span class="pill">データ</span></div><div id="search-results" class="card-grid">' +
+      (search ? (search.toLowerCase().includes("github") ? pluginCard(true) : '<p class="lab-note">教材では「GitHub」を検索してください。</p>') : '<article class="app-card dim"><div class="card-top"><span class="plug-ic">' + icon("file") + '</span><div><b>Docs</b><small>By OpenAI</small></div></div><p>ドキュメント作成の手順とテンプレート。</p></article><article class="app-card dim"><div class="card-top"><span class="plug-ic">' + icon("globe") + '</span><div><b>Web Research</b><small>By OpenAI</small></div></div><p>調査と出典整理のスキル。</p></article>') + "</div>" + lab(hint("GitHub を検索して詳細を開く")) + "</div>";
+    if (step === 2) return '<div class="page"><div class="detail-head"><span class="plug-ic lg">' + icon("github") + '</span><div><h2>GitHub</h2><p>By OpenAI · <span class="tag desk">Desktop only</span></p></div>' + ui("install", icon("plus") + "インストール", { cls: "primary", guide: true }) + '</div><p>リポジトリの情報や開発作業を扱うプラグインです。この課題ではREADMEを読む機能を使います。</p><h3>含まれるもの</h3><div class="pill-row"><span class="pill">' + icon("sparkle") + 'スキル 3</span><span class="pill">' + icon("puzzle") + 'アプリ 1</span><span class="pill">' + icon("file") + 'テンプレート 2</span></div>' + lab(hint("説明と含まれる機能を確認して＋で追加")) + "</div>";
+    if (step === 3) return '<div class="page"><div class="detail-head"><span class="plug-ic lg">' + icon("github") + '</span><div><h2>GitHub</h2><p class="success">' + icon("check") + ' インストール済み</p></div>' + ui("connect", "GitHubに接続", { cls: "primary", guide: true }) + '</div><div class="notice">道具は追加されましたが、まだアカウントには接続していません。</div>' + lab(hint("外部アカウントに接続する")) + "</div>";
+    if (step === 4) return '<div class="page"><div class="modal-card"><div class="modal-head"><span class="plug-ic">' + icon("github") + '</span><b>GitHub がアクセスを要求しています</b></div><dl class="kv-list"><dt>アカウント</dt><dd>student-demo</dd><dt>対象</dt><dd>school-festival</dd><dt>この練習で使う情報</dt><dd>選んだリポジトリのREADMEを読む</dd></dl><label class="check-row"><input id="scope-check" type="checkbox"> 接続先と表示されたアクセス範囲を確認しました</label><div class="modal-actions">' + ui("cancel-connect", "戻って確認する", { cls: "secondary" }) + ui("authorize", "接続を完了", { cls: "primary", guide: true }) + '</div></div>' + lab('<p class="lab-note">実際の認証画面・要求される権限はサービスにより異なります。このチェック欄は確認手順を学ぶための再現です。</p>') + "</div>";
+    if (step === 5) return '<div class="page"><div class="detail-head"><span class="plug-ic lg">' + icon("github") + '</span><div><h2>GitHub</h2><p class="success">' + icon("check") + ' 接続済み · student-demo</p></div></div>' + lab("<p>新しいチャットで、プラグインを指定して頼んでみましょう。</p>" + hint("サイドバーの「新しいチャット」を開く")) + "</div>";
+    if (step === 6) return '<div class="thread">' + greeting() + lab("<p>課題：GitHubのschool-festivalリポジトリのREADMEを要約します。</p>" + hint(mention ? "何を調べるか書いて送信" : "入力欄に @ を入力し、GitHubを選ぶ") + button("example", "依頼文の例を入力")) + "</div>" +
+      composer({ chip: mention ? '<span class="token">' + icon("github") + "GitHub</span>" : "", placeholder: "@を入力して候補を選び、依頼を入力", value: input, sendGuide: mention && !!input.replace(/@/g, "").trim(), popup: mentionPopup("GitHub", input.includes("@") && !mention) });
+    return '<div class="thread">' + userMsg("@GitHub " + input) + botMsg('<div class="activity"><div class="tool-row">' + icon("github") + "<span>student-demo/school-festival の README.md を取得</span></div></div><p>文化祭の案内サイトです。<b>index.html</b>がトップページ、<b>css/style.css</b>がデザインを担当します。公開前に開催日時とアクセス情報を確認します。</p><div class=\"source-row\"><span class=\"source\">" + icon("github") + "school-festival / README.md</span></div>") +
+      lab("<p>プラグインで情報にアクセスし、その情報に基づいて回答する流れを体験しました。</p>" + button("again", "もう一度練習")) + "</div>" + composer({ disabled: true });
   }
   function render() {
-    const complete=course==="modes"?step===2:course==="skills"?step===6:step===7;
-    const instructions=course==="skills"?skillSteps:pluginSteps;
-    document.querySelector("#progress").textContent=complete?"COMPLETE":course==="modes"?"課題 "+(task+1)+" / 3":"STEP "+(step+1)+" / "+(course==="skills"?6:7);
-    document.querySelector("#instruction").textContent=course==="modes"?(complete?"使い分けの練習が完了しました。":step===0?"依頼に合う入口を選んで送信しましょう。":"結果と、選んだ理由を確認しましょう。"):instructions[step];
-    const nav=course==="skills"?button("open-skills","Skills",step===0):course==="plugins"?button("open-plugins","Plugins",step===0):"";
-    root.innerHTML='<div class="learn-shell"><aside class="learn-sidebar"><strong>ChatGPT</strong><span class="lab-mini">練習用アカウント</span><p>＋ 新しいチャット</p>'+nav+'<p class="lab-mini">教材の操作だけを再現しています。</p></aside><div class="learn-main"><div class="learn-mobile-nav">'+nav+'</div>'+toolbar()+
-      (course==="modes"?(complete?'<div class="panel-box"><h3>相談・成果物・開発</h3><p>Chat：会話で考える<br>Work：成果物まで任せる<br>Codex：開発の詳細を見ながら進める</p><p>WorkとCodexの能力には重なりがあります。目的と見やすい画面で選びましょう。</p>'+button("again","もう一度練習")+'</div>':modeContent()):course==="skills"?skillsContent():pluginsContent())+
-      (feedback?'<p class="feedback" role="alert">'+escape(feedback)+'</p>':"")+'</div></div>';
-    root.querySelectorAll("[data-learn]").forEach(el=>el.addEventListener("click",()=>act(el.dataset.learn)));
-    const text=root.querySelector("#learn-prompt");
-    if(text){
-      text.addEventListener("input",()=>{input=text.value;const results=root.querySelector("#mention-results");results.hidden=mention||!input.includes("@")||(course==="skills"&&step===2);});
-      text.addEventListener("keydown",event=>{if(event.key==="Enter"&&(event.ctrlKey||event.metaKey)){event.preventDefault();act("send");}});
+    const complete = course === "modes" ? step === 2 : course === "skills" ? step === 6 : step === 7;
+    const instructions = course === "skills" ? skillSteps : pluginSteps;
+    document.querySelector("#progress").textContent = complete ? "COMPLETE" : course === "modes" ? "課題 " + (task + 1) + " / 3" : "STEP " + (step + 1) + " / " + (course === "skills" ? 6 : 7);
+    document.querySelector("#instruction").textContent = course === "modes" ? (complete ? "使い分けの練習が完了しました。" : step === 0 ? "依頼に合う入口を選んで送信しましょう。" : "結果と、選んだ理由を確認しましょう。") : instructions[step];
+    const body = course === "modes" ? (complete ? modeComplete() : modeContent()) : course === "skills" ? skillsContent() : pluginsContent();
+    const mobileNav = (course === "modes" && step === 0 ? '<div class="brand-wrap">' + switcher("nav-item") + "</div>" : "") + ((course === "skills" && step === 0) ? ui("open-skills", icon("sparkle") + "スキル", { cls: "nav-item", guide: true }) : (course === "plugins" && step === 0) ? ui("open-plugins", icon("puzzle") + "プラグイン", { cls: "nav-item", guide: true }) : ((course === "skills" && step === 4) || (course === "plugins" && step === 5)) ? ui("new-chat", icon("compose") + "新しいチャット", { cls: "nav-item", guide: true }) : "");
+    root.innerHTML = '<div class="app-window gpt' + (screen === "Codex" ? " codex" : "") + '"><div class="win-title">' + traffic + "<span>" + (screen === "Codex" ? "Codex" : "ChatGPT") + '</span></div><div class="app-body">' + sidebar() + '<section class="app-main"><div class="mobile-nav">' + mobileNav + "</div>" + topbar() + body +
+      (feedback ? '<p class="feedback" role="alert">' + escape(feedback) + "</p>" : "") + "</section></div></div>";
+    root.querySelectorAll("[data-learn]").forEach(el => el.addEventListener("click", () => act(el.dataset.learn)));
+    const thread = root.querySelector(".thread");
+    if (thread && thread.querySelector(".msg")) thread.scrollTop = thread.scrollHeight;
+    const text = root.querySelector("#learn-prompt");
+    if (text) {
+      text.addEventListener("input", () => { input = text.value; const results = root.querySelector("#mention-results"); if (results) results.hidden = mention || !input.includes("@") || (course === "skills" && step === 2); const sendBtn = root.querySelector('[data-learn="send"]'); if (sendBtn && (course !== "skills" || step !== 2)) sendBtn.classList.toggle("guided", mention && !!input.replace(/@/g, "").trim()); if (sendBtn && course === "skills" && step === 2) sendBtn.classList.toggle("guided", !!input.trim()); });
+      text.addEventListener("keydown", event => { if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) { event.preventDefault(); act("send"); } });
     }
-    root.querySelector("#plugin-search")?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();act("search");}});
+    root.querySelector("#plugin-search")?.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); act("search"); } });
   }
   function act(action) {
-    feedback="";
-    if(action==="selector")menu=!menu;
-    if(action==="product-chatgpt"){screen="ChatGPT";selected="Chat";menu=false;}
-    if(action==="product-codex"){screen="Codex";selected="Codex";menu=false;}
-    if(action.startsWith("mode-"))selected=action.slice(5);
-    if(action==="try-mode"){
-      if(selected===scenarios[task].mode)step=1;
-      else feedback="この課題では "+scenarios[task].mode+" を試しましょう。"+scenarios[task].why+" ほかのモードでも対応できることはあります。";
+    feedback = "";
+    if (action === "selector") menu = !menu;
+    if (action === "product-chatgpt") { screen = "ChatGPT"; selected = "Chat"; menu = false; }
+    if (action === "product-codex") { screen = "Codex"; selected = "Codex"; menu = false; }
+    if (action.startsWith("mode-")) selected = action.slice(5);
+    if (action === "try-mode") {
+      if (selected === scenarios[task].mode) step = 1;
+      else feedback = "この課題では " + scenarios[task].mode + " を試しましょう。" + scenarios[task].why + " ほかのモードでも対応できることはあります。";
     }
-    if(action==="next-mode"){if(task<2){task++;step=0;}else step=2;}
-    if(action==="open-skills"&&course==="skills"&&step===0){step=1;screen="Codex";selected="Codex";}
-    if(action==="creator"){step=2;input="";}
-    if(action==="installer"){skillRoute="install";step=2;input="";}
-    if(action==="save-skill"){installed=true;step=4;}
-    if(action==="open-plugins"&&course==="plugins"&&step===0)step=1;
-    if(action==="search")search=root.querySelector("#plugin-search").value.trim();
-    if(action==="details")step=2;
-    if(action==="install"){installed=true;step=3;}
-    if(action==="connect")step=4;
-    if(action==="authorize"){
-      if(root.querySelector("#scope-check").checked){connected=true;step=5;}
-      else feedback="表示された接続先とアクセス範囲を確認し、チェックしてください。";
+    if (action === "next-mode") { if (task < 2) { task++; step = 0; } else step = 2; }
+    if (action === "open-skills" && course === "skills" && step === 0) { step = 1; screen = "Codex"; selected = "Codex"; }
+    if (action === "creator") { step = 2; input = ""; }
+    if (action === "installer") { skillRoute = "install"; step = 2; input = ""; }
+    if (action === "save-skill") { installed = true; step = 4; }
+    if (action === "open-plugins" && course === "plugins" && step === 0) step = 1;
+    if (action === "search") search = root.querySelector("#plugin-search").value.trim();
+    if (action === "details") step = 2;
+    if (action === "install") { installed = true; step = 3; }
+    if (action === "connect") step = 4;
+    if (action === "authorize") {
+      if (root.querySelector("#scope-check").checked) { connected = true; step = 5; }
+      else feedback = "表示された接続先とアクセス範囲を確認し、チェックしてください。";
     }
-    if(action==="cancel-connect")step=3;
-    if(action==="new-chat"){step=course==="skills"?5:6;input="";mention=false;}
-    if(action==="mention"){mention=true;input=input.replace(/@[^\s　]*\s*/,"");}
-    if(action==="example"){
-      input=course==="skills"?(step===2?(skillRoute==="create"?"「依頼文整理」をこのプロジェクト用に作って。目的・対象ファイル・変更内容・条件に整理し、不明点は質問して。":"教材で配布された「依頼文整理」を自分用のスキルとして導入してください。"):"見出しを変えて。色はそのまま。"):"school-festivalのREADMEを要約して。";
-      if(!(course==="skills"&&step===2)&&!mention)input="@ "+input;
+    if (action === "cancel-connect") step = 3;
+    if (action === "new-chat") { step = course === "skills" ? 5 : 6; input = ""; mention = false; }
+    if (action === "mention") { mention = true; input = input.replace(/@[^\s　]*\s*/, ""); }
+    if (action === "example") {
+      input = course === "skills" ? (step === 2 ? (skillRoute === "create" ? "「依頼文整理」をこのプロジェクト用に作って。目的・対象ファイル・変更内容・条件に整理し、不明点は質問して。" : "教材で配布された「依頼文整理」を自分用のスキルとして導入してください。") : "見出しを変えて。色はそのまま。") : "school-festivalのREADMEを要約して。";
+      if (!(course === "skills" && step === 2) && !mention) input = "@ " + input;
     }
-    if(action==="send"){
-      if(!input.trim())feedback="依頼内容を入力してください。例文も使えます。";
-      else if(course==="skills"&&step===2){step=3;input="";}
-      else if(!mention)feedback="@の候補から使う機能を選んでください。文字を打つだけでなく、選択する操作を体験しましょう。";
-      else if(!input.replace(/@/g,"").trim())feedback="機能を選んだら、依頼内容も書きましょう。";
-      else if(course==="skills"&&installed)step=6;
-      else if(course==="plugins"&&installed&&connected)step=7;
+    if (action === "send") {
+      if (!input.trim()) feedback = "依頼内容を入力してください。例文も使えます。";
+      else if (course === "skills" && step === 2) { step = 3; }
+      else if (!mention) feedback = "@の候補から使う機能を選んでください。文字を打つだけでなく、選択する操作を体験しましょう。";
+      else if (!input.replace(/@/g, "").trim()) feedback = "機能を選んだら、依頼内容も書きましょう。";
+      else if (course === "skills" && installed) step = 6;
+      else if (course === "plugins" && installed && connected) step = 7;
     }
-    if(action==="again")reset(course);
+    if (action === "again") reset(course);
     render();
-    if(["example","mention"].includes(action))root.querySelector("#learn-prompt")?.focus();
+    if (["example", "mention"].includes(action)) root.querySelector("#learn-prompt")?.focus();
   }
-  return {reset,render};
+  return { reset, render };
 })();
