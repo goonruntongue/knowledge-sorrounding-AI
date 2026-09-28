@@ -77,6 +77,7 @@
       let openedFile = false;
       let changed = false;
       let saved = false;
+      let revealNext = false;
       let lastFocus;
 
       const task = (title, text) => `<div class="vscode-lab-task"><small>ステップ ${stage + 1} / 5</small><h3>${title}</h3><p>${text}</p></div>`;
@@ -103,6 +104,13 @@
         }
         bind();
         requestAnimationFrame(showCoach);
+        if (revealNext) {
+          requestAnimationFrame(() => {
+            const nextButton = main.querySelector("[data-next]:not([disabled])");
+            nextButton?.scrollIntoView({ behavior: "smooth", block: "center" });
+            revealNext = false;
+          });
+        }
       }
 
       function editor() { return `<div class="vscode-lab-editor"><span class="line"><span class="num">1</span><span class="tag">&lt;!doctype html&gt;</span></span><span class="line"><span class="num">2</span><span class="tag">&lt;h1&gt;</span><span class="text ${changed ? "changed" : ""}">${changed ? "Welcome to my website!" : "Hello!"}</span><span class="tag">&lt;/h1&gt;</span></span><span class="line"><span class="num">3</span><span class="tag">&lt;p&gt;</span><span class="text">My first website</span><span class="tag">&lt;/p&gt;</span></span></div>`; }
@@ -117,6 +125,7 @@
           if (action === "edit") changed = true;
           if (action === "save") saved = true;
           if (action === "golive") stage = 5;
+          if (["live", "folder", "file", "edit", "save"].includes(action)) revealNext = true;
           render();
         }));
         lab.querySelectorAll("[data-next]").forEach(button => button.addEventListener("click", () => { if (!button.disabled && stage < 4) { stage += 1; render(); } }));
@@ -159,12 +168,12 @@
         coach.style.top = `${top}px`;
         lab.appendChild(coach);
       }
-      function reset() { stage = 0; japanese = false; liveServer = false; folder = false; openedFile = false; changed = false; saved = false; render(); }
+      function reset() { stage = 0; japanese = false; liveServer = false; folder = false; openedFile = false; changed = false; saved = false; revealNext = false; render(); }
       function open() { lastFocus = document.activeElement; reset(); lab.classList.add("is-open"); document.body.classList.add("vscode-lab-modal-open"); close.focus(); }
       function shut() { lab.classList.remove("is-open"); document.body.classList.remove("vscode-lab-modal-open"); lastFocus?.focus(); }
       launch.addEventListener("click", open); close.addEventListener("click", shut); restart.addEventListener("click", reset); window.addEventListener("resize", showCoach);
       lab.addEventListener("click", event => { if (event.target === lab) shut(); });
-      document.addEventListener("keydown", event => { if (!lab.classList.contains("is-open")) return; if (event.key === "Escape") shut(); if (stage === 3 && event.ctrlKey && event.key.toLowerCase() === "s") { event.preventDefault(); if (changed) { saved = true; render(); } } });
+      document.addEventListener("keydown", event => { if (!lab.classList.contains("is-open")) return; if (event.key === "Escape") shut(); if (stage === 3 && event.ctrlKey && event.key.toLowerCase() === "s") { event.preventDefault(); if (changed) { saved = true; revealNext = true; render(); } } });
     })();
   </script>
 </body>
