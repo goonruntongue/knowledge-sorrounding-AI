@@ -99,7 +99,7 @@
           main.innerHTML = task("作品フォルダーを紐づける", "「フォルダーを開く」を選び、作業場所をVS Codeに関連付けます。") + empty() + next("HTMLファイルを開く", !folder);
         } else if (stage === 2) {
           side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>左ペインに出た <strong>index.html</strong> をクリックします。</p>`;
-          main.innerHTML = task("HTMLファイルを開く", "左ペインの index.html をクリックして、編集するコードを表示してください。") + (openedFile ? editor() : empty()) + next("コードを書き換える", !openedFile);
+          main.innerHTML = task("HTMLファイルを開く", "左ペインの index.html をクリックして、編集するコードを表示してください。") + empty();
         } else if (stage === 3) {
           side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>${saved ? "✓ 保存しました。次は Go Live です。" : "index.html を編集したら保存します。"}</p>`;
           main.innerHTML = task("コードを書き換えて保存する", typing ? "文字を入力しています。入力が終わったら保存しましょう。" : changed ? "変更できました。<strong>Ctrl + S</strong> を押すか、保存ボタンをクリックしてください。" : "「コードを書き換える」を押すと、編集内容が変化します。") + editor() + `<button class="vscode-lab-next" data-action="edit" ${changed ? "disabled" : ""}>コードを書き換える</button> <button class="vscode-lab-next" data-action="save" ${changed && !saved && !typing ? "" : "disabled"}>Ctrl + S で保存</button>` + next("Go Liveで確認する", !saved);
@@ -142,7 +142,7 @@
           if (action === "japanese") japanese = true;
           if (action === "live") liveServer = true;
           if (action === "folder") folder = true;
-          if (action === "file") openedFile = true;
+          if (action === "file") { openedFile = true; stage = 3; }
           if (action === "edit") { changed = true; typing = true; typedText = ""; }
           if (action === "save") saved = true;
           if (action === "golive") stage = 5;
@@ -159,7 +159,6 @@
         if (stage === 1 && !folder) return { selector: '[data-action="folder"]', text: "ここでフォルダーを開く" };
         if (stage === 1) return { selector: "[data-next]", text: "次のステップへ" };
         if (stage === 2 && !openedFile) return { selector: '[data-action="file"]', text: "index.html をクリック" };
-        if (stage === 2) return { selector: "[data-next]", text: "コード編集へ進む" };
         if (stage === 3 && !changed) return { selector: '[data-action="edit"]', text: "コードを書き換える" };
         if (stage === 3 && typing) return null;
         if (stage === 3 && !saved) return { selector: '[data-action="save"]', text: "Ctrl + S で保存" };
