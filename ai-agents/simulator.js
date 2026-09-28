@@ -5,7 +5,7 @@
   const progress = document.querySelector("#progress");
   const instruction = document.querySelector("#instruction");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let app = "codex", stage = 0, mode = "ask", menu = "", timer, returnFocus;
+  let app = "modes", stage = 0, mode = "ask", menu = "", timer, returnFocus;
   let prompt = "", response = "", running = false, error = "";
   const title = "はじめてのAI制作";
   const sample = "index.htmlのh1を「はじめてのAI制作」に変更してください。ほかの文章やレイアウトは変えず、変更箇所と確認結果を教えてください。";
@@ -37,6 +37,7 @@
   function cancelRun() { clearTimeout(timer); running = false; }
   function reset(nextApp = app) {
     cancelRun(); app = nextApp; stage = 0; mode = app === "codex" ? "ask" : "plan";
+    if (["modes", "skills", "plugins"].includes(app)) window.ChatGPTLessons.reset(app);
     menu = ""; prompt = ""; response = ""; error = ""; render();
   }
   function permissionPanel() {
@@ -59,6 +60,8 @@
     return '<div class="browser-preview"><small>練習用プレビュー / index.html</small><h3>' + title + '</h3><p>My first website</p></div><p class="success">✓ 依頼 → 作業 → 差分 → 表示確認まで完了！</p><p>実機でも変更点を確認して、よければGitに履歴を残しましょう。</p>' + control("reset", "別の権限でもう一度", true) + control("switch-app", app === "codex" ? "Claude Codeも試す" : "Codexも試す", true);
   }
   function render() {
+    document.querySelectorAll("[data-app]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.app === app)));
+    if (["modes", "skills", "plugins"].includes(app)) { window.ChatGPTLessons.render(); return; }
     progress.textContent = stage < 6 ? "STEP " + (stage + 1) + " / 6" : "COMPLETE";
     instruction.textContent = messages[stage];
     document.querySelectorAll("[data-app]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.app === app)));
