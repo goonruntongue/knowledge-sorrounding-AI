@@ -85,7 +85,7 @@
       let lastFocus;
       const editedHeading = "Welcome to my website!";
 
-      const task = (title, text) => `<div class="vscode-lab-task"><small>ステップ ${stage + 1} / 5</small><h3>${title}</h3><p>${text}</p></div>`;
+      const task = (title, text) => `<div class="vscode-lab-task"><small>ステップ ${stage + 1} / 6</small><h3>${title}</h3><p>${text}</p></div>`;
       const next = (label = "次へ進む", disabled = false) => `<button class="vscode-lab-next" data-next ${disabled ? "disabled" : ""}>${label} →</button>`;
       const empty = () => `<div class="vscode-lab-empty"><div><div class="vscode-mark">◢</div><p>VS Code 練習画面</p></div></div>`;
       const extension = (name, description, installed, id) => `<div class="vscode-lab-extension"><div class="vscode-lab-extension-icon"><img src="img/${name === "Live Server" ? "live-server-icon.png" : "japanese-language-pack-icon.png"}" alt=""></div><div><strong>${name}</strong><small>${description}</small><button class="vscode-lab-button" data-action="${id}" ${installed ? "disabled" : ""}>${installed ? "✓ インストール済み" : "インストール"}</button></div></div>`;
