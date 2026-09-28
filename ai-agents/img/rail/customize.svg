@@ -1,0 +1,17 @@
+<svg id="customize.svg" xmlns="http://www.w3.org/2000/svg" width="20.656" height="20.563" viewBox="0 0 20.656 20.563">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="シェイプ_1" data-name="シェイプ 1" class="cls-1" d="M28.993,304.974l2.025,1.806" transform="translate(-23.375 -296.125)"/>
+  <path id="シェイプ_2" data-name="シェイプ 2" class="cls-1" d="M32.55,301.691l1.751,1.751" transform="translate(-23.375 -296.125)"/>
+  <path id="シェイプ_3" data-name="シェイプ 3" class="cls-1" d="M29.923,307.273l4.98-4.214c1.642,0,4.323,4.214,1.97,6.567S30.8,309.3,29.923,307.273Z" transform="translate(-23.375 -296.125)"/>
+  <path id="シェイプ_4" data-name="シェイプ 4" class="cls-1" d="M36.763,309.68c2.189,1.2,6.512-.766,6.512-5.307s-5.2-7.5-9.3-7.5a10.2,10.2,0,0,0-9.85,10.178c0,6.621,10.178,11.984,15.376,6.785" transform="translate(-23.375 -296.125)"/>
+</svg>

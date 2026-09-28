@@ -5,7 +5,7 @@
   const progress = document.querySelector("#progress");
   const instruction = document.querySelector("#instruction");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const { icon, gptMark, codexMark, claudeMark, escape, caption, winbar, tour } = window.LabUI;
+  const { icon, gptMark, codexMark, claudeMark, escape, caption, winbar, tour, gpt } = window.LabUI;
   let app = "modes", stage = 0, mode = "ask", menu = "", timer, returnFocus;
   let prompt = "", response = "", running = false, error = "", toolsShown = 0;
   const title = "はじめてのAI制作";
@@ -24,8 +24,8 @@
   };
   const chosen = () => modes[app].find(m => m[0] === mode);
   const control = (action, label, enabled, guided = false, tip = "") => '<button type="button" class="sim-control' + (guided ? " guided" : "") + '" data-action="' + action + '"' + (tip ? ' data-tip="' + escape(tip) + '"' : "") + (enabled ? "" : " disabled") + ">" + label + "</button>";
-  const ui = (action, label, { guide = false, cls = "", disabled = false, pressed, tip = "" } = {}) =>
-    '<button type="button" class="ui-btn ' + cls + (guide ? " guided" : "") + '" data-action="' + action + '"' + (tip ? ' data-tip="' + escape(tip) + '"' : "") + (disabled ? " disabled" : "") + (pressed !== undefined ? ' aria-pressed="' + pressed + '"' : "") + ">" + label + "</button>";
+  const ui = (action, label, { guide = false, cls = "", disabled = false, pressed, tip = "", aria = "" } = {}) =>
+    '<button type="button" class="ui-btn ' + cls + (guide ? " guided" : "") + '" data-action="' + action + '"' + (tip ? ' data-tip="' + escape(tip) + '"' : "") + (aria ? ' aria-label="' + aria + '" data-label="' + aria + '"' : "") + (disabled ? " disabled" : "") + (pressed !== undefined ? ' aria-pressed="' + pressed + '"' : "") + ">" + label + "</button>";
   const coach = text => '<div class="coach">' + text + "</div>";
   const lab_ = html => '<div class="lab-layer">' + html + "</div>";
   const messages = [
@@ -110,20 +110,24 @@
     if (claude) {
       return '<div class="composer-wrap">' + popup + '<div class="composer claude">' + area + '<div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + "</span>" + envChip + folderBtn + '</div><div class="bar-right">' + permBtn + modelChip + sendSlot + "</div></div></div></div>";
     }
-    return '<div class="composer-wrap">' + popup + '<div class="composer-stack"><div class="tray above">' + folderBtn + '</div><div class="composer codex">' + area + '<div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + "</span>" + permBtn + '</div><div class="bar-right">' + modelChip + '<span class="chip round plain">' + icon("mic") + "</span>" + sendSlot + '</div></div></div></div><p class="disclaimer">Codex は間違えることがあります。変更内容を確認してください。</p></div>';
+    const codexSend = running ? ui("stop", icon("stop"), { cls: "gc-send", guide: true, tip: "作業中。途中で止めるにはここ", aria: "停止" }) : ui("send", icon(hasText ? "up" : "wave"), { cls: "gc-send" + (hasText ? "" : " voice"), guide: stage === 3 && hasText, disabled: stage !== 3, tip: "内容を読んで送信", aria: "送信" });
+    const trayFolder = ui("folder", icon("folder") + "<span>" + folderLabel + "</span>", { cls: "gtray-item", guide: stage === 1 && !menu, disabled: stage !== 1, pressed: menu === "folder", tip: "作品フォルダを紐づける" });
+    const codexPerm = ui("permission", icon(full ? "warn" : "shield") + "<span>" + chosen()[1] + "</span>" + icon("chevron", "chev"), { cls: "gc-perm" + (full ? " full" : ""), guide: stage === 2 && !menu, disabled: stage !== 2, pressed: menu === "permission", tip: "任せる範囲を設定" });
+    return gpt.composer({ kind: "codex", id: "request", label: "AIへの依頼文", placeholder: "何でもどうぞ", value: stage === 3 ? prompt : "", disabled: stage !== 3, areaGuide: stage === 3 && !hasText, areaTip: "変更したいファイル・内容・条件を書く", perm: codexPerm, tray: trayFolder, popup, send: codexSend });
   }
   function codexShell() {
     if (stage === 0) {
-      const menuOpen = menu === "product";
-      return '<div class="app-window gpt">' + winbar("ChatGPT", gptMark) + '<div class="app-body"><aside class="app-side"><div class="brand-wrap">' +
-        ui("product-menu", gptMark + "<span>ChatGPT</span>" + icon("chevron", "chev"), { cls: "brand-btn", guide: !menuOpen, pressed: menuOpen, tip: "アプリの切り替えメニューを開く" }) +
-        (menuOpen ? '<div class="popover product-menu" role="menu"><span class="pop-label">アプリを切り替え</span><span class="pop-item static">' + gptMark + "<span><b>ChatGPT</b><small>Chat / Work</small></span>" + icon("check", "trail") + "</span>" + ui("activate", codexMark + "<span><b>Codex</b><small>プロジェクト・ファイル・差分</small></span>", { cls: "pop-item", guide: true, tip: "Codex を選ぶ" }) + "</div>" : "") +
-        '</div><nav class="side-nav"><span class="nav-item static">' + icon("compose") + "<span>新しいチャット</span></span><span class=\"nav-item static\">" + icon("search") + "<span>チャットを検索</span></span><span class=\"nav-item static\">" + icon("image") + "<span>ライブラリ</span></span><hr><span class=\"nav-item static\">" + icon("folder") + "<span>プロジェクト</span></span><span class=\"nav-item static\">" + icon("sparkle") + "<span>スキル</span></span><span class=\"nav-item static\">" + icon("puzzle") + '<span>プラグイン</span></span><p class="nav-section">最近</p><div class="recent"><span>文化祭サイトの見出し案</span><span>企画書のたたき台</span></div></nav><div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside>' +
-        '<section class="app-main"><div class="mobile-nav">' + ui("activate", codexMark + "Codex に切り替え", { cls: "nav-item", guide: true, tip: "開発用の Codex へ" }) + '</div><header class="app-top"><div class="top-left"></div><div class="seg"><span class="seg-btn" aria-pressed="true">Chat</span><span class="seg-btn" aria-pressed="false">Work</span></div><div class="top-right"><span class="avatar sm">S</span></div></header>' +
-        '<div class="thread"><div class="empty-state"><h1>お手伝いできることはありますか？</h1></div>' + lab_('<p class="lab-note">Codex は ChatGPT アプリの中の開発用モードです。左上のメニューから切り替えます。</p>') + '</div><div class="composer-wrap"><div class="composer"><textarea disabled placeholder="質問してみましょう"></textarea><div class="composer-bar"><div class="bar-left"><span class="chip round">' + icon("plus") + '</span><span class="chip perm">' + icon("shield") + '承認を求める</span></div><div class="bar-right"><span class="chip model">' + icon("moon") + "GPT-5.6 Luna 軽" + icon("chevron", "chev") + '</span><span class="chip round plain">' + icon("mic") + '</span><span class="ui-btn send voice">' + icon("wave") + "</span></div></div></div></div></section></div></div>";
+      const sw = gpt.productSwitch(ui, { product: "ChatGPT", open: menu === "product", toggle: "product-menu", codex: "activate", guideToggle: true, guideCodex: true, tip: "アプリの切り替えメニューを開く" });
+      const main = gpt.top({ center: gpt.seg("Chat"), right: icon("temp") + icon("newwin") }) + '<div class="ghome"><h1 class="g-h1">今日は何が気になりますか？</h1>' +
+        gpt.composer({ kind: "chat", id: "idle-prompt", placeholder: "ChatGPT に聞く", disabled: true, send: ui("noop", icon("wave"), { cls: "gc-send voice", disabled: true, aria: "音声モード" }) }) + gpt.suggestions +
+        lab_('<p class="lab-note">Codex は ChatGPT アプリの中の開発用モードです。左上の「ChatGPT ▾」から切り替えます。</p>') + "</div>";
+      return gpt.frame({ rail: gpt.rail(ui, "home"), panel: gpt.homePanel({ product: "ChatGPT", switcher: sw }), main, mobile: sw });
     }
-    return '<div class="app-window gpt codex">' + winbar("Codex", codexMark) + '<div class="app-body"><aside class="app-side"><div class="brand-wrap"><span class="brand-btn static">' + codexMark + "<span>Codex</span>" + icon("chevron", "chev") + '</span></div><nav class="side-nav"><span class="nav-item static">' + icon("compose") + "<span>新しいチャット</span></span><span class=\"nav-item static\">" + icon("search") + "<span>検索</span><kbd>Ctrl+G</kbd></span><span class=\"nav-item static\">" + icon("puzzle") + "<span>プラグイン</span></span><span class=\"nav-item static\">" + icon("clock") + '<span>オートメーション</span></span><p class="nav-section">' + icon("pin") + 'ピン留め</p><p class="nav-section">プロジェクト</p>' + (stage > 1 ? '<span class="nav-item static on">' + icon("folder") + "<span>my-website</span></span>" : '<span class="nav-item static dim"><span>まだありません</span></span>') + '<p class="nav-section">チャット</p><div class="recent">' + (stage >= 4 ? "<span>" + escape(prompt.slice(0, 18)) + "…</span>" : "") + "<span>スタイルの調整</span></div></nav>" +
-      '<div class="account"><span class="avatar">S</span><span><b>Student</b><small>練習用アカウント</small></span></div></aside><section class="app-main"><header class="app-top"><div class="top-left">' + (stage > 1 ? icon("folder") + "<b>my-website</b><span class=\"branch\">" + icon("branch") + "main</span>" : "<b>新しいチャット</b>") + '</div><div class="top-right">' + (stage >= 5 ? '<span class="ghost stat-pill"><b class="add">+1</b> <b class="del">−1</b></span>' : "") + '<span class="ghost">' + icon("dots") + '</span></div></header><div class="work-area' + (stage === 6 ? " split" : "") + '"><div class="thread">' + conversation() + "</div>" + (stage === 6 ? browserPane() : "") + "</div>" + composer() + "</section></div></div>";
+    const panel = gpt.homePanel({ product: "Codex", switcher: gpt.productSwitch(ui, { product: "Codex" }), luna: true, extraChats: stage >= 4 ? [prompt.slice(0, 18) + "…"] : [] });
+    const left = stage > 1 ? '<span class="gtop-proj">' + icon("folder") + '<b>my-website</b><span class="branch">' + icon("branch") + "main</span></span>" : "";
+    const right = (stage >= 5 ? '<span class="ghost stat-pill"><b class="add">+1</b> <b class="del">−1</b></span>' : "") + icon("newwin");
+    const main = gpt.top({ left, right }) + '<div class="work-area' + (stage === 6 ? " split" : "") + '"><div class="thread">' + conversation() + "</div>" + (stage === 6 ? browserPane() : "") + "</div>" + composer();
+    return gpt.frame({ rail: gpt.rail(ui, "home"), panel, main, cls: "codex" });
   }
   function claudeShell() {
     const tabs = '<div class="claude-tabs" role="tablist"><span class="ctab" aria-selected="' + (stage === 0) + '">' + icon("chat") + "チャット</span><span class=\"ctab\" aria-selected=\"false\">" + icon("briefcase") + "Cowork</span>" + (stage === 0 ? ui("activate", icon("code") + "Code", { cls: "ctab", guide: true, pressed: false, tip: "Code タブへ切り替え" }) : '<span class="ctab" aria-selected="true">' + icon("code") + "Code</span>") + "</div>";
@@ -147,7 +151,7 @@
     simulation.querySelectorAll('[name="mode"]').forEach(r => r.addEventListener("change", () => { mode = r.value; render(); }));
     const request = simulation.querySelector("#request");
     if (request) {
-      request.addEventListener("input", e => { prompt = e.target.value; const s = simulation.querySelector('[data-action="send"]'); if (s) s.classList.toggle("guided", stage === 3 && !!prompt.trim()); request.classList.toggle("guided", stage === 3 && !prompt.trim()); simulation.querySelector('[data-action="sample"]')?.classList.toggle("guided", !prompt.trim()); tour.update(); });
+      request.addEventListener("input", e => { prompt = e.target.value; const s = simulation.querySelector('[data-action="send"]'); if (s) { s.classList.toggle("guided", stage === 3 && !!prompt.trim()); if (app === "codex") { s.classList.toggle("voice", !prompt.trim()); s.innerHTML = icon(prompt.trim() ? "up" : "wave"); } } request.classList.toggle("guided", stage === 3 && !prompt.trim()); simulation.querySelector('[data-action="sample"]')?.classList.toggle("guided", !prompt.trim()); tour.update(); });
       request.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); act("send"); } });
     }
     tour.update();

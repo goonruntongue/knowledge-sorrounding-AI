@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.844" height="19.843" viewBox="0 0 19.844 19.843">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="schedule.svg" class="cls-1" d="M33.264,131.43a9.924,9.924,0,1,1-9.924,9.924A9.924,9.924,0,0,1,33.264,131.43Zm0,0.829a9.1,9.1,0,1,1-9.1,9.1A9.1,9.1,0,0,1,33.264,132.259ZM33,135v7l-4.562,4.88,0.98,0.184,4.611-4.938,0.022-7.093Z" transform="translate(-23.344 -131.438)"/>
+</svg>
