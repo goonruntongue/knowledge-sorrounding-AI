@@ -57,7 +57,11 @@ window.LabUI = (() => {
     pen: '<path d="M4 20c3-.5 5-2 7-4.5M14.5 4.5l5 5-8.5 8.5-4.5 1 1-4.5Z"/>',
     gauge: '<path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="m12 15 3.5-4.5"/>',
     note: '<rect x="4" y="4" width="16" height="13" rx="2"/><path d="M8 9h8M8 12.5h5M9 17l-2 3.5"/>',
-    plug: '<path d="M9 3v5M15 3v5M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0Z"/><path d="M12 17v4"/>'
+    plug: '<path d="M9 3v5M15 3v5M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0Z"/><path d="M12 17v4"/>',
+    bolt: '<path d="M13.5 2.5 5 13.5h6l-1 8 8.5-11h-6Z" fill="currentColor"/>',
+    hand: '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12M11 11V4.5a1.5 1.5 0 0 1 3 0V12M14 11.5V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.6-2.2L3 16a1.5 1.5 0 0 1 2.3-1.9L8 16"/>',
+    bot: '<circle cx="12" cy="12" r="9"/><path d="m8.5 10 2.5 2-2.5 2M13 15h3"/>',
+    folderplus: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v3"/><path d="M3 7v11a2 2 0 0 0 2 2h7M18 15v6M15 18h6"/>'
   };
   /* App marks: repository SVG logos (ChatGPT-Logo.svg / Claude-ai-icon.svg). GitHub mark: img/github.svg (see img/README.md). */
   const brand = { github: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" };
@@ -157,15 +161,15 @@ window.LabUI = (() => {
       const btn = toggle ? ui(toggle, label, { cls: "gp-switch", guide: guideToggle && !open, pressed: !!open, tip }) : '<span class="gp-switch static">' + label + "</span>";
       return '<div class="gp-switch-wrap">' + btn + (open ? '<div class="pm-menu" role="menu">' + item("ChatGPT", "作成、学習、探索", chatgpt, guideChatgpt, !cur) + item("Codex", "ビルド、デバッグ、リリース", codex, guideCodex, cur) + "</div>" : "") + "</div>";
     }
-    const luna = '<div class="gp-luna" aria-hidden="true"><b>' + icon("moon", "moon") + "Luna Reserve · 残り 100 %</b><span class=\"bar\"><i></i></span><small>高度なモデルは1:04にリセットされます</small><span class=\"luna-btns\"><span class=\"dark\">アップグレード</span><span>使用量をリセット</span></span></div>";
     const row = (text, cls = "") => '<span class="gp-row' + (cls ? " " + cls : "") + '"><span>' + escape(text) + "</span></span>";
-    const folder = (name, chats) => '<div class="gp-folder"><span class="gp-row">' + icon("folderopen") + "<span>" + escape(name) + "</span></span>" + (chats.length ? chats.map(c => row(c, "sub")).join("") : row("チャットはありません", "sub dim")) + "</div>";
-    function homePanel({ product, switcher, luna: showLuna = false, extraChats = [] }) {
+    const folder = (name, chats, active = false) => '<div class="gp-folder"><span class="gp-row' + (active ? " on" : "") + '">' + icon("folderopen") + "<span>" + escape(name) + "</span></span>" + (chats.length ? chats.map(c => row(c, "sub")).join("") : row("チャットはありません", "sub dim")) + "</div>";
+    /* project: { name, chats, active } puts the practice project at the top of プロジェクト. */
+    function homePanel({ product, switcher, project = null, newActive = true }) {
       const codex = product === "Codex";
-      const list = codex
-        ? folder("my-website", [...extraChats, "見出しの変更と確認", "スタイルの調整"]) + folder("portfolio", ["画像の並びを整える"]) + '<p class="gp-label">最近の項目</p>' + ["企画書のたたき台を作成", "READMEを要約", "フォームの入力チェックを追加", "メール返信文を作成"].map(t => row(t)).join("")
-        : '<p class="gp-label">ピン留め</p>' + row("文化祭サイトの見出し案") + row("自己紹介ページの文章") + '<p class="gp-label">プロジェクト</p>' + folder("my-website", [...extraChats, "見出しの変更と確認", "スタイルの調整"]) + folder("文化祭2026", ["企画書のたたき台"]) + folder("課題メモ", []);
-      return '<div class="gp-head">' + switcher + '<span class="gp-tools" aria-hidden="true">' + icon("bell") + icon("search") + '</span></div><span class="gp-row gp-new">' + icon("compose") + '<span>新しいチャット</span></span><div class="gp-scroll">' + list + "</div>" + (showLuna ? luna : "");
+      const list = '<p class="gp-label">ピン留め</p>' + row("文化祭サイトの見出し案") + row("自己紹介ページの文章") + '<p class="gp-label">プロジェクト</p>' +
+        (project ? folder(project.name, project.chats || [], project.active) : "") + folder("portfolio", ["画像の並びを整える"]) + folder("文化祭2026", ["企画書のたたき台"]) + folder("課題メモ", []) +
+        row("もっと表示する") + '<p class="gp-label">最近の項目</p>' + (codex ? ["READMEを要約", "フォームの入力チェックを追加"] : ["アクセス案内の書き方", "発表スライドの構成"]).map(t => row(t)).join("");
+      return '<div class="gp-head">' + switcher + '<span class="gp-tools" aria-hidden="true">' + icon("bell") + icon("search") + '</span></div><span class="gp-row gp-new' + (newActive ? " on" : "") + '">' + icon("compose") + '<span>新しいチャット</span></span><div class="gp-scroll">' + list + "</div>";
     }
     const baseInstalled = ["Canva", "Adobe Express", "Gmail", "Adobe", "Google Calendar", "Netlify", "Supabase", "Vercel", "Cloudflare", "Figma", "Google Drive", "Computer Use", "Visualize"];
     function customizePanel(ui, { active, plugins, skills, github = false }) {
@@ -206,7 +210,7 @@ window.LabUI = (() => {
       const tall = !chat || !!o.value || !!o.token;
       const area = '<textarea id="' + (o.id || "learn-prompt") + '" class="' + (o.areaGuide ? "guided" : "") + '" rows="' + (tall ? 2 : 1) + '" aria-label="' + (o.label || "練習用チャット入力欄") + '" placeholder="' + escape(o.placeholder || "") + '"' + (o.areaTip ? ' data-tip="' + escape(o.areaTip) + '"' : "") + (o.disabled ? " disabled" : "") + (o.readonly ? " readonly" : "") + ">" + escape(o.value || "") + "</textarea>";
       const perm = chat ? "" : (o.perm || '<span class="gc-perm full">' + icon("warn") + "<span>フルアクセス</span></span>");
-      const model = chat ? '<span class="gc-model">中程度' + icon("chevron", "chev") + "</span>" : '<span class="gc-model">' + icon("moon", "moon") + "GPT-5.6 Luna 軽" + icon("chevron", "chev") + "</span>";
+      const model = o.model || (chat ? '<span class="gc-model">中程度' + icon("chevron", "chev") + "</span>" : '<span class="gc-model">' + icon("bolt") + "GPT-5.6 Terra 軽" + icon("chevron", "chev") + "</span>");
       const box = '<div class="gcomp ' + kind + (tall ? " tall" : "") + '"><div class="gc-input">' + (o.token || "") + area + '</div><div class="gc-left"><span class="gc-ic" aria-hidden="true">' + icon("plus") + "</span>" + perm + '</div><div class="gc-right">' + model + '<span class="gc-ic" aria-hidden="true">' + icon("mic") + "</span>" + (o.send || "") + "</div></div>";
       const above = kind === "codex" ? '<div class="gtray above">' + (o.tray || '<span class="gtray-item">' + icon("folder") + "プロジェクトを選択</span>") + "</div>" : "";
       const below = kind === "work" ? '<div class="gtray below">' + (o.tray || '<span class="gtray-item">' + icon("folder") + '<span>プロジェクトを選択</span></span><span class="gtray-item">' + icon("at") + '<span>プラグイン</span></span><span class="gtray-end">' + icon("laptop") + "</span>") + "</div>" : "";
@@ -215,7 +219,7 @@ window.LabUI = (() => {
     const top = ({ left = "", center = "", right = "" } = {}) => '<header class="gtop"><span class="gtop-l">' + left + "</span>" + (center || "<span></span>") + '<span class="gtop-r" aria-hidden="true">' + right + "</span></header>";
     const seg = selected => '<div class="gseg" aria-label="Chat / Work">' + ["Chat", "Work"].map(m => '<span class="gseg-btn" aria-pressed="' + (selected === m) + '">' + m + "</span>").join("") + "</div>";
     const suggestions = '<div class="g-suggest" aria-hidden="true"><span>' + icon("github") + "名言アプリの表示の誤りを見つけて、動く形に直す</span><span>" + plugBadge("Google Drive") + "文化祭の企画メモを、先生に見せる資料にまとめる</span><span>" + icon("briefcase", "brief") + "毎週月曜、学習の進み具合を振り返るメモを作る</span></div>";
-    const frame = ({ rail: railHtml, panel = "", main, mobile = "", cls = "" }) => '<div class="app-window gpt2' + (cls ? " " + cls : "") + '">' + titlebar + '<div class="gbody' + (panel ? "" : " no-panel") + '">' + railHtml + (panel ? '<aside class="gpanel">' + panel + "</aside>" : "") + '<section class="app-main gmain"><div class="mobile-nav">' + mobile + "</div>" + main + "</section></div></div>";
+    const frame = ({ rail: railHtml, panel = "", main, mobile = "", cls = "", overlay = "" }) => '<div class="app-window gpt2' + (cls ? " " + cls : "") + '">' + overlay + titlebar + '<div class="gbody' + (panel ? "" : " no-panel") + '">' + railHtml + (panel ? '<aside class="gpanel">' + panel + "</aside>" : "") + '<section class="app-main gmain"><div class="mobile-nav">' + mobile + "</div>" + main + "</section></div></div>";
     return { frame, rail, productSwitch, homePanel, customizePanel, pluginsPage, skillsPage, composer, top, seg, suggestions, plugBadge, cube };
   })();
   return { icon, gptMark, codexMark, claudeMark, escape, traffic, caption, winbar, tour, gpt };
@@ -294,7 +298,7 @@ window.ChatGPTLessons = (() => {
       });
     }
     const extra = step === 7 ? [course === "skills" ? "見出しの依頼を整理" : "README の要約"] : course === "skills" && step >= 4 ? ["スキルを作成"] : [];
-    return gpt.homePanel({ product: screen, switcher: switcher(), luna: kind() !== "chat", extraChats: extra });
+    return gpt.homePanel({ product: screen, switcher: switcher(), project: extra.length ? { name: "my-website", chats: extra } : null, newActive: !extra.length });
   }
   function rail() {
     const actions = {};
