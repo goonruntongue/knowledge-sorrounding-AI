@@ -89,6 +89,7 @@
       const next = (label = "次へ進む", disabled = false) => `<button class="vscode-lab-next" data-next ${disabled ? "disabled" : ""}>${label} →</button>`;
       const empty = () => `<div class="vscode-lab-empty"><div><div class="vscode-mark">◢</div><p>VS Code 練習画面</p></div></div>`;
       const extension = (name, description, installed, id) => `<div class="vscode-lab-extension"><div class="vscode-lab-extension-icon"><img src="img/${name === "Live Server" ? "live-server-icon.png" : "japanese-language-pack-icon.png"}" alt=""></div><div><strong>${name}</strong><small>${description}</small><button class="vscode-lab-button" data-action="${id}" ${installed ? "disabled" : ""}>${installed ? "✓ インストール済み" : "インストール"}</button></div></div>`;
+      const tree = () => `<div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><div class="folder">　⌄ css</div><button>　　 # style.css</button></div>`;
 
       function render() {
         if (stage === 0) {
@@ -98,13 +99,13 @@
           side.innerHTML = `<h3>エクスプローラー</h3><p>まだフォルダーを開いていません。</p><button class="vscode-lab-button" data-action="folder">フォルダーを開く</button><p>または、フォルダーをこの画面へドラッグ＆ドロップすることでも紐づけられます。</p>`;
           main.innerHTML = task("作品フォルダーを紐づける", "「フォルダーを開く」を選び、作業場所をVS Codeに関連付けます。") + empty() + next("HTMLファイルを開く", !folder);
         } else if (stage === 2) {
-          side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>左ペインに出た <strong>index.html</strong> をクリックします。</p>`;
+          side.innerHTML = `<h3>エクスプローラー</h3>${tree()}<p>左ペインに出た <strong>index.html</strong> をクリックします。</p>`;
           main.innerHTML = task("HTMLファイルを開く", "左ペインの index.html をクリックして、編集するコードを表示してください。") + empty();
         } else if (stage === 3) {
-          side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>${saved ? "✓ 保存しました。次は Go Live です。" : "index.html を編集したら保存します。"}</p>`;
+          side.innerHTML = `<h3>エクスプローラー</h3>${tree()}<p>${saved ? "✓ 保存しました。次は Go Live です。" : "index.html を編集したら保存します。"}</p>`;
           main.innerHTML = task("コードを書き換えて保存する", typing ? "文字を入力しています。入力が終わったら保存しましょう。" : changed ? "変更できました。<strong>Ctrl + S</strong> を押すか、保存ボタンをクリックしてください。" : "「コードを書き換える」を押すと、編集内容が変化します。") + editor() + `<button class="vscode-lab-next" data-action="edit" ${changed ? "disabled" : ""}>コードを書き換える</button> <button class="vscode-lab-next" data-action="save" ${changed && !saved && !typing ? "" : "disabled"}>Ctrl + S で保存</button>`;
         } else {
-          side.innerHTML = `<h3>エクスプローラー</h3><div class="vscode-lab-tree"><div class="folder">⌄ site-sample</div><button data-action="file">　⌘ index.html</button><button>　# style.css</button></div><p>右下の <strong>Go Live</strong> を押すとブラウザに表示されます。</p>`;
+          side.innerHTML = `<h3>エクスプローラー</h3>${tree()}<p>右下の <strong>Go Live</strong> を押すとブラウザに表示されます。</p>`;
           main.innerHTML = task("Go Liveでブラウザに反映する", stage === 5 ? "ブラウザへの反映ができました。" : "画面右下のステータスバーにある Go Live を押して、Live Serverでプレビューします。") + (stage === 5 ? preview() : editor());
         }
         goLive.disabled = stage !== 4;
@@ -120,7 +121,7 @@
         }
       }
 
-      function editor() { const heading = typing ? typedText : changed ? editedHeading : "Hello!"; return `<div class="vscode-lab-editor"><span class="line"><span class="num">1</span><span class="tag">&lt;!doctype html&gt;</span></span><span class="line"><span class="num">2</span><span class="tag">&lt;h1&gt;</span><span class="text ${changed ? "changed" : ""}">${heading}${typing ? '<span class="typing-cursor" aria-hidden="true"></span>' : ""}</span><span class="tag">&lt;/h1&gt;</span></span><span class="line"><span class="num">3</span><span class="tag">&lt;p&gt;</span><span class="text">My first website</span><span class="tag">&lt;/p&gt;</span></span></div>`; }
+      function editor() { const heading = typing ? typedText : changed ? editedHeading : "Hello!"; return `<div class="vscode-lab-editor"><span class="line"><span class="num">1</span><span class="tag">&lt;!DOCTYPE html&gt;</span></span><span class="line"><span class="num">2</span><span class="tag">&lt;html lang="ja"&gt;</span></span><span class="line"><span class="num">3</span>&nbsp;</span><span class="line"><span class="num">4</span><span class="tag">&lt;head&gt;</span></span><span class="line"><span class="num">5</span>　<span class="tag">&lt;meta charset="UTF-8"&gt;</span></span><span class="line"><span class="num">6</span>　<span class="tag">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></span><span class="line"><span class="num">7</span>&nbsp;</span><span class="line"><span class="num">8</span>　<span class="tag">&lt;link rel="stylesheet" href="css/style.css"&gt;</span></span><span class="line"><span class="num">9</span>　<span class="tag">&lt;title&gt;</span><span class="text">Document</span><span class="tag">&lt;/title&gt;</span></span><span class="line"><span class="num">10</span><span class="tag">&lt;/head&gt;</span></span><span class="line"><span class="num">11</span><span class="tag">&lt;body&gt;</span></span><span class="line"><span class="num">12</span>　<span class="tag">&lt;h1&gt;</span><span class="text ${changed ? "changed" : ""}">${heading}${typing ? '<span class="typing-cursor" aria-hidden="true"></span>' : ""}</span><span class="tag">&lt;/h1&gt;</span></span><span class="line"><span class="num">13</span>　<span class="tag">&lt;p&gt;</span><span class="text">My first website</span><span class="tag">&lt;/p&gt;</span></span><span class="line"><span class="num">14</span><span class="tag">&lt;/body&gt;</span></span><span class="line"><span class="num">15</span><span class="tag">&lt;/html&gt;</span></span></div>`; }
       function preview() { return `<div class="vscode-lab-preview"><div class="vscode-lab-preview-head">http://127.0.0.1:5500/index.html</div><div class="vscode-lab-preview-main"><div><h1>Welcome to my website!</h1><p>My first website</p></div></div></div>`; }
       function typeHeading() {
         clearInterval(typingTimer);
