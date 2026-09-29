@@ -1,0 +1,24 @@
+.site-copyright {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  margin-top: 1.25rem;
+  font-size: .78rem;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+
+.site-copyright__logo {
+  display: block;
+  width: auto;
+  height: 1lh;
+  min-height: 1em;
+  padding: .12em .28em;
+  border-radius: .35rem;
+  background: #554b67;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-copyright__logo { transition: none; }
+}
