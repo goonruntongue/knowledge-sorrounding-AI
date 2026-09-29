@@ -509,32 +509,6 @@
             border-radius: 10px;
         }
 
-        /* Lottie illustrations (git-github/anim). The SVG still is shown first and stays for reduced motion. */
-        .lottie-art {
-            position: relative;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 10px;
-            background: #eef7f0;
-        }
-
-        .lottie-art > img,
-        .lottie-art > svg {
-            display: block;
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .lottie-art.is-live > img {
-            display: none;
-        }
-
-        .folder-terminal__intro .lottie-art {
-            border: 1px solid var(--line);
-            border-radius: 9px;
-            background: #f5f8fc;
-        }
-
         .knowledge-visual h4 {
             margin: 0 0 .55rem;
             color: var(--green);
@@ -1289,7 +1263,7 @@
             <p class="basics-lead">コマンドを覚える前に、Git が何を記録し、どこへ送っているのかを押さえましょう。最初は「PCの中で記録する」と「GitHubへ送る」を分けて考えると、迷いにくくなります。</p>
 
             <div class="knowledge-visual">
-                <div class="lottie-art" data-lottie="anim/terminal-guide.json" role="img" aria-label="ノートPCで入力したコマンドが、ターミナルに1行ずつ表示されるイメージ"><img src="anim/terminal-guide.svg" alt=""></div>
+                <img src="img/terminal-guide.png" alt="ノートPCからターミナルへコマンドを入力するイメージ">
                 <div>
                     <h4>ターミナルとは</h4>
                     <p>文字でPCに指示を出すための画面です。Windowsなら PowerShell、Windows Terminal、コマンドプロンプト、または VS Code の下部にある「ターミナル」を使えます。ここに <code>git status</code> のような命令を書いて Enter を押します。黒い画面でも、決められた命令を実行するための入力欄だと思えば大丈夫です。</p>
@@ -1309,7 +1283,7 @@
             <p class="git-tip"><strong>豆知識：作業フォルダは移動しても大丈夫</strong><br>通常のGitリポジトリは、フォルダ内の <code>.git</code> に履歴を持っています。履歴はコミットIDなどでつながっており、特定の絶対パスに固定されるわけではないため、<code>.git</code> を含めてフォルダごと移動すれば、移動先でもそのままGitを使えます。<br><small>※ <code>git worktree</code> やサブモジュールを使っている場合は、パスを参照する設定があるため、移動前に確認しましょう。</small></p>
 
             <div class="knowledge-visual">
-                <div class="lottie-art" data-lottie="anim/local-remote-guide.json" role="img" aria-label="PC内で記録した変更が push でGitHubへ届き、pull で手元へ戻ってくるイメージ"><img src="anim/local-remote-guide.svg" alt=""></div>
+                <img src="img/local-remote-guide.png" alt="PC内のファイルとクラウド上のリポジトリが双方向につながるイメージ">
                 <div>
                     <h4>PCの中と GitHub の関係</h4>
                     <p><code>commit</code> まではPC内だけで完結します。<code>push</code> すると、記録した変更がGitHubにも届きます。反対に、GitHubや別のPCで増えた変更を手元へ取り込むのが <code>pull</code> です。</p>
@@ -1351,7 +1325,7 @@
             </div>
 
             <div class="knowledge-visual">
-                <div class="lottie-art" data-lottie="anim/history-restore-guide.json" role="img" aria-label="コミットした過去の版から1つを選び、作業フォルダへ取り出すイメージ"><img src="anim/history-restore-guide.svg" alt=""></div>
+                <img src="img/history-restore-guide.png" alt="複数の過去バージョンから以前の状態を取り出すイメージ">
                 <div>
                     <h4><code>git restore</code>：前の内容を取り出す</h4>
                     <p>過去のコミットに保存されているファイル内容を、現在の作業フォルダへ取り出す操作です。履歴そのものを消すのではなく、過去の内容を新しい変更として持ち帰れるので、比較的安全に戻せます。実際の手順は、このあとの「前の状態を確認・安全に復元する」で説明します。</p>
@@ -1365,7 +1339,7 @@
                     <h3>まず、保存したいフォルダでターミナルを開く</h3>
                     <p>Gitの命令は、<strong>どのフォルダに対して実行するか</strong>が大切です。Webサイトを保存したいフォルダを開いてからターミナルを使いましょう。違う場所で実行すると、意図しないフォルダにGitの記録が作られてしまいます。</p>
                     <div class="folder-terminal__intro">
-                        <div class="lottie-art" data-lottie="anim/explorer-cmd-guide.json" role="img" aria-label="エクスプローラーのアドレスバーに cmd と入力して Enter を押すと、そのフォルダでコマンドプロンプトが開く説明図"><img src="anim/explorer-cmd-guide.svg" alt=""></div>
+                        <img src="img/explorer-cmd-guide.png" alt="エクスプローラーのアドレスバーに cmd と入力している説明図">
                         <div>
                             <h4>いちばん簡単：エクスプローラーから開く</h4>
                             <p>保存したいフォルダをエクスプローラーで開きます。上部の<strong>アドレスバー</strong>をクリックし、<code>cmd</code> と入力して Enter を押します。</p>
@@ -1828,28 +1802,6 @@ git push</pre>
                 if (event.key === "Enter" && !labExplorer.hidden && event.target !== labStart) startTerminal();
             });
         }
-    </script>
-    <script>
-        /* Play the illustrations with lottie-web only while they are on screen; keep the SVG still for reduced motion. */
-        (() => {
-            const arts = [...document.querySelectorAll("[data-lottie]")];
-            if (!arts.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-            const script = document.createElement("script");
-            script.src = "https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js";
-            script.onload = () => {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        const anim = entry.target.lottieAnim;
-                        if (anim) entry.isIntersecting ? anim.play() : anim.pause();
-                    });
-                }, { threshold: 0.25 });
-                arts.forEach((el) => {
-                    const anim = window.lottie.loadAnimation({ container: el, renderer: "svg", loop: true, autoplay: false, path: el.dataset.lottie, rendererSettings: { preserveAspectRatio: "xMidYMid meet" } });
-                    anim.addEventListener("DOMLoaded", () => { el.classList.add("is-live"); el.lottieAnim = anim; observer.observe(el); });
-                });
-            };
-            document.head.appendChild(script);
-        })();
     </script>
 </body>
 
