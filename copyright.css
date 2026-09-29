@@ -10,8 +10,12 @@
 
 img.site-copyright__logo {
   display: block;
-  width: 1.5lh;
-  height: 1.5lh;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 1.5lh !important;
+  height: 1.5lh !important;
+  max-width: 1.5em;
+  max-height: 1.5em;
   margin: 0 .5em;
   vertical-align: middle;
   padding: .12em .28em;
