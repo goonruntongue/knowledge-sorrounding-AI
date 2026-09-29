@@ -28,6 +28,7 @@ dialog{width:min(1240px,96vw);height:min(800px,92vh);max-height:92vh;padding:0;b
 .tech-details summary{padding:1rem 1.2rem;color:#d7f3ff;font-weight:800;cursor:pointer}
 .tech-details[open] summary{border-bottom:1px solid #315d75}
 .tech-inner{padding:1rem}
+.prompt-only{max-width:920px;margin-top:1.5rem}.prompt-only h3{margin-top:0}.prompt-hint{max-width:920px;margin:.8rem 0 0;color:var(--muted);font-size:.88rem;line-height:1.8}
 @media(max-width:800px){.what-intro{grid-template-columns:1fr}}
 @media(max-width:520px){.node-art{width:120px;height:120px}}
 </style></head>
@@ -42,18 +43,32 @@ Enter file in which to save the key (C:\Users\あなた\.ssh\id_ed25519):
 
 秘密鍵：C:\Users\あなた\.ssh\id_ed25519
 公開鍵：C:\Users\あなた\.ssh\id_ed25519.pub</div></div><div class="command-explain"><div><code>ssh-keygen</code><p>SSH用の鍵ペアを作る。</p></div><div><code>-t</code><p>鍵の種類を指定する。</p></div><div><code>ed25519</code><p>今回使う現代的な鍵種別。</p></div></div><div class="callout"><strong>保存場所：</strong>エクスプローラーで<code>cmd</code>と入力すると、そのフォルダーでコマンドプロンプトが開きます。ただし保存先を変更しなければ、鍵は現在のフォルダーではなく<code>%USERPROFILE%\.ssh\</code>へ作られます。</div></div></details></div></section>
-<section class="section" id="ai"><div class="wrap reveal"><p class="eyebrow">04 / ZERO-TOUCH WITH AI</p><h2>接続名と安全ルールを、AIへまとめて渡す。</h2><p class="section-lead">Windows OpenSSHは<code>%USERPROFILE%\.ssh\config</code>を読みます。接続先を短い名前にすれば、AIは秘密鍵の中身を扱わずに接続できます。</p><div class="ai-grid"><article class="config"><h3>① 一度だけconfigを用意</h3><pre class="code">Host production-web
-  HostName example.sakura.ne.jp
-  User account-name
-  IdentityFile ~/.ssh/id_ed25519
-  IdentitiesOnly yes</pre></article><article class="prompt"><h3>② AIへスキルとして渡す文</h3><pre class="code" id="pagePrompt"># SSHサーバー接続スキル
+<section class="section" id="ai"><div class="wrap reveal"><p class="eyebrow">04 / ZERO-TOUCH WITH AI</p><h2>この依頼文だけで、接続設定からスキル登録まで。</h2><p class="section-lead">設定ファイルの名前や書き方を覚えなくても大丈夫です。下の「〇〇」を自分のサーバー情報に置き換えてAIへ渡すと、必要な設定、接続テスト、次回から使うグローバルスキルの作成まで順番に依頼できます。</p><article class="prompt prompt-only"><h3>AIへそのまま渡せる依頼文</h3><pre class="code" id="pagePrompt">SSHの公開鍵と秘密鍵は、すでに作成しました。
 
-接続には `ssh -o BatchMode=yes production-web` を使ってください。
-秘密鍵の内容を表示・コピー・送信・アップロードしないでください。
-初回またはホスト鍵が変わった場合は停止し、指紋確認を私に求めてください。
-接続直後は `whoami`、`hostname`、`pwd` だけを実行し、接続先を報告してください。
-変更、アップロード、削除、デプロイ、再起動は、対象と影響を示して私の許可を得てから行ってください。
-作業終了後は `exit` で切断し、操作内容を報告してください。</pre><button class="copy" data-copy="pagePrompt">スキル文をコピー</button><span class="copy-state" id="pagePromptState"></span></article></div><p class="safety">ゼロタッチとは接続時のパスワード入力を省けるという意味で、無制限の変更権限を渡す意味ではありません。初回のホスト鍵指紋は契約先の案内と照合します。秘密鍵にパスフレーズを設定した場合は、事前に<code>ssh-agent</code>へ読み込むと繰り返し接続できます。</p></div></section>
+・接続したいサーバー：〇〇（例：example.sakura.ne.jp）
+・SSHのユーザー名：〇〇
+・公開鍵：上のサーバーに登録済みです
+・秘密鍵：このパソコンの中に保存してあります
+
+これらの鍵を使い、今後このサーバーへパスワードを毎回入力せずに接続できるよう、必要な設定をしてください。私はSSHを学び始めたばかりなので、専門用語を使うときは「何をしているのか」を短く説明しながら、一つずつ進めてください。
+
+作業は、次のルールを守って進めてください。
+
+1. 最初に、接続先・ユーザー名・秘密鍵の保存場所を確認してください。足りない情報があれば、推測せず私に質問してください。秘密鍵はパソコン内で探してかまいませんが、中身を画面やチャットに表示したり、コピー・送信・アップロードしたりしないでください。
+
+2. このサーバーへ短い名前で接続できるよう、必要なSSH設定を作成してください。すでに設定がある場合は消さず、変更前にバックアップを取ってください。設定に付けた短い接続名も、私に分かるように報告してください。
+
+3. 初めて接続するときにサーバーの「ホスト鍵の指紋」が表示されたら、そこで止まり、何を確認すればよいか日本語で説明してください。私の確認なしに承認しないでください。
+
+4. まず公開鍵認証で接続を試してください。サーバーのログインパスワードが必要な場合は、私がターミナルへ直接入力できる状態で止めてください。パスワードをチャットへ書かせたり、保存したり、代わりに入力したりしないでください。秘密鍵のパスフレーズを求められた場合も同じ方法にしてください。
+
+5. 接続できたら、最初は `whoami`、`hostname`、`pwd` だけを実行し、正しいサーバーへ接続できたことを報告してください。その後は `exit` でいったん切断してください。
+
+6. 接続テストが成功したら、この接続方法を、どのプロジェクトからでも使えるグローバルスキルとして登録してください。スキルには接続名と安全ルールだけを保存し、秘密鍵の中身やパスワードは絶対に含めないでください。
+
+7. 今後、私が「〇〇のサーバーに接続してください」と言ったら、このスキルを使って接続してください。ファイルの確認はそのまま進めてかまいません。アップロード、上書き、削除、デプロイ、再起動などサーバーを変更する作業は、対象と影響を先に示し、私の許可を得てから実行してください。
+
+最後に、作成・変更した設定、接続テストの結果、登録したグローバルスキルの名前と保存場所、次回私が使う依頼文を、初心者向けにまとめてください。</pre><button class="copy" data-copy="pagePrompt">依頼文をコピー</button><span class="copy-state" id="pagePromptState"></span></article><p class="prompt-hint">置き換えるのは、基本的に「接続したいサーバー」と「SSHのユーザー名」の2か所です。秘密鍵の保存場所が分かる場合は、その場所も書くとよりスムーズです。</p><p class="safety">ゼロタッチとは、次回から接続コマンドやパスワード入力をできるだけ省けるという意味です。サーバーの変更まで無確認で許可する意味ではありません。パスワードや秘密鍵の中身はチャットへ貼らず、自分でターミナルへ入力します。</p></div></section>
 <div class="wrap sources">公式情報の確認日：2026年9月29日<br>出典：<a href="https://help.sakura.ad.jp/rs/2804/">さくら「SSH公開鍵認証の設定をしたい」</a>／<a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement">Microsoft「Key-Based Authentication in OpenSSH for Windows」</a>／<a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-server-configuration">Microsoft「OpenSSH Server Configuration for Windows」</a></div>
 </main>
 <footer class="guide-footer"><div class="wrap"><a class="portal-link" href="../index.html">ポータルへ戻る</a><nav class="pagination"><a href="../ai-agents/index.html"><small>前のページ</small><strong>← AIエージェントをはじめよう</strong></a></nav></div></footer>
@@ -64,12 +79,25 @@ Enter file in which to save the key (C:\Users\あなた\.ssh\id_ed25519):
 <section class="lab-step" data-step="2"><div class="coach" id="guide2"><b>公開鍵を開く：</b><code>id_ed25519.pub</code>をクリックしてコピーし、サーバーを開いて貼り付けます。</div><div class="upload"><button class="float highlight" id="publicKey"><span class="big-icon">🔑</span><b>公開鍵</b><span class="file-name">id_ed25519.pub</span></button><div>→</div><button class="float" id="serverCard"><span class="server-icon"></span><b>サーバー</b></button></div><div class="public" id="publicCode"><b>公開鍵（登録してよい鍵）</b><pre id="publicKeyText">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRACTICEonlyKEYforLearning1234567890 learner@windows-pc</pre><button class="copy" id="copyKey">コードをコピー</button><span class="copy-state" id="copyMessage"></span></div><div class="server-window" id="serverWindow"><div class="browser-top">● ● ●　https://secure.example.jp/control-panel/ssh-key</div><div class="sakura"><h3>SSH公開鍵 — 新規追加（教材用）</h3><textarea class="server-text" id="serverTextarea" placeholder="Ctrl + V で公開鍵を貼り付け"></textarea><button class="register" id="registerKey">登録する</button><div class="success" id="serverSuccess">✓ 公開鍵を登録しました。</div></div></div></section>
 <section class="lab-step" data-step="3"><div class="coach"><b>保管場所を確認：</b>秘密鍵を<code>%USERPROFILE%\.ssh\</code>へドラッグしてください。</div><div class="vault">📁 C:\Users\あなた\.ssh\ <div class="drop" id="vaultDrop"><div class="private-key" id="privateKey" draggable="true" tabindex="0"><span class="big-icon">🔐</span><b>秘密鍵</b><span class="file-name">id_ed25519</span></div><p id="dropHint">ここへドラッグ</p></div><div class="vault-success" id="vaultSuccess">✓ PC内に保管しました。外部へ送らないでください。</div></div><p class="lab-note">実際には保存先を変更しなければ、秘密鍵は最初からこのフォルダに生成されます。保管場所を覚えるための操作です。</p></section>
 <section class="lab-step" data-step="4"><div class="coach"><b>鍵で接続：</b><code>ssh -i "%USERPROFILE%\.ssh\id_ed25519" learner@example.sakura.ne.jp</code>を入力してEnter。</div><div class="connect"><div class="terminal"><div class="terminal-top">コマンド プロンプト</div><div class="terminal-body"><div class="row">C:\Users\あなた&gt; <input id="connectCommand" class="command" placeholder="ssh -i ... learner@example.sakura.ne.jp"></div><div class="output" id="connectOutput">秘密鍵を指定して接続します。</div></div></div><div class="server-box"><span class="server-icon" id="connectedServer"></span><b id="serverLabel">未接続</b></div></div></section>
-<section class="lab-step" data-step="5"><div class="coach"><b>最後：</b>接続名と安全ルールをAI用スキルとして渡します。</div><h2>以降は安全ルール付きでゼロタッチ接続</h2><pre class="code" id="labPrompt"># SSHサーバー接続スキル
-接続には `ssh -o BatchMode=yes production-web` を使用してください。
-秘密鍵の内容を表示・コピー・送信・アップロードしないでください。
-初回またはホスト鍵が変わった場合は停止し、指紋確認を私に求めてください。
-接続直後は `whoami`、`hostname`、`pwd` だけを実行して報告してください。
-変更・アップロード・削除・デプロイ・再起動は私の許可後に行ってください。
-終了時は `exit` で切断し、操作内容を報告してください。</pre><button class="copy" data-copy="labPrompt">スキル文をコピー</button><span class="copy-state" id="labPromptState"></span><div class="callout"><strong>完了：</strong>鍵作成からAI用スキルまで体験しました。</div></section>
+<section class="lab-step" data-step="5"><div class="coach"><b>最後：</b>この依頼文をAIへ渡せば、接続設定とグローバルスキルの登録まで頼めます。</div><h2>次回から「〇〇のサーバーに接続して」でつながるようにする</h2><pre class="code" id="labPrompt">SSHの公開鍵と秘密鍵は、すでに作成しました。
+
+・接続したいサーバー：〇〇（例：example.sakura.ne.jp）
+・SSHのユーザー名：〇〇
+・公開鍵：上のサーバーに登録済みです
+・秘密鍵：このパソコンの中に保存してあります
+
+これらの鍵を使い、今後このサーバーへパスワードを毎回入力せずに接続できるよう、必要な設定をしてください。私はSSHを学び始めたばかりなので、専門用語を使うときは、何をしているのか短く説明してください。
+
+秘密鍵の中身は表示・コピー・送信・アップロードしないでください。足りない接続情報は推測せず、私に質問してください。既存のSSH設定を変更するときは、先にバックアップを取ってください。
+
+初回接続でサーバーのホスト鍵の指紋が表示されたら、私が確認するまで承認しないでください。ログインパスワードや秘密鍵のパスフレーズが必要な場合は、私がターミナルへ直接入力できる状態で止め、チャットへ入力させたり保存したりしないでください。
+
+接続できたら `whoami`、`hostname`、`pwd` だけを実行して接続先を報告し、`exit` で切断してください。
+
+成功後は、この接続方法をどのプロジェクトからでも使えるグローバルスキルとして登録してください。スキルには接続名と安全ルールだけを保存し、秘密鍵の中身やパスワードは含めないでください。
+
+以降、私が「〇〇のサーバーに接続してください」と言ったら、このスキルで接続してください。アップロード、上書き、削除、デプロイ、再起動は、対象と影響を示して私の許可を得てから実行してください。
+
+最後に、設定内容、接続結果、登録したスキルの名前と保存場所、次回使う依頼文を初心者向けにまとめてください。</pre><button class="copy" data-copy="labPrompt">依頼文をコピー</button><span class="copy-state" id="labPromptState"></span><div class="callout"><strong>完了：</strong>鍵作成から、次回のゼロタッチ接続をAIへ頼むところまで体験しました。</div></section>
 </div><footer class="lab-footer"><span>教材用・実ファイルやサーバーには影響しません</span><button class="reset" id="resetLab">最初から</button></footer></div></dialog>
 <script src="app.js"></script></body></html>
