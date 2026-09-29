@@ -50,7 +50,7 @@
       .hero-orb--glow { --orb-opacity:.12; }
       .hero-orb--image { --orb-opacity:.408; }
       .menu a { min-height:280px; }
-      .card-illustration { height:177px; }
+      .card-illustration { height:150px; width:80vw; }
     }
     @media (prefers-reduced-motion:reduce) {
       main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; }
@@ -117,6 +117,7 @@
   <script>
     $(function () {
       $(".menu .title").outliner({ width: "8px", color: "#fffdfd", corner: "3px" });
+      $(".menu .number, .menu .description, .menu .arrow").outliner({ width: "3px", color: "#fffdfd", corner: "3px" });
       $(".eyebrow").outliner({ width: "3px", color: "#fffdfd", corner: "2px" });
       $("h1").outliner({ width: "5px", color: "#fffdfd", corner: "3px" });
     });
