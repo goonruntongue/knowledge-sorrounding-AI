@@ -20,9 +20,8 @@
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
     .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); /* aspect-ratio:1; */ pointer-events:none; }
     img.hero-orb { scale:2; filter:saturate(1.8) brightness(1); }
-    .hero-orb--aura { --orb-opacity:.08; z-index:-3; filter:blur(14px) hue-rotate(285deg) saturate(.8); opacity:var(--orb-opacity); transform:scale(1.11); }
-    .hero-orb--glow { --orb-opacity:.18; z-index:-2; filter:blur(5px) hue-rotate(285deg) saturate(.8); opacity:var(--orb-opacity); transform:scale(1.055); }
-    .hero-orb--image { --orb-opacity:.69; z-index:-1; opacity:var(--orb-opacity); filter:saturate(1.8) brightness(1) blur(.35px); }
+    .hero-orb--aura, .hero-orb--glow { opacity:0; animation:none; pointer-events:none; }
+    .hero-orb--image { --orb-opacity:.78; z-index:-1; opacity:var(--orb-opacity); filter:saturate(1.8) brightness(1) blur(.2px) drop-shadow(0 12px 24px rgba(72,120,190,.2)); }
     main { animation:page-enter .46s cubic-bezier(.22,.75,.3,1) both; }
     footer { animation:page-enter .46s .08s cubic-bezier(.22,.75,.3,1) both; }
     .hero-orb--aura { animation:orb-aura-enter .7s .08s ease-out both; }
