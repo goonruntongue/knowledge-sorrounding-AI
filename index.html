@@ -15,7 +15,8 @@
   <style>
     :root { --ink:#554b67; --green:#6da990; --blue:#7f83c5; --navy:#625b91; --mint:#edf8f2; --line:#e6d8eb; }
     * { box-sizing:border-box; }
-    body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#f7d7e8 0 180px,transparent 181px),linear-gradient(135deg,#fff9ed,#effaff 55%,#f7f0ff); font-family:"Noto Sans JP",sans-serif; overflow-x:hidden;}
+    html, body { overflow-x:hidden; }
+    body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#f7d7e8 0 180px,transparent 181px),linear-gradient(135deg,#fff9ed,#effaff 55%,#f7f0ff); font-family:"Noto Sans JP",sans-serif; }
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
     .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); /* aspect-ratio:1; */ pointer-events:none; }
     img.hero-orb { scale:2; filter:saturate(1.8) brightness(1); }
