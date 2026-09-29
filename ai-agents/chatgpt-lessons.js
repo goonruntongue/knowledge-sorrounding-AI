@@ -61,6 +61,14 @@ window.LabUI = (() => {
     bolt: '<path d="M13.5 2.5 5 13.5h6l-1 8 8.5-11h-6Z" fill="currentColor"/>',
     hand: '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12M11 11V4.5a1.5 1.5 0 0 1 3 0V12M14 11.5V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.6-2.2L3 16a1.5 1.5 0 0 1 2.3-1.9L8 16"/>',
     bot: '<circle cx="12" cy="12" r="9"/><path d="m8.5 10 2.5 2-2.5 2M13 15h3"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h10"/>',
+    enter: '<path d="M20 5v7a3 3 0 0 1-3 3H5M9 11l-4 4 4 4"/>',
+    cloud: '<path d="M7.5 18.5A4 4 0 0 1 6.9 10.6 5.5 5.5 0 0 1 17.4 9.2 3.9 3.9 0 0 1 17.5 18.5Z"/>',
+    shapes: '<circle cx="8" cy="8" r="4"/><path d="M14 13h6v6h-6ZM16 3l4 7h-8Z"/>',
+    ring: '<circle cx="12" cy="12" r="4.5"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.5"/>',
+    pr: '<circle cx="6" cy="5.5" r="2"/><circle cx="6" cy="18.5" r="2"/><circle cx="18" cy="18.5" r="2"/><path d="M6 7.5v9M18 16.5V10a3 3 0 0 0-3-3h-4M13 4.5 10.5 7l2.5 2.5"/>',
+    sliders: '<path d="M6 4v16M18 4v16M12 4v16"/><circle cx="6" cy="9" r="2"/><circle cx="12" cy="15" r="2"/><circle cx="18" cy="8" r="2"/>',
     folderplus: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v3"/><path d="M3 7v11a2 2 0 0 0 2 2h7M18 15v6M15 18h6"/>'
   };
   /* App marks: repository SVG logos (ChatGPT-Logo.svg / Claude-ai-icon.svg). GitHub mark: img/github.svg (see img/README.md). */
