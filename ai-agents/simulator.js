@@ -8,7 +8,7 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { icon, escape, tour, gpt } = window.LabUI;
   let app = "modes", stage = 0, mode = "ask", menu = "", modal = "", timer, returnFocus;
-  let projName = "", folderAdded = false, permChosen = false, modelChosen = false, model = "default", modalError = "";
+  let free = false, created = false, projName = "", folderAdded = false, permChosen = false, modelChosen = false, model = "default", modalError = "";
   let prompt = "", response = "", running = false, error = "", toolsShown = 0;
   const title = "はじめてのAI制作";
   const folderName = "my-website";
@@ -45,8 +45,8 @@
   const diffCard = () => '<div class="diff-card"><div class="diff-head">' + icon("file") + "<span>index.html</span>" + statPill + '</div><div class="diff"><del><i>3</i>− &lt;h1&gt;Hello!&lt;/h1&gt;</del><ins><i>3</i>+ &lt;h1&gt;' + title + "&lt;/h1&gt;</ins></div></div>";
   function cancelRun() { clearTimeout(timer); running = false; }
   function reset(nextApp = app) {
-    cancelRun(); app = nextApp; stage = 0; mode = "ask"; menu = ""; modal = "";
-    projName = ""; folderAdded = false; permChosen = false; modelChosen = false; model = "default"; modalError = "";
+    cancelRun(); app = nextApp; stage = free && app === "codex" ? 1 : 0; mode = "ask"; menu = ""; modal = "";
+    created = false; projName = ""; folderAdded = false; permChosen = false; modelChosen = false; model = "default"; modalError = "";
     if (["modes", "skills", "plugins"].includes(app)) window.ChatGPTLessons.reset(app);
     if (app === "claude") window.ClaudeLesson.reset();
     prompt = ""; response = ""; error = ""; toolsShown = 0; render();
@@ -89,14 +89,14 @@
   }
   /* ---------- conversation ---------- */
   function heading() {
-    return stage < 2 ? "何を作成しましょうか？" : '<span class="proj-u">' + escape(projName) + "</span>では何に取り組みますか？";
+    return !created ? "何を作成しましょうか？" : '<span class="proj-u">' + escape(projName) + "</span>では何に取り組みますか？";
   }
   function conversation() {
-    if (stage < 3) {
+    if (stage < 3 && !free) {
       const note = stage < 2 ? "練習用の新しいチャットです。赤枠と吹き出しの順に操作してください。" : "プロジェクトができました。次は、入力欄の下で承認方法とモデルを選びます。";
       return '<div class="empty-state">' + icon("cloudterm", "cloud") + "<h1>" + heading() + "</h1></div>" + lab_('<p class="lab-note">' + note + "</p>");
     }
-    if (stage === 3) return '<div class="empty-state">' + icon("cloudterm", "cloud") + "<h1>" + heading() + "</h1></div>" + lab_('<div class="lab-card"><b>今回の課題</b><p>index.htmlの見出し「Hello!」を「' + title + '」に変更します。</p><small>例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</small>' + control("sample", "依頼文の例を入力", true, !prompt.trim(), "例文を入れる（自分で書いてもOK）") + "</div>" + (error ? '<p class="feedback" role="alert">' + error + "</p>" : ""));
+    if (stage <= 3) return '<div class="empty-state">' + icon("cloudterm", "cloud") + "<h1>" + heading() + "</h1></div>" + lab_('<div class="lab-card"><b>今回の課題</b><p>index.htmlの見出し「Hello!」を「' + title + '」に変更します。</p><small>例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</small>' + control("sample", "依頼文の例を入力", true, !prompt.trim(), "例文を入れる（自分で書いてもOK）") + "</div>" + (error ? '<p class="feedback" role="alert">' + error + "</p>" : ""));
     const html = userMsg(prompt);
     if (running) return html + botMsg(toolRows() + '<p class="typing" role="status">' + escape(response) + "</p>");
     if (stage === 4) {
@@ -114,14 +114,15 @@
   /* ---------- composer & shell ---------- */
   function composer() {
     const hasText = !!prompt.trim();
-    const send = running ? ui("stop", icon("stop"), { cls: "gc-send", guide: true, tip: "作業中。途中で止めるにはここ", aria: "停止" }) : ui("send", icon(hasText ? "up" : "wave"), { cls: "gc-send" + (hasText ? "" : " voice"), guide: stage === 3 && hasText, disabled: stage !== 3, tip: "内容を読んで送信", aria: "送信" });
-    const tray = ui("project", icon("folder") + "<span>" + (stage < 2 ? "プロジェクトを選択" : escape(projName)) + "</span>", { cls: "gtray-item" + (menu === "project" ? " open" : ""), guide: stage === 1 && !menu && !modal, disabled: stage !== 1, pressed: menu === "project", tip: "プロジェクトを選ぶ・作る", aria: "チャットを行うプロジェクトを選択 Ctrl+Alt+Shift+O" });
+    const typing = stage === 3 || (free && stage >= 1 && stage < 4), open = stage === 1 || (free && stage >= 1 && stage < 4), setting = stage === 2 || (free && stage >= 1 && stage < 4);
+    const send = running ? ui("stop", icon("stop"), { cls: "gc-send", guide: true, tip: "作業中。途中で止めるにはここ", aria: "停止" }) : ui("send", icon(hasText ? "up" : "wave"), { cls: "gc-send" + (hasText ? "" : " voice"), guide: stage === 3 && hasText, disabled: !typing, tip: "内容を読んで送信", aria: "送信" });
+    const tray = ui("project", icon("folder") + "<span>" + (!created ? "プロジェクトを選択" : escape(projName)) + "</span>", { cls: "gtray-item" + (menu === "project" ? " open" : ""), guide: stage === 1 && !menu && !modal, disabled: !open, pressed: menu === "project", tip: "プロジェクトを選ぶ・作る", aria: "チャットを行うプロジェクトを選択 Ctrl+Alt+Shift+O" });
     const c = chosen();
-    const perm = ui("permission", icon(c[3]) + "<span>" + c[1] + "</span>", { cls: "gc-perm" + (mode === "full" ? " full" : ""), guide: stage === 2 && !permChosen && !menu, disabled: stage !== 2, pressed: menu === "permission", tip: "ChatGPT に任せる範囲を選ぶ" });
+    const perm = ui("permission", icon(c[3]) + "<span>" + c[1] + "</span>", { cls: "gc-perm" + (mode === "full" ? " full" : ""), guide: stage === 2 && !permChosen && !menu, disabled: !setting, pressed: menu === "permission", tip: "ChatGPT に任せる範囲を選ぶ" });
     const modelOpen = menu === "model" || menu === "models";
-    const modelBtn = ui("model", modelOpen && menu === "model" ? "<span>モデルを選択</span>" + icon("chevron", "chev") : icon("bolt") + "<span>" + modelLabel() + "</span>" + icon("chevron", "chev"), { cls: "gc-model gc-model-btn", guide: stage === 2 && permChosen && !modelChosen && !menu, disabled: stage !== 2, pressed: modelOpen, tip: "使うモデルを選ぶ", aria: "モデルを選択 Ctrl+Shift+M" });
+    const modelBtn = ui("model", modelOpen && menu === "model" ? "<span>モデルを選択</span>" + icon("chevron", "chev") : icon("bolt") + "<span>" + modelLabel() + "</span>" + icon("chevron", "chev"), { cls: "gc-model gc-model-btn", guide: stage === 2 && permChosen && !modelChosen && !menu, disabled: !setting, pressed: modelOpen, tip: "使うモデルを選ぶ", aria: "モデルを選択 Ctrl+Shift+M" });
     const popup = menu === "project" ? projectPopover() : menu === "permission" ? permPopover() : menu === "model" ? modelPopover() : menu === "models" ? modelsPopover() : "";
-    return gpt.composer({ kind: "codex", id: "request", label: "AIへの依頼文", placeholder: "何でもどうぞ", value: stage === 3 ? prompt : "", disabled: stage !== 3, areaGuide: stage === 3 && !hasText, areaTip: "変更したいファイル・内容・条件を書く", perm, model: modelBtn, tray, popup, send });
+    return gpt.composer({ kind: "codex", id: "request", label: "AIへの依頼文", placeholder: "何でもどうぞ", value: typing ? prompt : "", disabled: !typing, areaGuide: stage === 3 && !hasText, areaTip: "変更したいファイル・内容・条件を書く", perm, model: modelBtn, tray, popup, send });
   }
   function codexShell() {
     if (stage === 0) {
@@ -131,19 +132,21 @@
         lab_('<p class="lab-note">Codex は ChatGPT アプリの中の開発用モードです。左上の「ChatGPT ▾」から切り替えます。</p>') + "</div>";
       return gpt.frame({ rail: gpt.rail(ui, "home"), panel: gpt.homePanel({ product: "ChatGPT", switcher: sw }), main, mobile: sw });
     }
-    const project = stage >= 2 ? { name: projName, chats: stage >= 4 ? [prompt.slice(0, 16) + "…"] : [], active: true } : null;
-    const panel = gpt.homePanel({ product: "Codex", switcher: gpt.productSwitch(ui, { product: "Codex" }), project, newActive: stage < 2 });
+    const project = created ? { name: projName, chats: stage >= 4 ? [prompt.slice(0, 16) + "…"] : [], active: true } : null;
+    const panel = gpt.homePanel({ product: "Codex", switcher: gpt.productSwitch(ui, { product: "Codex" }), project, newActive: !created });
     const right = (stage >= 5 ? '<span class="ghost stat-pill"><b class="add">+1</b> <b class="del">−1</b></span>' : "") + icon("newwin");
     const main = gpt.top({ right }) + '<div class="work-area' + (stage === 6 ? " split" : "") + '"><div class="thread">' + conversation() + "</div>" + (stage === 6 ? browserPane() : "") + "</div>" + composer();
     const overlay = modal ? createDialog() + (modal === "trust" ? trustDialog() : "") : "";
     return gpt.frame({ rail: gpt.rail(ui, "home"), panel, main, cls: "codex", overlay });
   }
   function render() {
+    guideBtn.hidden = !["codex", "claude"].includes(app);
+    lab.classList.toggle("free", free && !guideBtn.hidden);
     document.querySelectorAll("[data-app]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.app === app)));
     if (["modes", "skills", "plugins"].includes(app)) { window.ChatGPTLessons.render(); return; }
     if (app === "claude") { window.ClaudeLesson.render(); return; }
-    progress.textContent = stage < 6 ? "STEP " + (stage + 1) + " / 6" : "COMPLETE";
-    instruction.textContent = messages[stage];
+    progress.textContent = stage < 6 ? (free ? "自由モード" : "STEP " + (stage + 1) + " / 6") : "COMPLETE";
+    instruction.textContent = free && stage >= 1 && stage < 4 ? "好きな順に触ってみましょう。依頼を送るには、先にプロジェクトを作ります。" : messages[stage];
     simulation.innerHTML = codexShell();
     simulation.querySelectorAll("[data-action]").forEach(b => b.addEventListener("click", () => act(b.dataset.action)));
     const name = simulation.querySelector("#proj-name");
@@ -205,7 +208,7 @@
       else { modalError = ""; modal = "trust"; }
     }
     if (action === "trust-cancel") modal = "create";
-    if (action === "trust") { modal = ""; projName = projName.trim(); stage = 2; }
+    if (action === "trust") { modal = ""; projName = projName.trim(); created = true; stage = Math.max(stage, free ? 3 : 2); }
     if (action === "permission") menu = menu === "permission" ? "" : "permission";
     if (action.startsWith("mode-")) { mode = action.slice(5); permChosen = true; menu = ""; }
     if (action === "model") menu = menu === "model" || menu === "models" ? "" : "model";
@@ -215,6 +218,7 @@
     if (action === "sample") prompt = sample;
     if (action === "send") {
       if (!prompt.trim()) { error = "変更したい内容を入力してください。「依頼文の例を入力」も使えます。"; render(); return; }
+      if (!created) { error = "練習では、先にプロジェクトを作ってから依頼しましょう。"; render(); return; }
       error = ""; stage = 4;
     }
     if (["approve", "deny", "continue"].includes(action)) { animate(() => { stage = 5; }); return; }
@@ -242,6 +246,14 @@
   lab.addEventListener("cancel", e => { if (app === "claude" && window.ClaudeLesson.closeMenu()) { e.preventDefault(); return; } if (app === "codex" && (modal || menu)) { e.preventDefault(); if (modal === "trust") modal = "create"; else if (modal) modal = ""; else menu = ""; render(); } });
   lab.addEventListener("close", () => { if (lab.open) return; cancelRun(); window.ClaudeLesson.stop(); document.body.classList.remove("lab-open"); returnFocus?.focus(); });
   document.querySelector("#restart").addEventListener("click", () => reset());
+  /* Guide ON: follow the red frames and tips step by step. Guide OFF: free mode, controls can be used in any order. */
+  const guideBtn = document.querySelector("#guide-toggle");
+  guideBtn.addEventListener("click", () => {
+    free = !free; guideBtn.setAttribute("aria-pressed", String(!free)); guideBtn.textContent = free ? "ガイド OFF（自由モード）" : "ガイド ON";
+    window.ClaudeLesson.setFree(free);
+    if (free && app === "codex" && stage === 0) stage = 1;
+    render();
+  });
   document.querySelectorAll("[data-app]").forEach(b => b.addEventListener("click", () => reset(b.dataset.app)));
   const top = document.querySelector("#toTop");
   const updateTop = () => { const visible = scrollY > 360; top.classList.toggle("is-visible", visible); top.tabIndex = visible ? 0 : -1; };

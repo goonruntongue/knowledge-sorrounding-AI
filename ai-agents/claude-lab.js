@@ -6,7 +6,7 @@ window.ClaudeLesson = (() => {
   const root = document.querySelector("#simulation");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { icon, claudeMark, escape, caption, tour } = window.LabUI;
-  let stage, env, folder, menu, picker, pickSel, mode, modeChosen, model, modelChosen, timer, prompt, response, running, error, toolsShown;
+  let free = false, stage, env, folder, menu, picker, pickSel, mode, modeChosen, model, modelChosen, timer, prompt, response, running, error, toolsShown;
   const title = "はじめてのAI制作";
   const folderName = "my-website";
   const sample = "index.htmlのh1を「はじめてのAI制作」に変更してください。ほかの文章やレイアウトは変えず、変更箇所と確認結果を教えてください。";
@@ -44,7 +44,7 @@ window.ClaudeLesson = (() => {
   const mascot = '<svg class="cc-mascot" viewBox="0 0 12 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#d97757" d="M2 0h8v1h1v3h1v1h-1v1H1V5H0V4h1V1h1ZM2 6h1v3H2ZM4 6h1v3H4ZM7 6h1v3H7ZM9 6h1v3H9Z"/><path fill="#1f1f1e" d="M4 2h1v2H4ZM7 2h1v2H7Z"/></svg>';
   function stop() { clearTimeout(timer); running = false; }
   function reset() {
-    stop(); stage = 0; env = "local"; folder = ""; menu = ""; picker = false; pickSel = ""; mode = "auto"; modeChosen = false; model = "Opus 5.5"; modelChosen = false;
+    stop(); stage = free ? 1 : 0; env = "local"; folder = ""; menu = ""; picker = false; pickSel = ""; mode = "auto"; modeChosen = false; model = "Opus 5.5"; modelChosen = false;
     prompt = ""; response = ""; running = false; error = ""; toolsShown = 0;
   }
   reset();
@@ -86,7 +86,7 @@ window.ClaudeLesson = (() => {
       : stage === 2 ? "作業フォルダ（作業ディレクトリ）を選ぶと、Claude はそのフォルダの中で作業します。"
       : stage === 3 ? "権限モードは「どこまで確認なしで任せるか」、モデルは「どの Claude に頼むか」の設定です。" : "練習用の新しいセッションです。赤枠と吹き出しの順に操作してください。";
     let html = '<div class="cc-greet">' + claudeMark + "<h1>おかえりなさい、Studentさん</h1></div>";
-    if (stage === 4) html += lab_('<div class="lab-card"><b>今回の課題</b><p>index.htmlの見出し「Hello!」を「' + title + '」に変更します。</p><small>例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</small>' + control("sample", "依頼文の例を入力", !prompt.trim(), "例文を入れる（自分で書いてもOK）") + "</div>" + (error ? '<p class="feedback" role="alert">' + error + "</p>" : ""));
+    if (stage === 4 || (free && stage >= 1)) html += lab_('<div class="lab-card"><b>今回の課題</b><p>index.htmlの見出し「Hello!」を「' + title + '」に変更します。</p><small>例を使っても、自分の言葉で書いてもOK。練習ではこの見出し変更を再現します。</small>' + control("sample", "依頼文の例を入力", !prompt.trim(), "例文を入れる（自分で書いてもOK）") + "</div>" + (error ? '<p class="feedback" role="alert">' + error + "</p>" : ""));
     else html += lab_('<p class="lab-note">' + note + "</p>");
     return html;
   }
@@ -111,13 +111,14 @@ window.ClaudeLesson = (() => {
   const browserPane = () => '<aside class="browser-pane"><div class="browser-bar"><span class="nav-arrows">&#x2190; &#x2192;</span><span class="url">' + icon("lock") + "localhost:3000/index.html</span>" + icon("refresh") + '</div><div class="browser-page"><h3>' + title + "</h3><p>My first website</p></div></aside>";
   /* ---------- composer ---------- */
   function composer() {
-    const hasText = !!prompt.trim(), live = stage >= 1;
-    const envChip = '<span class="cc-anchor">' + ui("env", icon("laptop") + "ローカル", { cls: "cc-chip", guide: stage === 1 && !menu, disabled: stage !== 1, pressed: menu === "env", tip: "実行場所を選ぶ", aria: "Claudeの実行場所" }) + (menu === "env" ? envMenu() : "") + "</span>";
-    const folderChip = '<span class="cc-anchor">' + ui("folder", icon("folder") + (folder || "フォルダなし"), { cls: "cc-chip", guide: stage === 2 && !menu && !picker, disabled: stage !== 2, pressed: menu === "folder", tip: "作業フォルダを選ぶ", aria: "作業ディレクトリ" }) + (menu === "folder" ? folderMenu() : "") + "</span>" + (folder ? '<span class="cc-chip icon-only" aria-hidden="true">' + icon("folderplus") + "</span>" : "");
-    const modeChip = '<span class="cc-anchor">' + ui("mode", chosen()[1], { cls: "cc-mini", guide: stage === 3 && !modeChosen && !menu, disabled: stage !== 3, pressed: menu === "mode", tip: "権限モードを選ぶ" }) + (menu === "mode" ? modeMenu() : "") + "</span>";
-    const modelChip = '<span class="cc-anchor right">' + ui("model", model, { cls: "cc-mini strong", guide: stage === 3 && modeChosen && !modelChosen && !menu, disabled: stage !== 3, pressed: menu === "model" || menu === "models-more", tip: "モデルを選ぶ" }) + (menu === "model" || menu === "models-more" ? modelMenu() : "") + "</span>";
-    const send = running ? ui("stop", icon("stop"), { cls: "cc-send stop", guide: true, tip: "作業中。途中で止めるにはここ", aria: "停止" }) : ui("send", icon("enter"), { cls: "cc-send" + (stage === 4 && hasText ? " ready" : ""), guide: stage === 4 && hasText, disabled: stage !== 4, tip: "内容を読んで送信（Enter）", aria: "送信" });
-    const area = '<textarea id="request" rows="1" class="' + (stage === 4 && !hasText ? "guided" : "") + '" data-tip="変更したいファイル・内容・条件を書く" aria-label="AIへの依頼文" placeholder="タスクを説明するか、質問を入力してください"' + (stage === 4 ? "" : " disabled") + ">" + escape(stage === 4 ? prompt : "") + "</textarea>";
+    const hasText = !!prompt.trim(), live = stage >= 1, any = free && stage >= 1 && stage < 5;
+    const on = n => stage === n || any, typing = stage === 4 || any;
+    const envChip = '<span class="cc-anchor">' + ui("env", icon("laptop") + "ローカル", { cls: "cc-chip", guide: stage === 1 && !menu, disabled: !on(1), pressed: menu === "env", tip: "実行場所を選ぶ", aria: "Claudeの実行場所" }) + (menu === "env" ? envMenu() : "") + "</span>";
+    const folderChip = '<span class="cc-anchor">' + ui("folder", icon("folder") + (folder || "フォルダなし"), { cls: "cc-chip", guide: stage === 2 && !menu && !picker, disabled: !on(2), pressed: menu === "folder", tip: "作業フォルダを選ぶ", aria: "作業ディレクトリ" }) + (menu === "folder" ? folderMenu() : "") + "</span>" + (folder ? '<span class="cc-chip icon-only" aria-hidden="true">' + icon("folderplus") + "</span>" : "");
+    const modeChip = '<span class="cc-anchor">' + ui("mode", chosen()[1], { cls: "cc-mini", guide: stage === 3 && !modeChosen && !menu, disabled: !on(3), pressed: menu === "mode", tip: "権限モードを選ぶ" }) + (menu === "mode" ? modeMenu() : "") + "</span>";
+    const modelChip = '<span class="cc-anchor right">' + ui("model", model, { cls: "cc-mini strong", guide: stage === 3 && modeChosen && !modelChosen && !menu, disabled: !on(3), pressed: menu === "model" || menu === "models-more", tip: "モデルを選ぶ" }) + (menu === "model" || menu === "models-more" ? modelMenu() : "") + "</span>";
+    const send = running ? ui("stop", icon("stop"), { cls: "cc-send stop", guide: true, tip: "作業中。途中で止めるにはここ", aria: "停止" }) : ui("send", icon("enter"), { cls: "cc-send" + (stage === 4 && hasText ? " ready" : ""), guide: stage === 4 && hasText, disabled: !typing, tip: "内容を読んで送信（Enter）", aria: "送信" });
+    const area = '<textarea id="request" rows="1" class="' + (stage === 4 && !hasText ? "guided" : "") + '" data-tip="変更したいファイル・内容・条件を書く" aria-label="AIへの依頼文" placeholder="タスクを説明するか、質問を入力してください"' + (typing ? "" : " disabled") + ">" + escape(typing ? prompt : "") + "</textarea>";
     return '<div class="cc-compose' + (live ? "" : " idle") + '"><div class="cc-chips">' + (live ? envChip + folderChip : "") + mascot + '</div><div class="cc-input">' + area + send + '</div><div class="cc-bar"><span class="cc-bar-l">' + icon("plus") + icon("mic") + icon("chevron", "chev") + (live ? modeChip : '<span class="cc-mini">自動</span>') + '</span><span class="cc-bar-r">' + (live ? modelChip : '<span class="cc-mini strong">Opus 5.5</span>') + '<span class="cc-mini">中</span>' + icon("ring", "ring") + "</span></div></div>";
   }
   /* ---------- shell ---------- */
@@ -146,8 +147,8 @@ window.ClaudeLesson = (() => {
     return '<div class="app-window claude cc">' + top + '<div class="cc-body">' + sidebar() + '<section class="app-main cc-main">' + mobile + main + "</section></div>" + (picker ? folderPicker() : "") + "</div>";
   }
   function render() {
-    document.querySelector("#progress").textContent = stage < 7 ? "STEP " + (stage + 1) + " / 7" : "COMPLETE";
-    document.querySelector("#instruction").textContent = messages[stage];
+    document.querySelector("#progress").textContent = stage < 7 ? (free ? "自由モード" : "STEP " + (stage + 1) + " / 7") : "COMPLETE";
+    document.querySelector("#instruction").textContent = free && stage >= 1 && stage < 5 ? "好きな順に触ってみましょう。依頼を送るには、先に作業フォルダを選びます。" : messages[stage];
     root.innerHTML = shell();
     root.querySelectorAll("[data-action]").forEach(b => b.addEventListener("click", () => act(b.dataset.action)));
     const thread = root.querySelector(".thread");
@@ -184,12 +185,12 @@ window.ClaudeLesson = (() => {
     if (action === "noop") return;
     if (action === "activate") { stage = 1; menu = ""; }
     if (action === "env") menu = menu === "env" ? "" : "env";
-    if (action === "env-local") { env = "local"; menu = ""; stage = 2; }
+    if (action === "env-local") { env = "local"; menu = ""; if (stage < 2) stage = 2; }
     if (action === "folder") menu = menu === "folder" ? "" : "folder";
     if (action === "open-folder") { menu = ""; picker = true; pickSel = ""; }
     if (action.startsWith("pick-")) pickSel = action.slice(5);
     if (action === "picker-cancel") picker = false;
-    if (action === "picker-ok") { if (pickSel) { folder = pickSel; picker = false; stage = 3; } }
+    if (action === "picker-ok") { if (pickSel) { folder = pickSel; picker = false; if (stage < 3) stage = 3; } }
     if (action === "mode") menu = menu === "mode" ? "" : "mode";
     if (action.startsWith("mode-")) { mode = action.slice(5); modeChosen = true; menu = ""; }
     if (action === "model") menu = menu === "model" || menu === "models-more" ? "" : "model";
@@ -199,6 +200,7 @@ window.ClaudeLesson = (() => {
     if (action === "sample") prompt = sample;
     if (action === "send") {
       if (!prompt.trim()) { error = "変更したい内容を入力してください。「依頼文の例を入力」も使えます。"; render(); return; }
+      if (!folder) { error = "練習では、先に作業フォルダを選んでから依頼しましょう。"; render(); return; }
       error = ""; stage = 5;
     }
     if (action === "execute-edits" || action === "execute-auto") { mode = action === "execute-edits" ? "edits" : "auto"; animate(() => { stage = 6; }); return; }
@@ -215,6 +217,7 @@ window.ClaudeLesson = (() => {
   }
   return {
     reset, render, stop,
+    setFree(v) { free = v; if (free && stage === 0) stage = 1; },
     closeMenu() { if (picker) { picker = false; render(); return true; } if (!menu) return false; menu = ""; render(); return true; }
   };
 })();
