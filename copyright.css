@@ -1,19 +1,19 @@
 .site-copyright {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: .45rem;
+  align-items: center;
   margin-top: 1.25rem;
   font-size: .78rem;
   line-height: 1.5;
   letter-spacing: .02em;
 }
 
-.site-copyright__logo {
+img.site-copyright__logo {
   display: block;
-  width: auto;
-  height: 1lh;
-  min-height: 1em;
+  width: 1.5lh;
+  height: 1.5lh;
+  margin: 0 .5em;
+  vertical-align: middle;
   padding: .12em .28em;
   border-radius: .35rem;
   background: #554b67;
