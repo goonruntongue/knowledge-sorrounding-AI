@@ -19,7 +19,7 @@
     body { min-height:100vh; margin:0; color:var(--ink); background:radial-gradient(circle at 90% 5%,#f7d7e8 0 180px,transparent 181px),linear-gradient(135deg,#fff9ed,#effaff 55%,#f7f0ff); font-family:"Noto Sans JP",sans-serif; }
     main { position:relative; isolation:isolate; width:min(90%,960px); margin:0 auto; padding:clamp(4rem,12vw,8rem) 0 4rem; }
     .hero-orb { position:absolute; top:-1.5rem; right:-9rem; width:min(54vw,510px); /* aspect-ratio:1; */ pointer-events:none; }
-    img.hero-orb { scale:2; filter:saturate(1.8) brightness(1) drop-shadow(0px 0px 8px #55f); }
+    img.hero-orb { height:auto; scale:2; filter:saturate(1.8) brightness(1) drop-shadow(0px 0px 8px #55f); }
     .hero-orb--aura, .hero-orb--glow { opacity:0 !important; animation:none !important; pointer-events:none; }
     .hero-orb--image { --orb-opacity:.78; z-index:-1; opacity:var(--orb-opacity); filter:saturate(1.8) brightness(1) blur(.2px) drop-shadow(0 12px 24px rgba(72,120,190,.2)); }
     main { animation:page-enter .46s cubic-bezier(.22,.75,.3,1) both; }
