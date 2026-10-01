@@ -11,6 +11,12 @@ Use this skill when the order of guide cards in this workspace's root `index.htm
 
 The order of `<nav class="menu">` cards in the root `index.html` is the only source of truth. Keep each card's destination, illustration, title, and description together while moving it.
 
+## Card illustration baseline
+
+The five established portal illustrations are all 1536×1024, an average **3:2 (1.5)** aspect ratio. New portal-card illustrations should use this landscape ratio, preferably with a transparent background and a vertically compact subject. This lets the illustration overlap the title area without reaching the description.
+
+Use `.card-illustration img` with `object-position:center top`; do not compensate for an unsuitable square image by pushing it down into the copy.
+
 ## Required synchronization
 
 After reordering, update all of the following in the same change:
