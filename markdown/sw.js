@@ -71,10 +71,6 @@ self.addEventListener('fetch', function (event) {
           if (req.mode === 'navigate') return cache.match('md-editor.html');
           return Response.error();
         });
-        if (cached) {
-          event.waitUntil(network.catch(function () {}));
-          return cached;
-        }
         return network;
       });
     })
