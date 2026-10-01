@@ -5,6 +5,7 @@
 <title>AIエージェントをはじめよう | Knowledge Surrounding AI</title>
 <meta name="description" content="Codex、Claude Code、Google Antigravityを知り、フォルダ選択・権限・依頼・変更確認を練習する初心者ガイド。">
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../copyright.css">
+<link rel="apple-touch-icon" href="../pwa-icon-web-knowledge-navy-192.png"><link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="chatgpt-lessons.css?v=7"><script src="chatgpt-lessons.js?v=12" defer></script><script src="claude-lab.js?v=4" defer></script><script src="simulator.js?v=13" defer></script>
@@ -87,4 +88,4 @@ index.htmlのh1を
 <div class="agents-lab-dock"><span class="dock-label">AIエージェントを体験してみる</span><button id="launch" class="dock-btn gpt" type="button" data-launch="chatgpt"><img src="ChatGPT-Logo.svg" alt=""><span>ChatGPT / Codex</span></button><button id="launch-claude" class="dock-btn claude" type="button" data-launch="claude"><img src="Claude-ai-icon.svg" alt=""><span>Claude / Claude Code</span></button></div>
 <button id="toTop" type="button" title="ページの先頭へ戻る" aria-label="ページの先頭へ戻る" tabindex="-1">↑</button>
 <dialog id="lab" aria-labelledby="lab-title"><header class="lab-header"><h2 id="lab-title">AIエージェント体験室 <span id="lab-suite">ChatGPT / Codex</span></h2><button id="close" type="button" aria-label="練習を閉じる">×</button></header><div class="lab-tabs" aria-label="練習コース"><button data-suite="chatgpt" data-app="modes" aria-pressed="true">使い分け</button><button data-suite="chatgpt" data-app="skills" aria-pressed="false">スキル</button><button data-suite="chatgpt" data-app="plugins" aria-pressed="false">プラグイン</button><button data-suite="chatgpt" data-app="codex" aria-pressed="false">Codex</button><button data-suite="claude" data-app="claude" aria-pressed="false" hidden>Claude Code</button><button id="guide-toggle" type="button" aria-pressed="true" hidden title="赤枠と吹き出しのガイドを切り替えます">ガイド ON</button><button id="restart">最初から</button></div><div class="lesson" aria-live="polite"><span id="progress"></span><strong id="instruction"></strong></div><div id="simulation"></div><footer class="lab-footer">学習用の再現・実際のインストールやアカウント操作は行いません</footer></dialog>
-</body></html>
+<script>if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body></html>

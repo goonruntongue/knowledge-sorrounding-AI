@@ -6,6 +6,8 @@
   <meta name="description" content="VS Codeをはじめるための、IDE・インストール・拡張機能のやさしいガイド">
   <title>VS Codeをはじめよう</title>
   <link rel="icon" href="img/vscode.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../pwa-icon-web-knowledge-navy-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="../copyright.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
@@ -212,6 +214,5 @@
       update(); window.addEventListener("scroll", update, { passive:true });
       toTop.addEventListener("click", () => window.scrollTo({ top:0, behavior:reduced ? "auto" : "smooth" }));
     })();
-  </script>
-</body>
+  </script><script>if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body>
 </html>
