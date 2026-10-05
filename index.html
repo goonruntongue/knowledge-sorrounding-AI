@@ -57,6 +57,9 @@
       .card-illustration { position:relative; z-index:0; height:150px; margin-bottom:-2.4rem; }
       .card-illustration img { transform-origin:center bottom; }
     }
+    @media (max-width:640px) and (hover:none) and (pointer:coarse) {
+      .card-illustration img { transform:scale(1.4); transform-origin:center bottom; }
+    }
     @media (prefers-reduced-motion:reduce) {
       main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; }
     }
