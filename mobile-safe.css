@@ -1,0 +1,83 @@
+/* Shared small-screen guardrails for every guide. */
+@media (max-width: 760px) {
+  html,
+  body {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    overflow-x: clip;
+  }
+
+  body *,
+  body *::before,
+  body *::after {
+    box-sizing: border-box;
+    min-inline-size: 0 !important;
+  }
+
+  :where(main, header, footer, section, article, nav, form, fieldset, .page, .wrap, .container, .content) {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  /* Fixed-width teaching widgets must shrink before they can widen the page. */
+  :where(main, main *, .guide-footer, .guide-footer *, .footer, .footer *) {
+    max-inline-size: 100%;
+  }
+
+  :where(.guide-footer, .footer, .site-footer, .footer .wrap) {
+    flex-wrap: wrap;
+  }
+
+  :where(img, picture, video, canvas, svg) {
+    max-inline-size: 100% !important;
+  }
+
+  :where(img, video, canvas) {
+    block-size: auto;
+  }
+
+  :where(button, input, select, textarea) {
+    max-inline-size: 100% !important;
+  }
+
+  :where(h1, h2, h3, h4, p, li, a, button, label, summary, small, strong, b, span) {
+    overflow-wrap: anywhere;
+  }
+
+  :where(pre, .code, .code-note, .terminal-body, .browser-top, .command) {
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  :where(pre, .code, .code-note) {
+    white-space: pre-wrap !important;
+    overflow-x: auto !important;
+  }
+
+  :where(.terminal-body, .browser-top, .command) {
+    white-space: normal !important;
+  }
+
+  table {
+    display: block;
+    max-inline-size: 100%;
+    overflow-x: auto;
+  }
+
+  :where(.page-pagination, .pagination) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    min-inline-size: 0 !important;
+    margin-inline-start: 0 !important;
+  }
+
+  :where(.page-pagination, .pagination) > a {
+    inline-size: 100% !important;
+    min-inline-size: 0 !important;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal !important;
+  }
+}
