@@ -25,12 +25,12 @@
     if (!delivery || !deliveryGif) return;
 
     // Changing the query starts the GIF again on every request.
-    deliveryGif.src = `assets/fortune-delivery/fortune-delivery.gif?delivery=${Date.now()}`;
+    deliveryGif.src = `assets/fortune-delivery/get-message.gif?delivery=${Date.now()}`;
     delivery.showModal();
     await wait(
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? 180
-        : 2780,
+        : 1180,
     );
     if (delivery.open) delivery.close();
   };
@@ -85,6 +85,10 @@
       const nextImage = new Image();
       nextImage.src = `fortune-mock/${result.image}`;
       await nextImage.decode();
+      image.classList.remove("is-arriving");
+      // Restart the entrance animation only after the new image is ready.
+      void image.offsetWidth;
+      image.classList.add("is-arriving");
       image.src = nextImage.src;
       image.alt = result.alt;
       badge.textContent = `${selectedMonth}月のおたより`;
