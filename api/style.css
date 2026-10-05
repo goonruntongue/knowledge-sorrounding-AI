@@ -598,9 +598,6 @@ body.lab-open {
   background: linear-gradient(135deg, #faf7ff, #eef5ff 56%, #fff5f8);
   box-shadow: 0 14px 34px #516b9920;
 }
-.fortune-api-demo__intro {
-  max-width: 720px;
-}
 .fortune-api-demo__intro h3 {
   margin: 0.2rem 0 0.7rem;
   font-size: clamp(1.45rem, 3vw, 2rem);
