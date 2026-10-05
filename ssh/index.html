@@ -1,65 +1,1695 @@
 <!doctype html>
 <html lang="ja">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#061520"><title>SSHでサーバーにつながろう | Knowledge Surrounding AI</title><link rel="icon" href="assets/ssh-lock-key.png" type="image/png"><link rel="apple-touch-icon" href="../pwa-icon-web-knowledge-navy-192.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="../copyright.css">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#061520;--panel:#0d2a3e;--line:#2b5d79;--ink:#eaf7ff;--muted:#a9c6d6;--cyan:#48d6ff;--mint:#68ebc2;--amber:#ffc86e;--red:#ff5964;--shadow:0 25px 75px #0007}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 88% 5%,#15597988 0,transparent 28rem),linear-gradient(135deg,#061520,#071c2a 60%,#09283a);font-family:"Noto Sans JP",sans-serif}body:before{content:"";position:fixed;inset:0;z-index:-1;opacity:.12;background-image:linear-gradient(#69d0f74d 1px,transparent 1px),linear-gradient(90deg,#69d0f74d 1px,transparent 1px);background-size:60px 60px}a{color:var(--cyan)}button,input,textarea{font:inherit}.wrap{width:min(1120px,92%);margin:auto}.portal-link{display:inline-flex;align-items:center;gap:.35rem;padding:.4rem .8rem;border:1px solid #58cceccc;border-radius:999px;color:#effcff;background:#0b344dd9;box-shadow:0 3px 12px #00152255;font-size:.82rem;font-weight:800;text-decoration:none;transition:background .18s ease,transform .18s ease}.portal-link:hover{background:#0e415d;transform:translateY(-2px)}.hero{min-height:92svh;display:grid;align-items:center;padding:2rem 0 4rem}.hero>.wrap{position:relative}.hero>.wrap>.portal-link{position:absolute;z-index:2;top:1rem;left:0}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;padding-top:3rem}.eyebrow{margin:2.5rem 0 .8rem;color:var(--cyan);font:800 .84rem Poppins,sans-serif;letter-spacing:.15em}.hero h1{margin:0;font:800 clamp(3.2rem,8vw,6.6rem)/1.05 Poppins,"Noto Sans JP",sans-serif;letter-spacing:-.06em}.hero h1 em{display:block;color:var(--cyan);font-style:normal}.lead,.section-lead{max-width:790px;color:#c4ddea;font-size:1.05rem;line-height:1.9}.jump{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:2rem}.jump a{padding:.55rem .85rem;border:1px solid #35627a;border-radius:999px;color:#c9e8f5;background:#092434;text-decoration:none;font-size:.78rem;font-weight:800}.connection{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center}.node{min-height:220px;display:grid;place-items:center;align-content:center;gap:.7rem;border:1px solid var(--line);border-radius:24px;background:#0d2a3eee;box-shadow:var(--shadow);text-align:center}.node i{font-style:normal;font-size:4rem}.node span{color:var(--muted);font-size:.82rem}.line{height:4px;background:linear-gradient(90deg,var(--cyan),var(--mint));position:relative}.line:after{content:"";position:absolute;right:0;top:50%;width:13px;height:13px;border-top:4px solid var(--mint);border-right:4px solid var(--mint);transform:translateY(-50%) rotate(45deg)}
-.section{padding:clamp(4.5rem,10vw,8rem) 0;border-top:1px solid #21465c}.section h2{max-width:850px;margin:.35rem 0 1rem;font:800 clamp(2.1rem,5.5vw,4.3rem)/1.16 Poppins,"Noto Sans JP",sans-serif;letter-spacing:-.045em}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.card,.key-card{padding:1.5rem;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#103149ee,#081d2cee);box-shadow:0 15px 42px #0003}.card-icon{font-size:2.6rem}.card h3,.key-card h3{margin:.7rem 0 .45rem}.card p,.key-card p{margin:0;color:var(--muted);line-height:1.75}.key-pair{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:1rem;margin-top:2rem}.key-card{min-height:260px}.key-card.private{border-color:#9a783c}.key-card.public{border-color:#287c69}.key-card .icon{font-size:4rem}.key-card strong{color:var(--amber)}.key-card.public strong{color:var(--mint)}.compare{height:4px;background:linear-gradient(90deg,var(--amber),var(--mint));position:relative}.compare:before{content:"照合";position:absolute;left:50%;top:-2.3rem;transform:translateX(-50%);color:var(--cyan);font-weight:800}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;counter-reset:n}.flow article{position:relative;padding:1.4rem;border:1px solid var(--line);border-radius:18px;background:#0b293c;counter-increment:n}.flow article:before{content:"0" counter(n);display:block;margin-bottom:.7rem;color:var(--cyan);font:800 .8rem Poppins}.flow article:not(:last-child):after{content:"→";position:absolute;right:-1.1rem;top:50%;color:var(--cyan);font-weight:900}.flow span{display:block;margin-top:.4rem;color:var(--muted);font-size:.85rem;line-height:1.65}.callout{margin-top:1.5rem;padding:1.2rem;border-left:4px solid var(--amber);background:#332a17;color:#f9e6b8;line-height:1.8}.terminal{overflow:hidden;border:1px solid #386986;border-radius:18px;background:#050b0f;box-shadow:var(--shadow)}.terminal-top{display:flex;align-items:center;min-height:44px;padding:0 .9rem;background:#162a38;color:#b9d0dc;font:700 .75rem Consolas}.terminal-body{padding:1.3rem;color:#dff7ff;font:clamp(.77rem,2vw,.93rem)/1.8 Consolas,"Cascadia Mono",monospace;white-space:pre-wrap;word-break:break-word}.command-explain{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:1rem}.command-explain div,.config,.prompt{padding:1rem;border:1px solid #2d5a73;border-radius:12px;background:#092233}.command-explain code{color:var(--mint);font-weight:800}.command-explain p{margin:.4rem 0 0;color:var(--muted);font-size:.82rem}.ai-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:1rem}.code{overflow:auto;margin:0;padding:1rem;border:1px solid #234f66;border-radius:9px;background:#03121a;color:#b5f5de;font:.78rem/1.7 Consolas;white-space:pre-wrap}.copy{margin-top:.8rem;padding:.6rem .85rem;border:1px solid #62d8f7;border-radius:8px;background:#0d5776;color:white;font-weight:800;cursor:pointer}.copy-state{margin-left:.5rem;color:var(--mint);font-size:.8rem}.safety{color:var(--muted);line-height:1.75}.sources{padding:1rem 0 4rem;color:#8eafbf;font-size:.8rem;line-height:1.8}.guide-footer{padding:2rem 0 9rem;border-top:1px solid #21465c}.guide-footer>.wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}.guide-footer .portal-link{position:static}.page-pagination{display:flex;align-items:stretch;gap:.75rem;margin-left:auto}.page-pagination a{display:flex;flex-direction:column;gap:.08rem;min-width:13rem;padding:.55rem .8rem;border:1px solid #347392;border-radius:14px;color:#eafbff;background:#0a293b;text-decoration:none;transition:transform .18s ease,background .18s ease}.page-pagination a:hover{background:#0d3b52;transform:translateY(-2px)}.page-pagination small{color:var(--cyan);font-size:.7rem;font-weight:700}.page-pagination strong{font-size:.82rem}.reveal{opacity:0;transform:translateY(26px);transition:.65s}.reveal.in{opacity:1;transform:none}
-.ssh-lab-dock{position:sticky;z-index:850;bottom:0;display:flex;justify-content:center;min-height:5em;padding:.7rem 1rem;background:linear-gradient(90deg,#06314c,#087cae);box-shadow:0 -8px 32px #00101d99}.dock-inner{display:flex;align-items:center;gap:1rem;width:min(1120px,100%)}.dock-inner p{flex:1;margin:0;font-size:.84rem;font-weight:700}.dock-launch{border:0;border-radius:999px;padding:.82rem 1.2rem;background:#fff;color:#07324d;font-weight:900;cursor:pointer}#toTop{position:fixed;z-index:800;right:1.4rem;bottom:6rem;display:grid;place-items:center;width:48px;height:48px;border:1px solid #63d4f3;border-radius:50%;background:#0c5275e8;color:#fff;box-shadow:0 8px 22px #00152266;cursor:pointer;font-size:1.2rem;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .22s ease,transform .22s ease,background .18s ease}#toTop.show{opacity:1;pointer-events:auto;transform:translateY(0)}#toTop:hover{background:#083d5b}#toTop:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
-dialog{width:min(1240px,96vw);height:min(800px,92vh);max-height:92vh;padding:0;border:1px solid #54809b;border-radius:18px;background:#07131d;color:var(--ink);box-shadow:var(--shadow)}dialog::backdrop{background:#000c}.lab-window{display:flex;flex-direction:column;height:100%}.lab-bar{display:flex;align-items:center;gap:.6rem;min-height:48px;padding:0 .85rem;background:#132737}.lab-mark{width:0;height:0;border-bottom:20px solid #2db9ef;border-left:20px solid transparent}.lab-close{margin-left:auto;border:0;background:transparent;color:white;font-size:1.8rem;cursor:pointer}.lab-progress{display:flex;gap:.35rem;padding:.6rem .85rem;background:#091c2a}.lab-progress span{display:grid;place-items:center;width:1.6rem;height:1.6rem;border:1px solid #4c748c;border-radius:50%;font:700 .68rem Poppins}.lab-progress .active{background:var(--cyan);color:#062134}.lab-progress .done{background:#1c694f}.lab-stage{flex:1;min-height:0;overflow:auto;padding:clamp(1rem,3vw,2rem);background:#07141e}.lab-step{display:none;min-height:100%}.lab-step.active{display:block;animation:fade .28s}@keyframes fade{from{opacity:0;transform:translateY(8px)}}.coach{max-width:860px;margin:0 auto 1rem;padding:.85rem 1rem;border:2px solid var(--red);border-radius:9px;background:#331820;color:white;line-height:1.7}.status{max-width:820px;margin:.7rem auto;color:var(--mint);font-weight:700}
-.explorer{max-width:820px;margin:auto;border:1px solid #657585;border-radius:10px;overflow:hidden;background:#f4f6f8;color:#172331}.win-title{display:flex;padding:.65rem;background:white}.win-title span{margin-left:auto}.toolbar{padding:.65rem;background:white;border-top:1px solid #ddd}.path{display:flex;align-items:center;border:1px solid #bdc8d1;padding:.5rem}.address{flex:1;border:0;outline:0;background:transparent}.explorer-body{display:grid;grid-template-columns:180px 1fr;min-height:280px}.side{padding:1rem;background:#e9eef3;color:#536979}.files{padding:1.3rem}.folder{width:70px;height:50px;border-radius:5px;background:#e7ab22}.keycap{padding:.1rem .35rem;border:1px solid #728494;border-bottom-width:3px;border-radius:4px}.lab-terminal{max-width:920px;margin:auto}.row{display:flex;flex-wrap:wrap}.command{flex:1;min-width:220px;border:0;border-bottom:1px solid white;outline:0;background:transparent;color:white;font:inherit}.output{margin-top:.7rem;color:#beeccd}.error{color:#ff9aa1}.explain{max-width:920px;margin:1rem auto;padding:1rem;border:1px solid #306b7e;border-radius:10px;background:#0a2634}.explain dl{display:grid;grid-template-columns:max-content 1fr;gap:.4rem 1rem;font-size:.84rem}.explain dt{color:var(--cyan);font-weight:800}.explain dd{margin:0;color:var(--muted)}
-.upload{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;gap:1rem;max-width:920px;margin:auto}.float{display:grid;place-items:center;gap:.5rem;min-height:190px;border:1px solid #39728b;border-radius:18px;background:#0c3147;color:white;cursor:pointer}.highlight{outline:3px solid var(--red);outline-offset:5px;animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.035)}}.big-icon{font-size:4rem}.file-name{padding:.3rem .55rem;border-radius:5px;background:#06131d;color:var(--mint);font:700 .78rem Consolas}.server-icon{display:block;width:100px;height:115px;border:3px solid #77dcf8;border-radius:10px;background:repeating-linear-gradient(0deg,#12516d 0 14px,#0d344a 14px 28px)}.server-icon.connected{border-color:white;box-shadow:0 0 20px var(--cyan),0 0 60px var(--mint);animation:glow .8s infinite alternate}@keyframes glow{to{transform:scale(1.05)}}.public,.server-window{display:none;max-width:790px;margin:1rem auto}.show{display:block}.public{padding:1rem;border:1px solid #4d7390;border-radius:10px;background:#071a26}.public pre{white-space:pre-wrap;word-break:break-all;color:var(--mint)}.server-window{overflow:hidden;border:1px solid #6e8998;border-radius:10px;background:#f7f8f9;color:#27313a}.browser-top{padding:.55rem;background:#e5e8eb}.sakura{padding:1.2rem}.server-text{width:100%;height:100px}.register{margin-top:.7rem;padding:.6rem 1rem;border:0;border-radius:6px;background:#00a99d;color:white;font-weight:800}.success{display:none;margin-top:.7rem;padding:.7rem;background:#e4f8ef;color:#17754d}.success.show{display:block}.vault{max-width:880px;margin:auto;padding:1.2rem;border:1px solid #57718a;border-radius:15px;background:#102736}.drop{display:grid;place-items:center;min-height:220px;margin-top:1rem;border:2px dashed #5c9ab5;border-radius:12px}.private-key{display:grid;place-items:center;gap:.5rem;padding:1rem;border:1px solid #d5a849;border-radius:10px;background:#3b2b0d;cursor:grab;touch-action:none}.vault-success{display:none;margin-top:.8rem;padding:.7rem;background:#164b3e}.connect{display:grid;grid-template-columns:1fr 200px;gap:1rem;align-items:center}.server-box{display:grid;place-items:center;gap:.6rem;min-height:250px;border:1px solid var(--line);border-radius:15px;background:#0b293b}.lab-note{max-width:880px;margin:1rem auto;color:var(--muted);font-size:.82rem;line-height:1.7}.lab-footer{display:flex;padding:.7rem .9rem;background:#0c3147}.reset{margin-left:auto;border:0;background:transparent;color:white}
-@media(max-width:800px){.hero-grid,.cards,.key-pair,.ai-grid,.connect{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.connection{margin-top:2rem}.compare{width:4px;height:60px;margin:auto}.upload{grid-template-columns:1fr}.upload>div{transform:rotate(90deg);text-align:center}.explorer-body{grid-template-columns:1fr}.side{display:none}.command-explain{grid-template-columns:1fr}dialog{width:100vw;height:100dvh;max-height:none;border-radius:0}.lab-stage{padding:1rem}}@media(max-width:520px){.flow,.connection{grid-template-columns:1fr}.line{width:4px;height:55px;margin:auto}.dock-inner p{display:none}.dock-inner{justify-content:center}.hero h1{font-size:3rem}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
-</style>
-<style>
-.node-art{display:block;width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 12px 18px #0007)}
-.hero h1{font-size:clamp(3.2rem,calc(3.2rem + 1.7rem * (100vw - 320px) / 880px),4.9rem)}
-.what-intro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:clamp(1.5rem,5vw,4rem);align-items:center}
-.key-illustration{margin:0;padding:1rem;border:1px solid #29647f;border-radius:26px;background:radial-gradient(circle at 65% 35%,#15536d 0,transparent 62%),#081e2e;text-align:center;box-shadow:var(--shadow)}
-.key-illustration img{display:block;width:min(100%,360px);margin:auto;filter:drop-shadow(0 15px 24px #0008)}
-.key-illustration figcaption{margin-top:.25rem;color:#d9f3ff;font-size:.82rem;line-height:1.7}
-.key-illustration small{display:block;color:var(--muted)}
-.key-card{min-height:235px}
-.key-card.public-key{display:block;border-color:#287c69}.key-card.public-key strong{color:var(--mint)}
-.key-card-visual{position:relative;display:grid;place-items:center;width:132px;height:118px;margin:0 0 .35rem}
-.key-card-visual img{display:block;object-fit:contain;filter:drop-shadow(0 10px 16px #0007)}
-.key-card-visual--key img{width:124px;height:112px}
-.key-card-visual--server .server-layer{width:108px;height:108px}
-.key-card-visual--server .lock-layer{position:absolute;right:-5px;bottom:-8px;width:96px;height:82px;z-index:2;filter:drop-shadow(0 8px 12px #0009)}
-.compare:before{content:"ペアを確認";font-size:.8rem;white-space:nowrap}
-.easy-note{margin:1.5rem 0;padding:1.2rem 1.3rem;border:1px solid #2c907b;border-radius:16px;background:#0b3a37;color:#dcfff4;line-height:1.85}
-.easy-note strong{color:var(--mint)}
-.tech-details{margin-top:1.5rem;border:1px solid #315d75;border-radius:16px;background:#071b28}
-.tech-details summary{padding:1rem 1.2rem;color:#d7f3ff;font-weight:800;cursor:pointer}
-.tech-details[open] summary{border-bottom:1px solid #315d75}
-.tech-inner{padding:1rem}
-.windows-desktop{position:relative;min-height:170px;max-width:920px;margin:auto;overflow:hidden;border:1px solid #78a6c3;border-radius:14px;background:radial-gradient(circle at 68% 24%,#5ca4db 0,transparent 26%),linear-gradient(135deg,#b7d6e8,#65a4d2 46%,#1b5a9a);color:#171b22;box-shadow:0 20px 45px #0005}.windows-desktop.search-active{min-height:330px}.windows-ribbon{position:absolute;inset:0;background:linear-gradient(138deg,transparent 42%,#1372d6aa 42% 48%,transparent 48% 60%,#195ec7a8 60% 67%,transparent 67%);mix-blend-mode:screen}.search-pane{display:none;position:absolute;right:7%;bottom:56px;left:7%;z-index:1;min-height:190px;padding:1rem;border:1px solid #dce4ec;border-radius:13px;background:#f7f9fbeF;box-shadow:0 16px 40px #11375c66}.search-pane.show{display:block}.taskbar{position:absolute;right:0;bottom:0;left:0;z-index:2;display:flex;align-items:center;justify-content:center;gap:.65rem;min-height:56px;background:#eff4f8eF;backdrop-filter:blur(8px)}.windows-logo{display:grid;grid-template-columns:repeat(2,8px);gap:2px}.windows-logo i{width:8px;height:8px;background:#1275da}.taskbar-search{width:min(420px,70vw);border:1px solid #b4c4d1;border-radius:999px;background:#fff;padding:.68rem 1rem;outline:0;box-shadow:0 2px 7px #4562}.taskbar-search:focus{border-color:#1681e7;box-shadow:0 0 0 3px #1681e744}.search-results{display:none;grid-template-columns:1fr 1fr;gap:1rem}.search-results.show{display:grid}.search-heading{grid-column:1/-1;margin:0;font-size:.86rem}.app-result,.app-actions{padding:1rem;border-radius:10px;background:#fff;box-shadow:0 2px 8px #53667822}.app-result{display:flex;align-items:center;gap:.7rem}.cmd-icon{display:grid;place-items:center;width:42px;height:32px;border-radius:4px;background:#15191d;color:#fff;font:700 .72rem Consolas}.app-result small{display:block;color:#596978}.app-actions{display:grid;align-content:start;gap:.7rem}.app-actions h3{margin:0;font-size:1rem}.run-admin{padding:.7rem .8rem;border:1px solid #4389c7;border-radius:8px;background:#e7f3ff;color:#123e67;font-weight:900;cursor:pointer;touch-action:manipulation}.run-admin:hover,.run-admin:focus{background:#cae8ff}.search-tip{margin:0;color:#415969;font-size:.84rem;line-height:1.7}
-.command-copy{display:inline-flex;align-items:center;margin:.15rem 0 0 .45rem;padding:.26rem .5rem;border-radius:6px;font-size:.74rem;vertical-align:middle}
-.public-lock-art{width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 8px 12px #0008)}
-.after-ssh{position:relative;margin-top:1.5rem;padding:1.4rem 1.5rem 1.4rem 5.3rem;border:1px solid #2c907b;border-radius:18px;background:linear-gradient(135deg,#0b3a37,#0b293d);color:#eafff8;line-height:1.9}.after-ssh:before{content:"✦";position:absolute;left:1.45rem;top:1.35rem;display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--mint);color:#07332f;font:900 1.25rem Poppins}.after-ssh h3{margin:0 0 .55rem;color:#fff;font-size:clamp(1.35rem,3vw,2rem)}.after-ssh p{margin:.55rem 0}.after-ssh strong{color:#a2ffe0}
-.prompt-only{max-width:920px;margin-top:1.5rem}.prompt-only h3{margin-top:0}.prompt-hint{max-width:920px;margin:.8rem 0 0;color:var(--muted);font-size:.88rem;line-height:1.8}
-.sim-enter,.sim-touch-action{flex:0 0 auto;border:1px solid #6ee2ff;border-radius:8px;background:#0b78a5;color:#fff;padding:.52rem .78rem;font-weight:900;cursor:pointer;touch-action:manipulation}
-.sim-enter{margin-left:.55rem;white-space:nowrap}.sim-touch-action{display:block;margin:.8rem auto 0}.sim-touch-action[hidden]{display:none}
-@media(max-width:520px){.path,.row{gap:.45rem}.sim-enter{min-height:44px;margin-left:0;padding:.55rem .7rem}.command{width:100%}.row .sim-enter{width:100%;margin-top:.35rem}.sim-touch-action{width:100%;min-height:46px}.windows-desktop{min-height:170px}.windows-desktop.search-active{min-height:440px}.search-pane{right:.75rem;bottom:60px;left:.75rem;padding:.7rem}.search-results{grid-template-columns:1fr}.search-heading{grid-column:auto}.taskbar-search{width:calc(100vw - 110px)}}
-@media(max-width:800px){.what-intro{grid-template-columns:1fr}}
-@media(max-width:520px){.node-art{width:120px;height:120px}}
-@media(max-width:520px){.connection>.line:after{top:100%;right:unset;left:50%;transform:translate(-50%,-100%) rotate(135deg)}}
-@media(max-width:800px){.guide-footer>.wrap{align-items:flex-start;flex-direction:column}.page-pagination{width:100%;margin-left:0}.page-pagination a{width:100%}}
-@media(max-width:520px){.hero>.wrap>.portal-link{top:.7rem;font-size:.75rem}#toTop{right:1rem;bottom:6rem}}
-</style><link rel="stylesheet" href="../mobile-safe.css"><link rel="stylesheet" href="../page-reveal.css"></head>
-<body>
-<header class="hero"><div class="wrap"><a class="portal-link" href="../index.html">ポータルへ戻る</a><div class="hero-grid"><div><p class="eyebrow">BEGINNER'S GUIDE / SSH</p><h1>SSHで、離れたサーバーに<em>安全につながる。</em></h1><p class="lead">SSHは、手元のPCからサーバーへ暗号化された通り道をつくる仕組みです。鍵を使えば、サーバーのパスワードを毎回入力せずに本人確認できます。</p><nav class="jump"><a href="#what">SSH鍵接続とは</a><a href="#use">役立つ場面</a><a href="#how">やり方</a><a href="#ai">AIに任せる</a></nav></div><div class="connection"><article class="node"><i>💻</i><b>あなたのPC</b><span>秘密鍵を保管</span></article><div class="line"></div><article class="node"><img class="node-art" src="assets/server-material.png" alt="青いリモートサーバーのイラスト"><b>リモートサーバー</b><span>公開鍵を登録</span></article></div></div></div></header>
-<main>
-<section class="section" id="what"><div class="wrap reveal"><p class="eyebrow">01 / WHAT IS SSH KEY AUTH?</p><div class="what-intro"><div><h2>サーバーの南京錠に、手元の鍵を合わせるイメージ。</h2><p class="section-lead">サーバーには「この鍵の持ち主なら入ってよい」という<strong>公開鍵</strong>を置き、あなたのPCには対になる<strong>秘密鍵</strong>を残します。接続するとサーバーがペアかどうかを確認し、合っていれば扉が開きます。秘密鍵そのものをサーバーへ送ることはありません。</p></div><figure class="key-illustration"><img src="assets/ssh-lock-key.png" alt="SSH公開鍵接続を南京錠と鍵で表したイラスト"><figcaption>公開鍵をサーバー側の「南京錠」、秘密鍵を手元だけで持つ「鍵」と考えると分かりやすいです。<small>※ 南京錠と鍵は仕組みをつかむためのたとえです。</small></figcaption></figure></div><div class="key-pair"><article class="key-card private"><span class="key-card-visual key-card-visual--key" role="img" aria-label="パソコンの中に保管する秘密鍵"><img src="assets/ssh-key-only-3d.png" alt=""></span><h3>秘密鍵</h3><p><strong>あなた専用の鍵。</strong><br>PCの中だけで大切に保管します。メール、チャット、GitHub、サーバーへは送りません。</p></article><div class="compare"></div><article class="key-card public-key"><span class="key-card-visual key-card-visual--server" role="img" aria-label="南京錠で守られたサーバー"><img class="server-layer" src="assets/server-material.png" alt=""><img class="lock-layer" src="assets/ssh-lock-only-3d.png" alt=""></span><h3>公開鍵</h3><p><strong>サーバーに置く南京錠側の情報。</strong><br><code>.pub</code>が付くファイルです。公開鍵だけでは、あなたの秘密鍵を作ったりログインしたりできません。</p></article></div></div></section>
-<section class="section" id="use"><div class="wrap reveal"><p class="eyebrow">02 / WHEN IT HELPS</p><h2>公開中のサイトを、安全にお手入れする入口。</h2><p class="section-lead">Webサイトは、インターネット上の「サーバー」というコンピューターから表示されています。SSHを使うと、自分のPCからそのサーバーへ安全に入り、サイトの中身を確認したり更新したりできます。</p><div class="cards"><article class="card"><span class="card-icon">🌐</span><h3>公開中のサイトを直す</h3><p>HTMLや画像を入れ替えるための、安全な作業ルートとして使えます。</p></article><article class="card"><span class="card-icon">🔎</span><h3>困ったときに中を確認</h3><p>どのフォルダーに何があるか、エラーが起きていないかを調べられます。</p></article><article class="card"><span class="card-icon">🤖</span><h3>AIに同じ作業を頼む</h3><p>接続先と「どこまでしてよいか」を決めれば、確認や更新をAIへ頼めます。</p></article></div><article class="after-ssh"><h3>SSH接続後の実際</h3><p>SSHでつながった後は、黒いターミナル画面でLinuxコマンドを使い、<strong>文字を手がかりにサーバー内のデータを見て</strong>いきます。自分で直接書き換えるには、少しずつコマンドを学ぶ必要があります。</p><p>では、なぜ今SSHを知っておくのでしょう？ それは、<strong>AIが安全にサーバーへ接続し、Webページやアプリの更新を言葉のやり取りで手伝えるようにする</strong>ためです。「このページの見出しを直して」と頼める状態に近づける、頼もしい準備になります。大切な変更は、何をするか確認しながら進めましょう。</p></article></div></section>
-<section class="section" id="how"><div class="wrap reveal"><p class="eyebrow">03 / FIRST TIME SETUP</p><h2>やることは、最初に一度だけ。4つを順番どおりで大丈夫。</h2><p class="section-lead">難しい設定を全部覚える必要はありません。①PCで鍵を作る、②公開鍵だけを管理画面に貼る、③秘密鍵はPCの中に置いておく、④接続コマンドを1行入力する。このページ下のシミュレーターで、同じ順番を画面を見ながら練習できます。</p><div class="easy-note"><strong>初心者でも大丈夫：</strong>鍵はコマンド1行で2つ同時に作られます。サーバーへ登録するのは、名前の最後に<code>.pub</code>が付いた公開鍵だけ。秘密鍵は通常、最初からWindowsの決まった場所に保存されるので、むやみに移動しなくてかまいません。</div><div class="flow"><article><b>コマンドを1行入力</b><span><code>ssh-keygen -t ed25519</code>と入力してEnter。</span></article><article><b><code>.pub</code>の文字をコピー</b><span>公開鍵の中身だけを、サーバーの管理画面に貼ります。</span></article><article><b>秘密鍵はそのままでOK</b><span>通常は<code>%USERPROFILE%\.ssh\</code>に保存されます。</span></article><article><b>接続先を入力してEnter</b><span><code>ssh ユーザー名@ホスト名</code>で接続します。</span></article></div><details class="tech-details"><summary>実際のコマンド画面と、言葉の意味を見る</summary><div class="tech-inner"><div class="terminal"><div class="terminal-top">Command Prompt — local PC</div><div class="terminal-body">C:\Users\あなた&gt; ssh-keygen -t ed25519
-Generating public/private ed25519 key pair.
-Enter file in which to save the key (C:\Users\あなた\.ssh\id_ed25519):
-
-秘密鍵：C:\Users\あなた\.ssh\id_ed25519
-公開鍵：C:\Users\あなた\.ssh\id_ed25519.pub</div></div><div class="command-explain"><div><code>ssh-keygen</code><p>SSH用の鍵ペアを作る。</p></div><div><code>-t</code><p>鍵の種類を指定する。</p></div><div><code>ed25519</code><p>今回使う現代的な鍵種別。</p></div></div><div class="callout"><strong>保存場所：</strong>コマンドプロンプトで鍵を生成すると、保存先を変更しない限り、鍵は<code>%USERPROFILE%\.ssh\</code>へ自動的に作られます。どの作業フォルダーから実行しても、既定ではこのフォルダーに保存されます。</div></div></details></div></section>
-<section class="section" id="ai"><div class="wrap reveal"><p class="eyebrow">04 / ZERO-TOUCH WITH AI</p><h2>SSH公開鍵接続を、ゼロからAIに整えてもらう。</h2><p class="section-lead">設定ファイルの名前や書き方を覚えなくても大丈夫です。下の「〇〇」を自分のサーバー情報に置き換えて渡すと、情報収集、鍵の作成、接続テスト、次回から使うグローバルスキルの作成まで、順番に依頼できます。</p><article class="prompt prompt-only"><h3>Codex または Claude Codeへ渡す依頼文</h3><pre class="code" id="pagePrompt"># SSH公開鍵接続をゼロから設定し、グローバルスキルにしてください
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#061520" />
+    <title>SSHでサーバーにつながろう | Knowledge Surrounding AI</title>
+    <link rel="icon" href="assets/ssh-lock-key.png" type="image/png" />
+    <link
+      rel="apple-touch-icon"
+      href="../pwa-icon-web-knowledge-navy-192.png"
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="../copyright.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Poppins:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #061520;
+        --panel: #0d2a3e;
+        --line: #2b5d79;
+        --ink: #eaf7ff;
+        --muted: #a9c6d6;
+        --cyan: #48d6ff;
+        --mint: #68ebc2;
+        --amber: #ffc86e;
+        --red: #ff5964;
+        --shadow: 0 25px 75px #0007;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 88% 5%, #15597988 0, transparent 28rem),
+          linear-gradient(135deg, #061520, #071c2a 60%, #09283a);
+        font-family: "Noto Sans JP", sans-serif;
+      }
+      body:before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: 0.12;
+        background-image:
+          linear-gradient(#69d0f74d 1px, transparent 1px),
+          linear-gradient(90deg, #69d0f74d 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+      a {
+        color: var(--cyan);
+      }
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+      .wrap {
+        width: min(1120px, 92%);
+        margin: auto;
+      }
+      .portal-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.8rem;
+        border: 1px solid #58cceccc;
+        border-radius: 999px;
+        color: #effcff;
+        background: #0b344dd9;
+        box-shadow: 0 3px 12px #00152255;
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition:
+          background 0.18s ease,
+          transform 0.18s ease;
+      }
+      .portal-link:hover {
+        background: #0e415d;
+        transform: translateY(-2px);
+      }
+      .hero {
+        min-height: 92svh;
+        display: grid;
+        align-items: center;
+        padding: 2rem 0 4rem;
+      }
+      .hero > .wrap {
+        position: relative;
+      }
+      .hero > .wrap > .portal-link {
+        position: absolute;
+        z-index: 2;
+        top: 1rem;
+        left: 0;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 3rem;
+        align-items: center;
+        padding-top: 3rem;
+      }
+      .eyebrow {
+        margin: 2.5rem 0 0.8rem;
+        color: var(--cyan);
+        font:
+          800 0.84rem Poppins,
+          sans-serif;
+        letter-spacing: 0.15em;
+      }
+      .hero h1 {
+        margin: 0;
+        font:
+          800 clamp(3.2rem, 8vw, 6.6rem)/1.05 Poppins,
+          "Noto Sans JP",
+          sans-serif;
+        letter-spacing: -0.06em;
+      }
+      .hero h1 em {
+        display: block;
+        color: var(--cyan);
+        font-style: normal;
+      }
+      .lead,
+      .section-lead {
+        max-width: 790px;
+        color: #c4ddea;
+        font-size: 1.05rem;
+        line-height: 1.9;
+      }
+      .jump {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin-top: 2rem;
+      }
+      .jump a {
+        padding: 0.55rem 0.85rem;
+        border: 1px solid #35627a;
+        border-radius: 999px;
+        color: #c9e8f5;
+        background: #092434;
+        text-decoration: none;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+      .connection {
+        display: grid;
+        grid-template-columns: 1fr 70px 1fr;
+        align-items: center;
+      }
+      .node {
+        min-height: 220px;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        gap: 0.7rem;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: #0d2a3eee;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+      .node i {
+        font-style: normal;
+        font-size: 4rem;
+      }
+      .node span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .line {
+        height: 4px;
+        background: linear-gradient(90deg, var(--cyan), var(--mint));
+        position: relative;
+      }
+      .line:after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 13px;
+        height: 13px;
+        border-top: 4px solid var(--mint);
+        border-right: 4px solid var(--mint);
+        transform: translateY(-50%) rotate(45deg);
+      }
+      .section {
+        padding: clamp(4.5rem, 10vw, 8rem) 0;
+        border-top: 1px solid #21465c;
+      }
+      .section h2 {
+        max-width: 850px;
+        margin: 0.35rem 0 1rem;
+        font:
+          800 clamp(2.1rem, 5.5vw, 4.3rem)/1.16 Poppins,
+          "Noto Sans JP",
+          sans-serif;
+        letter-spacing: -0.045em;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+      .card,
+      .key-card {
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: linear-gradient(145deg, #103149ee, #081d2cee);
+        box-shadow: 0 15px 42px #0003;
+      }
+      .card-icon {
+        font-size: 2.6rem;
+      }
+      .card h3,
+      .key-card h3 {
+        margin: 0.7rem 0 0.45rem;
+      }
+      .card p,
+      .key-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .key-pair {
+        display: grid;
+        grid-template-columns: 1fr 110px 1fr;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .key-card {
+        min-height: 260px;
+      }
+      .key-card.private {
+        border-color: #9a783c;
+      }
+      .key-card.public {
+        border-color: #287c69;
+      }
+      .key-card .icon {
+        font-size: 4rem;
+      }
+      .key-card strong {
+        color: var(--amber);
+      }
+      .key-card.public strong {
+        color: var(--mint);
+      }
+      .compare {
+        height: 4px;
+        background: linear-gradient(90deg, var(--amber), var(--mint));
+        position: relative;
+      }
+      .compare:before {
+        content: "照合";
+        position: absolute;
+        left: 50%;
+        top: -2.3rem;
+        transform: translateX(-50%);
+        color: var(--cyan);
+        font-weight: 800;
+      }
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        counter-reset: n;
+      }
+      .flow article {
+        position: relative;
+        padding: 1.4rem;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #0b293c;
+        counter-increment: n;
+      }
+      .flow article:before {
+        content: "0" counter(n);
+        display: block;
+        margin-bottom: 0.7rem;
+        color: var(--cyan);
+        font: 800 0.8rem Poppins;
+      }
+      .flow article:not(:last-child):after {
+        content: "→";
+        position: absolute;
+        right: -1.1rem;
+        top: 50%;
+        color: var(--cyan);
+        font-weight: 900;
+      }
+      .flow span {
+        display: block;
+        margin-top: 0.4rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+        line-height: 1.65;
+      }
+      .callout {
+        margin-top: 1.5rem;
+        padding: 1.2rem;
+        border-left: 4px solid var(--amber);
+        background: #332a17;
+        color: #f9e6b8;
+        line-height: 1.8;
+      }
+      .terminal {
+        overflow: hidden;
+        border: 1px solid #386986;
+        border-radius: 18px;
+        background: #050b0f;
+        box-shadow: var(--shadow);
+      }
+      .terminal-top {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 0.9rem;
+        background: #162a38;
+        color: #b9d0dc;
+        font: 700 0.75rem Consolas;
+      }
+      .terminal-body {
+        padding: 1.3rem;
+        color: #dff7ff;
+        font:
+          clamp(0.77rem, 2vw, 0.93rem)/1.8 Consolas,
+          "Cascadia Mono",
+          monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .command-explain {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.7rem;
+        margin-top: 1rem;
+      }
+      .command-explain div,
+      .config,
+      .prompt {
+        padding: 1rem;
+        border: 1px solid #2d5a73;
+        border-radius: 12px;
+        background: #092233;
+      }
+      .command-explain code {
+        color: var(--mint);
+        font-weight: 800;
+      }
+      .command-explain p {
+        margin: 0.4rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .ai-grid {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 1rem;
+      }
+      .code {
+        overflow: auto;
+        margin: 0;
+        padding: 1rem;
+        border: 1px solid #234f66;
+        border-radius: 9px;
+        background: #03121a;
+        color: #b5f5de;
+        font: 0.78rem/1.7 Consolas;
+        white-space: pre-wrap;
+      }
+      .copy {
+        margin-top: 0.8rem;
+        padding: 0.6rem 0.85rem;
+        border: 1px solid #62d8f7;
+        border-radius: 8px;
+        background: #0d5776;
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .copy-state {
+        margin-left: 0.5rem;
+        color: var(--mint);
+        font-size: 0.8rem;
+      }
+      .safety {
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .sources {
+        padding: 1rem 0 4rem;
+        color: #8eafbf;
+        font-size: 0.8rem;
+        line-height: 1.8;
+      }
+      .guide-footer {
+        padding: 2rem 0 9rem;
+        border-top: 1px solid #21465c;
+      }
+      .guide-footer > .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .guide-footer .portal-link {
+        position: static;
+      }
+      .page-pagination {
+        display: flex;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-left: auto;
+      }
+      .page-pagination a {
+        display: flex;
+        flex-direction: column;
+        gap: 0.08rem;
+        min-width: 13rem;
+        padding: 0.55rem 0.8rem;
+        border: 1px solid #347392;
+        border-radius: 14px;
+        color: #eafbff;
+        background: #0a293b;
+        text-decoration: none;
+        transition:
+          transform 0.18s ease,
+          background 0.18s ease;
+      }
+      .page-pagination a:hover {
+        background: #0d3b52;
+        transform: translateY(-2px);
+      }
+      .page-pagination small {
+        color: var(--cyan);
+        font-size: 0.7rem;
+        font-weight: 700;
+      }
+      .page-pagination strong {
+        font-size: 0.82rem;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: 0.65s;
+      }
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+      .ssh-lab-dock {
+        position: sticky;
+        z-index: 850;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        min-height: 5em;
+        padding: 0.7rem 1rem;
+        background: linear-gradient(90deg, #06314c, #087cae);
+        box-shadow: 0 -8px 32px #00101d99;
+      }
+      .dock-inner {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: min(1120px, 100%);
+      }
+      .dock-inner p {
+        flex: 1;
+        margin: 0;
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+      .dock-launch {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.82rem 1.2rem;
+        background: #fff;
+        color: #07324d;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      #toTop {
+        position: fixed;
+        z-index: 800;
+        right: 1.4rem;
+        bottom: 6rem;
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border: 1px solid #63d4f3;
+        border-radius: 50%;
+        background: #0c5275e8;
+        color: #fff;
+        box-shadow: 0 8px 22px #00152266;
+        cursor: pointer;
+        font-size: 1.2rem;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease,
+          background 0.18s ease;
+      }
+      #toTop.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      #toTop:hover {
+        background: #083d5b;
+      }
+      #toTop:focus-visible {
+        outline: 3px solid var(--amber);
+        outline-offset: 3px;
+      }
+      dialog {
+        width: min(1240px, 96vw);
+        height: min(800px, 92vh);
+        max-height: 92vh;
+        padding: 0;
+        border: 1px solid #54809b;
+        border-radius: 18px;
+        background: #07131d;
+        color: var(--ink);
+        box-shadow: var(--shadow);
+      }
+      dialog::backdrop {
+        background: #000c;
+      }
+      .lab-window {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .lab-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        min-height: 48px;
+        padding: 0 0.85rem;
+        background: #132737;
+      }
+      .lab-mark {
+        width: 0;
+        height: 0;
+        border-bottom: 20px solid #2db9ef;
+        border-left: 20px solid transparent;
+      }
+      .lab-close {
+        margin-left: auto;
+        border: 0;
+        background: transparent;
+        color: white;
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+      .lab-progress {
+        display: flex;
+        gap: 0.35rem;
+        padding: 0.6rem 0.85rem;
+        background: #091c2a;
+      }
+      .lab-progress span {
+        display: grid;
+        place-items: center;
+        width: 1.6rem;
+        height: 1.6rem;
+        border: 1px solid #4c748c;
+        border-radius: 50%;
+        font: 700 0.68rem Poppins;
+      }
+      .lab-progress .active {
+        background: var(--cyan);
+        color: #062134;
+      }
+      .lab-progress .done {
+        background: #1c694f;
+      }
+      .lab-stage {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding: clamp(1rem, 3vw, 2rem);
+        background: #07141e;
+      }
+      .lab-step {
+        display: none;
+        min-height: 100%;
+      }
+      .lab-step.active {
+        display: block;
+        animation: fade 0.28s;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+      }
+      .coach {
+        max-width: 860px;
+        margin: 0 auto 1rem;
+        padding: 0.85rem 1rem;
+        border: 2px solid var(--red);
+        border-radius: 9px;
+        background: #331820;
+        color: white;
+        line-height: 1.7;
+      }
+      .status {
+        max-width: 820px;
+        margin: 0.7rem auto;
+        color: var(--mint);
+        font-weight: 700;
+      }
+      .explorer {
+        max-width: 820px;
+        margin: auto;
+        border: 1px solid #657585;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f4f6f8;
+        color: #172331;
+      }
+      .win-title {
+        display: flex;
+        padding: 0.65rem;
+        background: white;
+      }
+      .win-title span {
+        margin-left: auto;
+      }
+      .toolbar {
+        padding: 0.65rem;
+        background: white;
+        border-top: 1px solid #ddd;
+      }
+      .path {
+        display: flex;
+        align-items: center;
+        border: 1px solid #bdc8d1;
+        padding: 0.5rem;
+      }
+      .address {
+        flex: 1;
+        border: 0;
+        outline: 0;
+        background: transparent;
+      }
+      .explorer-body {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        min-height: 280px;
+      }
+      .side {
+        padding: 1rem;
+        background: #e9eef3;
+        color: #536979;
+      }
+      .files {
+        padding: 1.3rem;
+      }
+      .folder {
+        width: 70px;
+        height: 50px;
+        border-radius: 5px;
+        background: #e7ab22;
+      }
+      .keycap {
+        padding: 0.1rem 0.35rem;
+        border: 1px solid #728494;
+        border-bottom-width: 3px;
+        border-radius: 4px;
+      }
+      .lab-terminal {
+        max-width: 920px;
+        margin: auto;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .command {
+        flex: 1;
+        min-width: 220px;
+        border: 0;
+        border-bottom: 1px solid white;
+        outline: 0;
+        background: transparent;
+        color: white;
+        font: inherit;
+      }
+      .output {
+        margin-top: 0.7rem;
+        color: #beeccd;
+      }
+      .error {
+        color: #ff9aa1;
+      }
+      .explain {
+        max-width: 920px;
+        margin: 1rem auto;
+        padding: 1rem;
+        border: 1px solid #306b7e;
+        border-radius: 10px;
+        background: #0a2634;
+      }
+      .explain dl {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 0.4rem 1rem;
+        font-size: 0.84rem;
+      }
+      .explain dt {
+        color: var(--cyan);
+        font-weight: 800;
+      }
+      .explain dd {
+        margin: 0;
+        color: var(--muted);
+      }
+      .upload {
+        display: grid;
+        grid-template-columns: 1fr 80px 1fr;
+        align-items: center;
+        gap: 1rem;
+        max-width: 920px;
+        margin: auto;
+      }
+      .float {
+        display: grid;
+        place-items: center;
+        gap: 0.5rem;
+        min-height: 190px;
+        border: 1px solid #39728b;
+        border-radius: 18px;
+        background: #0c3147;
+        color: white;
+        cursor: pointer;
+      }
+      .highlight {
+        outline: 3px solid var(--red);
+        outline-offset: 5px;
+        animation: pulse 1s infinite alternate;
+      }
+      @keyframes pulse {
+        to {
+          transform: scale(1.035);
+        }
+      }
+      .big-icon {
+        font-size: 4rem;
+      }
+      .file-name {
+        padding: 0.3rem 0.55rem;
+        border-radius: 5px;
+        background: #06131d;
+        color: var(--mint);
+        font: 700 0.78rem Consolas;
+      }
+      .server-icon {
+        display: block;
+        width: 100px;
+        height: 115px;
+        border: 3px solid #77dcf8;
+        border-radius: 10px;
+        background: repeating-linear-gradient(
+          0deg,
+          #12516d 0 14px,
+          #0d344a 14px 28px
+        );
+      }
+      .server-icon.connected {
+        border-color: white;
+        box-shadow:
+          0 0 20px var(--cyan),
+          0 0 60px var(--mint);
+        animation: glow 0.8s infinite alternate;
+      }
+      @keyframes glow {
+        to {
+          transform: scale(1.05);
+        }
+      }
+      .public,
+      .server-window {
+        display: none;
+        max-width: 790px;
+        margin: 1rem auto;
+      }
+      .show {
+        display: block;
+      }
+      .public {
+        padding: 1rem;
+        border: 1px solid #4d7390;
+        border-radius: 10px;
+        background: #071a26;
+      }
+      .public pre {
+        white-space: pre-wrap;
+        word-break: break-all;
+        color: var(--mint);
+      }
+      .server-window {
+        overflow: hidden;
+        border: 1px solid #6e8998;
+        border-radius: 10px;
+        background: #f7f8f9;
+        color: #27313a;
+      }
+      .browser-top {
+        padding: 0.55rem;
+        background: #e5e8eb;
+      }
+      .sakura {
+        padding: 1.2rem;
+      }
+      .server-text {
+        width: 100%;
+        height: 100px;
+      }
+      .register {
+        margin-top: 0.7rem;
+        padding: 0.6rem 1rem;
+        border: 0;
+        border-radius: 6px;
+        background: #00a99d;
+        color: white;
+        font-weight: 800;
+      }
+      .success {
+        display: none;
+        margin-top: 0.7rem;
+        padding: 0.7rem;
+        background: #e4f8ef;
+        color: #17754d;
+      }
+      .success.show {
+        display: block;
+      }
+      .vault {
+        max-width: 880px;
+        margin: auto;
+        padding: 1.2rem;
+        border: 1px solid #57718a;
+        border-radius: 15px;
+        background: #102736;
+      }
+      .drop {
+        display: grid;
+        place-items: center;
+        min-height: 220px;
+        margin-top: 1rem;
+        border: 2px dashed #5c9ab5;
+        border-radius: 12px;
+      }
+      .private-key {
+        display: grid;
+        place-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid #d5a849;
+        border-radius: 10px;
+        background: #3b2b0d;
+        cursor: grab;
+        touch-action: none;
+      }
+      .vault-success {
+        display: none;
+        margin-top: 0.8rem;
+        padding: 0.7rem;
+        background: #164b3e;
+      }
+      .connect {
+        display: grid;
+        grid-template-columns: 1fr 200px;
+        gap: 1rem;
+        align-items: center;
+      }
+      .server-box {
+        display: grid;
+        place-items: center;
+        gap: 0.6rem;
+        min-height: 250px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: #0b293b;
+      }
+      .lab-note {
+        max-width: 880px;
+        margin: 1rem auto;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.7;
+      }
+      .lab-footer {
+        display: flex;
+        padding: 0.7rem 0.9rem;
+        background: #0c3147;
+      }
+      .reset {
+        margin-left: auto;
+        border: 0;
+        background: transparent;
+        color: white;
+      }
+      @media (max-width: 800px) {
+        .hero-grid,
+        .cards,
+        .key-pair,
+        .ai-grid,
+        .connect {
+          grid-template-columns: 1fr;
+        }
+        .flow {
+          grid-template-columns: 1fr 1fr;
+        }
+        .connection {
+          margin-top: 2rem;
+        }
+        .compare {
+          width: 4px;
+          height: 60px;
+          margin: auto;
+        }
+        .upload {
+          grid-template-columns: 1fr;
+        }
+        .upload > div {
+          transform: rotate(90deg);
+          text-align: center;
+        }
+        .explorer-body {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          display: none;
+        }
+        .command-explain {
+          grid-template-columns: 1fr;
+        }
+        dialog {
+          width: 100vw;
+          height: 100dvh;
+          max-height: none;
+          border-radius: 0;
+        }
+        .lab-stage {
+          padding: 1rem;
+        }
+      }
+      @media (max-width: 520px) {
+        .flow,
+        .connection {
+          grid-template-columns: 1fr;
+        }
+        .line {
+          width: 4px;
+          height: 55px;
+          margin: auto;
+        }
+        .dock-inner p {
+          display: none;
+        }
+        .dock-inner {
+          justify-content: center;
+        }
+        .hero h1 {
+          font-size: 3rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+    <style>
+      .node-art {
+        display: block;
+        width: 112px;
+        height: 112px;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 18px #0007);
+      }
+      .hero h1 {
+        font-size: clamp(
+          3.2rem,
+          calc(3.2rem + 1.7rem * (100vw - 320px) / 880px),
+          4.9rem
+        );
+      }
+      .what-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        gap: clamp(1.5rem, 5vw, 4rem);
+        align-items: center;
+      }
+      .key-illustration {
+        margin: 0;
+        padding: 1rem;
+        border: 1px solid #29647f;
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at 65% 35%, #15536d 0, transparent 62%),
+          #081e2e;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      .key-illustration img {
+        display: block;
+        width: min(100%, 360px);
+        margin: auto;
+        filter: drop-shadow(0 15px 24px #0008);
+      }
+      .key-illustration figcaption {
+        margin-top: 0.25rem;
+        color: #d9f3ff;
+        font-size: 0.82rem;
+        line-height: 1.7;
+      }
+      .key-illustration small {
+        display: block;
+        color: var(--muted);
+      }
+      .key-card {
+        min-height: 235px;
+      }
+      .key-card.public-key {
+        display: block;
+        border-color: #287c69;
+      }
+      .key-card.public-key strong {
+        color: var(--mint);
+      }
+      .key-card-visual {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 132px;
+        height: 118px;
+        margin: 0 0 0.35rem;
+      }
+      .key-card-visual img {
+        display: block;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 16px #0007);
+      }
+      .key-card-visual--key img {
+        width: 124px;
+        height: 112px;
+      }
+      .key-card-visual--server .server-layer {
+        width: 108px;
+        height: 108px;
+      }
+      .key-card-visual--server .lock-layer {
+        position: absolute;
+        right: -5px;
+        bottom: -8px;
+        width: 96px;
+        height: 82px;
+        z-index: 2;
+        filter: drop-shadow(0 8px 12px #0009);
+      }
+      .compare:before {
+        content: "ペアを確認";
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+      .easy-note {
+        margin: 1.5rem 0;
+        padding: 1.2rem 1.3rem;
+        border: 1px solid #2c907b;
+        border-radius: 16px;
+        background: #0b3a37;
+        color: #dcfff4;
+        line-height: 1.85;
+      }
+      .easy-note strong {
+        color: var(--mint);
+      }
+      .tech-details {
+        margin-top: 1.5rem;
+        border: 1px solid #315d75;
+        border-radius: 16px;
+        background: #071b28;
+      }
+      .tech-details summary {
+        padding: 1rem 1.2rem;
+        color: #d7f3ff;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tech-details[open] summary {
+        border-bottom: 1px solid #315d75;
+      }
+      .tech-inner {
+        padding: 1rem;
+      }
+      .windows-desktop {
+        position: relative;
+        min-height: 170px;
+        max-width: 920px;
+        margin: auto;
+        overflow: hidden;
+        border: 1px solid #78a6c3;
+        border-radius: 14px;
+        background:
+          radial-gradient(circle at 68% 24%, #5ca4db 0, transparent 26%),
+          linear-gradient(135deg, #b7d6e8, #65a4d2 46%, #1b5a9a);
+        color: #171b22;
+        box-shadow: 0 20px 45px #0005;
+      }
+      .windows-desktop.search-active {
+        min-height: 330px;
+      }
+      .windows-ribbon {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          138deg,
+          transparent 42%,
+          #1372d6aa 42% 48%,
+          transparent 48% 60%,
+          #195ec7a8 60% 67%,
+          transparent 67%
+        );
+        mix-blend-mode: screen;
+      }
+      .search-pane {
+        display: none;
+        position: absolute;
+        right: 7%;
+        bottom: 56px;
+        left: 7%;
+        z-index: 1;
+        min-height: 190px;
+        padding: 1rem;
+        border: 1px solid #dce4ec;
+        border-radius: 13px;
+        background: #f7f9fbef;
+        box-shadow: 0 16px 40px #11375c66;
+      }
+      .search-pane.show {
+        display: block;
+      }
+      .taskbar {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        min-height: 56px;
+        background: #eff4f8ef;
+        backdrop-filter: blur(8px);
+      }
+      .windows-logo {
+        display: grid;
+        grid-template-columns: repeat(2, 8px);
+        gap: 2px;
+      }
+      .windows-logo i {
+        width: 8px;
+        height: 8px;
+        background: #1275da;
+      }
+      .taskbar-search {
+        width: min(420px, 70vw);
+        border: 1px solid #b4c4d1;
+        border-radius: 999px;
+        background: #fff;
+        padding: 0.68rem 1rem;
+        outline: 0;
+        box-shadow: 0 2px 7px #4562;
+      }
+      .taskbar-search:focus {
+        border-color: #1681e7;
+        box-shadow: 0 0 0 3px #1681e744;
+      }
+      .search-results {
+        display: none;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .search-results.show {
+        display: grid;
+      }
+      .search-heading {
+        grid-column: 1/-1;
+        margin: 0;
+        font-size: 0.86rem;
+      }
+      .app-result,
+      .app-actions {
+        padding: 1rem;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 2px 8px #53667822;
+      }
+      .app-result {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+      .cmd-icon {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 32px;
+        border-radius: 4px;
+        background: #15191d;
+        color: #fff;
+        font: 700 0.72rem Consolas;
+      }
+      .app-result small {
+        display: block;
+        color: #596978;
+      }
+      .app-actions {
+        display: grid;
+        align-content: start;
+        gap: 0.7rem;
+      }
+      .app-actions h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      .run-admin {
+        padding: 0.7rem 0.8rem;
+        border: 1px solid #4389c7;
+        border-radius: 8px;
+        background: #e7f3ff;
+        color: #123e67;
+        font-weight: 900;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      .run-admin:hover,
+      .run-admin:focus {
+        background: #cae8ff;
+      }
+      .search-tip {
+        margin: 0;
+        color: #415969;
+        font-size: 0.84rem;
+        line-height: 1.7;
+      }
+      .command-copy {
+        display: inline-flex;
+        align-items: center;
+        margin: 0.15rem 0 0 0.45rem;
+        padding: 0.26rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.74rem;
+        vertical-align: middle;
+      }
+      .public-lock-art {
+        width: 92px;
+        height: 92px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 12px #0008);
+      }
+      .after-ssh {
+        position: relative;
+        margin-top: 1.5rem;
+        padding: 1.4rem 1.5rem 1.4rem 5.3rem;
+        border: 1px solid #2c907b;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #0b3a37, #0b293d);
+        color: #eafff8;
+        line-height: 1.9;
+      }
+      .after-ssh:before {
+        content: "✦";
+        position: absolute;
+        left: 1.45rem;
+        top: 1.35rem;
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: var(--mint);
+        color: #07332f;
+        font: 900 1.25rem Poppins;
+      }
+      .after-ssh h3 {
+        margin: 0 0 0.55rem;
+        color: #fff;
+        font-size: clamp(1.35rem, 3vw, 2rem);
+      }
+      .after-ssh p {
+        margin: 0.55rem 0;
+      }
+      .after-ssh strong {
+        color: #a2ffe0;
+      }
+      .prompt-only {
+        max-width: 920px;
+        margin-top: 1.5rem;
+      }
+      .prompt-only h3 {
+        margin-top: 0;
+      }
+      .prompt-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .prompt-heading h3 {
+        margin: 0;
+      }
+      .prompt-heading .copy {
+        flex: 0 0 auto;
+        margin-top: 0;
+      }
+      .prompt-heading .copy-state {
+        display: none;
+      }
+      .prompt-hint {
+        max-width: 920px;
+        margin: 0.8rem 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.8;
+      }
+      .sim-enter,
+      .sim-touch-action {
+        flex: 0 0 auto;
+        border: 1px solid #6ee2ff;
+        border-radius: 8px;
+        background: #0b78a5;
+        color: #fff;
+        padding: 0.52rem 0.78rem;
+        font-weight: 900;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      .sim-enter {
+        margin-left: 0.55rem;
+        white-space: nowrap;
+      }
+      .sim-touch-action {
+        display: block;
+        margin: 0.8rem auto 0;
+      }
+      .sim-touch-action[hidden] {
+        display: none;
+      }
+      @media (max-width: 520px) {
+        .path,
+        .row {
+          gap: 0.45rem;
+        }
+        .sim-enter {
+          min-height: 44px;
+          margin-left: 0;
+          padding: 0.55rem 0.7rem;
+        }
+        .command {
+          width: 100%;
+        }
+        .row .sim-enter {
+          width: 100%;
+          margin-top: 0.35rem;
+        }
+        .sim-touch-action {
+          width: 100%;
+          min-height: 46px;
+        }
+        .windows-desktop {
+          min-height: 170px;
+        }
+        .windows-desktop.search-active {
+          min-height: 440px;
+        }
+        .search-pane {
+          right: 0.75rem;
+          bottom: 60px;
+          left: 0.75rem;
+          padding: 0.7rem;
+        }
+        .search-results {
+          grid-template-columns: 1fr;
+        }
+        .search-heading {
+          grid-column: auto;
+        }
+        .taskbar-search {
+          width: calc(100vw - 110px);
+        }
+      }
+      @media (max-width: 800px) {
+        .what-intro {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 520px) {
+        .node-art {
+          width: 120px;
+          height: 120px;
+        }
+      }
+      @media (max-width: 520px) {
+        .connection > .line:after {
+          top: 100%;
+          right: unset;
+          left: 50%;
+          transform: translate(-50%, -100%) rotate(135deg);
+        }
+      }
+      @media (max-width: 800px) {
+        .guide-footer > .wrap {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .page-pagination {
+          width: 100%;
+          margin-left: 0;
+        }
+        .page-pagination a {
+          width: 100%;
+        }
+      }
+      @media (max-width: 520px) {
+        .hero > .wrap > .portal-link {
+          top: 0.7rem;
+          font-size: 0.75rem;
+        }
+        .prompt-heading {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 0.65rem;
+        }
+        #toTop {
+          right: 1rem;
+          bottom: 6rem;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../mobile-safe.css" />
+    <link rel="stylesheet" href="../page-reveal.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <a class="portal-link" href="../index.html">ポータルへ戻る</a>
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">BEGINNER'S GUIDE / SSH</p>
+            <h1>SSHで、離れたサーバーに<em>安全につながる。</em></h1>
+            <p class="lead">
+              SSHは、手元のPCからサーバーへ暗号化された通り道をつくる仕組みです。鍵を使えば、サーバーのパスワードを毎回入力せずに本人確認できます。
+            </p>
+            <nav class="jump">
+              <a href="#what">SSH鍵接続とは</a><a href="#use">役立つ場面</a
+              ><a href="#how">やり方</a><a href="#ai">AIに任せる</a>
+            </nav>
+          </div>
+          <div class="connection">
+            <article class="node">
+              <i>💻</i><b>あなたのPC</b><span>秘密鍵を保管</span>
+            </article>
+            <div class="line"></div>
+            <article class="node">
+              <img
+                class="node-art"
+                src="assets/server-material.png"
+                alt="青いリモートサーバーのイラスト"
+              /><b>リモートサーバー</b><span>公開鍵を登録</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="section" id="what">
+        <div class="wrap reveal">
+          <p class="eyebrow">01 / WHAT IS SSH KEY AUTH?</p>
+          <div class="what-intro">
+            <div>
+              <h2>サーバーの南京錠に、手元の鍵を合わせるイメージ。</h2>
+              <p class="section-lead">
+                サーバーには「この鍵の持ち主なら入ってよい」という<strong>公開鍵</strong>を置き、あなたのPCには対になる<strong>秘密鍵</strong>を残します。接続するとサーバーがペアかどうかを確認し、合っていれば扉が開きます。秘密鍵そのものをサーバーへ送ることはありません。
+              </p>
+            </div>
+            <figure class="key-illustration">
+              <img
+                src="assets/ssh-lock-key.png"
+                alt="SSH公開鍵接続を南京錠と鍵で表したイラスト"
+              />
+              <figcaption>
+                公開鍵をサーバー側の「南京錠」、秘密鍵を手元だけで持つ「鍵」と考えると分かりやすいです。<small
+                  >※ 南京錠と鍵は仕組みをつかむためのたとえです。</small
+                >
+              </figcaption>
+            </figure>
+          </div>
+          <div class="key-pair">
+            <article class="key-card private">
+              <span
+                class="key-card-visual key-card-visual--key"
+                role="img"
+                aria-label="パソコンの中に保管する秘密鍵"
+                ><img src="assets/ssh-key-only-3d.png" alt=""
+              /></span>
+              <h3>秘密鍵</h3>
+              <p>
+                <strong>あなた専用の鍵。</strong
+                ><br />PCの中だけで大切に保管します。メール、チャット、GitHub、サーバーへは送りません。
+              </p>
+            </article>
+            <div class="compare"></div>
+            <article class="key-card public-key">
+              <span
+                class="key-card-visual key-card-visual--server"
+                role="img"
+                aria-label="南京錠で守られたサーバー"
+                ><img
+                  class="server-layer"
+                  src="assets/server-material.png"
+                  alt="" /><img
+                  class="lock-layer"
+                  src="assets/ssh-lock-only-3d.png"
+                  alt=""
+              /></span>
+              <h3>公開鍵</h3>
+              <p>
+                <strong>サーバーに置く南京錠側の情報。</strong><br /><code
+                  >.pub</code
+                >が付くファイルです。公開鍵だけでは、あなたの秘密鍵を作ったりログインしたりできません。
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="use">
+        <div class="wrap reveal">
+          <p class="eyebrow">02 / WHEN IT HELPS</p>
+          <h2>公開中のサイトを、安全にお手入れする入口。</h2>
+          <p class="section-lead">
+            Webサイトは、インターネット上の「サーバー」というコンピューターから表示されています。SSHを使うと、自分のPCからそのサーバーへ安全に入り、サイトの中身を確認したり更新したりできます。
+          </p>
+          <div class="cards">
+            <article class="card">
+              <span class="card-icon">🌐</span>
+              <h3>公開中のサイトを直す</h3>
+              <p>
+                HTMLや画像を入れ替えるための、安全な作業ルートとして使えます。
+              </p>
+            </article>
+            <article class="card">
+              <span class="card-icon">🔎</span>
+              <h3>困ったときに中を確認</h3>
+              <p>
+                どのフォルダーに何があるか、エラーが起きていないかを調べられます。
+              </p>
+            </article>
+            <article class="card">
+              <span class="card-icon">🤖</span>
+              <h3>AIに同じ作業を頼む</h3>
+              <p>
+                接続先と「どこまでしてよいか」を決めれば、確認や更新をAIへ頼めます。
+              </p>
+            </article>
+          </div>
+          <article class="after-ssh">
+            <h3>SSH接続後の実際</h3>
+            <p>
+              SSHでつながった後は、黒いターミナル画面でLinuxコマンドを使い、<strong>文字を手がかりにサーバー内のデータを見て</strong>いきます。自分で直接書き換えるには、少しずつコマンドを学ぶ必要があります。
+            </p>
+            <p>
+              では、なぜ今SSHを知っておくのでしょう？
+              それは、<strong>AIが安全にサーバーへ接続し、Webページやアプリの更新を言葉のやり取りで手伝えるようにする</strong>ためです。「このページの見出しを直して」と頼める状態に近づける、頼もしい準備になります。大切な変更は、何をするか確認しながら進めましょう。
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="section" id="how">
+        <div class="wrap reveal">
+          <p class="eyebrow">03 / FIRST TIME SETUP</p>
+          <h2>やることは、最初に一度だけ。4つを順番どおりで大丈夫。</h2>
+          <p class="section-lead">
+            難しい設定を全部覚える必要はありません。①PCで鍵を作る、②公開鍵だけを管理画面に貼る、③秘密鍵はPCの中に置いておく、④接続コマンドを1行入力する。このページ下のシミュレーターで、同じ順番を画面を見ながら練習できます。
+          </p>
+          <div class="easy-note">
+            <strong>初心者でも大丈夫：</strong
+            >鍵はコマンド1行で2つ同時に作られます。サーバーへ登録するのは、名前の最後に<code>.pub</code>が付いた公開鍵だけ。秘密鍵は通常、最初からWindowsの決まった場所に保存されるので、むやみに移動しなくてかまいません。
+          </div>
+          <div class="flow">
+            <article>
+              <b>コマンドを1行入力</b
+              ><span><code>ssh-keygen -t ed25519</code>と入力してEnter。</span>
+            </article>
+            <article>
+              <b><code>.pub</code>の文字をコピー</b
+              ><span>公開鍵の中身だけを、サーバーの管理画面に貼ります。</span>
+            </article>
+            <article>
+              <b>秘密鍵はそのままでOK</b
+              ><span
+                >通常は<code>%USERPROFILE%\.ssh\</code>に保存されます。</span
+              >
+            </article>
+            <article>
+              <b>接続先を入力してEnter</b
+              ><span><code>ssh ユーザー名@ホスト名</code>で接続します。</span>
+            </article>
+          </div>
+          <details class="tech-details">
+            <summary>実際のコマンド画面と、言葉の意味を見る</summary>
+            <div class="tech-inner">
+              <div class="terminal">
+                <div class="terminal-top">Command Prompt — local PC</div>
+                <div class="terminal-body">
+                  C:\Users\あなた&gt; ssh-keygen -t ed25519 Generating
+                  public/private ed25519 key pair. Enter file in which to save
+                  the key (C:\Users\あなた\.ssh\id_ed25519):
+                  秘密鍵：C:\Users\あなた\.ssh\id_ed25519
+                  公開鍵：C:\Users\あなた\.ssh\id_ed25519.pub
+                </div>
+              </div>
+              <div class="command-explain">
+                <div>
+                  <code>ssh-keygen</code>
+                  <p>SSH用の鍵ペアを作る。</p>
+                </div>
+                <div>
+                  <code>-t</code>
+                  <p>鍵の種類を指定する。</p>
+                </div>
+                <div>
+                  <code>ed25519</code>
+                  <p>今回使う現代的な鍵種別。</p>
+                </div>
+              </div>
+              <div class="callout">
+                <strong>保存場所：</strong
+                >コマンドプロンプトで鍵を生成すると、保存先を変更しない限り、鍵は<code>%USERPROFILE%\.ssh\</code>へ自動的に作られます。どの作業フォルダーから実行しても、既定ではこのフォルダーに保存されます。
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+      <section class="section" id="ai">
+        <div class="wrap reveal">
+          <p class="eyebrow">04 / ZERO-TOUCH WITH AI</p>
+          <h2>SSH公開鍵接続を、ゼロからAIに整えてもらう。</h2>
+          <p class="section-lead">
+            設定ファイルの名前や書き方を覚えなくても大丈夫です。下の「〇〇」を自分のサーバー情報に置き換えて渡すと、情報収集、鍵の作成、接続テスト、次回から使うグローバルスキルの作成まで、順番に依頼できます。
+          </p>
+          <article class="prompt prompt-only">
+            <div class="prompt-heading">
+              <h3>Codex または Claude Codeへ渡す依頼文</h3>
+              <button class="copy" data-copy="pagePrompt" type="button">
+                依頼文をコピー
+              </button>
+            </div>
+            <pre class="code" id="pagePrompt">
+# SSH公開鍵接続をゼロから設定し、グローバルスキルにしてください
 
 この依頼文は、Codex または Claude Codeへ渡す前提です。
 
@@ -268,17 +1898,283 @@ Enter file in which to save the key (C:\Users\あなた\.ssh\id_ed25519):
 ・グローバルスキルの保存場所
 ・現在使っているアプリがスキルを認識できること
 ・次回から私が使う短い依頼文
-・PCを買い替えた場合や秘密鍵を紛失した場合の注意点</pre><button class="copy" data-copy="pagePrompt">依頼文をコピー</button><span class="copy-state" id="pagePromptState"></span></article><p class="prompt-hint">最初に埋めるのは「接続したいサーバーの手がかり」と「管理画面URL」だけです。URLが分からなければ、そのまま「分からない」と書いて渡せます。</p><p class="safety">ゼロタッチとは、次回から接続コマンドやログインパスワード入力をできるだけ省けるという意味です。サーバーを変更する操作まで無確認で許可する意味ではありません。</p></div></section>
-<div class="wrap sources">公式情報の確認日：2026年9月29日<br>出典：<a href="https://help.sakura.ad.jp/rs/2804/">さくら「SSH公開鍵認証の設定をしたい」</a>／<a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement">Microsoft「Key-Based Authentication in OpenSSH for Windows」</a>／<a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-server-configuration">Microsoft「OpenSSH Server Configuration for Windows」</a></div>
-</main>
-<footer class="guide-footer"><div class="wrap"><a class="portal-link" href="../index.html">ポータルへ戻る</a><nav class="page-pagination" aria-label="学習ページの移動"><a href="../markdown/index.html"><small>前のページ</small><strong>← Markdownをはじめよう</strong></a><a href="../about-ia/index.html"><small>次のページ</small><strong>情報アーキテクチャを学ぼう →</strong></a></nav><div class="site-copyright"><span>Copyright &copy; 2026 Flashmelody Katsuyori M</span><img class="site-copyright__logo" src="../assets/maishilogo_white_outlined.svg" alt="FlashMelody"></div></div></footer>
-<div class="ssh-lab-dock"><div class="dock-inner"><p>練習用・実際の鍵やサーバーには影響しません</p><button class="dock-launch" id="openLab">SSH公開鍵接続を練習する →</button></div></div><button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
-<dialog id="sshLab"><div class="lab-window"><header class="lab-bar"><i class="lab-mark"></i><b>SSH公開鍵認証を設定して接続する — 練習用</b><button class="lab-close" id="closeLab" aria-label="閉じる">×</button></header><div class="lab-progress"><span data-progress="0">0</span><span data-progress="1">1</span><span data-progress="2">2</span><span data-progress="3">3</span><span data-progress="4">4</span></div><div class="lab-stage">
-<section class="lab-step active" data-step="0"><div class="coach" id="searchGuide"><b>まずここ：</b>Windowsのタスクバーの検索欄へ<code>コマンドプロンプト</code>（または<code>cmd</code>）と入力してください。</div><div class="windows-desktop"><div class="windows-ribbon" aria-hidden="true"></div><div class="search-pane"><div class="search-results" id="searchResults"><p class="search-heading">ベスト マッチ</p><div class="app-result"><span class="cmd-icon">C:\\_</span><div><b>コマンド プロンプト</b><small>システム</small></div></div><div class="app-actions"><h3>コマンド プロンプト</h3><p class="search-tip">検索結果が表示されました。次は管理者として起動します。</p><button class="run-admin highlight" id="runAdmin" type="button">🛡 管理者として実行</button></div></div></div><div class="taskbar"><span class="windows-logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span><input id="taskbarSearch" class="taskbar-search" autocomplete="off" placeholder="検索" aria-label="Windowsの検索"><span aria-hidden="true">🔍</span></div></div><p class="status" id="status0"></p></section>
-<section class="lab-step" data-step="1"><div class="coach"><b>コマンドを入力：</b><code id="keyCommandText">ssh-keygen -t ed25519</code><button class="copy command-copy" data-copy="keyCommandText" data-copy-state="keyCommandCopyState" type="button">コピー</button><span class="copy-state" id="keyCommandCopyState"></span>と入力し、キーボードか画面の「Enter」を押してください。</div><div class="terminal lab-terminal"><div class="terminal-top">管理者: コマンド プロンプト</div><div class="terminal-body"><div class="row">C:\Users\あなた&gt; <input id="keyCommand" class="command" placeholder="ssh-keygen -t ed25519"><button class="sim-enter" id="keySubmit" type="button">Enter ↵</button></div><div class="output" id="keyOutput">コマンドを入力して Enter。</div><button class="sim-touch-action" id="keyConfirm" type="button" hidden>作成された鍵を確認する →</button></div></div><aside class="explain"><b>コマンドの意味</b><dl><dt>ssh-keygen</dt><dd>鍵ペアを生成</dd><dt>-t</dt><dd>鍵の種類を指定</dd><dt>ed25519</dt><dd>今回の鍵種別</dd></dl><p class="lab-note">表示された保存先を確認してから、「作成された鍵を確認する」へ進んでください。</p></aside></section>
-<section class="lab-step" data-step="2"><div class="coach" id="guide2"><b>公開鍵を開く：</b><code>id_ed25519.pub</code>をクリックしてコピーし、サーバーを開いて貼り付けます。</div><div class="upload"><button class="float highlight" id="publicKey"><img class="public-lock-art" src="assets/ssh-lock-only-3d.png" alt="公開鍵を表す南京錠"><b>公開鍵</b><span class="file-name">id_ed25519.pub</span></button><div>→</div><button class="float" id="serverCard"><span class="server-icon"></span><b>サーバー</b></button></div><div class="public" id="publicCode"><b>公開鍵（登録してよい鍵）</b><pre id="publicKeyText">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRACTICEonlyKEYforLearning1234567890 learner@windows-pc</pre><button class="copy" id="copyKey">コードをコピー</button><span class="copy-state" id="copyMessage"></span></div><div class="server-window" id="serverWindow"><div class="browser-top">● ● ●　https://secure.example.jp/control-panel/ssh-key</div><div class="sakura"><h3>SSH公開鍵 — 新規追加（教材用）</h3><textarea class="server-text" id="serverTextarea" placeholder="公開鍵を貼り付け"></textarea><button class="sim-touch-action" id="pastePracticeKey" type="button">練習用公開鍵を貼り付ける</button><button class="register" id="registerKey">登録する</button><div class="success" id="serverSuccess">✓ 公開鍵を登録しました。</div></div></div></section>
-<section class="lab-step" data-step="3"><div class="coach"><b>鍵で接続：</b><code id="connectCommandText">ssh -i "%USERPROFILE%\.ssh\id_ed25519" learner@example.sakura.ne.jp</code><button class="copy command-copy" data-copy="connectCommandText" data-copy-state="connectCommandCopyState" type="button">コピー</button><span class="copy-state" id="connectCommandCopyState"></span>を入力し、キーボードか画面の「Enter」を押してください。</div><div class="connect"><div class="terminal"><div class="terminal-top">コマンド プロンプト</div><div class="terminal-body"><div class="row">C:\Users\あなた&gt; <input id="connectCommand" class="command" placeholder="ssh -i ... learner@example.sakura.ne.jp"><button class="sim-enter" id="connectSubmit" type="button">Enter ↵</button></div><div class="output" id="connectOutput">秘密鍵を指定して接続します。</div></div></div><div class="server-box"><span class="server-icon" id="connectedServer"></span><b id="serverLabel">未接続</b></div></div></section>
-<section class="lab-step" data-step="4"><div class="coach"><b>最後：</b>この依頼文をAIへ渡せば、接続設定とグローバルスキルの登録まで頼めます。</div><h2>次回から「〇〇のサーバーに接続して」でつながるようにする</h2><pre class="code" id="labPrompt">SSHの公開鍵と秘密鍵は、すでに作成しました。
+・PCを買い替えた場合や秘密鍵を紛失した場合の注意点</pre>
+            <button class="copy" data-copy="pagePrompt">依頼文をコピー</button
+            ><span class="copy-state" id="pagePromptState"></span>
+          </article>
+          <p class="prompt-hint">
+            最初に埋めるのは「接続したいサーバーの手がかり」と「管理画面URL」だけです。URLが分からなければ、そのまま「分からない」と書いて渡せます。
+          </p>
+          <p class="safety">
+            ゼロタッチとは、次回から接続コマンドやログインパスワード入力をできるだけ省けるという意味です。サーバーを変更する操作まで無確認で許可する意味ではありません。
+          </p>
+        </div>
+      </section>
+      <div class="wrap sources">
+        公式情報の確認日：2026年9月29日<br />出典：<a
+          href="https://help.sakura.ad.jp/rs/2804/"
+          >さくら「SSH公開鍵認証の設定をしたい」</a
+        >／<a
+          href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement"
+          >Microsoft「Key-Based Authentication in OpenSSH for Windows」</a
+        >／<a
+          href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-server-configuration"
+          >Microsoft「OpenSSH Server Configuration for Windows」</a
+        >
+      </div>
+    </main>
+    <footer class="guide-footer">
+      <div class="wrap">
+        <a class="portal-link" href="../index.html">ポータルへ戻る</a>
+        <nav class="page-pagination" aria-label="学習ページの移動">
+          <a href="../markdown/index.html"
+            ><small>前のページ</small><strong>← Markdownをはじめよう</strong></a
+          ><a href="../about-ia/index.html"
+            ><small>次のページ</small
+            ><strong>情報アーキテクチャを学ぼう →</strong></a
+          >
+        </nav>
+        <div class="site-copyright">
+          <span>Copyright &copy; 2026 Flashmelody Katsuyori M</span
+          ><img
+            class="site-copyright__logo"
+            src="../assets/maishilogo_white_outlined.svg"
+            alt="FlashMelody"
+          />
+        </div>
+      </div>
+    </footer>
+    <div class="ssh-lab-dock">
+      <div class="dock-inner">
+        <p>練習用・実際の鍵やサーバーには影響しません</p>
+        <button class="dock-launch" id="openLab">
+          SSH公開鍵接続を練習する →
+        </button>
+      </div>
+    </div>
+    <button
+      id="toTop"
+      type="button"
+      aria-label="ページの先頭へ戻る"
+      title="ページの先頭へ戻る"
+    >
+      ↑
+    </button>
+    <dialog id="sshLab">
+      <div class="lab-window">
+        <header class="lab-bar">
+          <i class="lab-mark"></i><b>SSH公開鍵認証を設定して接続する — 練習用</b
+          ><button class="lab-close" id="closeLab" aria-label="閉じる">
+            ×
+          </button>
+        </header>
+        <div class="lab-progress">
+          <span data-progress="0">0</span><span data-progress="1">1</span
+          ><span data-progress="2">2</span><span data-progress="3">3</span
+          ><span data-progress="4">4</span>
+        </div>
+        <div class="lab-stage">
+          <section class="lab-step active" data-step="0">
+            <div class="coach" id="searchGuide">
+              <b>まずここ：</b
+              >Windowsのタスクバーの検索欄へ<code>コマンドプロンプト</code>（または<code>cmd</code>）と入力してください。
+            </div>
+            <div class="windows-desktop">
+              <div class="windows-ribbon" aria-hidden="true"></div>
+              <div class="search-pane">
+                <div class="search-results" id="searchResults">
+                  <p class="search-heading">ベスト マッチ</p>
+                  <div class="app-result">
+                    <span class="cmd-icon">C:\\_</span>
+                    <div><b>コマンド プロンプト</b><small>システム</small></div>
+                  </div>
+                  <div class="app-actions">
+                    <h3>コマンド プロンプト</h3>
+                    <p class="search-tip">
+                      検索結果が表示されました。次は管理者として起動します。
+                    </p>
+                    <button
+                      class="run-admin highlight"
+                      id="runAdmin"
+                      type="button"
+                    >
+                      🛡 管理者として実行
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="taskbar">
+                <span class="windows-logo" aria-hidden="true"
+                  ><i></i><i></i><i></i><i></i></span
+                ><input
+                  id="taskbarSearch"
+                  class="taskbar-search"
+                  autocomplete="off"
+                  placeholder="検索"
+                  aria-label="Windowsの検索"
+                /><span aria-hidden="true">🔍</span>
+              </div>
+            </div>
+            <p class="status" id="status0"></p>
+          </section>
+          <section class="lab-step" data-step="1">
+            <div class="coach">
+              <b>コマンドを入力：</b
+              ><code id="keyCommandText">ssh-keygen -t ed25519</code
+              ><button
+                class="copy command-copy"
+                data-copy="keyCommandText"
+                data-copy-state="keyCommandCopyState"
+                type="button"
+              >
+                コピー</button
+              ><span class="copy-state" id="keyCommandCopyState"></span
+              >と入力し、キーボードか画面の「Enter」を押してください。
+            </div>
+            <div class="terminal lab-terminal">
+              <div class="terminal-top">管理者: コマンド プロンプト</div>
+              <div class="terminal-body">
+                <div class="row">
+                  C:\Users\あなた&gt;
+                  <input
+                    id="keyCommand"
+                    class="command"
+                    placeholder="ssh-keygen -t ed25519"
+                  /><button class="sim-enter" id="keySubmit" type="button">
+                    Enter ↵
+                  </button>
+                </div>
+                <div class="output" id="keyOutput">
+                  コマンドを入力して Enter。
+                </div>
+                <button
+                  class="sim-touch-action"
+                  id="keyConfirm"
+                  type="button"
+                  hidden
+                >
+                  作成された鍵を確認する →
+                </button>
+              </div>
+            </div>
+            <aside class="explain">
+              <b>コマンドの意味</b>
+              <dl>
+                <dt>ssh-keygen</dt>
+                <dd>鍵ペアを生成</dd>
+                <dt>-t</dt>
+                <dd>鍵の種類を指定</dd>
+                <dt>ed25519</dt>
+                <dd>今回の鍵種別</dd>
+              </dl>
+              <p class="lab-note">
+                表示された保存先を確認してから、「作成された鍵を確認する」へ進んでください。
+              </p>
+            </aside>
+          </section>
+          <section class="lab-step" data-step="2">
+            <div class="coach" id="guide2">
+              <b>公開鍵を開く：</b
+              ><code>id_ed25519.pub</code
+              >をクリックしてコピーし、サーバーを開いて貼り付けます。
+            </div>
+            <div class="upload">
+              <button class="float highlight" id="publicKey">
+                <img
+                  class="public-lock-art"
+                  src="assets/ssh-lock-only-3d.png"
+                  alt="公開鍵を表す南京錠"
+                /><b>公開鍵</b><span class="file-name">id_ed25519.pub</span>
+              </button>
+              <div>→</div>
+              <button class="float" id="serverCard">
+                <span class="server-icon"></span><b>サーバー</b>
+              </button>
+            </div>
+            <div class="public" id="publicCode">
+              <b>公開鍵（登録してよい鍵）</b>
+              <pre id="publicKeyText">
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRACTICEonlyKEYforLearning1234567890 learner@windows-pc</pre>
+              <button class="copy" id="copyKey">コードをコピー</button
+              ><span class="copy-state" id="copyMessage"></span>
+            </div>
+            <div class="server-window" id="serverWindow">
+              <div class="browser-top">
+                ● ● ●　https://secure.example.jp/control-panel/ssh-key
+              </div>
+              <div class="sakura">
+                <h3>SSH公開鍵 — 新規追加（教材用）</h3>
+                <textarea
+                  class="server-text"
+                  id="serverTextarea"
+                  placeholder="公開鍵を貼り付け"
+                ></textarea
+                ><button
+                  class="sim-touch-action"
+                  id="pastePracticeKey"
+                  type="button"
+                >
+                  練習用公開鍵を貼り付ける</button
+                ><button class="register" id="registerKey">登録する</button>
+                <div class="success" id="serverSuccess">
+                  ✓ 公開鍵を登録しました。
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="lab-step" data-step="3">
+            <div class="coach">
+              <b>鍵で接続：</b
+              ><code id="connectCommandText"
+                >ssh -i "%USERPROFILE%\.ssh\id_ed25519"
+                learner@example.sakura.ne.jp</code
+              ><button
+                class="copy command-copy"
+                data-copy="connectCommandText"
+                data-copy-state="connectCommandCopyState"
+                type="button"
+              >
+                コピー</button
+              ><span class="copy-state" id="connectCommandCopyState"></span
+              >を入力し、キーボードか画面の「Enter」を押してください。
+            </div>
+            <div class="connect">
+              <div class="terminal">
+                <div class="terminal-top">コマンド プロンプト</div>
+                <div class="terminal-body">
+                  <div class="row">
+                    C:\Users\あなた&gt;
+                    <input
+                      id="connectCommand"
+                      class="command"
+                      placeholder="ssh -i ... learner@example.sakura.ne.jp"
+                    /><button
+                      class="sim-enter"
+                      id="connectSubmit"
+                      type="button"
+                    >
+                      Enter ↵
+                    </button>
+                  </div>
+                  <div class="output" id="connectOutput">
+                    秘密鍵を指定して接続します。
+                  </div>
+                </div>
+              </div>
+              <div class="server-box">
+                <span class="server-icon" id="connectedServer"></span
+                ><b id="serverLabel">未接続</b>
+              </div>
+            </div>
+          </section>
+          <section class="lab-step" data-step="4">
+            <div class="coach">
+              <b>最後：</b
+              >この依頼文をAIへ渡せば、接続設定とグローバルスキルの登録まで頼めます。
+            </div>
+            <h2>次回から「〇〇のサーバーに接続して」でつながるようにする</h2>
+            <pre class="code" id="labPrompt">
+SSHの公開鍵と秘密鍵は、すでに作成しました。
 
 ・接続したいサーバー：〇〇（例：example.sakura.ne.jp）
 ・SSHのユーザー名：〇〇
@@ -297,6 +2193,27 @@ Enter file in which to save the key (C:\Users\あなた\.ssh\id_ed25519):
 
 以降、私が「〇〇のサーバーに接続してください」と言ったら、このスキルで接続してください。アップロード、上書き、削除、デプロイ、再起動は、対象と影響を示して私の許可を得てから実行してください。
 
-最後に、設定内容、接続結果、登録したスキルの名前と保存場所、次回使う依頼文を初心者向けにまとめてください。</pre><button class="copy" data-copy="labPrompt">依頼文をコピー</button><span class="copy-state" id="labPromptState"></span><div class="callout"><strong>完了：</strong>鍵作成から、次回のゼロタッチ接続をAIへ頼むところまで体験しました。</div></section>
-</div><footer class="lab-footer"><span>教材用・実ファイルやサーバーには影響しません</span><button class="reset" id="resetLab">最初から</button></footer></div></dialog>
-<script src="app.js"></script><script>if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js?v=network-first-v2',{updateViaCache:'none'}).catch(()=>{});</script></body></html>
+最後に、設定内容、接続結果、登録したスキルの名前と保存場所、次回使う依頼文を初心者向けにまとめてください。</pre>
+            <button class="copy" data-copy="labPrompt">依頼文をコピー</button
+            ><span class="copy-state" id="labPromptState"></span>
+            <div class="callout">
+              <strong>完了：</strong
+              >鍵作成から、次回のゼロタッチ接続をAIへ頼むところまで体験しました。
+            </div>
+          </section>
+        </div>
+        <footer class="lab-footer">
+          <span>教材用・実ファイルやサーバーには影響しません</span
+          ><button class="reset" id="resetLab">最初から</button>
+        </footer>
+      </div>
+    </dialog>
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol))
+        navigator.serviceWorker
+          .register("sw.js?v=network-first-v2", { updateViaCache: "none" })
+          .catch(() => {});
+    </script>
+  </body>
+</html>

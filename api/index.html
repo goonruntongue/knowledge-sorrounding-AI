@@ -1,29 +1,327 @@
 <!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>APIのしくみを体験しよう | Knowledge Surrounding AI</title>
-  <meta name="description" content="APIからデータを取得し、JSON・サーバー・Node.jsの役割を体験。最後はAIとAPIを作るための依頼へ。">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="../copyright.css">
-  <link rel="stylesheet" href="../mobile-safe.css"><link rel="stylesheet" href="../page-reveal.css">
-  <script src="guide.js" defer></script><script src="fortune-embed.js" defer></script>
-</head>
-<body>
-<header class="topbar"><div class="wrap"><a class="portal-return" href="../index.html">ポータルへ戻る</a><span>08 / API BASICS</span></div></header>
-<main>
-  <section class="hero"><div class="wrap hero-grid"><div><p class="eyebrow">CONNECT / REQUEST / RESPONSE</p><h1>APIのしくみを、<br><em>体験しよう。</em></h1><p class="lead">ボタンを押す。データが届く。<br>その裏側をのぞくと、Webのつながり方が見えてくる。</p><nav class="jump" aria-label="ページ内メニュー"><a href="#experience">まず体験する ↓</a><a href="#build">作る流れを見る</a></nav></div><picture><source type="image/webp" srcset="../portal-api-automation-card-640.webp 640w, ../portal-api-automation-card-1024.webp 1024w" sizes="(max-width:760px) 90vw, 480px"><img class="hero-art" src="../portal-api-automation-card.png" width="1536" height="1024" alt="カラフルなサーバーと接続パーツの3Dイラスト"></picture></div></section>
-  <section id="what"><div class="wrap"><p class="eyebrow">01 / APIとは</p><h2>別のプログラムに、<br>お願いを届ける窓口。</h2><p class="intro">APIは、プログラム同士が決められたルールでやり取りするための仕組み。ここでは、URLにアクセスしてデータを受け取る<strong>Web API</strong>を体験します。</p><div class="flow" aria-label="APIへのリクエストとレスポンス"><div><b>あなたのWebアプリ</b><span>「1番の投稿をください」</span></div><span class="flow-arrow">→</span><div><b>APIの窓口</b><span>サーバーがリクエストを処理</span></div><span class="flow-arrow">→</span><div><b>返ってきたデータ</b><span>投稿の番号・タイトル・本文</span></div></div><div class="cards"><article class="card"><h3>なぜ必要？</h3><p>天気や地図などの機能を、すべて自分で作らず利用できる。他のサービスの情報も、手で写さず受け取れます。</p></article><article class="card"><h3>エンドポイントとは？</h3><p>お願いを送る具体的な接続先。たとえば<code>/posts/1</code>は「1番の投稿」を取得する窓口です。</p></article><article class="card"><h3>自動化との関係</h3><p>APIはやり取りの窓口。それを使って「毎朝データを取得する」などの処理を組むと、自動化につながります。</p></article></div></div></section>
-  <section id="experience" class="tinted"><div class="wrap"><p class="eyebrow">02 / APIを体感</p><h2>ボタンの向こうから、<br>本当にデータが届く。</h2><section class="fortune-api-demo" aria-labelledby="fortune-title"><div class="fortune-api-demo__intro"><p class="eyebrow">FORTUNE / API MOCKUP</p><h3 id="fortune-title">誕生月のおたよりを、<br>JSONから受け取る。</h3><p>誕生月を選ぶと、<code>fortune.json</code>から受け取った60件のデータの中から、画像とひとことを1件表示します。</p></div><div class="fortune-api-demo__grid"><form id="fortune-form" class="fortune-request card"><span class="badge">01 / REQUEST</span><label for="fortune-month">あなたの誕生月</label><select id="fortune-month" name="month" disabled><option value="" selected>月を選択してください</option><option value="1">1月</option><option value="2">2月</option><option value="3">3月</option><option value="4">4月</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option></select><p class="endpoint"><span>GET</span> <code>fortune-mock/fortune.json</code></p><button id="draw-fortune" class="button" type="submit" disabled>おたよりを受け取る →</button><p id="fortune-status" role="status" aria-live="polite">JSONを読み込んでいます…</p><small>学習用の架空のおたよりです。誕生月は保存しません。</small></form><article class="fortune-result card" aria-live="polite"><div class="fortune-result__head"><span class="badge">02 / RESPONSE</span><span id="fortune-badge">YOUR LETTER</span></div><div class="fortune-image-stage"><img id="fortune-image" src="fortune-mock/images/fortune-01-01.png" width="512" height="512" alt="おたよりを届けるマスコット"></div><h4 id="fortune-result-title">どんなおたよりが届くかな？</h4><p id="fortune-message">月を選んで、「おたよりを受け取る」を押してみましょう。</p><small id="fortune-result-id">12 MONTHS × 5 LETTERS</small></article></div><div class="fortune-json"><div><p class="eyebrow">RESPONSE JSON</p><p>画面に表示する文章と画像の情報は、同じデータから取り出します。</p><a href="fortune-mock/fortune.json" target="_blank" rel="noopener noreferrer">fortune.jsonを直接開く ↗</a></div><pre id="fortune-json-output" tabindex="0" aria-label="受け取ったおたよりのJSON">まだおたよりを受け取っていません。</pre></div></section></div></section>
-  <section id="json"><div class="wrap"><p class="eyebrow">03 / JSONで中身を見る</p><h2>届いたのは、<br>完成した画面ではなくデータ。</h2><div class="two-columns"><div><p>JSONは、名前と値を組にしてデータを表す書き方です。FORTUNE / API MOCKUPでは、<code>"month"</code>が選んだ月、<code>"message"</code>が文章、<code>"image"</code>が表示する画像の場所を表します。JSONそのものはプログラムではありません。</p><ol class="instructions"><li>上の体験で誕生月を選び、おたよりを受け取る。</li><li>表示されたカードと、下に表示されるJSONを見比べる。</li><li><strong>fortune.json</strong>を直接開き、60件の元データを見る。</li></ol><a class="button secondary" href="fortune-mock/fortune.json" target="_blank" rel="noopener noreferrer">ブラウザでfortune.jsonを開く ↗</a><p><small>新しいタブでJSONそのものを確認できます。画面のデザインと、データの中身は別の役割です。</small></p></div><div><pre tabindex="0" aria-label="おたよりデータのJSONの例">{
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>APIのしくみを体験しよう | Knowledge Surrounding AI</title>
+    <meta
+      name="description"
+      content="APIからデータを取得し、JSON・サーバー・Node.jsの役割を体験。最後はAIとAPIを作るための依頼へ。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../copyright.css" />
+    <link rel="stylesheet" href="../mobile-safe.css" />
+    <link rel="stylesheet" href="../page-reveal.css" />
+    <script src="guide.js" defer></script>
+    <script src="fortune-embed.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="portal-return" href="../index.html">ポータルへ戻る</a
+        ><span>08 / API BASICS</span>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">CONNECT / REQUEST / RESPONSE</p>
+            <h1>APIのしくみを、<br /><em>体験しよう。</em></h1>
+            <p class="lead">
+              ボタンを押す。データが届く。<br />その裏側をのぞくと、Webのつながり方が見えてくる。
+            </p>
+            <nav class="jump" aria-label="ページ内メニュー">
+              <a href="#experience">まず体験する ↓</a
+              ><a href="#build">作る流れを見る</a>
+            </nav>
+          </div>
+          <picture
+            ><source
+              type="image/webp"
+              srcset="
+                ../portal-api-automation-card-640.webp   640w,
+                ../portal-api-automation-card-1024.webp 1024w
+              "
+              sizes="(max-width:760px) 90vw, 480px" />
+            <img
+              class="hero-art"
+              src="../portal-api-automation-card.png"
+              width="1536"
+              height="1024"
+              alt="カラフルなサーバーと接続パーツの3Dイラスト"
+          /></picture>
+        </div>
+      </section>
+      <section id="what">
+        <div class="wrap">
+          <p class="eyebrow">01 / APIとは</p>
+          <h2>
+            APIとは、<br /><em>Application Programming Interface</em>です。
+          </h2>
+          <p class="intro">名前を三つの言葉に分けると、役割が見えてきます。</p>
+          <div class="api-word-grid" aria-label="APIの言葉の意味">
+            <article class="api-word-card application">
+              <span>APPLICATION</span>
+              <h3>Application</h3>
+              <p>アプリ：目的に応じた道具</p>
+            </article>
+            <article class="api-word-card programming">
+              <span>PROGRAMMING</span>
+              <h3>Programming</h3>
+              <p>プログラム・機能やデータ</p>
+            </article>
+            <article class="api-word-card interface">
+              <span>INTERFACE</span>
+              <h3>Interface</h3>
+              <p>間に置かれるもの・窓口</p>
+            </article>
+          </div>
+          <p class="api-definition">
+            つまり、<strong>プログラムのデータや機能をやり取りする窓口</strong>です。
+          </p>
+          <p class="intro api-webapi-intro">
+            ここではインターネット上にある窓口へアクセスして、機能やデータを使えるようにする<strong
+              >Web API</strong
+            >を学びます。
+          </p>
+        </div>
+      </section>
+      <section id="experience" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">02 / APIを体感</p>
+          <h2>ボタンの向こうから、<br />本当にデータが届く。</h2>
+          <section class="fortune-api-demo" aria-labelledby="fortune-title">
+            <div class="fortune-api-demo__intro">
+              <p class="eyebrow">FORTUNE / API MOCKUP</p>
+              <h3 id="fortune-title">
+                誕生月のおたよりを、<br />JSONから受け取る。
+              </h3>
+              <p>
+                誕生月を選ぶと、<code>fortune.json</code>から受け取った60件のデータの中から、画像とひとことを1件表示します。
+              </p>
+            </div>
+            <div class="fortune-api-demo__grid">
+              <form id="fortune-form" class="fortune-request card">
+                <span class="badge">01 / REQUEST</span
+                ><label for="fortune-month">あなたの誕生月</label
+                ><select id="fortune-month" name="month" disabled>
+                  <option value="" selected>月を選択してください</option>
+                  <option value="1">1月</option>
+                  <option value="2">2月</option>
+                  <option value="3">3月</option>
+                  <option value="4">4月</option>
+                  <option value="5">5月</option>
+                  <option value="6">6月</option>
+                  <option value="7">7月</option>
+                  <option value="8">8月</option>
+                  <option value="9">9月</option>
+                  <option value="10">10月</option>
+                  <option value="11">11月</option>
+                  <option value="12">12月</option>
+                </select>
+                <p class="endpoint">
+                  <span>GET</span> <code>fortune-mock/fortune.json</code>
+                </p>
+                <button id="draw-fortune" class="button" type="submit" disabled>
+                  おたよりを受け取る →
+                </button>
+                <p id="fortune-status" role="status" aria-live="polite">
+                  JSONを読み込んでいます…
+                </p>
+                <small
+                  >学習用の架空のおたよりです。誕生月は保存しません。</small
+                >
+              </form>
+              <article class="fortune-result card" aria-live="polite">
+                <div class="fortune-result__head">
+                  <span class="badge">02 / RESPONSE</span
+                  ><span id="fortune-badge">YOUR LETTER</span>
+                </div>
+                <div class="fortune-image-stage">
+                  <img
+                    id="fortune-image"
+                    src="fortune-mock/images/fortune-01-01.png"
+                    width="512"
+                    height="512"
+                    alt="おたよりを届けるマスコット"
+                  />
+                </div>
+                <h4 id="fortune-result-title">どんなおたよりが届くかな？</h4>
+                <p id="fortune-message">
+                  月を選んで、「おたよりを受け取る」を押してみましょう。
+                </p>
+                <small id="fortune-result-id">12 MONTHS × 5 LETTERS</small>
+              </article>
+            </div>
+            <div class="fortune-json">
+              <div>
+                <p class="eyebrow">RESPONSE JSON</p>
+                <p>
+                  画面に表示する文章と画像の情報は、同じデータから取り出します。
+                </p>
+                <a
+                  href="fortune-mock/fortune.json"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >fortune.jsonを直接開く ↗</a
+                >
+              </div>
+              <pre
+                id="fortune-json-output"
+                tabindex="0"
+                aria-label="受け取ったおたよりのJSON"
+              >
+まだおたよりを受け取っていません。</pre>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="json">
+        <div class="wrap">
+          <p class="eyebrow">03 / JSONで中身を見る</p>
+          <h2>届いたのは、<br />完成した画面ではなくデータ。</h2>
+          <div class="two-columns">
+            <div>
+              <p>
+                JSONは、名前と値を組にしてデータを表す書き方です。FORTUNE / API
+                MOCKUPでは、<code>"month"</code>が選んだ月、<code>"message"</code>が文章、<code>"image"</code>が表示する画像の場所を表します。JSONそのものはプログラムではありません。
+              </p>
+              <ol class="instructions">
+                <li>上の体験で誕生月を選び、おたよりを受け取る。</li>
+                <li>表示されたカードと、下に表示されるJSONを見比べる。</li>
+                <li>
+                  <strong>fortune.json</strong
+                  >を直接開き、60件の元データを見る。
+                </li>
+              </ol>
+              <a
+                class="button secondary"
+                href="fortune-mock/fortune.json"
+                target="_blank"
+                rel="noopener noreferrer"
+                >ブラウザでfortune.jsonを開く ↗</a
+              >
+              <p>
+                <small
+                  >新しいタブでJSONそのものを確認できます。画面のデザインと、データの中身は別の役割です。</small
+                >
+              </p>
+            </div>
+            <div>
+              <pre tabindex="0" aria-label="おたよりデータのJSONの例">
+{
   "month": 5,
   "id": "05-01",
   "message": "がんばる日と休む日、どちらも大切にすると調子が整いそうです。",
   "image": "images/fortune-05-01.png",
   "alt": "ラベンダー色のクッションを抱くマスコット"
-}</pre><div class="legend"><span><b>month</b> 選んだ月</span><span><b>message</b> 表示する文章</span><span><b>image</b> 表示する画像</span><span><b>alt</b> 画像の説明</span></div></div></div><p class="note">このページでは<code>fortune.json</code>を取得しています。Node.jsでサーバーを起動する次の章では、同じようなJSONを「窓口」に応じて返す方法を見ます。</p></div></section><section id="server" class="tinted"><div class="wrap"><p class="eyebrow">04 / サーバーの役割</p><h2>「ローカル」と「サーバーなし」は、<br>同じ意味ではない。</h2><p class="intro">Web APIのお願いを受け付けるのは、サーバーとして動くプログラムです。そのプログラムは、自分のPCでも、遠くのコンピューターでも動かせます。</p><div class="cards environments"><article class="card"><span class="badge">FILE / サーバーなし</span><h3>ファイルを直接開く</h3><code>file:///…/index.html</code><p>保存されたHTMLを読む状態。自作APIへのリクエストを受け付けるプログラムは、まだ動いていません。</p><small>ローカルのHTMLから外部APIを呼べることもあります。外部サーバーは存在し、接続の可否はAPIやブラウザの制限によります。</small></article><article class="card"><span class="badge">LOCAL / サーバーあり</span><h3>自分のPCで起動する</h3><code>http://localhost:3000/api/hello</code><p>Node.jsでサーバーを立ち上げると、自分のPCがお願いを受け付けます。<strong>localhostは、いま操作している端末自身</strong>です。</p><small>スマホでlocalhostを開いても、PCにはつながりません。まずPC上で試します。</small></article><article class="card"><span class="badge">REMOTE / サーバーあり</span><h3>公開先で動かす</h3><code>https://example.com/api/hello</code><p>インターネット上の公開先でサーバーを動かすと、許可された利用者が別の端末から接続できます。</p><small>このURLは説明用です。公開には配置・HTTPS・必要な認証などの設定が加わります。</small></article></div><p class="note">APIは必ずNode.jsやJSONで作るものではありません。今回は、サーバーの役割が見えやすいNode.jsとJSONの組み合わせを使います。</p></div></section>
-  <section id="build"><div class="wrap"><p class="eyebrow">05 / APIを作る実際</p><h2>使うのは1クリック。<br>作るには、準備がいる。</h2><p>まずは制作の流れを見てください。<strong>今、すべてを理解したりインストールしたりする必要はありません。</strong>「考えることがいくつもある」と感じられれば、この段階の目的は達成です。</p><ol class="build-steps"><li><span>01</span><div><h3>Node.jsをインストール</h3><p>Node.jsはブラウザの外でJavaScriptを動かす実行環境。公式サイトでOSに合うLTS版を選びます。Windowsならインストーラーを使い、完了後にターミナルを開き直して確認します。</p><a href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer">Node.js公式ダウンロード ↗</a><pre>node --version</pre><small>数字のバージョンが表示されれば確認完了。インストール時にOSの確認が出る場合があります。サンプルの起動自体に管理者権限は必要ありません。</small></div></li><li><span>02</span><div><h3>窓口と、返すJSONを書く</h3><p>作業フォルダに<code>server.js</code>を保存します。下のサンプルはNode.jsの標準機能だけで動き、追加ライブラリの導入は不要です。</p><a href="server.js" download class="text-link">動くサンプルをダウンロード</a><pre id="server-code" tabindex="0">const http = require('node:http');
+}</pre>
+              <div class="legend">
+                <span><b>month</b> 選んだ月</span
+                ><span><b>message</b> 表示する文章</span
+                ><span><b>image</b> 表示する画像</span
+                ><span><b>alt</b> 画像の説明</span>
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            このページでは<code>fortune.json</code>を取得しています。Node.jsでサーバーを起動する次の章では、同じようなJSONを「窓口」に応じて返す方法を見ます。
+          </p>
+        </div>
+      </section>
+      <section id="server" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">04 / サーバーの役割</p>
+          <h2>「ローカル」と「サーバーなし」は、<br />同じ意味ではない。</h2>
+          <p class="intro">
+            Web
+            APIのお願いを受け付けるのは、サーバーとして動くプログラムです。そのプログラムは、自分のPCでも、遠くのコンピューターでも動かせます。
+          </p>
+          <div class="cards environments">
+            <article class="card">
+              <span class="badge">FILE / サーバーなし</span>
+              <h3>ファイルを直接開く</h3>
+              <code>file:///…/index.html</code>
+              <p>
+                保存されたHTMLを読む状態。自作APIへのリクエストを受け付けるプログラムは、まだ動いていません。
+              </p>
+              <small
+                >ローカルのHTMLから外部APIを呼べることもあります。外部サーバーは存在し、接続の可否はAPIやブラウザの制限によります。</small
+              >
+            </article>
+            <article class="card">
+              <span class="badge">LOCAL / サーバーあり</span>
+              <h3>自分のPCで起動する</h3>
+              <code>http://localhost:3000/api/hello</code>
+              <p>
+                Node.jsでサーバーを立ち上げると、自分のPCがお願いを受け付けます。<strong>localhostは、いま操作している端末自身</strong>です。
+              </p>
+              <small
+                >スマホでlocalhostを開いても、PCにはつながりません。まずPC上で試します。</small
+              >
+            </article>
+            <article class="card">
+              <span class="badge">REMOTE / サーバーあり</span>
+              <h3>公開先で動かす</h3>
+              <code>https://example.com/api/hello</code>
+              <p>
+                インターネット上の公開先でサーバーを動かすと、許可された利用者が別の端末から接続できます。
+              </p>
+              <small
+                >このURLは説明用です。公開には配置・HTTPS・必要な認証などの設定が加わります。</small
+              >
+            </article>
+          </div>
+          <p class="note">
+            APIは必ずNode.jsやJSONで作るものではありません。今回は、サーバーの役割が見えやすいNode.jsとJSONの組み合わせを使います。
+          </p>
+        </div>
+      </section>
+      <section id="build">
+        <div class="wrap">
+          <p class="eyebrow">05 / APIを作る実際</p>
+          <h2>使うのは1クリック。<br />作るには、準備がいる。</h2>
+          <p>
+            まずは制作の流れを見てください。<strong>今、すべてを理解したりインストールしたりする必要はありません。</strong>「考えることがいくつもある」と感じられれば、この段階の目的は達成です。
+          </p>
+          <ol class="build-steps">
+            <li>
+              <span>01</span>
+              <div>
+                <h3>Node.jsをインストール</h3>
+                <p>
+                  Node.jsはブラウザの外でJavaScriptを動かす実行環境。公式サイトでOSに合うLTS版を選びます。Windowsならインストーラーを使い、完了後にターミナルを開き直して確認します。
+                </p>
+                <a
+                  href="https://nodejs.org/en/download"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Node.js公式ダウンロード ↗</a
+                >
+                <pre>node --version</pre>
+                <small
+                  >数字のバージョンが表示されれば確認完了。インストール時にOSの確認が出る場合があります。サンプルの起動自体に管理者権限は必要ありません。</small
+                >
+              </div>
+            </li>
+            <li>
+              <span>02</span>
+              <div>
+                <h3>窓口と、返すJSONを書く</h3>
+                <p>
+                  作業フォルダに<code>server.js</code>を保存します。下のサンプルはNode.jsの標準機能だけで動き、追加ライブラリの導入は不要です。
+                </p>
+                <a href="server.js" download class="text-link"
+                  >動くサンプルをダウンロード</a
+                >
+                <pre id="server-code" tabindex="0">
+const http = require('node:http');
 
 const server = http.createServer((req, res) =&gt; {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -37,8 +335,79 @@ const server = http.createServer((req, res) =&gt; {
 
 server.listen(3000, '127.0.0.1', () =&gt; {
   console.log('http://localhost:3000/api/hello');
-});</pre><p class="note">URLで処理を分ける、データをJSONにする、見つからない窓口に404を返す。「ただ文字を表示する」までにも、ルールを決めます。</p></div></li><li><span>03</span><div><h3>サーバーを立てる</h3><p><code>server.js</code>を保存したフォルダでターミナルを開き、次を実行します。</p><pre>node server.js</pre><p>URLが表示されたら起動中です。ターミナルは開いたままにします。終了は<kbd>Ctrl</kbd> + <kbd>C</kbd>。3000番ポートが使用中なら、競合を解消するか別の番号に変更します。</p></div></li><li><span>04</span><div><h3>エンドポイントに接続する</h3><p>同じPCのブラウザのアドレス欄に、次を貼り付けます。</p><pre>http://localhost:3000/api/hello</pre><p>返ってくるJSON：</p><pre>{ "message": "こんにちは、API！" }</pre><small>サーバーを止めれば接続できなくなります。ファイルが存在するだけでは、APIは応答しません。この例は自分のPCだけで接続できる設定で、インターネットへは公開しません。</small></div></li></ol><div class="callout"><h3>「これは難しい」と感じて大丈夫。</h3><p>実行環境、コード、起動、URL、エラー対応。初めてなら知らないことが続きます。まず覚えたいのは、<strong>「サーバーを起動して、窓口へお願いすると、データが返る」</strong>という関係です。</p><button class="button" type="button" data-open-lab>インストールせず、流れだけ練習する</button></div></div></section>
-  <section id="ai" class="tinted"><div class="wrap"><p class="eyebrow">06 / AIと一緒に作る</p><h2>手順とコードは、<br>AIと一緒に進められる。</h2><p class="intro">AIエージェントは、APIのコード作成や起動の確認、エラーの原因調べを支援できます。あなたは<strong>何を渡して、何を受け取りたいか</strong>を決める。作業を小さく区切れば、全部を一度に理解する必要はありません。</p><div class="two-columns"><div><h3>まずは、これを依頼してみよう。</h3><p>利用するAIの権限や環境によって、実行できる作業は変わります。コードができたら実際に接続し、期待するJSONが返るか確認します。</p><p>インストールや公開など環境を変える作業は、内容を説明してもらってから進めましょう。APIキーやパスワードは、この練習に必要ありません。</p><a href="../steplock-prompt/index.html" class="text-link">ステップロック方式で一段ずつ進める →</a></div><div><pre id="ai-prompt" tabindex="0">Node.jsで、ローカルだけで動く小さなWeb APIを作りたいです。
+});</pre>
+                <p class="note">
+                  URLで処理を分ける、データをJSONにする、見つからない窓口に404を返す。「ただ文字を表示する」までにも、ルールを決めます。
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>03</span>
+              <div>
+                <h3>サーバーを立てる</h3>
+                <p>
+                  <code>server.js</code
+                  >を保存したフォルダでターミナルを開き、次を実行します。
+                </p>
+                <pre>node server.js</pre>
+                <p>
+                  URLが表示されたら起動中です。ターミナルは開いたままにします。終了は<kbd
+                    >Ctrl</kbd
+                  >
+                  +
+                  <kbd>C</kbd
+                  >。3000番ポートが使用中なら、競合を解消するか別の番号に変更します。
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>04</span>
+              <div>
+                <h3>エンドポイントに接続する</h3>
+                <p>同じPCのブラウザのアドレス欄に、次を貼り付けます。</p>
+                <pre>http://localhost:3000/api/hello</pre>
+                <p>返ってくるJSON：</p>
+                <pre>{ "message": "こんにちは、API！" }</pre>
+                <small
+                  >サーバーを止めれば接続できなくなります。ファイルが存在するだけでは、APIは応答しません。この例は自分のPCだけで接続できる設定で、インターネットへは公開しません。</small
+                >
+              </div>
+            </li>
+          </ol>
+          <div class="callout">
+            <h3>「これは難しい」と感じて大丈夫。</h3>
+            <p>
+              実行環境、コード、起動、URL、エラー対応。初めてなら知らないことが続きます。まず覚えたいのは、<strong>「サーバーを起動して、窓口へお願いすると、データが返る」</strong>という関係です。
+            </p>
+            <button class="button" type="button" data-open-lab>
+              インストールせず、流れだけ練習する
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="ai" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">06 / AIと一緒に作る</p>
+          <h2>手順とコードは、<br />AIと一緒に進められる。</h2>
+          <p class="intro">
+            AIエージェントは、APIのコード作成や起動の確認、エラーの原因調べを支援できます。あなたは<strong>何を渡して、何を受け取りたいか</strong>を決める。作業を小さく区切れば、全部を一度に理解する必要はありません。
+          </p>
+          <div class="two-columns">
+            <div>
+              <h3>まずは、これを依頼してみよう。</h3>
+              <p>
+                利用するAIの権限や環境によって、実行できる作業は変わります。コードができたら実際に接続し、期待するJSONが返るか確認します。
+              </p>
+              <p>
+                インストールや公開など環境を変える作業は、内容を説明してもらってから進めましょう。APIキーやパスワードは、この練習に必要ありません。
+              </p>
+              <a href="../steplock-prompt/index.html" class="text-link"
+                >ステップロック方式で一段ずつ進める →</a
+              >
+            </div>
+            <div>
+              <pre id="ai-prompt" tabindex="0">
+Node.jsで、ローカルだけで動く小さなWeb APIを作りたいです。
 私はプログラミング初心者です。一段ずつ進めてください。
 
 ## 目的
@@ -54,12 +423,118 @@ GET /api/hello に接続すると、
 自分のPCで起動し、実際のJSONをブラウザで確認できる。
 起動・停止方法と、各手順の意味を説明する。
 
-まずNode.jsが利用できるか確認するところから始めてください。</pre><button id="copy-prompt" class="button secondary" type="button">この依頼文をコピー</button><p id="copy-status" role="status"></p></div></div><div class="callout"><h3>次は、Googleサービスをつなぐ。</h3><p>09では、スプレッドシートからGoogleカレンダーへ。今回学んだ「お願いを送る・データが返る」を、身近なサービスの連携へつなげます。</p><small>09の教材は準備中です。</small></div></div></section>
-  <section class="sources"><div class="wrap"><h2>出典・確認日</h2><p>公式資料を確認：2026年10月5日</p><ul><li><a href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer">Node.js：公式ダウンロード</a></li><li><a href="https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" target="_blank" rel="noopener noreferrer">Node.js：実行環境とHTTPサーバーの作成</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview" target="_blank" rel="noopener noreferrer">MDN：クライアントとサーバーのやり取り</a></li></ul></div></section>
-</main>
-<footer class="guide-footer"><div class="wrap footer-content"><a class="portal-return" href="../index.html">ポータルへ戻る</a><nav class="page-pagination" aria-label="学習ページの移動"><a href="../about-ia/index.html" rel="prev"><small>前のページ</small><strong>← 情報アーキテクチャを学ぼう</strong></a></nav><div class="site-copyright"><span>Copyright &copy; 2026 Flashmelody Katsuyori M</span><img class="site-copyright__logo" src="../assets/maishilogo_white_outlined.svg" alt="FlashMelody"></div></div></footer>
-<div class="api-lab-dock"><button type="button" data-open-lab>APIづくりを練習する <span>インストール不要のシミュレーター</span></button></div>
-<button id="toTop" type="button" aria-label="ページの先頭へ戻る">↑</button>
-<dialog id="api-lab" aria-labelledby="lab-title"><div class="lab-head"><h2 id="lab-title">APIづくりの練習</h2><button id="close-lab" type="button" aria-label="練習を閉じる">閉じる ×</button></div><div class="lab-content"><p class="note">学習用の再現です。実際のインストール、ファイル作成、サーバー起動、通信は行いません。</p><p id="lab-progress">1 / 4</p><h3 id="lab-task"></h3><div class="lab-screen"><span class="badge">SIMULATOR</span><pre id="lab-screen"></pre><button id="lab-action" type="button" class="button guided"></button><p class="guide-label">赤枠のボタンを押してください</p></div><p id="lab-explanation" role="status"></p><button id="reset-lab" type="button" class="button secondary">最初から練習する</button></div></dialog>
-</body>
+まずNode.jsが利用できるか確認するところから始めてください。</pre>
+              <button id="copy-prompt" class="button secondary" type="button">
+                この依頼文をコピー
+              </button>
+              <p id="copy-status" role="status"></p>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>次は、Googleサービスをつなぐ。</h3>
+            <p>
+              09では、スプレッドシートからGoogleカレンダーへ。今回学んだ「お願いを送る・データが返る」を、身近なサービスの連携へつなげます。
+            </p>
+            <small>09の教材は準備中です。</small>
+          </div>
+        </div>
+      </section>
+      <section class="sources">
+        <div class="wrap">
+          <h2>出典・確認日</h2>
+          <p>公式資料を確認：2026年10月5日</p>
+          <ul>
+            <li>
+              <a
+                href="https://nodejs.org/en/download"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Node.js：公式ダウンロード</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://nodejs.org/en/learn/getting-started/introduction-to-nodejs"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Node.js：実行環境とHTTPサーバーの作成</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview"
+                target="_blank"
+                rel="noopener noreferrer"
+                >MDN：クライアントとサーバーのやり取り</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <footer class="guide-footer">
+      <div class="wrap footer-content">
+        <a class="portal-return" href="../index.html">ポータルへ戻る</a>
+        <nav class="page-pagination" aria-label="学習ページの移動">
+          <a href="../about-ia/index.html" rel="prev"
+            ><small>前のページ</small
+            ><strong>← 情報アーキテクチャを学ぼう</strong></a
+          >
+        </nav>
+        <div class="site-copyright">
+          <span>Copyright &copy; 2026 Flashmelody Katsuyori M</span
+          ><img
+            class="site-copyright__logo"
+            src="../assets/maishilogo_white_outlined.svg"
+            alt="FlashMelody"
+          />
+        </div>
+      </div>
+    </footer>
+    <dialog id="fortune-delivery" aria-labelledby="fortune-delivery-title">
+      <div class="fortune-delivery__content">
+        <img
+          id="fortune-delivery-gif"
+          src="assets/fortune-delivery/fortune-delivery.gif"
+          width="1536"
+          height="1536"
+          alt="紙飛行機がおたよりをメールボックスへ届けるアニメーション"
+        />
+        <p id="fortune-delivery-title" aria-live="polite">
+          おたよりを配達しています…
+        </p>
+      </div>
+    </dialog>
+    <div class="api-lab-dock">
+      <button type="button" data-open-lab>
+        APIづくりを練習する <span>インストール不要のシミュレーター</span>
+      </button>
+    </div>
+    <button id="toTop" type="button" aria-label="ページの先頭へ戻る">↑</button>
+    <dialog id="api-lab" aria-labelledby="lab-title">
+      <div class="lab-head">
+        <h2 id="lab-title">APIづくりの練習</h2>
+        <button id="close-lab" type="button" aria-label="練習を閉じる">
+          閉じる ×
+        </button>
+      </div>
+      <div class="lab-content">
+        <p class="note">
+          学習用の再現です。実際のインストール、ファイル作成、サーバー起動、通信は行いません。
+        </p>
+        <p id="lab-progress">1 / 4</p>
+        <h3 id="lab-task"></h3>
+        <div class="lab-screen">
+          <span class="badge">SIMULATOR</span>
+          <pre id="lab-screen"></pre>
+          <button id="lab-action" type="button" class="button guided"></button>
+          <p class="guide-label">赤枠のボタンを押してください</p>
+        </div>
+        <p id="lab-explanation" role="status"></p>
+        <button id="reset-lab" type="button" class="button secondary">
+          最初から練習する
+        </button>
+      </div>
+    </dialog>
+  </body>
 </html>
