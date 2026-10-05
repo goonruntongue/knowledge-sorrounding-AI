@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f5ff" />
+    <meta
+      name="description"
+      content="誕生月を選ぶと、JSONデータからおたよりが届く学習用のミニアプリです。"
+    />
+    <title>おたよりAPI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">OTAYORI API / JSON DEMO</p>
+        <h1>誕生月の<span>おたより</span></h1>
+        <p class="lead">
+          ボタンを押すと、JSONデータから画像とひとことが届きます。
+        </p>
+      </header>
+
+      <section class="app" aria-labelledby="app-title">
+        <div class="app-intro">
+          <p class="step">01 / REQUEST</p>
+          <h2 id="app-title">おたよりを受け取る</h2>
+          <p>
+            誕生月を選ぶと、60件のおたよりデータから1件をランダムに取り出します。
+          </p>
+        </div>
+
+        <div class="app-grid">
+          <form id="fortune-form" class="panel request-panel">
+            <label for="fortune-month">あなたの誕生月</label>
+            <select id="fortune-month" name="month" disabled>
+              <option value="" selected>月を選択してください</option>
+              <option value="1">1月</option>
+              <option value="2">2月</option>
+              <option value="3">3月</option>
+              <option value="4">4月</option>
+              <option value="5">5月</option>
+              <option value="6">6月</option>
+              <option value="7">7月</option>
+              <option value="8">8月</option>
+              <option value="9">9月</option>
+              <option value="10">10月</option>
+              <option value="11">11月</option>
+              <option value="12">12月</option>
+            </select>
+            <p class="endpoint"><b>GET</b> <code>/fortune.json</code></p>
+            <button id="draw-fortune" type="submit" disabled>
+              おたよりを受け取る <span aria-hidden="true">→</span>
+            </button>
+            <p
+              id="fortune-status"
+              class="status"
+              role="status"
+              aria-live="polite"
+            >
+              JSONを読み込んでいます…
+            </p>
+            <small>学習用の架空のおたよりです。誕生月は保存しません。</small>
+          </form>
+
+          <article class="panel result-panel" aria-live="polite">
+            <div class="result-head">
+              <span class="step">02 / RESPONSE</span>
+              <span id="fortune-badge">YOUR LETTER</span>
+            </div>
+            <div class="image-stage">
+              <img
+                id="fortune-image"
+                src="images/fortune-01-01.png"
+                width="512"
+                height="512"
+                alt="おたよりを届けるマスコット"
+              />
+            </div>
+            <h2 id="fortune-result-title">どんなおたよりが届くかな？</h2>
+            <p id="fortune-message">
+              月を選んで、「おたよりを受け取る」を押してみましょう。
+            </p>
+            <small id="fortune-result-id">12 MONTHS × 5 LETTERS</small>
+          </article>
+        </div>
+
+        <details class="json-details">
+          <summary>届いたJSONを見る</summary>
+          <pre
+            id="fortune-json-output"
+            tabindex="0"
+            aria-label="受け取ったおたよりのJSON"
+          >
+まだおたよりを受け取っていません。</pre>
+          <a href="fortune.json" target="_blank" rel="noopener noreferrer"
+            >fortune.jsonを直接開く ↗</a
+          >
+        </details>
+      </section>
+
+      <p class="note">
+        このページはAPIとJSONの関係を学ぶためのデモです。実際の通信や個人情報の保存は行いません。
+      </p>
+    </main>
+
+    <dialog id="fortune-delivery" aria-labelledby="delivery-title">
+      <div class="delivery-content">
+        <img
+          id="fortune-delivery-gif"
+          src="assets/get-message.gif"
+          width="463"
+          height="356"
+          alt="紙飛行機がおたよりをメールボックスへ届けるアニメーション"
+        />
+        <p id="delivery-title">おたよりを配達中…</p>
+      </div>
+    </dialog>
+  </body>
+</html>

@@ -2,8 +2,6 @@
   "use strict";
 
   const form = document.getElementById("fortune-form");
-  if (!form) return;
-
   const month = document.getElementById("fortune-month");
   const draw = document.getElementById("draw-fortune");
   const status = document.getElementById("fortune-status");
@@ -23,6 +21,20 @@
   const wait = (milliseconds) =>
     new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
+  const validData = (data) => {
+    if (!data || typeof data !== "object") throw new Error("invalid JSON");
+    for (let index = 1; index <= 12; index += 1) {
+      if (!Array.isArray(data[index]) || data[index].length !== 5) {
+        throw new Error("invalid letter count");
+      }
+    }
+    return data;
+  };
+
+  const sync = () => {
+    draw.disabled = !fortunes || !month.value;
+  };
+
   const showDelivery = async () => {
     if (!delivery || !deliveryGif) return;
 
@@ -30,8 +42,7 @@
       deliveryGif.addEventListener("load", resolve, { once: true });
       deliveryGif.addEventListener("error", resolve, { once: true });
     });
-    // Changing the query starts the GIF again on every request.
-    deliveryGif.src = `assets/fortune-delivery/get-message.gif?delivery=${Date.now()}`;
+    deliveryGif.src = `assets/get-message.gif?delivery=${Date.now()}`;
     await gifIsReady;
     delivery.showModal();
     await wait(
@@ -42,21 +53,7 @@
     if (delivery.open) delivery.close();
   };
 
-  const validData = (data) => {
-    if (!data || typeof data !== "object")
-      throw new Error("JSONの形式が正しくありません");
-    for (let index = 1; index <= 12; index += 1) {
-      if (!Array.isArray(data[index]) || data[index].length !== 5)
-        throw new Error("おたよりの件数が正しくありません");
-    }
-    return data;
-  };
-
-  const sync = () => {
-    draw.disabled = !fortunes || !month.value;
-  };
-
-  fetch("fortune-mock/fortune.json", { cache: "no-store" })
+  fetch("fortune.json", { cache: "no-store" })
     .then((response) => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return response.json();
@@ -69,7 +66,7 @@
     })
     .catch(() => {
       status.textContent =
-        "JSONを読み込めませんでした。通信環境を確認して、ページを開き直してください。";
+        "JSONを読み込めませんでした。ページを開き直してください。";
     });
 
   month.addEventListener("change", () => {
@@ -81,19 +78,20 @@
     event.preventDefault();
     const selectedMonth = Number(month.value);
     if (!fortunes || !selectedMonth) return;
+
     const candidates = fortunes[selectedMonth].filter(
       (item) => item.id !== previousId,
     );
     const result = candidates[Math.floor(Math.random() * candidates.length)];
     draw.disabled = true;
     status.textContent = "紙飛行機がおたよりを届けています…";
+
     try {
       await showDelivery();
       const nextImage = new Image();
-      nextImage.src = `fortune-mock/${result.image}`;
+      nextImage.src = result.image;
       await nextImage.decode();
       image.classList.remove("is-arriving");
-      // Restart the entrance animation only after the new image is ready.
       void image.offsetWidth;
       image.classList.add("is-arriving");
       image.src = nextImage.src;
@@ -108,7 +106,7 @@
         2,
       );
       previousId = result.id;
-      draw.textContent = "もうひとつ受け取る ↻";
+      draw.innerHTML = 'もうひとつ受け取る <span aria-hidden="true">↻</span>';
       status.textContent = `${selectedMonth}月のおたよりが届きました。`;
     } catch {
       status.textContent =
