@@ -144,9 +144,6 @@ section {
   background: #eaf1fc;
   border-block: 1px solid var(--line);
 }
-.intro {
-  max-width: 780px;
-}
 .cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
