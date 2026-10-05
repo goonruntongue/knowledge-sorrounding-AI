@@ -1,0 +1,18 @@
+{
+  "name": "STEP LOCK",
+  "short_name": "STEP LOCK",
+  "description": "AIと一歩ずつ、課題を解決するための実用プロンプト",
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eaf2fc",
+  "theme_color": "#eaf2fc",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable monochrome"
+    }
+  ]
+}
