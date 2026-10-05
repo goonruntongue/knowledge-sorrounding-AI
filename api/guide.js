@@ -1,42 +1,6 @@
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
-  const endpoint = () => `https://jsonplaceholder.typicode.com/posts/${$('post-id').value}`;
-  $('post-id').addEventListener('change', () => {
-    $('endpoint').textContent = endpoint();
-    $('open-endpoint').href = endpoint();
-    $('fetch-status').textContent = '接続先を変更しました。取得ボタンで新しい投稿を読み込みます。';
-  });
-  $('fetch-post').addEventListener('click', async () => {
-    const button = $('fetch-post');
-    const url = endpoint();
-    button.disabled = true;
-    $('post-id').disabled = true;
-    $('fetch-status').textContent = 'リクエストを送っています…';
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
-    try {
-      const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      if (typeof data.title !== 'string' || typeof data.body !== 'string') throw new Error('想定と異なるデータです');
-      $('post-badge').textContent = `POST ${data.id} / USER ${data.userId}`;
-      $('post-title').textContent = data.title;
-      $('post-body').textContent = data.body;
-      $('json-output').textContent = JSON.stringify(data, null, 2);
-      $('fetch-status').textContent = `HTTP ${response.status}：投稿${data.id}のJSONを受け取りました。`;
-    } catch (error) {
-      $('fetch-status').textContent = '取得できませんでした。通信環境やブラウザの制限を確認し、再度お試しください。ブラウザでJSONを直接開く方法も試せます。';
-      $('post-title').textContent = 'まだ新しい投稿は届いていません';
-      $('post-body').textContent = '外部APIに接続できなかったため、架空の成功結果は表示していません。';
-      $('post-badge').textContent = 'REQUEST FAILED';
-      $('json-output').textContent = '取得できませんでした。再試行すると、実際に届いたJSONを確認できます。';
-    } finally {
-      clearTimeout(timeout);
-      button.disabled = false;
-      $('post-id').disabled = false;
-    }
-  });
   $('copy-prompt').addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText($('ai-prompt').textContent);
