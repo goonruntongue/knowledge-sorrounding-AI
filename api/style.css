@@ -755,11 +755,14 @@ body.lab-open {
 
 /* API name breakdown and letter-delivery feedback */
 #what h2 em {
-  color: var(--blue);
+  color: var(--ink);
   font-size: 0.7em;
   font-style: normal;
   letter-spacing: -0.045em;
 }
+.api-initial--application { color: var(--blue); }
+.api-initial--programming { color: var(--pink); }
+.api-initial--interface { color: #d69a19; }
 .api-word-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
