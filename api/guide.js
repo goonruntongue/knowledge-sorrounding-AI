@@ -19,13 +19,16 @@
   let opener;
   let step = 0;
   const stages = [
-    ['Node.jsの準備', 'まだJavaScriptを実行する環境がありません。', 'Node.jsの準備を再現する', 'Node.jsの準備ができました。実際の作業では公式インストーラーを使います。'],
-    ['窓口を書く', '作業フォルダ\n└ server.js（まだ未作成）', 'server.jsの作成を再現する', 'GET /api/hello にJSONを返すコードを用意しました。'],
+    ['Node.jsを準備する', 'Node.js はまだ入っていません。', 'Node.jsの準備を再現する', 'JavaScriptをブラウザの外で動かす準備ができました。実際の作業では公式インストーラーを使います。'],
+    ['プロジェクトを初期化する', '> npm init -y', 'npm initを再現する', 'package.jsonを作成しました。これは使う道具の情報を管理するファイルです。'],
+    ['Expressを追加する', '> npm install express', 'Expressの追加を再現する', 'Expressは、URLごとに応答を分けやすくするNode.js用のフレームワークです。'],
+    ['サーバーのコードを書く', '作業フォルダ\n└ server.js（まだ未作成）', 'server.jsの作成を再現する', 'GET /api/hello にシンプルなJSONを返すコードを用意しました。'],
     ['サーバーを起動する', '> node server.js\n（まだ実行していません）', '起動コマンドを再現する', 'サーバーが待ち受ける状態になりました。ファイルを作るだけでは応答しません。'],
-    ['ブラウザから接続する', 'http://localhost:3000/api/hello\n（まだ接続していません）', 'エンドポイントへの接続を再現する', '窓口に接続し、JSONを受け取りました。実際の通信ではなく学習用の再現です。']
+    ['エンドポイントを開く', 'http://localhost:3000/api/hello\n（まだ接続していません）', 'エンドポイントへの接続を再現する', '窓口に接続し、JSONを受け取りました。実際の通信ではなく学習用の再現です。'],
+    ['公開先を考える', 'ローカルPCでは、止めるとAPIも止まります。', '公開の仕組みを確認する', 'インターネットから使うAPIには、Node.jsを継続して動かし、エンドポイントを保つリモートサーバーが必要です。']
   ];
   function render() {
-    $('lab-progress').textContent = step < stages.length ? `${step + 1} / 4` : '4 / 4 完了';
+    $('lab-progress').textContent = step < stages.length ? `${step + 1} / ${stages.length}` : `${stages.length} / ${stages.length} 完了`;
     $('lab-action').hidden = step >= stages.length;
     if (step >= stages.length) {
       $('lab-task').textContent = 'データが返ってきました！';

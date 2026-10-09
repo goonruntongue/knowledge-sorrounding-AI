@@ -763,6 +763,7 @@ body.lab-open {
 .api-initial--application { color: var(--blue); }
 .api-initial--programming { color: var(--pink); }
 .api-initial--interface { color: #d69a19; }
+.api-illustration-placeholder{display:grid;gap:.4rem;place-items:center;min-height:180px;margin:1.5rem 0;border:2px dashed #9fc4ef;border-radius:20px;background:linear-gradient(135deg,#f9fcff,#e6f1ff);text-align:center}.api-illustration-placeholder span{color:#397ce5;font-size:.75rem;font-weight:800;letter-spacing:.1em}.api-illustration-placeholder strong{font-size:1.05rem}.api-illustration-placeholder small{color:var(--muted)}
 .api-word-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

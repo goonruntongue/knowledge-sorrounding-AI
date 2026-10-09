@@ -25,7 +25,7 @@
     <header class="topbar">
       <div class="wrap">
         <a class="portal-return" href="../index.html">ポータルへ戻る</a
-        ><span>08 / API BASICS</span>
+        ><span>09 / API BASICS</span>
       </div>
     </header>
     <main>
@@ -239,11 +239,11 @@
       <section id="server" class="tinted">
         <div class="wrap">
           <p class="eyebrow">04 / サーバーの役割</p>
-          <h2>「ローカル」と「サーバーなし」は、<br />同じ意味ではない。</h2>
+          <h2>Web APIには、<br /><em>起動しているサーバー</em>が必要。</h2>
           <p class="intro">
-            Web
-            APIのお願いを受け付けるのは、サーバーとして動くプログラムです。そのプログラムは、自分のPCでも、遠くのコンピューターでも動かせます。
+            Web APIは、サーバー上のデータや機能を使うための窓口です。取得だけでなく、作成・更新・削除も依頼します。<strong>窓口であるURLはAPIエンドポイント</strong>と呼ばれ、お願いに応答するサーバーが起動して初めて動きます。
           </p>
+          <div class="api-illustration-placeholder" role="img" aria-label="サーバーとAPIエンドポイントを説明する挿絵の準備中エリア"><span>ILLUSTRATION / PREPARING</span><strong>サーバーとエンドポイントの挿絵を準備中です</strong><small>GIFまたはLottieアニメーションをここに追加します。</small></div>
           <div class="cards environments">
             <article class="card">
               <span class="badge">FILE / サーバーなし</span>
@@ -280,7 +280,7 @@
             </article>
           </div>
           <p class="note">
-            APIは必ずNode.jsやJSONで作るものではありません。今回は、サーバーの役割が見えやすいNode.jsとJSONの組み合わせを使います。
+            画面を開く側はローカルのHTMLでもかまいません。一方、APIの向こう側には、応答するサーバーがあります。サーバーそのものは「サーバーとは？」ページで詳しく体験できます。
           </p>
         </div>
       </section>
@@ -314,29 +314,12 @@
             <li>
               <span>02</span>
               <div>
-                <h3>窓口と、返すJSONを書く</h3>
+                <h3>Expressを追加する</h3>
                 <p>
-                  作業フォルダに<code>server.js</code>を保存します。下のサンプルはNode.jsの標準機能だけで動き、追加ライブラリの導入は不要です。
+                  Expressは、URLごとに処理を分けたり、返事を返したりしやすくするNode.js用の小さな道具箱です。まずプロジェクトの情報を作り、Expressを追加します。
                 </p>
-                <a href="server.js" download class="text-link"
-                  >動くサンプルをダウンロード</a
-                >
-                <pre id="server-code" tabindex="0">
-const http = require('node:http');
-
-const server = http.createServer((req, res) =&gt; {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  if (req.method === 'GET' &amp;&amp; req.url === '/api/hello') {
-    res.end(JSON.stringify({ message: 'こんにちは、API！' }));
-    return;
-  }
-  res.statusCode = 404;
-  res.end(JSON.stringify({ error: '窓口が見つかりません' }));
-});
-
-server.listen(3000, '127.0.0.1', () =&gt; {
-  console.log('http://localhost:3000/api/hello');
-});</pre>
+                <pre>npm init -y
+npm install express</pre>
                 <p class="note">
                   URLで処理を分ける、データをJSONにする、見つからない窓口に404を返す。「ただ文字を表示する」までにも、ルールを決めます。
                 </p>
@@ -345,12 +328,19 @@ server.listen(3000, '127.0.0.1', () =&gt; {
             <li>
               <span>03</span>
               <div>
-                <h3>サーバーを立てる</h3>
+                <h3>JSONを返すサーバーを書く</h3>
                 <p>
                   <code>server.js</code
                   >を保存したフォルダでターミナルを開き、次を実行します。
                 </p>
-                <pre>node server.js</pre>
+                <pre>const express = require('express');
+const app = express();
+
+app.get('/api/hello', (req, res) =&gt; {
+  res.json({ message: 'こんにちは、API！' });
+});
+
+app.listen(3000, () =&gt; console.log('http://localhost:3000/api/hello'));</pre>
                 <p>
                   URLが表示されたら起動中です。ターミナルは開いたままにします。終了は<kbd
                     >Ctrl</kbd
@@ -364,7 +354,8 @@ server.listen(3000, '127.0.0.1', () =&gt; {
             <li>
               <span>04</span>
               <div>
-                <h3>エンドポイントに接続する</h3>
+                <h3>起動して、エンドポイントに接続する</h3>
+                <pre>node server.js</pre>
                 <p>同じPCのブラウザのアドレス欄に、次を貼り付けます。</p>
                 <pre>http://localhost:3000/api/hello</pre>
                 <p>返ってくるJSON：</p>
@@ -477,9 +468,9 @@ GET /api/hello に接続すると、
       <div class="wrap footer-content">
         <a class="portal-return" href="../index.html">ポータルへ戻る</a>
         <nav class="page-pagination" aria-label="学習ページの移動">
-          <a href="../about-ia/index.html" rel="prev"
+          <a href="../server/index.html" rel="prev"
             ><small>前のページ</small
-            ><strong>← 情報アーキテクチャを学ぼう</strong></a
+            ><strong>← サーバーとは？</strong></a
           >
         </nav>
         <div class="site-copyright">
