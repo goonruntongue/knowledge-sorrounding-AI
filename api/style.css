@@ -171,6 +171,10 @@ section {
 .cards .card:nth-child(3) {
   border-top: 4px solid var(--yellow);
 }
+.cards.environments .card {
+  border-top-width: 16px;
+  border-radius: 10px 10px 20px 20px;
+}
 .flow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
@@ -4412,7 +4416,7 @@ body.lab-open {
   min-width: 0;
   padding: 1.25rem;
   border: 1px solid #d5e0ef;
-  border-radius: 18px;
+  border-radius: 10px 10px 20px 20px;
   background: #fff;
   box-shadow: 0 9px 22px #344e7510;
 }
@@ -4433,19 +4437,19 @@ body.lab-open {
   font-size: 0.94rem;
 }
 .api-word-card.application {
-  border-top: 4px solid var(--blue);
+  border-top: 16px solid var(--blue);
 }
 .api-word-card.application span {
   color: #397ce5;
 }
 .api-word-card.programming {
-  border-top: 4px solid var(--pink);
+  border-top: 16px solid var(--pink);
 }
 .api-word-card.programming span {
   color: #cc4f7b;
 }
 .api-word-card.interface {
-  border-top: 4px solid var(--yellow);
+  border-top: 16px solid var(--yellow);
 }
 .api-word-card.interface span {
   color: #a87608;
