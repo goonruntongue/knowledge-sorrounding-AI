@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>誕生月のおたより | API体験モック</title>
+<link rel="icon" type="image/png" href="images/fortune-01-01.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a href="index.html">誕生月のおたより</a><span>FORTUNE / API MOCKUP</span></header>
+<main class="wrap">
+<div class="intro"><p class="eyebrow">ひとことと、ひとつのイメージ。</p><h1>誕生月の<span>おたより</span></h1><p>あなたの生まれた月を選ぶと、<br>小さなマスコットがおたよりを届けます。</p></div>
+<div class="app-grid">
+<section class="controls panel" aria-labelledby="choose-title"><span class="step-label">01 / REQUEST</span><h2 id="choose-title">誕生月を選んでね。</h2><p>各月のおたよりは5種類。<br>ボタンを押すと、1つをランダムにお届け。</p><form id="fortune-form"><label for="month">あなたの誕生月</label><select id="month" name="month"><option value="" selected disabled>月を選択してください</option><option value="1">1月</option><option value="2">2月</option><option value="3">3月</option><option value="4">4月</option><option value="5">5月</option><option value="6">6月</option><option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option></select><button class="primary" id="draw" type="submit" disabled>おたよりを受け取る <span aria-hidden="true">→</span></button></form><p id="status" role="status" aria-live="polite">準備しています…</p><div id="file-mode" hidden><p>ファイルを直接開いています。近くの<code>fortune.json</code>を選ぶと、通信なしで見た目を試せます。</p><label class="file-label">fortune.jsonを読み込む<input id="json-file" type="file" accept=".json,application/json"></label><small>API通信を体験する場合は、付属のサーバーを起動して開いてください。</small></div><p class="disclaimer">学習用の架空のおたよりです。誕生月は保存しません。</p></section>
+<section class="result panel" aria-labelledby="result-title"><div class="result-head"><span class="step-label">02 / RESPONSE</span><span id="month-badge" class="pill">YOUR LETTER</span></div><div id="image-stage" class="image-stage"><img id="fortune-image" src="images/fortune-01-01.png" width="512" height="512" alt="芽が出た鉢植えを持つマスコット"><span class="image-glow" aria-hidden="true"></span></div><h2 id="result-title">どんなおたよりが届くかな？</h2><p id="fortune-message">月を選んで、「おたよりを受け取る」を押してみましょう。</p><span id="result-id" class="result-id">12 MONTHS × 5 LETTERS</span></section>
+</div>
+<section class="under-the-hood" aria-labelledby="data-title"><div><p class="eyebrow">データの裏側ものぞいてみる</p><h2 id="data-title">同じJSONから、<br>画像とコメントができる。</h2><p>サーバーが返す<code>message</code>を文章に、<code>image</code>を画像のURLに。フロントエンドが2つを組み合わせてカードを表示します。</p><p id="mode-note">通信方法を確認しています。</p><a href="fortune.json" target="_blank" rel="noopener" id="all-data-link">全60件のfortune.jsonを開く ↗</a><br><a href="sprite-gallery.html">60枚の画像を一覧で見る →</a></div><div class="json-panel"><div class="json-bar"><span id="request-label">GET /fortune.api?month=…</span><a id="endpoint-link" href="fortune.api?month=1" target="_blank" rel="noopener" hidden>JSONを開く ↗</a></div><pre id="response-json" tabindex="0" aria-label="表示中のおたよりのJSON">まだリクエストしていません。</pre><small>直接エンドポイントを開くと、新しく抽選されます。ここには画面と同じ結果を表示します。</small></div></section>
+</main><footer>API EXPERIENCE / LOCAL MOCKUP · 本番教材への組み込み前の試作</footer>
+</body></html>

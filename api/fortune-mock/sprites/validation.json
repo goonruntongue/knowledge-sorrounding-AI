@@ -1,0 +1,1322 @@
+[
+  {
+    "image": "fortune-01-01.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      67,
+      79,
+      274,
+      330
+    ],
+    "margins": [
+      97,
+      64,
+      98,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40552,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-01-02.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      360,
+      71,
+      595,
+      328
+    ],
+    "margins": [
+      80,
+      64,
+      81,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 44616,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-01-03.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      667,
+      76,
+      882,
+      325
+    ],
+    "margins": [
+      90,
+      64,
+      90,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41260,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-01-04.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      957,
+      76,
+      1190,
+      330
+    ],
+    "margins": [
+      80,
+      64,
+      80,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41234,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-01-05.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      1240,
+      73,
+      1489,
+      329
+    ],
+    "margins": [
+      69,
+      64,
+      69,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 43131,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-02-01.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      61,
+      398,
+      276,
+      642
+    ],
+    "margins": [
+      87,
+      64,
+      87,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40012,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-02-02.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      357,
+      388,
+      600,
+      642
+    ],
+    "margins": [
+      72,
+      64,
+      73,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42904,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-02-03.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      656,
+      396,
+      892,
+      642
+    ],
+    "margins": [
+      72,
+      64,
+      72,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41063,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-02-04.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      961,
+      395,
+      1179,
+      647
+    ],
+    "margins": [
+      90,
+      64,
+      90,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40758,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-02-05.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      1269,
+      402,
+      1481,
+      643
+    ],
+    "margins": [
+      87,
+      64,
+      87,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 37249,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-03-01.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      66,
+      707,
+      281,
+      961
+    ],
+    "margins": [
+      93,
+      64,
+      94,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40291,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-03-02.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      354,
+      705,
+      582,
+      961
+    ],
+    "margins": [
+      85,
+      64,
+      85,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 43714,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-03-03.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      657,
+      712,
+      904,
+      960
+    ],
+    "margins": [
+      65,
+      64,
+      65,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41213,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-03-04.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      967,
+      707,
+      1182,
+      962
+    ],
+    "margins": [
+      94,
+      64,
+      94,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40768,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-03-05.png",
+    "source": "sheet-01.png",
+    "sourceBounds": [
+      1270,
+      716,
+      1478,
+      962
+    ],
+    "margins": [
+      93,
+      64,
+      94,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 38719,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-04-01.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      28,
+      79,
+      293,
+      360
+    ],
+    "margins": [
+      75,
+      64,
+      75,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 51853,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-04-02.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      367,
+      123,
+      597,
+      363
+    ],
+    "margins": [
+      72,
+      64,
+      72,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39072,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-04-03.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      667,
+      126,
+      887,
+      367
+    ],
+    "margins": [
+      80,
+      64,
+      81,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39192,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-04-04.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      957,
+      124,
+      1193,
+      364
+    ],
+    "margins": [
+      67,
+      64,
+      67,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40919,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-04-05.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      1230,
+      28,
+      1516,
+      363
+    ],
+    "margins": [
+      92,
+      64,
+      92,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 59070,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-05-01.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      40,
+      424,
+      264,
+      671
+    ],
+    "margins": [
+      82,
+      64,
+      82,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42280,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-05-02.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      346,
+      409,
+      587,
+      665
+    ],
+    "margins": [
+      75,
+      64,
+      75,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 45333,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-05-03.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      619,
+      422,
+      913,
+      684
+    ],
+    "margins": [
+      64,
+      85,
+      64,
+      85
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49214,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-05-04.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      995,
+      428,
+      1204,
+      671
+    ],
+    "margins": [
+      91,
+      64,
+      91,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39047,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-05-05.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      1286,
+      431,
+      1502,
+      674
+    ],
+    "margins": [
+      85,
+      64,
+      86,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 38657,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-06-01.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      50,
+      747,
+      287,
+      990
+    ],
+    "margins": [
+      68,
+      64,
+      69,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42954,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-06-02.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      344,
+      748,
+      576,
+      990
+    ],
+    "margins": [
+      72,
+      64,
+      72,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39816,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-06-03.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      654,
+      703,
+      909,
+      991
+    ],
+    "margins": [
+      86,
+      64,
+      86,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 52073,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 1
+  },
+  {
+    "image": "fortune-06-04.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      986,
+      749,
+      1199,
+      991
+    ],
+    "margins": [
+      87,
+      64,
+      87,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39387,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-06-05.png",
+    "source": "sheet-02.png",
+    "sourceBounds": [
+      1275,
+      746,
+      1496,
+      990
+    ],
+    "margins": [
+      82,
+      64,
+      82,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 39794,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-07-01.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      56,
+      69,
+      274,
+      324
+    ],
+    "margins": [
+      92,
+      64,
+      92,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42185,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-07-02.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      336,
+      45,
+      619,
+      323
+    ],
+    "margins": [
+      64,
+      67,
+      64,
+      68
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 51542,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-07-03.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      662,
+      71,
+      885,
+      327
+    ],
+    "margins": [
+      89,
+      64,
+      89,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42169,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-07-04.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      970,
+      70,
+      1185,
+      326
+    ],
+    "margins": [
+      95,
+      64,
+      95,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42299,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-07-05.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      1271,
+      71,
+      1491,
+      327
+    ],
+    "margins": [
+      91,
+      64,
+      91,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42417,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-08-01.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      51,
+      382,
+      316,
+      651
+    ],
+    "margins": [
+      67,
+      64,
+      67,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 50292,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-08-02.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      377,
+      386,
+      592,
+      644
+    ],
+    "margins": [
+      96,
+      64,
+      96,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42145,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-08-03.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      667,
+      388,
+      887,
+      644
+    ],
+    "margins": [
+      91,
+      64,
+      91,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41933,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-08-04.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      970,
+      386,
+      1183,
+      644
+    ],
+    "margins": [
+      97,
+      64,
+      98,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 41973,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-08-05.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      1270,
+      387,
+      1478,
+      644
+    ],
+    "margins": [
+      100,
+      64,
+      101,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 40988,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-09-01.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      64,
+      707,
+      311,
+      960
+    ],
+    "margins": [
+      68,
+      64,
+      69,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 43496,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-09-02.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      379,
+      705,
+      598,
+      961
+    ],
+    "margins": [
+      92,
+      64,
+      92,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42719,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-09-03.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      673,
+      707,
+      899,
+      964
+    ],
+    "margins": [
+      87,
+      64,
+      87,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42665,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-09-04.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      953,
+      711,
+      1188,
+      963
+    ],
+    "margins": [
+      77,
+      64,
+      77,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42816,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-09-05.png",
+    "source": "sheet-03.png",
+    "sourceBounds": [
+      1268,
+      701,
+      1482,
+      961
+    ],
+    "margins": [
+      98,
+      64,
+      98,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 42720,
+    "isolatedSmallComponentsDiscarded": 0,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-10-01.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      46,
+      36,
+      290,
+      317
+    ],
+    "margins": [
+      89,
+      64,
+      90,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 50438,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-10-02.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      369,
+      43,
+      598,
+      317
+    ],
+    "margins": [
+      95,
+      64,
+      96,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 47587,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-10-03.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      660,
+      40,
+      892,
+      318
+    ],
+    "margins": [
+      96,
+      64,
+      96,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 48585,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-10-04.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      962,
+      40,
+      1196,
+      319
+    ],
+    "margins": [
+      95,
+      64,
+      95,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 48929,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-10-05.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      1285,
+      42,
+      1505,
+      337
+    ],
+    "margins": [
+      113,
+      64,
+      113,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49639,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-11-01.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      57,
+      381,
+      283,
+      660
+    ],
+    "margins": [
+      100,
+      64,
+      101,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49114,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-11-02.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      373,
+      378,
+      602,
+      656
+    ],
+    "margins": [
+      98,
+      64,
+      98,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 48474,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-11-03.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      658,
+      378,
+      897,
+      657
+    ],
+    "margins": [
+      91,
+      64,
+      92,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49518,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-11-04.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      961,
+      380,
+      1199,
+      657
+    ],
+    "margins": [
+      91,
+      64,
+      91,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49187,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-11-05.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      1285,
+      378,
+      1505,
+      658
+    ],
+    "margins": [
+      105,
+      64,
+      105,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 47979,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-12-01.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      42,
+      715,
+      289,
+      993
+    ],
+    "margins": [
+      85,
+      64,
+      86,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 50156,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-12-02.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      350,
+      715,
+      610,
+      992
+    ],
+    "margins": [
+      76,
+      64,
+      76,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 51196,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-12-03.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      662,
+      713,
+      898,
+      990
+    ],
+    "margins": [
+      92,
+      64,
+      93,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49079,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-12-04.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      976,
+      714,
+      1204,
+      990
+    ],
+    "margins": [
+      97,
+      64,
+      98,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 48291,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  },
+  {
+    "image": "fortune-12-05.png",
+    "source": "sheet-04.png",
+    "sourceBounds": [
+      1269,
+      714,
+      1515,
+      990
+    ],
+    "margins": [
+      85,
+      64,
+      85,
+      64
+    ],
+    "components": 1,
+    "transparentBackground": true,
+    "sourceEdgeContact": false,
+    "sourceOpaquePixelsRetained": 49663,
+    "isolatedSmallComponentsDiscarded": 1,
+    "resizeFragmentsDiscarded": 0
+  }
+]

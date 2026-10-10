@@ -13,12 +13,12 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=sim-v5" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
-    <script src="guide.js" defer></script>
+    <script src="guide.js?v=vscode-sim-v5" defer></script>
     <script src="fortune-embed.js" defer></script>
   </head>
   <body>
@@ -298,9 +298,9 @@
       <section id="build">
         <div class="wrap">
           <p class="eyebrow">05 / APIを作る実際</p>
-          <h2>使うのは1クリック。<br />作るには、準備がいる。</h2>
+          <h2>APIの作り方</h2>
           <p>
-            まずは制作の流れを見てください。<strong>今、すべてを理解したりインストールしたりする必要はありません。</strong>「考えることがいくつもある」と感じられれば、この段階の目的は達成です。
+            まずは制作の流れを見てください。今、すべてを理解したりインストールしたりする必要はありません。「考えることがいくつもある」と感じられれば、この段階の目的は達成です。<br />ここではnode.jsを使ったローカルサーバーAPIの作り方を見ていきます。
           </p>
           <ol class="build-steps">
             <li>
@@ -374,6 +374,46 @@ app.listen(3000, () =&gt; console.log('http://localhost:3000/api/hello'));</pre>
                 <small
                   >サーバーを止めれば接続できなくなります。ファイルが存在するだけでは、APIは応答しません。この例は自分のPCだけで接続できる設定で、インターネットへは公開しません。</small
                 >
+              </div>
+            </li>
+            <li>
+              <span>05</span>
+              <div>
+                <h3>Node.js対応の公開先へデプロイする</h3>
+                <p>
+                  <code>localhost</code>は自分のPCだけで使える住所です。Webアプリとして公開するには、Node.jsを起動し続けられる公開先が必要です。ここでは例として、RenderのWeb ServiceへGitHubのリポジトリを接続します。
+                </p>
+                <p>
+                  まず<code>server.js</code>のポート番号を、公開先が渡す<code>PORT</code>にも対応させます。
+                </p>
+                <pre>const port = process.env.PORT || 3000;
+app.listen(port, '0.0.0.0', () =&gt; console.log('APIを起動しました'));</pre>
+                <ol class="instructions">
+                  <li>作業フォルダーをGitHubのリポジトリへ保存する。</li>
+                  <li>Renderで「New → Web Service」を選び、リポジトリを接続する。</li>
+                  <li>Build Commandに<code>npm install</code>、Start Commandに<code>npm start</code>（または<code>node server.js</code>）を設定する。</li>
+                  <li>デプロイ完了後、表示された公開URLの末尾に<code>/api/hello</code>を付け、JSONが返ることを確認する。</li>
+                </ol>
+                <p>
+                  Renderでは、GitHubに保存した今回のNode.js／Express環境を、ほぼそのままWeb Serviceとして動かせます。ただし無料のWeb Serviceは15分アクセスがないと停止し、次のアクセスでは起動待ちが発生します。教材や個人の試作には便利ですが、常にすぐ応答してほしい本番サービスには向きません。
+                </p>
+                <h4>公開先はRenderだけではありません</h4>
+                <p>「今あるExpressをそのまま動かしたいか」「サーバーレス向けに書き換えてよいか」で選びます。</p>
+                <div class="deploy-table-wrap" role="region" aria-label="Node.jsアプリの公開先の比較" tabindex="0">
+                  <table class="deploy-table">
+                    <thead>
+                      <tr><th>公開先</th><th>個人の無料範囲</th><th>Expressの扱い</th><th>はじめの判断</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Render</th><td>可能（制限あり）</td><td>ほぼそのまま</td><td>今回のような初めてのExpress公開に向く。無料枠は休止・起動待ちあり。</td></tr>
+                      <tr><th>Vercel</th><td>可能（個人・非商用）</td><td>Functions向けに構成する</td><td>フロント画面と小さなAPIを一緒に公開したいとき。</td></tr>
+                      <tr><th>Cloudflare Workers</th><td>可能（制限あり）</td><td>Workers向けに書き換える</td><td>小さく高速なAPI向け。Node.jsサーバーを常駐させる方式とは異なる。</td></tr>
+                      <tr><th>Firebase</th><td>無料利用枠はあるが、FunctionsはBlaze課金プラン登録が必要</td><td>Cloud Functions向けに構成する</td><td>Firestore・認証などFirebaseの機能も使うアプリ向け。</td></tr>
+                      <tr><th>VPS</th><td>通常は有料</td><td>そのまま動かせる</td><td>自由度は高いが、OS更新・HTTPS・セキュリティ対応も自分で行う。</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <small>公開先の設定・無料枠・料金体系は変わることがあります。実際に作成・公開する前に、公式の現在の画面と条件を確認してください。</small>
               </div>
             </li>
           </ol>
@@ -472,6 +512,25 @@ GET /api/hello に接続すると、
               >
             </li>
           </ul>
+          <p>RenderのNode.js公開手順を確認：2026年10月10日</p>
+          <ul>
+            <li>
+              <a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener noreferrer">Render：Node.js／Expressアプリを公開する ↗</a>
+            </li>
+            <li>
+              <a href="https://render.com/docs/web-services" target="_blank" rel="noopener noreferrer">Render：Web Serviceの公開ポートとURL ↗</a>
+            </li>
+            <li>
+              <a href="https://render.com/docs/free" target="_blank" rel="noopener noreferrer">Render：無料Web Serviceの休止・利用制限 ↗</a>
+            </li>
+          </ul>
+          <p>ほかの公開先の条件を確認：2026年10月10日</p>
+          <ul>
+            <li><a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener noreferrer">Vercel：Hobbyプラン（個人・非商用）↗</a></li>
+            <li><a href="https://vercel.com/docs/functions/runtimes/node-js" target="_blank" rel="noopener noreferrer">Vercel：Node.js Functions ↗</a></li>
+            <li><a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare：Workers Freeの利用枠 ↗</a></li>
+            <li><a href="https://firebase.google.com/docs/functions/quotas" target="_blank" rel="noopener noreferrer">Firebase：Cloud FunctionsとBlazeプラン ↗</a></li>
+          </ul>
         </div>
       </section>
     </main>
@@ -523,20 +582,67 @@ GET /api/hello に接続すると、
       </div>
       <div class="lab-content">
         <p class="note">
-          学習用の再現です。実際のインストール、ファイル作成、サーバー起動、通信は行いません。
+          学習用のVS Code風画面です。実際のインストール、ファイル作成、サーバー起動、通信は行いません。
         </p>
         <p id="lab-progress">1 / 4</p>
         <h3 id="lab-task"></h3>
-        <div class="lab-screen">
-          <span class="badge">SIMULATOR</span>
-          <pre id="lab-screen"></pre>
-          <button id="lab-action" type="button" class="button guided"></button>
-          <p class="guide-label">赤枠のボタンを押してください</p>
+        <div id="node-download-sim" class="node-download-sim" aria-label="Node.jsダウンロードページの学習用再現">
+          <div class="node-download-sim__bar">
+            <strong><span aria-hidden="true">⬡</span> node<span>.js</span></strong>
+            <span>学ぶ</span><span>はじめに</span><b>ダウンロード</b><span>ドキュメント</span>
+          </div>
+          <div class="node-download-sim__body">
+            <p class="node-download-sim__eyebrow">学習用の再現画面・実際のサイトやダウンロードには接続しません</p>
+            <h4>Node.js<sup>®</sup>をダウンロードする</h4>
+            <div class="node-download-sim__choices" aria-label="ダウンロード設定の再現">
+              <span>▣ Windows</span><span>v24 LTS</span><span>npm を含む</span>
+            </div>
+            <div class="node-download-sim__notice">補足　長期サポート版（LTS）を選ぶと、初めてでも手順を追いやすくなります。</div>
+            <p>Windows用のインストーラーを選び、ダウンロードしてセットアップする流れを体験します。</p>
+            <a class="node-download-sim__official-link" href="https://nodejs.org/ja/download" target="_blank" rel="noopener noreferrer">実際にインストールするときの公式ダウンロードページ ↗<span>https://nodejs.org/ja/download</span></a>
+            <button id="node-download-action" type="button" class="node-download-sim__download">⇩　Windows インストーラー (.msi) をダウンロード</button>
+            <p class="node-download-sim__caption">赤枠のボタンを押してください</p>
+          </div>
         </div>
+        <div class="vscode-sim" aria-label="VS Code風のAPI作成シミュレーター">
+          <div class="vscode-sim__titlebar">
+            <span aria-hidden="true">⌘</span><strong>API PRACTICE</strong><span>sample-api</span>
+          </div>
+          <div class="vscode-sim__workspace">
+            <aside class="vscode-sim__explorer" aria-label="フォルダ階層のナビゲータペイン">
+              <p>EXPLORER</p>
+              <strong>⌄ SAMPLE-API</strong>
+              <ul id="lab-file-tree"></ul>
+              <small>フォルダ階層のナビゲータペイン</small>
+            </aside>
+            <section class="vscode-sim__editor" aria-label="個別ファイルのコードを編集するコードペイン">
+              <div class="vscode-sim__tabs"><span class="is-active" id="lab-tab">server.js</span></div>
+              <div class="vscode-sim__breadcrumb">sample-api &gt; <span id="lab-breadcrumb">server.js</span></div>
+              <pre id="lab-code" aria-label="コード表示"></pre>
+              <small>個別ファイルのコード自体を編集するコードペイン</small>
+            </section>
+            <section class="vscode-sim__terminal" aria-label="コマンドを打つターミナルペイン">
+              <div class="vscode-sim__panel-title"><span>TERMINAL</span><span>pwsh</span></div>
+              <pre id="lab-terminal" aria-live="polite"></pre>
+              <small>コマンドを打つターミナルペイン</small>
+            </section>
+          </div>
+        </div>
+        <button id="lab-action" type="button" class="button guided"></button>
+        <p class="guide-label">赤枠のボタンを押してください</p>
         <p id="lab-explanation" role="status"></p>
         <button id="reset-lab" type="button" class="button secondary">
           最初から練習する
         </button>
+        <div id="lab-loader" class="lab-loader" hidden role="status" aria-live="assertive" aria-label="変更を反映しています">
+          <div class="lab-loader__card">
+            <span class="lab-loader__mark" aria-hidden="true">⬡</span>
+            <h3 id="lab-loader-title">変更を反映しています…</h3>
+            <p id="lab-loader-detail">次の画面を準備しています</p>
+            <div class="lab-loader__track" aria-hidden="true"><span id="lab-loader-bar"></span></div>
+            <small id="lab-loader-percent">0%</small>
+          </div>
+        </div>
       </div>
     </dialog>
   </body>
