@@ -17,6 +17,20 @@
     }
   });
 
+  // 依頼文の記入欄: 書いた内容を依頼文へ差し込む。空欄の項目は「（おまかせ）」のままにする
+  document.querySelectorAll('[data-fill-for]').forEach((input) => {
+    const slot = document.querySelector(`#ai-prompt [data-fill="${input.dataset.fillFor}"]`);
+    const sync = () => {
+      const value = input.value.replace(/\s+/g, ' ').trim();
+      slot.textContent = value || '（おまかせ）';
+      slot.classList.toggle('is-filled', Boolean(value));
+      $('copy-status').textContent = '';
+    };
+    input.addEventListener('input', sync);
+    sync();
+  });
+  $('prompt-form').addEventListener('submit', (event) => event.preventDefault());
+
   /* =====================================================================
      APIづくりシミュレーター（学習用の再現）
      実際のダウンロード・インストール・ファイル操作・コマンド実行・通信・アカウント操作は行わない。
@@ -512,10 +526,13 @@ app.listen(port, '0.0.0.0', () => {
       if (!done && n + 1 === ch) button.setAttribute('aria-current', 'step');
       else button.removeAttribute('aria-current');
     });
+    const about = (!done && step.about) || [];
+    $('lab-about').hidden = !about.length;
+    $('lab-about-list').innerHTML = about.map(([term, text]) => `<div><dt>${esc(term)}</dt><dd>${esc(text)}</dd></div>`).join('');
     if (done) {
       $('lab-progress').textContent = `STEP ${chapters.length} / ${chapters.length} 完了`;
       $('lab-task').textContent = 'ローカルから公開まで、ひととおり体験しました！';
-      $('lab-hint').textContent = '上の番号から、練習したいところへ戻れます。実際に作るときは、同じ順番で一つずつ進めましょう。';
+      $('lab-hint').textContent = '上の番号から、練習したいところへ戻れます。実際に作るときは同じ順番で進めますが、本物の画面は見た目や文言がこの練習と違うところがあります。表示をよく読みながら、一つずつ進めましょう。';
     } else {
       const inChapter = steps.filter((x) => x.ch === step.ch);
       $('lab-progress').textContent = `STEP ${step.ch} / ${chapters.length}　操作 ${inChapter.indexOf(step) + 1} / ${inChapter.length}`;
@@ -659,38 +676,43 @@ app.listen(port, '0.0.0.0', () => {
     await f.wait(160);
   };
 
-  const command = (ch, hint, text, output, explain, after) => ({
-    ch, hint, act: 'term', label: `クリックで「${text}」を入力して実行`, explain,
+  const command = (ch, hint, text, output, explain, after, about) => ({
+    ch, hint, about, act: 'term', label: `クリックで「${text}」を入力して実行`, explain,
     run: async (s, f) => {
       await runCommand(s, f, text, output);
       if (after) await after(s, f);
     }
   });
 
-  const newFile = (ch, name, hint, explain) => ({
-    ch, hint, act: 'vs-new-file', label: `クリックで ${name} を作成`, explain,
+  const newFile = (ch, name, hint, explain, about) => ({
+    ch, hint, about, act: 'vs-new-file', label: `クリックで ${name} を作成`, explain,
     run: (s, f) => createFile(s, f, name)
   });
 
-  const writeCode = (ch, name, text, hint, label, explain) => ({
-    ch, hint, act: 'vs-editor', label, explain,
+  const writeCode = (ch, name, text, hint, label, explain, about) => ({
+    ch, hint, about, act: 'vs-editor', label, explain,
     run: (s, f) => typeCode(s, f, name, text)
   });
 
-  const save = (ch, explain) => ({
-    ch, hint: 'Ctrl + S で保存します。保存するまでは、ファイルの中身は変わっていません。', act: 'key-save', label: 'Ctrl + S で保存', explain,
+  const save = (ch, explain, about) => ({
+    ch, hint: 'Ctrl + S で保存します。保存するまでは、ファイルの中身は変わっていません。', about, act: 'key-save', label: 'Ctrl + S で保存', explain,
     run: saveFile
   });
 
   /* ---------- ステップ定義（1要素 = 1クリックぶん） ----------
      ch: 章(1-8) / hint: 押す前の案内 / act: 押す場所(data-act) / label: 赤枠に添える白文字
+     about: ことばメモ。[用語, 説明] の配列（省略可）。これから使う道具やコマンドが何をするものかを添える
      run(s, f): 状態 s を変える。f.wait / f.type / f.paint / f.key が変化を再生する。 / explain: 押した後の説明 */
   const steps = [
     /* 1. Node.js */
     {
       ch: 1, act: 'node-download', label: 'ここを押してダウンロード',
       hint: 'Node.js 公式サイトのダウンロードページです。Windows 用インストーラーのボタンを押して、ダウンロードを始めます。',
-      explain: `インストーラー（${MSI}）が保存されました。まだインストールはされていません。`,
+      about: [
+        ['Node.js', 'JavaScript を、ブラウザーの外（自分の PC やサーバー）で動かすための土台です。これから作る API サーバーは、この上で動きます。'],
+        ['LTS', '長期サポート版のことです。安定しているので、迷ったらこの版を選びます。']
+      ],
+      explain: `インストーラー（${MSI}）が保存されました。まだ保存しただけで、インストールはこれからです。`,
       run: async (s, f) => {
         const b = s.br;
         b.dl = { pct: 0, done: false };
@@ -708,22 +730,43 @@ app.listen(port, '0.0.0.0', () => {
     {
       ch: 1, act: 'open-msi', label: 'ファイルを開く',
       hint: 'ブラウザーのダウンロード一覧から、保存されたファイルを開きます。',
+      about: [['インストーラー（.msi）', 'ソフトを PC に入れるためのファイルです。開くと、案内に沿って進めるセットアップ画面（ウィザード）が始まります。']],
       explain: 'セットアップ ウィザード（インストールの案内役）が起動しました。画面は英語ですが、基本は Next で進めます。',
       run: async (s, f) => {
         s.br.dlOpen = false;
         await switchApp('installer')(s, f);
       }
     },
-    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'Welcome 画面です。Next を押して次へ進みます。', explain: '使用許諾（ライセンス）の確認画面になりました。', run: insNext('license') },
+    {
+      ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'Welcome（ようこそ）画面です。Next を押して次へ進みます。',
+      about: [['セットアップ ウィザード', '画面の案内に順番に答えていくと、インストールが終わるしくみです。基本は初期設定のまま Next で進めます。']],
+      explain: '使用許諾（ライセンス）の確認画面になりました。', run: insNext('license')
+    },
     {
       ch: 1, act: 'ins-accept', label: '同意にチェック', hint: '内容を確認して、「I accept the terms…（同意します）」にチェックを入れます。',
+      about: [['ライセンス（使用許諾）', 'ソフトを使うときの約束ごとです。Node.js は無料で使えるオープンソースで、同意すると次へ進めます。']],
       explain: 'チェックを入れると、Next が押せるようになります。',
       run: async (s, f) => { s.ins.accepted = true; f.paint('lab-ins-body'); await f.wait(120); }
     },
-    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'Next を押して進みます。', explain: 'インストール先の確認です。通常は変更しません。', run: insNext('dest') },
-    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'インストール先（C:\\Program Files\\nodejs\\）はそのままで Next。', explain: '入れる機能の一覧です。npm（パッケージ管理）と PATH の設定も一緒に入ります。', run: insNext('custom') },
-    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: '機能の一覧もそのままで Next。「npm package manager」と「Add to PATH」が含まれていることだけ見ておきましょう。', explain: '追加ツールの画面です。今回の API 作りには必要ありません。', run: insNext('tools') },
-    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'チェックは入れずに Next。', explain: 'インストールの準備ができました。', run: insNext('ready') },
+    { ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: '同意できたので、Next を押して進みます。', explain: 'インストール先の確認です。通常は変更しません。', run: insNext('dest') },
+    {
+      ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'インストール先（C:\\Program Files\\nodejs\\）はそのままで Next。',
+      about: [['インストール先', 'Node.js 本体を置く場所です。変える理由がなければ、初期設定のままにします。']],
+      explain: '入れる機能の一覧です。npm（パッケージ管理）と PATH の設定も一緒に入ります。', run: insNext('custom')
+    },
+    {
+      ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: '機能の一覧もそのままで Next。「npm package manager」と「Add to PATH」が含まれていることだけ見ておきましょう。',
+      about: [
+        ['npm', 'Node.js と一緒に入る、部品（パッケージ）を追加・管理する道具です。あとで Express を入れるときに使います。'],
+        ['Add to PATH', 'ターミナルのどのフォルダーからでも、node や npm と打てば動くようにする設定です。']
+      ],
+      explain: '追加ツールの画面です。今回の API 作りには必要ありません。', run: insNext('tools')
+    },
+    {
+      ch: 1, act: 'ins-next', label: 'Next（次へ）', hint: 'チェックは入れずに Next。',
+      about: [['追加ツール（Native Modules）', 'C++ などで書かれた特殊な部品を組み立てるためのツールです。今回の API では使わないので、入れません。']],
+      explain: 'インストールの準備ができました。', run: insNext('ready')
+    },
     {
       ch: 1, act: 'ins-install', label: 'Install（インストール）', hint: 'Install を押して、インストールを始めます。',
       explain: 'Windows が「このアプリに変更を許可するか」を確認しています。',
@@ -731,6 +774,7 @@ app.listen(port, '0.0.0.0', () => {
     },
     {
       ch: 1, act: 'uac-yes', label: '発行元を確認して「はい」', hint: '発行元が OpenJS Foundation（Node.js の運営元）であることを確認して、「はい」を押します。',
+      about: [['ユーザー アカウント制御', 'PC の設定を変えるソフトを動かす前に、Windows が本人に確認するしくみです。発行元が正しいかを見てから許可します。']],
       explain: 'Node.js と npm がインストールされました。',
       run: async (s, f) => {
         const i = s.ins;
@@ -759,14 +803,20 @@ app.listen(port, '0.0.0.0', () => {
     },
 
     /* 2. フォルダーを紐づける */
-    { ch: 2, act: 'task-vscode', label: 'VS Code を起動', hint: '画面下のタスク バーから、VS Code を起動します。', explain: 'VS Code が開きました。まだフォルダーを開いていないので、左のエクスプローラーは空です。', run: switchApp('vscode') },
+    {
+      ch: 2, act: 'task-vscode', label: 'VS Code を起動', hint: '画面下のタスク バーから、VS Code を起動します。',
+      about: [['VS Code', 'コードを書くためのエディターです。ファイルの作成・編集と、コマンドを打つターミナルを、1 つの画面で扱えます。']],
+      explain: 'VS Code が開きました。まだフォルダーを開いていないので、左のエクスプローラーは空です。', run: switchApp('vscode')
+    },
     {
       ch: 2, act: 'vs-open-folder', label: 'フォルダーを開く', hint: 'エクスプローラーの「フォルダーを開く」を押します。',
+      about: [['フォルダーを開く', 'VS Code に「このフォルダーの中で作業する」と伝える操作です。1 つの API（プロジェクト）ごとに、専用のフォルダーを 1 つ用意します。']],
       explain: 'Windows のフォルダー選択画面が開きました。API 用のフォルダーを、デスクトップに新しく作ります。',
       run: async (s, f) => { s.vs.picker = { name: null, done: false }; f.paint('lab-vs-overlay'); await f.wait(200); }
     },
     {
       ch: 2, act: 'pk-new', label: 'クリックで sample-api を作成', hint: '「新しいフォルダー」を押して、sample-api という名前を付けます。',
+      about: [['フォルダー名', '半角の英小文字・数字・ハイフンで付けます。日本語や空白を入れると、コマンドや公開先でつまずきやすくなります。']],
       explain: 'デスクトップに sample-api フォルダーができ、選択された状態になりました。',
       run: async (s, f) => {
         const p = s.vs.picker;
@@ -787,33 +837,45 @@ app.listen(port, '0.0.0.0', () => {
     },
     {
       ch: 2, act: 'vs-trust', label: '自分のフォルダーなので「はい」', hint: '自分で作ったフォルダーなので、「はい、作成者を信頼します」を押します。',
+      about: [['作成者を信頼', 'フォルダー内のプログラムを VS Code が動かしてよいかの確認です。出どころの分からないフォルダーでは、信頼せずに中身を確かめます。']],
       explain: 'VS Code と sample-api フォルダーがつながりました。ここで作るファイルは、すべてこのフォルダーに保存されます。',
       run: async (s, f) => { s.vs.trust = false; s.vs.folder = true; f.render(); await f.wait(200); }
     },
 
     /* 3. ファイルを作る */
-    newFile(3, 'data.json', 'エクスプローラーの「新しいファイル...」アイコンを押して、data.json を作ります。', 'data.json ができ、右の編集画面で開きました。中身はまだ空です。'),
-    writeCode(3, 'data.json', dataJson, '編集画面をクリックして、API が返すデータ（JSON）を書きます。', 'クリックで JSON を入力', 'JSON を書きました。タブの ● は「まだ保存していない」印です。'),
-    save(3, 'data.json を保存しました。● が消えています。'),
-    newFile(3, 'server.js', '同じように、サーバーのプログラムを書く server.js を作ります。', 'server.js ができました。ここにサーバーのプログラムを書きます。'),
-    writeCode(3, 'server.js', serverCode, '編集画面をクリックして、サーバーのコードを書きます。', 'クリックでコードを入力', 'お願い（GET /api/hello）を受け取り、data.json の中身を JSON で返すプログラムです。'),
+    newFile(3, 'data.json', 'エクスプローラーの「新しいファイル...」アイコンを押して、data.json を作ります。', 'data.json ができ、右の編集画面で開きました。中身はまだ空です。',
+      [['data.json', 'API が返すデータを入れておくファイルです。プログラムとデータを分けておくと、あとでデータだけを直せます。']]),
+    writeCode(3, 'data.json', dataJson, '編集画面をクリックして、API が返すデータ（JSON）を書きます。', 'クリックで JSON を入力', 'JSON を書きました。タブの ● は「まだ保存していない」印です。',
+      [['JSON', 'データを「"名前": 値」の組で書く形式です。プログラム同士がデータを受け渡すときの、共通の書き方です。']]),
+    save(3, 'data.json を保存しました。● が消えています。',
+      [['保存（Ctrl + S）', '編集画面の内容を、ファイルに書き込む操作です。タブの ● は「まだ保存していない変更がある」印です。']]),
+    newFile(3, 'server.js', '同じように、サーバーのプログラムを書く server.js を作ります。', 'server.js ができました。ここにサーバーのプログラムを書きます。',
+      [['server.js', 'サーバーの動きを書くプログラムです。「どの URL にお願いが来たら、何を返すか」をここに書きます。']]),
+    writeCode(3, 'server.js', serverCode, '編集画面をクリックして、サーバーのコードを書きます。', 'クリックでコードを入力', 'お願い（GET /api/hello）を受け取り、data.json の中身を JSON で返すプログラムです。',
+      [
+        ['require', '別のファイルや部品を読み込む命令です。ここでは Express と data.json を読み込みます。'],
+        ['app.get と app.listen', 'app.get は「/api/hello にお願いが来たら data を返す」窓口づくり、app.listen は待ち受けを始める命令です。']
+      ]),
     save(3, '2つのファイルがそろいました。ただし express はまだ入っていないので、このままでは動きません。'),
 
     /* 4. npm init と Express */
     {
-      ch: 4, act: 'vs-menu-terminal', label: 'ターミナル メニュー', hint: '上のメニューから「ターミナル」を開きます。', explain: 'ターミナルに関するメニューが開きました。',
+      ch: 4, act: 'vs-menu-terminal', label: 'ターミナル メニュー', hint: '上のメニューから「ターミナル」を開きます。',
+      about: [['ターミナル', '文字のコマンドで PC に指示を出す画面です。Node.js や npm は、ここにコマンドを打って使います。']],
+      explain: 'ターミナルに関するメニューが開きました。',
       run: async (s, f) => { s.vs.menu = 'terminal'; f.paint('lab-vs-menu'); await f.wait(120); }
     },
     {
       ch: 4, act: 'vs-new-terminal', label: '新しいターミナル', hint: '「新しいターミナル」を選びます。',
-      explain: '画面の下にターミナルが開きました。場所（PS のあとの文字）は sample-api フォルダーになっています。',
+      explain: '画面の下にターミナルが開きました。「PS C:\\…\\sample-api>」は入力待ちの表示で、いま sample-api フォルダーにいることを表します。',
       run: async (s, f) => { s.vs.menu = ''; s.vs.term = { lines: [], input: '', running: false }; f.render(); await f.wait(200); }
     },
     command(4, 'まず、Node.js が使えるかを確認します。ターミナルをクリックすると、コマンドの入力を再現します。', 'node --version', [[NODE_V, 240]],
-      `バージョン（${NODE_V}）が表示されれば、Node.js は正しくインストールされています。`),
+      `バージョン（${NODE_V}）が表示されれば、Node.js は正しくインストールされています。`, null,
+      [['node --version', 'インストールされている Node.js のバージョンを表示するコマンドです。番号が出れば、Node.js を使える状態です。']]),
     command(4, 'npm init -y で、プロジェクトの説明書（package.json）を作ります。', 'npm init -y',
       [[`Wrote to ${HOME}\\package.json:`, 420], ['', 60], ...pkgJson(false).split('\n').map((l) => [l, 26]), ['', 60]],
-      'package.json が作られ、エクスプローラーに増えました。server.js があるので、起動用の start も自動で入っています。',
+      'package.json が作られ、エクスプローラーに増えました。server.js があるので、起動用の start（node server.js）も自動で入っています。',
       async (s, f) => {
         const v = s.vs;
         addFile(v, 'package.json');
@@ -821,11 +883,19 @@ app.listen(port, '0.0.0.0', () => {
         v.flash = ['package.json'];
         f.paint('lab-vs-side');
         v.flash = [];
-      }),
+      },
+      [
+        ['npm init', 'このフォルダーを「npm で管理するプロジェクト」にするコマンドです。名前・バージョン・使う部品を記録する説明書（package.json）を作ります。'],
+        ['-y', '名前やバージョンなどの質問に、すべて初期値で答える指定です。付けないと、1 問ずつ聞かれます。']
+      ]),
     {
       ch: 4, act: 'term', label: 'クリックで「npm install express」を入力して実行',
-      hint: 'npm install express で、API を作りやすくする道具（Express）を追加します。',
-      explain: 'Express が node_modules フォルダーに入り、package.json の dependencies に記録されました。',
+      hint: 'npm install express で、API を作りやすくする部品（Express）を追加します。',
+      about: [
+        ['Express', 'Web サーバーや API を、短いコードで書けるようにする部品（フレームワーク）です。「この URL に来たら、これを返す」を数行で書けます。'],
+        ['npm install', 'インターネット上の npm の倉庫から部品を取ってきて、このプロジェクトに追加するコマンドです。']
+      ],
+      explain: 'Express と、Express が必要とする部品が node_modules フォルダーに入りました。package.json の dependencies にも「express を使う」と記録されています。',
       run: async (s, f) => {
         const v = s.vs;
         const t = v.term;
@@ -853,42 +923,58 @@ app.listen(port, '0.0.0.0', () => {
     /* 5. そのほかの npm コマンド */
     {
       ch: 5, act: 'tree-package.json', label: 'package.json を開く', hint: 'エクスプローラーで package.json を押して、中身を見てみましょう。',
+      about: [
+        ['package.json', 'プロジェクトの説明書です。名前、起動方法（scripts）、使っている部品（dependencies）が書かれています。'],
+        ['node_modules と package-lock.json', 'node_modules は部品の実物の置き場、package-lock.json は入れた部品の正確なバージョンの記録です。どちらも npm が自動で作ります。']
+      ],
       explain: 'dependencies に express、scripts に start（node server.js）が入っています。npm は、この説明書を見て動きます。',
       run: async (s, f) => { const v = s.vs; openTab(v, 'package.json'); v.mark = '"express"'; f.paint('lab-vs-side', 'lab-vs-editor', 'lab-vs-status'); await f.wait(300); }
     },
     command(5, 'npm list で、入っているパッケージを確認します。', 'npm list', [[`sample-api@1.0.0 ${HOME}`, 260], [`└── express@${EXPRESS_V}`, 80], ['', 40]],
-      'npm list は、このプロジェクトに入っているパッケージの確認です。'),
+      `express@${EXPRESS_V} が入っていることを確認できました。`, null,
+      [['npm list', 'このプロジェクトに入っている部品とバージョンを、一覧で表示するコマンドです。入れたはずの部品があるかを確かめられます。']]),
     command(5, 'npm run で、登録されている短縮コマンドの一覧を見ます。', 'npm run',
       [['Lifecycle scripts included in sample-api@1.0.0:', 260], ['  test', 60], ['    echo "Error: no test specified" && exit 1', 40], ['  start', 60], ['    node server.js', 40], ['', 40]],
-      'start が登録されています。npm start と打てば node server.js が実行されます。公開先でもこの start を使います。',
-      async (s, f) => { s.vs.mark = '"start"'; f.paint('lab-vs-editor'); }),
+      'start が登録されています。npm start と打てば node server.js が実行されます。公開先でも、この start を使って起動します。',
+      async (s, f) => { s.vs.mark = '"start"'; f.paint('lab-vs-editor'); },
+      [['npm run', 'package.json の scripts に登録した短縮コマンドを実行します。名前を付けずに打つと、登録されている一覧が表示されます。']]),
 
     /* 6. サーバーを起動 */
     command(6, 'node server.js で、サーバーを起動します。', 'node server.js', [['http://localhost:3000/api/hello', 520, 'is-link']],
       'サーバーが起動しました。ターミナルは次の入力を受け付けず、お願いを待ち続けています。これが正常な状態です。',
-      async (s, f) => { s.vs.term.running = true; s.vs.mark = ''; openTab(s.vs, 'server.js'); f.paint('lab-vs-panel', 'lab-vs-editor', 'lab-vs-side', 'lab-vs-status'); }),
+      async (s, f) => { s.vs.term.running = true; s.vs.mark = ''; openTab(s.vs, 'server.js'); f.paint('lab-vs-panel', 'lab-vs-editor', 'lab-vs-side', 'lab-vs-status'); },
+      [
+        ['node server.js', 'server.js を Node.js で実行するコマンドです。実行すると、お願いを待ち受けるサーバーになります。'],
+        ['ポート（3000）', '1 台の PC の中で、どのプログラム宛ての通信かを区別する番号です。']
+      ]),
 
     /* 7. 動作確認 */
-    { ch: 7, act: 'task-browser', label: 'ブラウザーに切り替え', hint: 'サーバーは動かしたまま、タスク バーからブラウザーに切り替えます。', explain: 'ブラウザーに切り替えました。VS Code では、サーバーが動き続けています。', run: switchApp('browser') },
+    {
+      ch: 7, act: 'task-browser', label: 'ブラウザーに切り替え', hint: 'サーバーは動かしたまま、タスク バーからブラウザーに切り替えます。',
+      about: [['動作の確認', 'API は「URL にお願いを送ると、データが返ってくる」しくみです。ブラウザーのアドレス バーに URL を入れるのが、いちばん手軽な確かめ方です。']],
+      explain: 'ブラウザーに切り替えました。VS Code では、サーバーが動き続けています。', run: switchApp('browser')
+    },
     {
       ch: 7, act: 'br-newtab', label: '新しいタブ', hint: '「+」で新しいタブを開きます。', explain: '新しいタブが開きました。',
       run: async (s, f) => { const b = s.br; b.tabs.push({ title: '新しいタブ', url: '', page: 'blank' }); b.active = b.tabs.length - 1; f.render(); await f.wait(160); }
     },
     {
       ch: 7, act: 'br-address', label: 'クリックで URL を入力', hint: 'アドレス バーに localhost:3000/api/hello と入力して、Enter を押します。',
-      explain: 'サーバーから JSON が返ってきました。これが、自分の PC の中で動いている API です。',
+      about: [['localhost', '「いま使っているこの PC 自身」を指す名前です。:3000 はポート番号、/api/hello は server.js で作った窓口です。']],
+      explain: 'サーバーから JSON が返ってきました。これが、自分の PC の中で動いている API です。ほかの端末からは、まだ開けません。',
       run: (s, f) => navigate(s, f, 'localhost:3000/api/hello', { url: 'localhost:3000/api/hello', page: 'json', title: 'localhost:3000/api/hello' })
     },
     { ch: 7, act: 'task-vscode', label: 'VS Code に戻る', hint: 'VS Code に戻って、サーバーを止めてみます。', explain: 'VS Code に戻りました。ターミナルではサーバーが動いたままです。', run: switchApp('vscode') },
     {
       ch: 7, act: 'key-ctrlc', label: 'Ctrl + C で停止', hint: 'ターミナルで Ctrl + C を押すと、サーバーが止まります。',
+      about: [['Ctrl + C', 'ターミナルで動いているプログラムを止めるキー操作です。サーバーは、止めるまで動き続けます。']],
       explain: 'サーバーが止まり、ターミナルに入力待ちの行が戻りました。',
       run: async (s, f) => { const t = s.vs.term; await f.key('Ctrl + C'); t.lines.push({ k: 'out', text: '^C' }); t.running = false; f.paint('lab-vs-panel'); await f.wait(200); }
     },
     { ch: 7, act: 'task-browser', label: 'ブラウザーに切り替え', hint: 'もう一度ブラウザーに切り替えます。', explain: 'さきほど JSON が表示されたタブです。', run: switchApp('browser') },
     {
-      ch: 7, act: 'br-reload', label: '再読み込み', hint: '同じ URL を再読み込みしてみます。',
-      explain: 'サーバーを止めると、同じ URL でも応答は返りません。ファイルがあるだけでは API は動かない、ということです。',
+      ch: 7, act: 'br-reload', label: '再読み込み', hint: '同じ URL を再読み込みして、もう一度お願いを送ってみます。',
+      explain: '「接続が拒否されました」は、その住所で待ち受けているプログラムがない、という意味です。ファイルがあるだけでは API は動かず、サーバーが動いている間だけ応答できます。',
       run: async (s, f) => {
         const tab = s.br.tabs[s.br.active];
         tab.page = 'loading';
@@ -900,21 +986,42 @@ app.listen(port, '0.0.0.0', () => {
     },
 
     /* 8. GitHub へ保存して Render で公開 */
-    { ch: 8, act: 'task-vscode', label: 'VS Code に戻る', hint: '公開の準備をします。まず VS Code に戻ります。', explain: 'まず、コードを GitHub に保存します。', run: switchApp('vscode') },
-    newFile(8, '.gitignore', 'node_modules は GitHub に送らないので、除外リスト（.gitignore）を作ります。', '.gitignore ができました。'),
-    writeCode(8, '.gitignore', 'node_modules/', '編集画面をクリックして、除外するフォルダー名を書きます。', 'クリックで node_modules/ を入力', 'node_modules は npm install で作り直せるので、保存の対象から外します。'),
+    {
+      ch: 8, act: 'task-vscode', label: 'VS Code に戻る', hint: '公開の準備をします。まず VS Code に戻ります。',
+      about: [['公開の流れ', 'コードを GitHub に保存し、公開先（Render）が GitHub からコードを受け取って動かします。まずは GitHub へ保存する準備をします。']],
+      explain: 'まず、コードを GitHub に保存します。', run: switchApp('vscode')
+    },
+    newFile(8, '.gitignore', 'GitHub に送らないものを決める除外リスト（.gitignore）を作ります。', '.gitignore ができました。',
+      [['.gitignore', 'Git に「このファイルやフォルダーは記録しない」と伝える除外リストです。ここに書いたものは、GitHub へ送られません。']]),
+    writeCode(8, '.gitignore', 'node_modules/', '編集画面をクリックして、除外するフォルダー名（node_modules/）を書きます。', 'クリックで node_modules/ を入力',
+      'node_modules を保存の対象から外しました。パスワードなどの秘密を書いたファイルも、同じように .gitignore に入れて守ります。',
+      [['node_modules を外す理由', '部品の実物が入っていて、ファイル数がとても多いフォルダーです。package.json があれば npm install で同じものを入れ直せるので、記録しません。']]),
     save(8, '.gitignore を保存しました。'),
     command(8, 'git init で、このフォルダーを Git の管理下に置きます。', 'git init', [['Initialized empty Git repository in C:/Users/you/Desktop/sample-api/.git/', 300]],
       '履歴を記録する準備ができました。左下に、ブランチ名（main）が表示されています。',
-      async (s, f) => { s.vs.git = true; f.paint('lab-vs-status'); }),
-    command(8, 'git add . で、保存したいファイルを選びます。', 'git add .', [], '.gitignore に書いた node_modules を除いて、ファイルが選ばれました。'),
+      async (s, f) => { s.vs.git = true; f.paint('lab-vs-status'); },
+      [
+        ['Git', 'ファイルの変更を「履歴」として記録する道具です。いつ・何を変えたかを残し、前の状態に戻せます。'],
+        ['git init', 'このフォルダーで Git の記録を始めるコマンドです。記録用の隠しフォルダー（.git）が作られます。']
+      ]),
+    command(8, 'git add . で、保存したいファイルを選びます。', 'git add .', [], '.gitignore に書いた node_modules を除いて、ファイルが選ばれました。', null,
+      [['git add .', '次の履歴に入れるファイルを選ぶコマンドです。「.」は「このフォルダーの中すべて」を表します。']]),
     command(8, 'git commit で、PC の中に履歴として保存します。', 'git commit -m "初回作成"',
       [['[main (root-commit) 3f2a1c9] 初回作成', 320], [' 5 files changed, 874 insertions(+)', 60], [' create mode 100644 .gitignore', 30], [' create mode 100644 data.json', 30], [' create mode 100644 package-lock.json', 30], [' create mode 100644 package.json', 30], [' create mode 100644 server.js', 30]],
-      'PC の中に「初回作成」という履歴ができました。'),
+      'PC の中に「初回作成」という履歴ができました。まだ GitHub には送られていません。', null,
+      [['git commit', '選んだファイルの状態を、1 つの履歴として PC の中に保存します。-m のあとの文字は、何をしたかを残すメモです。']]),
     command(8, 'gh repo create で、GitHub に保管場所を作ってコードを送ります。質問には「既存のローカルリポジトリを push」「Private」「Yes」を選びます。', 'gh repo create',
       [['? What would you like to do? Push an existing local repository to GitHub', 420], ['? Path to local repository .', 220], ['? Repository name sample-api', 220], ['? Visibility Private', 220], ['✓ Created repository you/sample-api on GitHub', 520, 'is-ok'], ['  https://github.com/you/sample-api', 60], ['? Add a remote? Yes', 220], ['✓ Added remote https://github.com/you/sample-api.git', 260, 'is-ok'], ['? Would you like to push commits from the current branch to "origin"? Yes', 260], ['✓ Pushed commits to https://github.com/you/sample-api.git', 520, 'is-ok']],
-      'GitHub に sample-api リポジトリができ、コードが送られました。（実際には、先に gh auth login でのログインが必要です）'),
-    { ch: 8, act: 'task-browser', label: 'ブラウザーに切り替え', hint: 'ここからは公開先（Render）の画面です。ブラウザーに切り替えます。', explain: '新しいタブで Render を開きます。', run: switchApp('browser') },
+      'GitHub に sample-api リポジトリができ、コードが送られました。（実際には、先に gh auth login でのログインが必要です）', null,
+      [
+        ['GitHub', 'Git の履歴をインターネット上に保管できるサービスです。公開先の Render は、ここからコードを受け取ります。'],
+        ['gh repo create', 'GitHub 公式のコマンド（GitHub CLI）です。保管場所（リポジトリ）を作って、コードを送るところまで行います。']
+      ]),
+    {
+      ch: 8, act: 'task-browser', label: 'ブラウザーに切り替え', hint: 'ここからは公開先（Render）の画面です。ブラウザーに切り替えます。',
+      about: [['Render', 'プログラムを、インターネット上のサーバーで動かしてくれるサービスです。自分の PC を閉じても、API が動き続けるようになります。']],
+      explain: '新しいタブで Render を開きます。', run: switchApp('browser')
+    },
     {
       ch: 8, act: 'br-newtab', label: '新しいタブ', hint: '「+」で新しいタブを開きます。', explain: '新しいタブが開きました。',
       run: async (s, f) => { const b = s.br; b.tabs.push({ title: '新しいタブ', url: '', page: 'blank' }); b.active = b.tabs.length - 1; f.render(); await f.wait(160); }
@@ -929,28 +1036,39 @@ app.listen(port, '0.0.0.0', () => {
       run: async (s, f) => { s.rd.menu = true; f.paint('lab-br-content'); await f.wait(120); }
     },
     {
-      ch: 8, act: 'rd-webservice', label: 'Web Service', hint: '「Web Service」を選びます。', explain: 'Web Service は、Node.js のようなサーバーを動かし続けるための種類です。',
+      ch: 8, act: 'rd-webservice', label: 'Web Service', hint: '「Web Service」を選びます。',
+      about: [['Web Service', 'Node.js のようなサーバーのプログラムを、動かし続けるための種類です。HTML だけのサイトなら Static Site を選びます。']],
+      explain: '次に、どのコードを動かすかを選びます。',
       run: async (s, f) => { s.rd.menu = false; s.rd.page = 'connect'; f.paint('lab-br-content'); await f.wait(160); }
     },
     {
-      ch: 8, act: 'rd-repo', label: 'sample-api を選ぶ', hint: 'Git Provider の一覧から、さきほど送った sample-api を選びます。', explain: 'GitHub の sample-api とつながりました。設定フォームが開いています。',
+      ch: 8, act: 'rd-repo', label: 'sample-api を選ぶ', hint: 'Git Provider の一覧から、さきほど送った sample-api を選びます。',
+      about: [['リポジトリを選ぶ', '動かすコードの置き場所を指定します。つないでおくと、GitHub に新しいコードを送るたびに、Render が自動で作り直します。']],
+      explain: 'GitHub の sample-api とつながりました。設定フォームが開いています。',
       run: async (s, f) => { s.rd.page = 'form'; f.paint('lab-br-content'); await f.wait(160); }
     },
     {
-      ch: 8, act: 'rd-build', label: 'クリックで npm install を入力', hint: 'Build Command に npm install を入れます。', explain: 'Build Command は、公開先で最初に実行される準備のコマンドです。Express などがここで入ります。',
+      ch: 8, act: 'rd-build', label: 'クリックで npm install を入力', hint: 'Build Command に npm install を入れます。',
+      about: [['Build Command', '公開先で、起動の前に実行される準備のコマンドです。node_modules は GitHub に送っていないので、ここで npm install して部品を入れ直します。']],
+      explain: 'Build Command を設定しました。Express などの部品は、公開先でここから入ります。',
       run: async (s, f) => { const r = s.rd; r.build = ''; f.paint('lab-br-content'); await f.type((x) => { r.build = x; }, 'npm install', 50, 1, ['lab-br-content']); }
     },
     {
-      ch: 8, act: 'rd-start', label: 'クリックで npm start を入力', hint: 'Start Command に npm start を入れます。', explain: 'Start Command は、サーバーを起動するコマンドです。package.json の start（node server.js）が使われます。',
+      ch: 8, act: 'rd-start', label: 'クリックで npm start を入力', hint: 'Start Command に npm start を入れます。',
+      about: [['Start Command', 'サーバーを起動するコマンドです。npm start は、package.json の scripts にある start（node server.js）を実行します。']],
+      explain: 'Start Command を設定しました。準備（Build）と起動（Start）の両方がそろいました。',
       run: async (s, f) => { const r = s.rd; r.start = ''; f.paint('lab-br-content'); await f.type((x) => { r.start = x; }, 'npm start', 50, 1, ['lab-br-content']); }
     },
     {
-      ch: 8, act: 'rd-free', label: 'Free を選ぶ', hint: 'Instance Type は Free（無料）を選びます。', explain: '無料の Web Service は、15分アクセスがないと停止し、次のアクセスでは起動待ちが発生します。',
+      ch: 8, act: 'rd-free', label: 'Free を選ぶ', hint: 'Instance Type は Free（無料）を選びます。',
+      about: [['Instance Type', 'サーバーの性能と料金のプランです。練習や試作なら、無料の Free で始められます。']],
+      explain: '無料の Web Service は、15分アクセスがないと停止し、次のアクセスでは起動待ちが発生します。',
       run: async (s, f) => { s.rd.plan = 'free'; f.paint('lab-br-content'); await f.wait(120); }
     },
     {
       ch: 8, act: 'rd-create', label: 'Create Web Service', hint: '設定を確認して、「Create Web Service」を押します。',
-      explain: 'Render が GitHub からコードを取得し、npm install と npm start を実行しました。ポートは Render が渡す PORT（10000）が使われています。',
+      about: [['デプロイ', '書いたプログラムを公開先に配置して、動かすことです。コードの取得 → 準備（Build）→ 起動（Start）の順に進みます。']],
+      explain: 'Render が GitHub からコードを取得し、npm install と npm start を実行しました。ポートには、server.js の process.env.PORT が受け取った番号（10000）が使われています。',
       run: async (s, f) => {
         const r = s.rd;
         r.page = 'deploy';
@@ -979,6 +1097,7 @@ app.listen(port, '0.0.0.0', () => {
     },
     {
       ch: 8, act: 'rd-url', label: '公開 URL を開く', hint: '表示された公開 URL を押して、開いてみます。',
+      about: [['公開 URL', 'インターネット上の、このサーバーの住所です。localhost と違い、ほかの PC やスマホからも開けます。']],
       explain: 'Cannot GET / は故障ではありません。/ には窓口を作っていないためです。作った窓口は /api/hello です。',
       run: async (s, f) => {
         const b = s.br;
@@ -993,6 +1112,7 @@ app.listen(port, '0.0.0.0', () => {
     },
     {
       ch: 8, act: 'br-address', label: 'クリックで /api/hello を追加', hint: 'URL の末尾に /api/hello を付けて、Enter を押します。',
+      about: [['/api/hello', 'server.js の app.get で作った窓口（エンドポイント）です。URL の末尾に付けると、その窓口にお願いが届きます。']],
       explain: '公開先のサーバーから JSON が返りました。この URL なら、別の端末からも同じ結果を受け取れます。',
       run: (s, f) => navigate(s, f, '/api/hello', { url: `${PUBLIC_URL}/api/hello`, page: 'json', title: `${PUBLIC_HOST}/api/hello`, wait: 800 }, PUBLIC_HOST)
     }

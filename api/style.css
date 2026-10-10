@@ -240,6 +240,48 @@ select {
   color: var(--ink);
   background: var(--surface);
 }
+/* AIへの依頼文の記入欄 */
+.prompt-form {
+  display: grid;
+  gap: 0.3rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.prompt-form__free {
+  margin: 0 0 0.3rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: #e6f5df;
+  color: #2d5a2a;
+  font-size: 0.86rem;
+}
+.prompt-form label {
+  margin-top: 0.4rem;
+  font-size: 0.86rem;
+}
+.prompt-form input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #b9cbe2;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+.prompt-form input::placeholder {
+  color: #8d9bb1;
+}
+#ai-prompt [data-fill] {
+  color: #9fb4d6;
+}
+#ai-prompt [data-fill].is-filled {
+  color: #ffe08a;
+  font-weight: 700;
+}
 .endpoint {
   padding: 0.6rem;
   border: 1px solid var(--line);
@@ -635,6 +677,62 @@ dialog::backdrop {
   color: #2f4466;
   font-size: 0.9rem;
   line-height: 1.7;
+}
+.lab-notice p {
+  margin: 0;
+  color: inherit;
+}
+.lab-notice p + p {
+  margin-top: 0.45rem;
+}
+/* ことばメモ: これから使う道具やコマンドが「何をするものか」を短く添える */
+.lab-about {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.45rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #ddd5f7;
+  border-radius: 10px;
+  background: #f5f2ff;
+}
+.lab-about[hidden] {
+  display: none;
+}
+.lab-about__tag {
+  flex-shrink: 0;
+  margin: 0.15rem 0 0;
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+  background: #6552c4;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.lab-about dl {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 0.35rem 1.4rem;
+  min-width: 0;
+  margin: 0;
+  color: #3a3560;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+.lab-about dt {
+  display: inline;
+  color: #2c2466;
+  font-weight: 800;
+}
+.lab-about dt::after {
+  content: "：";
+}
+.lab-about dd {
+  display: inline;
+  margin: 0;
 }
 #lab-explanation {
   min-height: 3.1em;
@@ -2683,6 +2781,10 @@ button.vscode-sim__menuitem.is-open {
   }
   .lab-chapters .is-current span {
     display: inline;
+  }
+  .lab-about {
+    flex-direction: column;
+    gap: 0.3rem;
   }
   .lab-desktop {
     height: clamp(520px, 74dvh, 620px);

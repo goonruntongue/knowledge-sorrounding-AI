@@ -20,12 +20,12 @@
       integrity="sha384-fYT0C2iZQUIeBdvfHDIRYdeGKJ2qLWbg2I3uKLCpQMpJNhlnK9K0OUkJrRzKbLMM"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css?v=sim-v7" />
+    <link rel="stylesheet" href="style.css?v=sim-v8" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
-    <script src="guide.js?v=sim-v7" defer></script>
+    <script src="guide.js?v=sim-v8" defer></script>
     <script src="fortune-embed.js" defer></script>
     <script
       src="https://unpkg.com/scroll-hint@1.2.9/js/scroll-hint.min.js"
@@ -451,12 +451,26 @@ app.listen(port, '0.0.0.0', () =&gt; console.log('APIを起動しました'));</
           </p>
           <div class="two-columns">
             <div>
-              <h3>まずは、これを依頼してみよう。</h3>
+              <h3>作りたいAPIを書いて、依頼文を作ろう。</h3>
               <p>
-                利用するAIの権限や環境によって、実行できる作業は変わります。コードができたら実際に接続し、期待するJSONが返るか確認します。
+                APIを作って、Renderで公開するところまでをAIに伴走してもらう依頼文です。下の欄に書いた内容が、依頼文に入ります。
+              </p>
+              <form id="prompt-form" class="prompt-form" autocomplete="off">
+                <p class="prompt-form__free">
+                  <strong>思いつかなければ、空欄のままで大丈夫。</strong>その場合は、あいさつを返すサンプルのAPIを作る依頼になります。
+                </p>
+                <label for="pf-what">どんなAPIを作りたい？</label>
+                <input id="pf-what" type="text" maxlength="120" data-fill-for="what" placeholder="例：今日のおすすめ本を1冊返すAPI" />
+                <label for="pf-in">APIに送るもの（あれば）</label>
+                <input id="pf-in" type="text" maxlength="120" data-fill-for="in" placeholder="例：本のジャンル" />
+                <label for="pf-out">返してほしいもの</label>
+                <input id="pf-out" type="text" maxlength="120" data-fill-for="out" placeholder="例：タイトルとひとことコメント" />
+              </form>
+              <p>
+                インストールや公開など環境を変える作業は、内容を説明してもらってから進めましょう。GitHubやRenderのアカウント作成とログインは、自分の手で行います。APIキーやパスワードをAIに渡す必要はありません。
               </p>
               <p>
-                インストールや公開など環境を変える作業は、内容を説明してもらってから進めましょう。APIキーやパスワードは、この練習に必要ありません。
+                利用するAIの権限や環境によって、実行できる作業は変わります。
               </p>
               <a href="../steplock-prompt/index.html" class="text-link"
                 >ステップロック方式で一段ずつ進める →</a
@@ -464,23 +478,50 @@ app.listen(port, '0.0.0.0', () =&gt; console.log('APIを起動しました'));</
             </div>
             <div>
               <pre id="ai-prompt" tabindex="0">
-Node.jsで、ローカルだけで動く小さなWeb APIを作りたいです。
-私はプログラミング初心者です。一段ずつ進めてください。
+Node.js と Express で Web API を作り、Render で公開するところまで、
+となりで伴走するように手伝ってください。
+私はプログラミング初心者です。
 
-## 目的
-ブラウザから接続し、JSONが返るしくみを理解する。
-## 必須内容
+## 作りたいAPI
+・どんなAPIか：<span data-fill="what">（おまかせ）</span>
+・APIに送るもの：<span data-fill="in">（おまかせ）</span>
+・返してほしいもの：<span data-fill="out">（おまかせ）</span>
+※「（おまかせ）」の項目は、あなたが決めてください。
+　3つとも「（おまかせ）」なら、下のサンプルを作ってください。
+
+## サンプル（3つとも「（おまかせ）」のときに作るもの）
 GET /api/hello に接続すると、
 {"message":"こんにちは、API！"} を返す。
-存在しない窓口には404とJSONのエラーを返す。
-## 避けたいこと
-外部への公開、課金、APIキー、追加ライブラリ。
-インストール前には作業内容を説明する。
-## 完成の基準
-自分のPCで起動し、実際のJSONをブラウザで確認できる。
-起動・停止方法と、各手順の意味を説明する。
+存在しない窓口には、404 と JSON のエラーを返す。
 
-まずNode.jsが利用できるか確認するところから始めてください。</pre>
+## 進め方
+1. 最初に、作るものと全体の手順を短く示す。
+2. 1回の返信で進めるのは1ステップだけ。
+   私が「できた」と返したら、次へ進む。
+3. コマンドやコードには、何をするものかを一言添える。
+4. インストール、アカウント作成、公開など環境を変える作業は、
+   先に内容を説明して、私の了承を待つ。
+5. エラーが出たら、表示された文を私がそのまま貼る。
+   原因と直し方を、初心者向けに説明する。
+
+## 手順の範囲
+Node.js の確認 → フォルダー作成 → npm init と Express の導入
+→ コード作成 → 自分のPCで起動して確認
+→ .gitignore の作成と GitHub への保存
+→ Render の Web Service で公開 → 公開URLで確認
+
+## 守ってほしいこと
+・Render は無料（Free）の範囲で使う。料金がかかる設定は選ばない。
+・APIキーやパスワードなどの秘密は、コードや GitHub に書かない。
+・ポート番号は process.env.PORT に対応させる。
+・node_modules は GitHub に送らない。
+
+## 完成の基準
+自分のPCと Render の公開URLの両方で、期待した JSON が返る。
+起動・停止の方法と、各手順の意味を、私が説明できる。
+
+まず、私の環境（Windows か Mac か、Node.js と Git が入っているか）を
+質問するところから始めてください。</pre>
               <button id="copy-prompt" class="button secondary" type="button">
                 この依頼文をコピー
               </button>
@@ -595,14 +636,23 @@ GET /api/hello に接続すると、
         </button>
       </div>
       <div class="lab-content">
-        <p class="note">
-          パソコン画面の学習用の再現です。実際のダウンロード、インストール、ファイル作成、コマンド実行、サーバー起動、通信、アカウント操作は行いません。赤枠の場所を順に押すと、画面がどう変わるかを見られます。
-        </p>
+        <div class="note lab-notice">
+          <p>
+            <strong>学習用の再現です。</strong>実際のダウンロード、インストール、ファイル作成、コマンド実行、サーバー起動、通信、アカウント操作は行いません。赤枠の場所を順に押すと、画面がどう変わるかを見られます。
+          </p>
+          <p>
+            <strong>本物とは見た目が違うところがあります。</strong>練習用に簡略化しているため、画面のデザイン・文言・手順の細かい部分は、実際の Node.js・VS Code・ブラウザー・Render などと異なります。実際に操作するときは、本物の画面の表示を確認しながら進めてください。
+          </p>
+        </div>
         <ol id="lab-chapters" class="lab-chapters" aria-label="練習の章"></ol>
         <div class="lab-status">
           <p id="lab-progress"></p>
           <h3 id="lab-task"></h3>
           <p id="lab-hint" class="lab-hint"></p>
+          <div id="lab-about" class="lab-about" hidden>
+            <p class="lab-about__tag">ことばメモ</p>
+            <dl id="lab-about-list"></dl>
+          </div>
         </div>
         <div class="lab-stage-wrap">
           <div id="lab-stage" class="lab-stage" aria-label="パソコン画面の学習用再現"></div>
