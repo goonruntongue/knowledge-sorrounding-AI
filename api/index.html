@@ -537,6 +537,68 @@ Node.js の確認 → フォルダー作成 → npm init と Express の導入
           </div>
         </div>
       </section>
+      <section id="use-api">
+        <div class="wrap">
+          <p class="eyebrow">07 / 外部APIを使う</p>
+          <h2>だれかが用意した機能を、<br /><em>自分のアプリにつなぐ。</em></h2>
+          <p class="intro">
+            APIを作るだけでなく、すでに公開されているAPIへお願いして、データや機能を自分の画面に組み込めます。最初は<strong>何を送り、何が返り、どこに表示するか</strong>を三つに分けて考えます。
+          </p>
+          <ol class="api-use-flow" aria-label="外部APIをアプリに使う基本の流れ">
+            <li><b>1</b><span>APIの説明書を読む</span><small>URL・送る値・返り方・利用条件を確認</small></li>
+            <li><b>2</b><span>お願いを送る</span><small><code>fetch()</code> でリクエストする</small></li>
+            <li><b>3</b><span>返り値を表示する</span><small>JSONや画像URLを画面の部品へ渡す</small></li>
+          </ol>
+          <div class="api-use-grid">
+            <article class="api-use-card">
+              <span class="badge">JSON / 文章</span>
+              <h3>名言を表示するAPI</h3>
+              <p>たとえばZenQuotesは、名言と著者名をJSONで返します。スタート画面や「今日のひとこと」に使えます。</p>
+              <pre><code>const res = await fetch(
+  'https://zenquotes.io/api/random'
+);
+const [quote] = await res.json();
+message.textContent = quote.q;
+author.textContent = quote.a;</code></pre>
+              <small>返る例：<code>{ q: "名言", a: "著者" }</code></small>
+              <a class="text-link" href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotesの説明書を読む ↗</a>
+            </article>
+            <article class="api-use-card">
+              <span class="badge">画像 / URL</span>
+              <h3>QRコードを作るAPI</h3>
+              <p>QR Code APIは、文字やURLを渡すとQRコード画像を返します。イベント案内や共有ボタンに向いています。</p>
+              <pre><code>const text = encodeURIComponent(
+  'https://example.com/event'
+);
+qrImage.src =
+  'https://api.qrserver.com/v1/create-qr-code/' +
+  '?size=180x180&data=' + text;</code></pre>
+              <small>返るもの：JSONではなく、画像として使えるURL</small>
+              <a class="text-link" href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code APIの説明書を読む ↗</a>
+            </article>
+            <article class="api-use-card api-use-card--ai">
+              <span class="badge">AI / 秘密の鍵が必要</span>
+              <h3>AIに文章を考えてもらうAPI</h3>
+              <p>AI APIへ質問を送り、返ってきた文章を表示します。APIキーはブラウザへ置かず、自分のNode.jsサーバーにだけ保管します。</p>
+              <pre><code>// server.js 側だけに書く
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+const result = await client.responses.create({
+  model: '...', input: question
+});</code></pre>
+              <small>画面 → 自分のサーバー → AI API → 自分のサーバー → 画面</small>
+              <a class="text-link" href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">Responses APIの説明書を読む ↗</a>
+            </article>
+          </div>
+          <div class="callout api-use-callout">
+            <h3>最初の一歩は、外部APIを一つだけ表示すること。</h3>
+            <p>
+              最初からログインやデータベースを足す必要はありません。名言を1件表示する、入力したURLをQRコードにする、という小さな成功から始めます。APIキーが必要なサービスは、<strong>キーをHTMLやブラウザのJavaScriptへ書かず、自分のサーバー経由にする</strong>ことが大切です。
+            </p>
+          </div>
+        </div>
+      </section>
       <section class="sources">
         <div class="wrap">
           <h2>出典・確認日</h2>
@@ -585,6 +647,12 @@ Node.js の確認 → フォルダー作成 → npm init と Express の導入
             <li><a href="https://vercel.com/docs/functions/runtimes/node-js" target="_blank" rel="noopener noreferrer">Vercel：Node.js Functions ↗</a></li>
             <li><a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare：Workers Freeの利用枠 ↗</a></li>
             <li><a href="https://firebase.google.com/docs/functions/quotas" target="_blank" rel="noopener noreferrer">Firebase：Cloud FunctionsとBlazeプラン ↗</a></li>
+          </ul>
+          <p>外部APIの使い方を確認：2026年10月10日</p>
+          <ul>
+            <li><a href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotes：JSONで名言を受け取るAPI ↗</a></li>
+            <li><a href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code API：文字列からQRコード画像を作る ↗</a></li>
+            <li><a href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">OpenAI：Responses APIの概要 ↗</a></li>
           </ul>
         </div>
       </section>
