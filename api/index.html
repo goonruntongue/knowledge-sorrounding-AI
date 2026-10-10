@@ -13,12 +13,12 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=sim-v5" />
+    <link rel="stylesheet" href="style.css?v=sim-v6" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
-    <script src="guide.js?v=vscode-sim-v5" defer></script>
+    <script src="guide.js?v=sim-v6" defer></script>
     <script src="fortune-embed.js" defer></script>
   </head>
   <body>
@@ -582,67 +582,36 @@ GET /api/hello に接続すると、
       </div>
       <div class="lab-content">
         <p class="note">
-          学習用のVS Code風画面です。実際のインストール、ファイル作成、サーバー起動、通信は行いません。
+          パソコン画面の学習用の再現です。実際のダウンロード、インストール、ファイル作成、コマンド実行、サーバー起動、通信、アカウント操作は行いません。赤枠の場所を順に押すと、画面がどう変わるかを見られます。
         </p>
-        <p id="lab-progress">1 / 4</p>
-        <h3 id="lab-task"></h3>
-        <div id="node-download-sim" class="node-download-sim" aria-label="Node.jsダウンロードページの学習用再現">
-          <div class="node-download-sim__bar">
-            <strong><span aria-hidden="true">⬡</span> node<span>.js</span></strong>
-            <span>学ぶ</span><span>はじめに</span><b>ダウンロード</b><span>ドキュメント</span>
-          </div>
-          <div class="node-download-sim__body">
-            <p class="node-download-sim__eyebrow">学習用の再現画面・実際のサイトやダウンロードには接続しません</p>
-            <h4>Node.js<sup>®</sup>をダウンロードする</h4>
-            <div class="node-download-sim__choices" aria-label="ダウンロード設定の再現">
-              <span>▣ Windows</span><span>v24 LTS</span><span>npm を含む</span>
-            </div>
-            <div class="node-download-sim__notice">補足　長期サポート版（LTS）を選ぶと、初めてでも手順を追いやすくなります。</div>
-            <p>Windows用のインストーラーを選び、ダウンロードしてセットアップする流れを体験します。</p>
-            <a class="node-download-sim__official-link" href="https://nodejs.org/ja/download" target="_blank" rel="noopener noreferrer">実際にインストールするときの公式ダウンロードページ ↗<span>https://nodejs.org/ja/download</span></a>
-            <button id="node-download-action" type="button" class="node-download-sim__download">⇩　Windows インストーラー (.msi) をダウンロード</button>
-            <p class="node-download-sim__caption">赤枠のボタンを押してください</p>
-          </div>
+        <ol id="lab-chapters" class="lab-chapters" aria-label="練習の章"></ol>
+        <div class="lab-status">
+          <p id="lab-progress"></p>
+          <h3 id="lab-task"></h3>
+          <p id="lab-hint" class="lab-hint"></p>
         </div>
-        <div class="vscode-sim" aria-label="VS Code風のAPI作成シミュレーター">
-          <div class="vscode-sim__titlebar">
-            <span aria-hidden="true">⌘</span><strong>API PRACTICE</strong><span>sample-api</span>
-          </div>
-          <div class="vscode-sim__workspace">
-            <aside class="vscode-sim__explorer" aria-label="フォルダ階層のナビゲータペイン">
-              <p>EXPLORER</p>
-              <strong>⌄ SAMPLE-API</strong>
-              <ul id="lab-file-tree"></ul>
-              <small>フォルダ階層のナビゲータペイン</small>
-            </aside>
-            <section class="vscode-sim__editor" aria-label="個別ファイルのコードを編集するコードペイン">
-              <div class="vscode-sim__tabs"><span class="is-active" id="lab-tab">server.js</span></div>
-              <div class="vscode-sim__breadcrumb">sample-api &gt; <span id="lab-breadcrumb">server.js</span></div>
-              <pre id="lab-code" aria-label="コード表示"></pre>
-              <small>個別ファイルのコード自体を編集するコードペイン</small>
-            </section>
-            <section class="vscode-sim__terminal" aria-label="コマンドを打つターミナルペイン">
-              <div class="vscode-sim__panel-title"><span>TERMINAL</span><span>pwsh</span></div>
-              <pre id="lab-terminal" aria-live="polite"></pre>
-              <small>コマンドを打つターミナルペイン</small>
-            </section>
-          </div>
+        <div class="lab-stage-wrap">
+          <div id="lab-stage" class="lab-stage" aria-label="パソコン画面の学習用再現"></div>
+          <p id="lab-guide" class="guide-label" hidden></p>
+          <div id="lab-keytoast" class="lab-keytoast" hidden aria-hidden="true"></div>
         </div>
-        <button id="lab-action" type="button" class="button guided"></button>
-        <p class="guide-label">赤枠のボタンを押してください</p>
         <p id="lab-explanation" role="status"></p>
-        <button id="reset-lab" type="button" class="button secondary">
-          最初から練習する
-        </button>
-        <div id="lab-loader" class="lab-loader" hidden role="status" aria-live="assertive" aria-label="変更を反映しています">
-          <div class="lab-loader__card">
-            <span class="lab-loader__mark" aria-hidden="true">⬡</span>
-            <h3 id="lab-loader-title">変更を反映しています…</h3>
-            <p id="lab-loader-detail">次の画面を準備しています</p>
-            <div class="lab-loader__track" aria-hidden="true"><span id="lab-loader-bar"></span></div>
-            <small id="lab-loader-percent">0%</small>
-          </div>
+        <div class="lab-foot">
+          <button id="reset-lab" type="button" class="button secondary">
+            最初から練習する
+          </button>
+          <label class="lab-speed"><input id="lab-fast" type="checkbox" /> アニメーションを速くする</label>
         </div>
+        <details class="lab-sources">
+          <summary>再現した画面の出典・確認日（2026年10月10日）</summary>
+          <ul>
+            <li><a href="https://nodejs.org/ja/download" target="_blank" rel="noopener noreferrer">Node.js：ダウンロードページ ↗</a>（LTS は v24.21.0、npm 11.19.0）。インストーラーの画面は Windows 用セットアップ ウィザードの再現です。</li>
+            <li>VS Code の文言は、VS Code 1.141.0 と日本語言語パックの表示に合わせています。<a href="https://code.visualstudio.com/docs/editing/workspaces/workspace-trust" target="_blank" rel="noopener noreferrer">VS Code：ワークスペースの信頼 ↗</a></li>
+            <li><a href="https://docs.npmjs.com/cli/commands/npm-init" target="_blank" rel="noopener noreferrer">npm：npm init ↗</a>・<a href="https://docs.npmjs.com/cli/commands/npm-install" target="_blank" rel="noopener noreferrer">npm install ↗</a>・<a href="https://docs.npmjs.com/cli/commands/npm-run" target="_blank" rel="noopener noreferrer">npm run ↗</a>。出力は実際に実行した結果をもとにした例で、パッケージ数やバージョンは時期や環境で変わります（Express 5.3.0）。</li>
+            <li><a href="https://cli.github.com/manual/gh_repo_create" target="_blank" rel="noopener noreferrer">GitHub CLI：gh repo create ↗</a></li>
+            <li><a href="https://render.com/docs/web-services" target="_blank" rel="noopener noreferrer">Render：Web Service の作成手順・PORT・公開URL ↗</a>・<a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener noreferrer">Node.js／Express アプリの公開 ↗</a>。画面の細部は実物と異なります。</li>
+          </ul>
+        </details>
       </div>
     </dialog>
   </body>
