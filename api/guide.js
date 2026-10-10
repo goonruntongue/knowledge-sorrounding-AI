@@ -1097,4 +1097,13 @@ app.listen(port, '0.0.0.0', () => {
     top: 0,
     behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
   }));
+
+  // 公開先の比較表: 狭い画面で横スクロールできることを ScrollHint のアイコンで知らせる。
+  // 読み込めなかった場合も、表そのものは横スクロールできる。
+  const startScrollHint = () => {
+    if (!window.ScrollHint) return;
+    new window.ScrollHint('.deploy-table-wrap', { i18n: { scrollable: '横にスクロールできます' } });
+  };
+  if (window.ScrollHint) startScrollHint();
+  else document.querySelector('script[data-scroll-hint]')?.addEventListener('load', startScrollHint);
 })();

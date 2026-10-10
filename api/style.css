@@ -333,9 +333,14 @@ pre {
   border-radius: 12px;
   background: #fff;
 }
+/* 共通の mobile-safe.css は狭い幅で表を block・最小幅 0 にするため、
+   この表だけ幅を確保し直して、親枠（.deploy-table-wrap）の中で横スクロールさせる */
 .deploy-table {
+  display: table;
   width: 100%;
-  min-width: 720px;
+  min-width: 720px !important;
+  max-width: none;
+  overflow: visible;
   border-collapse: collapse;
   font-size: 0.84rem;
   line-height: 1.55;
@@ -365,6 +370,26 @@ pre {
 }
 .deploy-table tbody tr:first-of-type th {
   color: #276b2a;
+}
+/* 横スクロールできることを知らせる ScrollHint の見た目をページに合わせる */
+.deploy-table-wrap .scroll-hint-icon {
+  left: calc(50% - 84px);
+  width: 168px;
+  border-radius: 12px;
+  background: rgba(24, 42, 67, 0.86);
+}
+.deploy-table-wrap .scroll-hint-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .deploy-table-wrap .scroll-hint-icon,
+  .deploy-table-wrap .scroll-hint-icon::before,
+  .deploy-table-wrap .scroll-hint-icon::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 .environments code {
   display: block;
