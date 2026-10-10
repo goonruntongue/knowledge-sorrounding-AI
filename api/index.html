@@ -243,11 +243,11 @@
           <p class="intro">
             Web APIは、サーバー上のデータや機能を使うための窓口です。取得だけでなく、作成・更新・削除も依頼します。<strong>窓口であるURLはAPIエンドポイント</strong>と呼ばれ、お願いに応答するサーバーが起動して初めて動きます。
           </p>
-          <div class="api-illustration-placeholder" role="img" aria-label="サーバーとAPIエンドポイントを説明する挿絵の準備中エリア"><span>ILLUSTRATION / PREPARING</span><strong>サーバーとエンドポイントの挿絵を準備中です</strong><small>GIFまたはLottieアニメーションをここに追加します。</small></div>
           <div class="cards environments">
             <article class="card">
               <span class="badge">FILE / サーバーなし</span>
               <h3>ファイルを直接開く</h3>
+              <img class="environment-illustration" src="assets/file-direct-open.png" alt="ファイルを直接開くとサーバーのプログラムが起動していないことを表す図" />
               <code>file:///…/index.html</code>
               <p>
                 保存されたHTMLを読む状態。自作APIへのリクエストを受け付けるプログラムは、まだ動いていません。
@@ -259,6 +259,7 @@
             <article class="card">
               <span class="badge">LOCAL / サーバーあり</span>
               <h3>自分のPCで起動する</h3>
+              <img class="environment-illustration" src="assets/local-server-program.png" alt="自分のPCでサーバープログラムを起動していることを表す図" />
               <code>http://localhost:3000/api/hello</code>
               <p>
                 Node.jsでサーバーを立ち上げると、自分のPCがお願いを受け付けます。<strong>localhostは、いま操作している端末自身</strong>です。
@@ -270,6 +271,7 @@
             <article class="card">
               <span class="badge">REMOTE / サーバーあり</span>
               <h3>公開先で動かす</h3>
+              <img class="environment-illustration" src="assets/remote-server-program.png" alt="公開先のサーバーでプログラムが動いていることを表す図" />
               <code>https://example.com/api/hello</code>
               <p>
                 インターネット上の公開先でサーバーを動かすと、許可された利用者が別の端末から接続できます。
