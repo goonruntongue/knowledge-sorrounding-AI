@@ -57,18 +57,40 @@ http://127.0.0.1:4173/index.html
 
 JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態に戻してから `#api-lab` をモーダルとして開いています。
 
-## 全体の流れ（8章・58操作）
+## 全体の流れ（9章・62操作）
 
 | 章 | 見出し | 再現する画面 |
 |---|---|---|
-| 1 | Node.jsをダウンロードして、インストールする | ブラウザー（nodejs.org/ja/download 風）→ ダウンロード表示 → Node.js Setup → ユーザー アカウント制御 → 進行バー |
-| 2 | VS Codeに作業フォルダーを紐づける | タスク バー → VS Code →「フォルダーを開く」→ Windows のフォルダー選択 → 作成者を信頼 |
+| 1 | Node.jsをダウンロードして、インストールする | ブラウザー（nodejs.org/ja/download 風）→ ダウンロード表示 → Node.js Setup（Welcome〜Completed の8ページ）→ ユーザー アカウント制御 → 進行バー |
+| 2 | VS Codeに作業フォルダーを紐づける | タスク バー → VS Code（「ようこそ」タブ）→「フォルダーを開く」→ Windows のフォルダー選択（ユーザー フォルダー → デスクトップ → 新しいフォルダー）→ 作成者を信頼 |
 | 3 | VS Codeでファイルを作る | エクスプローラーで `data.json`・`server.js` を作成 → 入力 → Ctrl+S |
 | 4 | ターミナルで npm init と Express のインストール | メニュー「ターミナル」→ `node --version` → `npm init -y` → `npm install express` |
 | 5 | そのほかの npm コマンドを試す | `package.json` を開く → `npm list` → `npm run` |
 | 6 | ターミナルで API サーバーを起動する | `node server.js` |
 | 7 | API が動くことを確認する | ブラウザーで `localhost:3000/api/hello` → VS Code で Ctrl+C → 再読み込みで接続拒否 |
-| 8 | GitHubへ保存して、Render で公開する | `.gitignore` → `git init`／`git add .`／`git commit`／`gh repo create` → Render の New Web Service → デプロイログ → 公開URL |
+| 8 | コードを GitHub へ保存する | `.gitignore` → `git init`／`git add .`／`git commit`／`gh repo create` |
+| 9 | Render の Web Service で公開する | render.com → Sign in → GitHub でログイン → 連携の許可 → ダッシュボード → + New → Web Service → リポジトリ選択 → 設定フォーム（Free を選ぶ／Build Command／Start Command）→ Deploy web service → デプロイのログ → 公開URL |
+
+## 実物の画面の資料
+
+`api/screenshot/` に、再現のもとにした実際の画面の画像があります。
+
+| フォルダー | 内容 |
+|---|---|
+| `screenshot/node-installer/` | Node.js Setup の各ページ（8枚） |
+| `screenshot/VSCode-open-folder/` | VS Code のフォルダーを開く前の画面と、Windows のフォルダー選択ダイアログ |
+| `screenshot/render/` | Render の公式サイト、ログイン、ダッシュボード、New Web Service、デプロイのログ（13枚）と、要点のメモ `about-render-usage.txt` |
+
+> これらの画像には、アカウント名、リポジトリ名、最近開いたフォルダー、ブックマークなどの個人の情報が写っています。**Git に追加しないでください。** シミュレーターの中では、名前や履歴をすべて架空のもの（`you`、`sample-api`、`My Workspace` など）に置き換えています。
+
+`about-render-usage.txt` の内容は、9章の「ことばメモ」（`about`）と説明文に反映しています。
+
+- 初回は GitHub 連携の許可画面が出る → 「Authorize Render」の操作
+- Project は任意の入れ物、Web Service が API を公開する本体 → 「+ New」「Web Service」の操作
+- 「Create a project」は押さない → リポジトリ選択後のフォームの説明
+- 最初は有料の `$7 / month` が選ばれているので `$0 / month`（Free）に変える → 「Free を選ぶ」の操作
+- Build Command の `yarn install` を `npm install` に、Start Command の `node server.js` を `npm start` に置き換える
+- 設定の一覧（Build Command／Start Command／Compute／Root Directory／Branch）→ 「Deploy web service」の操作
 
 ## しくみ
 
@@ -78,8 +100,8 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
    - `app`: 手前に出すアプリ（`browser` / `installer` / `vscode`）
    - `br`: ブラウザー（タブ、URL、入力中の文字、ダウンロード表示）
    - `ins`: インストーラー（ページ、同意、進行率、UAC）
-   - `vs`: VS Code（フォルダー、ファイル一覧、タブ、本文、ターミナル、ダイアログ）
-   - `rd`: Render（ページ、フォーム入力、デプロイログ、状態）
+   - `vs`: VS Code（フォルダー、ファイル一覧、タブ、本文、ターミナル、ダイアログ）。タブには最初から「ようこそ」（定数 `WELCOME`）が入っています
+   - `rd`: Render（ページ、フォーム入力、料金プラン、デプロイログ、状態）。`page` は `landing` → `signin` → `authorize` → `dashboard` → `connect` → `form` → `deploy` と進みます。`build`／`start` の初期値は Render が自動入力する `yarn install`／`node server.js`、`plan` の初期値は有料の `starter` です
 2. **描画** — 状態からHTML文字列を作る関数です。`desktop(s)` が全体を作り、`browserWin`、`installerWin`、`vscodeWin`、`renderPage` などが各画面を担当します。
    - `render()` は `#lab-stage` 全体を描き直します。
    - `paint('lab-vs-panel', ...)` は、`regions` に登録した id の部分だけを描き直します。入力中や出力中の細かい変化はこちらを使います。
@@ -87,7 +109,7 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
 
 ```js
 {
-  ch: 4,                    // 章番号（1〜8）
+  ch: 4,                    // 章番号（1〜9）
   act: 'term',              // 押す対象。画面側の data-act と一致させる
   label: 'クリックで…',      // 赤枠に添える白文字の案内
   hint: '…',                // 操作前に上へ出す説明（何をするか）
@@ -114,8 +136,11 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
 | `f.paint(...ids)` | 指定した部分だけ描き直す |
 | `f.render()` | 画面全体を描き直す（アプリの切り替えなど） |
 | `f.key('Ctrl + S')` | 押したキーを画面中央に短く表示する |
+| `f.top('lab-br-content')` | 指定した部分のスクロールを先頭へ戻す |
 
-よく使う操作は部品にしてあります: `command()`（ターミナルで1コマンド）、`newFile()`、`writeCode()`、`save()`、`navigate()`（アドレス バー入力）、`switchApp()`、`insNext()`。
+よく使う操作は部品にしてあります: `command()`（ターミナルで1コマンド）、`newFile()`、`writeCode()`、`save()`、`navigate()`（アドレス バー入力）、`switchApp()`、`insNext()`、`rdNav()`（Render 内のページ移動。URL とタブ名も切り替える）、`rdReplace()`（Render の入力欄を全選択して打ち直す）。
+
+Render のページごとの URL とタブ名は、`guide.js` 先頭の `RD_TABS` にまとめています。
 
 ### 進行のルール
 
@@ -123,6 +148,8 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
 - 一致する要素を押すと `runStep()` が `run` を再生し、終わったら次の操作へ進みます。違う場所を押すと、案内が小さく揺れるだけで進みません。
 - 章ナビ（`#lab-chapters`）と「最初から練習する」は `goTo(番号)` を呼びます。`goTo` は最初の状態から `steps` をアニメーションなしで流し直して、その時点の状態を作ります。**そのため `run` は、状態 `s` だけを書き換える作りにしてください**（DOMを直接さわると、章ジャンプで状態が合わなくなります）。
 - 再生中に閉じる・章を移ると、`token` が変わり、動いていた再生は止まります。
+- 縦に長いページ（Render の設定フォーム）では、次に押す場所が上下の固定バーに隠れないよう、`mark()` がページの中央へスクロールします。全体を描き直すときも、同じページならスクロール位置を引き継ぎます。
+- 閉じたときの後始末（`tidy()`）は、閉じるボタンと Escape（`cancel`）の時点で先に行います。`close` イベントは画面の描画に合わせて遅れて届くことがあるためです。
 
 ### 操作を追加・変更するとき
 
@@ -136,7 +163,7 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
 ## 画面構成（index.html）
 
 - `#lab-chapters` — 章ナビ。`guide.js` がボタンを差し込む
-- `#lab-progress` — `STEP 章 / 8　操作 n / m`
+- `#lab-progress` — `STEP 章 / 9　操作 n / m`
 - `#lab-task` — 章の見出し
 - `.lab-notice` — 学習用の再現であること、本物と見た目が違うところがあることの注意書き
 - `#lab-hint` — これから行う操作の説明
@@ -160,17 +187,20 @@ JavaScriptでは `data-open-lab` を持つボタンを探し、最初の状態�
 |---|---|---|
 | `NODE_V` / `NPM_V` | Node.js LTS と同梱 npm のバージョン | 2026-10-10 |
 | `EXPRESS_V` | Express のバージョンと `npm install express` の出力 | 2026-10-10 |
-| VS Code の日本語表記 | 日本語言語パックの文言 | 2026-10-10 |
-| Render の項目名 | New > Web Service、Build Command、Start Command、Create Web Service | 2026-10-10 |
+| VS Code の日本語表記 | 日本語言語パックの文言（メニュー、「ようこそ」、フォルダーの選択など） | 2026-10-10 |
+| Node.js Setup の文面 | 実際のセットアップ ウィザードの各ページ（`screenshot/node-installer/`） | 2026-10-10 |
+| Render の画面と項目名 | 実際の画面（`screenshot/render/`）。+ New > Web Service、Build Command、Start Command、Compute、Deploy web service、デプロイのログ | 2026-10-10 |
 
-次の点は公式の文言どおりではなく、説明用に簡略化した再現です。
+次の点は実物どおりではなく、説明用に簡略化した再現です。
 
-- Node.js Setup の各ページの文面と、ユーザー アカウント制御の見た目
-- Render のダッシュボード、設定フォーム、デプロイログの見た目と行数
+- GitHub 連携の許可画面（実物の画像がないため、一般的な文言で1画面にまとめています）
+- ユーザー アカウント制御の見た目
+- Render のダッシュボードでサービスが1つもないときの表示、Region の選択肢
 - `npm init -y` が出力する `package.json` の細部（npm のバージョンで変わります）
-- 公開URL `sample-api-x7k2.onrender.com`、ユーザー名 `you` は架空の値
+- 公開URL `sample-api-x7k2.onrender.com`、ユーザー名 `you`、ワークスペース名、サービスやデプロイの ID、コミット ID は架空の値
+- デプロイの日時は、練習した時点の日時を表示します
 
-各製品のロゴは使わず、汎用の線画アイコンで表しています。
+Node.js や Render のロゴは実物の絵柄を使わず、文字と図形で組んだ目印（`.lab-nodelogo`、`.lab-rd__mark`）で表しています。そのほかのアイコンも汎用の線画です。
 
 ## アニメーション
 
@@ -212,7 +242,7 @@ git diff --check -- api/index.html api/style.css api/guide.js api/SIMULATOR.md
 1. ランチャーからモーダルが開き、STEP 1 の Node.js ダウンロード画面と公式リンクが出る
 2. 赤枠を押すたびに、入力・出力・ファイルの増加などが画面内で順に変わる
 3. 赤枠以外を押しても進まない
-4. 最後（STEP 8 完了）まで進める
-5. 章ナビの 1〜8 で、各章の最初の状態に移れる
+4. 最後（STEP 9 完了）まで進める
+5. 章ナビの 1〜9 で、各章の最初の状態に移れる
 6. 「最初から練習する」と「閉じる」、Escape が使える
 7. 狭いスマホ幅でも横にはみ出さず、案内が画面内に収まる

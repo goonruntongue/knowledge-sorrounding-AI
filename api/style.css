@@ -1539,111 +1539,172 @@ dialog::backdrop {
 .lab-installer {
   flex: none;
   align-self: center;
-  width: min(100%, 520px);
+  width: min(100%, 580px);
   margin: auto;
-  border: 1px solid #6d7b91;
+  border: 1px solid #8c9199;
   border-radius: 8px;
   background: #f0f0f0;
-  color: #111;
-  font: 12.5px/1.5 "Segoe UI", "Yu Gothic UI", Meiryo, sans-serif;
+  color: #000;
+  font: 12.5px/1.45 "Segoe UI", Tahoma, "Yu Gothic UI", Meiryo, sans-serif;
 }
 .lab-ins-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  height: 32px;
-  padding-left: 0.6rem;
-  background: #fff;
-  font-size: 0.78rem;
+  height: 34px;
+  padding-left: 0.55rem;
+  border-bottom: 4px solid #3f8c3b;
+  background: #f3f3f3;
+  font-size: 0.8rem;
 }
-.lab-ins-title > span:first-child {
-  color: #43853d;
-  font-size: 1rem;
+/* 汎用のインストーラー アイコン（実物のアイコンではない） */
+.lab-ins-appicon {
+  width: 16px;
+  height: 13px;
+  border: 1px solid #55708f;
+  border-radius: 2px;
+  background: linear-gradient(#e7eef7 0 32%, #8fb0d6 32%);
 }
 .lab-ins-title b {
+  color: #555;
   font-weight: 400;
+}
+.lab-ins-title .lab-caption i.is-off {
+  color: #c4c4c4;
 }
 .lab-ins-body {
   display: flex;
   flex-direction: column;
-  min-height: 330px;
+  min-height: 384px;
+}
+/* 文字と六角形で組んだ目印（Node.js の実物のロゴではない） */
+.lab-nodelogo {
+  display: inline-grid;
+  flex-shrink: 0;
+  justify-items: center;
+  color: #3b3835;
+  line-height: 1;
+}
+.lab-nodelogo b {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font: 800 1.75rem/1 Poppins, "Segoe UI", sans-serif;
+  letter-spacing: 0.02em;
+}
+.lab-nodelogo b i,
+.lab-nodelogo em {
+  background: #5fa04e;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.lab-nodelogo b i {
+  width: 0.76em;
+  height: 0.86em;
+  margin: 0 0.05em;
+}
+.lab-nodelogo em {
+  display: grid;
+  place-items: center;
+  width: 2.2em;
+  height: 2.4em;
+  margin-top: -0.05em;
+  color: #fff;
+  font: 800 0.55rem/1 Poppins, sans-serif;
+  font-style: normal;
+}
+.lab-nodelogo--big b {
+  font-size: 3.1rem;
+}
+.lab-nodelogo--big em {
+  font-size: 0.9rem;
 }
 .lab-ins-head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid #c8c8c8;
+  min-height: 64px;
+  padding: 0.4rem 1.2rem 0.4rem 1.4rem;
+  border-bottom: 1px solid #d9d9d9;
   background: #fff;
 }
-.lab-ins-head b,
-.lab-ins-head small {
+.lab-ins-head > div > b {
   display: block;
+  font-size: 0.86rem;
 }
-.lab-ins-head small {
-  padding-left: 0.8rem;
-  color: #333;
-  font-size: 0.74rem;
-}
-.lab-ins-logo {
-  color: #43853d;
-  font-size: 1.8rem;
-  line-height: 1;
+.lab-ins-head > div > small {
+  display: block;
+  margin-top: 0.4rem;
+  padding-left: 1rem;
+  color: #000;
+  font-size: 0.76rem;
 }
 .lab-ins-content {
   flex: 1;
-  padding: 1rem 1.2rem;
+  padding: 1.3rem 1.6rem 0.6rem;
 }
 .lab-ins-content p,
 .lab-ins-main p {
-  margin: 0 0 0.7rem;
-  color: #111;
+  margin: 0 0 0.9rem;
+  color: #000;
+}
+.lab-ins-content u {
+  color: #0066cc;
 }
 .lab-ins-big {
   display: grid;
   flex: 1;
-  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-columns: 34% minmax(0, 1fr);
   background: #fff;
 }
 .lab-ins-side {
   display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 0.2rem;
-  background: linear-gradient(160deg, #2f5f2c, #43853d);
-  color: #fff;
-}
-.lab-ins-side span {
-  font-size: 3rem;
-  line-height: 1;
+  place-items: center;
+  padding: 1rem 0.5rem;
 }
 .lab-ins-main {
-  padding: 1.4rem 1.2rem;
+  padding: 1.8rem 1.2rem 1rem 0.4rem;
 }
 .lab-ins-main h4 {
-  margin: 0 0 1rem;
-  font-size: 1.15rem;
-  line-height: 1.4;
+  margin: 0 0 2.7rem;
+  color: #000;
+  font-size: 1.18rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+.lab-ins-main p {
+  margin-bottom: 1.7rem;
 }
 .lab-ins-license {
   overflow: auto;
-  height: 110px;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid #9a9a9a;
+  height: 172px;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #8a8a8a;
   background: #fff;
-  font-size: 0.74rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+.lab-ins-license b {
+  font-size: 0.95rem;
+}
+.lab-ins-license p {
+  margin: 0.55rem 0 0;
 }
 .lab-ins-check {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 0.4rem;
+  width: 100%;
   margin-top: 0.8rem;
-  padding: 0.2rem 0.3rem;
+  padding: 0.2rem 0.1rem;
   border: 0;
   background: none;
-  color: #111;
+  color: #000;
   font: inherit;
   text-align: left;
+}
+.lab-ins-check.is-static {
+  margin: 0.4rem 0 1.1rem;
 }
 .lab-ins-check i {
   display: grid;
@@ -1651,42 +1712,122 @@ dialog::backdrop {
   place-items: center;
   width: 15px;
   height: 15px;
-  border: 1px solid #333;
+  margin-top: 0.1rem;
+  border: 1px solid #555;
+  border-radius: 3px;
   background: #fff;
   font-size: 0.7rem;
   font-style: normal;
 }
 .lab-ins-check.is-on i {
-  border-color: #0067c0;
-  background: #0067c0;
+  border-color: #005fb8;
+  background: #005fb8;
   color: #fff;
 }
 .lab-ins-path {
-  margin-bottom: 0.6rem;
-  padding: 0.3rem 0.5rem;
-  border: 1px solid #9a9a9a;
+  margin: 2.6rem 0 0.55rem;
+  padding: 0.22rem 0.3rem;
+  border: 1px solid #8a8a8a;
+  border-top-color: #444;
   background: #fff;
-  font-family: Consolas, monospace;
+}
+.lab-ins-custom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 0.9rem;
 }
 .lab-ins-tree {
+  min-height: 152px;
   margin: 0;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid #9a9a9a;
+  padding: 0.5rem 0.3rem;
+  border: 1px solid #8a8a8a;
   background: #fff;
   list-style: none;
 }
 .lab-ins-tree li {
+  position: relative;
   display: flex;
-  gap: 0.5rem;
-  padding: 0.1rem 0;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.03rem 0 0.03rem 1.5rem;
 }
+.lab-ins-tree li::before {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  width: 0.7rem;
+  border-top: 1px dotted #888;
+  content: "";
+}
+.lab-ins-tree li.has-more::after {
+  position: absolute;
+  top: 50%;
+  left: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #7a8aa0;
+  background: #fff;
+  color: #2a4a7a;
+  font-size: 9px;
+  line-height: 1;
+  content: "+";
+  translate: 0 -50%;
+}
+/* ツリーの各行にある「ドライブ」ボタンの形 */
 .lab-ins-tree i {
-  color: #4a6a8a;
-  font-style: normal;
+  position: relative;
+  flex-shrink: 0;
+  width: 30px;
+  height: 13px;
+  border: 1px solid #6b6b6b;
+  border-radius: 2px;
+  background: linear-gradient(#fff, #e3e3e3);
+}
+.lab-ins-tree i::before {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 13px;
+  height: 5px;
+  border: 1px solid #555;
+  border-radius: 1px;
+  background: #f4f4f4;
+  content: "";
+}
+.lab-ins-tree i::after {
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  border: 3px solid transparent;
+  border-top-color: #333;
+  content: "";
+}
+.lab-ins-tree li.is-selected span {
+  padding: 0 0.15rem;
+  background: #0078d7;
+  color: #fff;
+}
+.lab-ins-desc {
+  padding: 0.5rem 0.55rem;
+  border: 1px solid #d5d5d5;
+  background: #f6f6f6;
+}
+.lab-ins-desc p {
+  margin-bottom: 1.6rem;
+}
+.lab-ins-browse {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.7rem;
+}
+.lab-ins-content p.lab-ins-statusline {
+  margin: 1.7rem 0 0.2rem;
 }
 .lab-ins-bar {
-  height: 18px;
-  border: 1px solid #9a9a9a;
+  height: 15px;
+  border: 1px solid #bcbcbc;
   background: #e6e6e6;
 }
 .lab-ins-bar i {
@@ -1696,39 +1837,58 @@ dialog::backdrop {
 }
 .lab-ins-foot {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.7rem 1rem;
-  border-top: 1px solid #c8c8c8;
+  gap: 0.4rem 0.15rem;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid #a0a0a0;
   background: #f0f0f0;
+}
+.lab-ins-foot .lab-ins-btn:last-child {
+  margin-left: 1.2rem;
+}
+.lab-ins-foot--wide {
+  gap: 0.4rem 0.3rem;
+}
+.lab-ins-foot--wide .lab-ins-btn:nth-child(2) {
+  margin-right: 0.2rem;
+}
+.lab-ins-foot--wide .lab-ins-btn:last-child {
+  margin-left: 0.2rem;
 }
 .lab-ins-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  min-width: 76px;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid #adadad;
-  border-radius: 3px;
-  background: #e1e1e1;
-  color: #111;
+  min-width: 90px;
+  padding: 0.22rem 0.7rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  background: #fdfdfd;
+  color: #000;
   font: inherit;
 }
+.lab-ins-foot--wide .lab-ins-btn {
+  min-width: 78px;
+}
 .lab-ins-btn.is-primary {
-  border-color: #0067c0;
-  box-shadow: inset 0 0 0 1px #0067c0;
+  border-color: #005fb8;
+  box-shadow: inset 0 0 0 1px #005fb8;
 }
 .lab-ins-btn:disabled {
-  color: #8a8a8a;
+  border-color: #e2e2e2;
+  background: #f5f5f5;
+  color: #a0a0a0;
 }
 .lab-ins-btn .lab-ic {
-  width: 13px;
-  height: 13px;
-  color: #d08a00;
+  width: 14px;
+  height: 14px;
+  fill: #f2c230;
+  color: #1668c7;
 }
 .lab-ins-btn--small {
-  min-width: 0;
+  min-width: 90px;
 }
 .lab-uac {
   width: min(100%, 420px);
@@ -2286,9 +2446,9 @@ button.vscode-sim__menuitem.is-open {
 /* ---------- フォルダー選択と信頼の確認 ---------- */
 .lab-picker {
   overflow: auto;
-  width: min(100%, 560px);
+  width: min(100%, 660px);
   max-height: 100%;
-  border: 1px solid #9a9a9a;
+  border: 1px solid #8f8f8f;
   border-radius: 8px;
   background: #fff;
   color: #1b1b1b;
@@ -2296,45 +2456,74 @@ button.vscode-sim__menuitem.is-open {
   box-shadow: 0 16px 50px #000a;
   animation: lab-pop 0.2s ease-out;
 }
+.lab-picker .lab-ic {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
 .lab-picker__title {
   display: flex;
-  justify-content: space-between;
-  padding: 0.45rem 0.7rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  background: #f3f3f3;
+  color: #5c5c5c;
 }
 .lab-picker__title i {
+  margin-left: auto;
+  color: #333;
   font-style: normal;
+}
+.lab-picker .lab-picker__app {
+  color: #2f8fe6;
 }
 .lab-picker__bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.6rem;
+  gap: 0.7rem;
+  padding: 0.5rem 0.8rem;
 }
 .lab-picker__nav {
   display: inline-flex;
-  gap: 0.4rem;
-  color: #555;
+  gap: 0.8rem;
+  color: #8a8a8a;
 }
 .lab-picker__addr,
 .lab-picker__search {
-  padding: 0.2rem 0.6rem;
-  border: 1px solid #d6d6d6;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
 }
 .lab-picker__addr {
   flex: 1;
+  color: #1b1b1b;
+}
+.lab-picker__addr > span {
+  flex: 1;
+}
+.lab-picker__addr em {
+  color: #777;
+  font-style: normal;
+}
+.lab-picker__addr .lab-ic,
+.lab-picker__search .lab-ic {
+  color: #666;
 }
 .lab-picker__search {
-  width: 150px;
+  justify-content: space-between;
+  width: 170px;
   color: #777;
 }
 .lab-picker__tools {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.3rem 0.7rem;
-  border-block: 1px solid #eee;
-  background: #fafafa;
+  gap: 1.4rem;
+  padding: 0.35rem 1rem;
+  border-bottom: 1px solid #eaeaea;
 }
 .lab-picker__tools button {
   padding: 0.15rem 0.5rem;
@@ -2344,31 +2533,85 @@ button.vscode-sim__menuitem.is-open {
   color: #1b1b1b;
   font: inherit;
 }
+.lab-picker__view {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #555;
+  font-size: 0.6rem;
+}
+.lab-picker__help {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1a73e8;
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+}
 .lab-picker__body {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  min-height: 170px;
+  grid-template-columns: 158px minmax(0, 1fr);
+  height: 214px;
 }
 .lab-picker__body nav {
   display: grid;
   align-content: start;
-  gap: 0.1rem;
+  gap: 0.15rem;
+  overflow: hidden;
   padding: 0.4rem 0.3rem;
   border-right: 1px solid #eee;
 }
-.lab-picker__body nav span {
-  padding: 0.15rem 0.5rem;
+.lab-picker__body nav > span,
+.lab-picker__body nav > button {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.25rem 0.5rem 0.25rem 1.1rem;
+  border: 1px solid transparent;
   border-radius: 4px;
+  background: none;
+  color: #1b1b1b;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+}
+.lab-picker__body nav > :first-child {
+  padding-left: 0.6rem;
 }
 .lab-picker__body nav .is-on {
-  background: #e5f1fb;
+  border-color: #c9c9c9;
+  background: #e5e5e5;
+}
+.lab-picker__body nav hr {
+  width: calc(100% - 1rem);
+  margin: 0.3rem auto;
+  border: 0;
+  border-top: 1px solid #e3e3e3;
+}
+.lab-picker__ni--home { color: #e0792b; }
+.lab-picker__ni--monitor,
+.lab-picker__ni--image { color: #2f8fe6; }
+.lab-picker__ni--download { color: #1e9e5a; }
+.lab-picker__ni--doc { color: #6b7c93; }
+.lab-picker__ni--music { color: #d8497a; }
+.lab-picker__ni--video { color: #8a4fd8; }
+.lab-picker .lab-picker__pin {
+  width: 11px;
+  height: 11px;
+  margin-left: auto;
+  color: #a0a0a0;
 }
 .lab-picker__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
   align-content: start;
-  gap: 0.3rem;
-  padding: 0.5rem;
+  gap: 0.2rem;
+  overflow: auto;
+  padding: 0.5rem 0.6rem;
 }
 .lab-picker__tile {
   display: flex;
@@ -2378,7 +2621,7 @@ button.vscode-sim__menuitem.is-open {
   padding: 0.3rem 0.2rem;
   border: 1px solid transparent;
   border-radius: 4px;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -2396,8 +2639,9 @@ button.vscode-sim__menuitem.is-open {
 }
 .lab-folder {
   position: relative;
-  width: 44px;
-  height: 32px;
+  flex-shrink: 0;
+  width: 46px;
+  height: 33px;
   margin-top: 6px;
   border-radius: 3px 6px 4px 4px;
   background: linear-gradient(#ffd766, #f4b93c);
@@ -2406,42 +2650,58 @@ button.vscode-sim__menuitem.is-open {
   position: absolute;
   top: -5px;
   left: 0;
-  width: 18px;
+  width: 19px;
   height: 8px;
   border-radius: 3px 3px 0 0;
   background: #f0b43a;
-  content: '';
+  content: "";
+}
+.lab-folder--mini {
+  width: 16px;
+  height: 11px;
+  margin-top: 3px;
+  border-radius: 1px 2px 2px 2px;
+}
+.lab-folder--mini::before {
+  top: -3px;
+  width: 7px;
+  height: 4px;
+  border-radius: 1px 1px 0 0;
 }
 .lab-picker__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.5rem 0.7rem;
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem 0.7rem;
   border-top: 1px solid #eee;
-  background: #f7f7f7;
+  background: #f3f3f3;
 }
 .lab-picker__foot label {
   display: flex;
-  flex: 1 1 100%;
   align-items: center;
   gap: 0.5rem;
+  padding-left: 18%;
   font-weight: 400;
 }
-.lab-picker__foot label span {
+.lab-picker__field {
   flex: 1;
-  min-height: 1.8em;
+  min-height: 1.9em;
   padding: 0.1rem 0.5rem;
-  border: 1px solid #bbb;
-  border-bottom-color: #555;
+  border: 1px solid #d0d0d0;
+  border-bottom-color: #666;
+  border-radius: 3px;
   background: #fff;
+}
+.lab-picker__btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 0.6rem;
 }
 .lab-picker__ok,
 .lab-picker__cancel {
-  min-width: 112px;
-  padding: 0.25rem 0.8rem;
-  border: 1px solid #c3c3c3;
+  min-width: 96px;
+  padding: 0.25rem 1rem;
+  border: 1px solid #c8c8c8;
   border-radius: 4px;
   background: #fdfdfd;
   color: #1b1b1b;
@@ -2454,6 +2714,164 @@ button.vscode-sim__menuitem.is-open {
 }
 .lab-picker__ok:disabled {
   color: #999;
+}
+
+/* ---------- VS Code: 検索ボックス、フォルダーを開く前の表示、「ようこそ」タブ ---------- */
+.vscode-sim__center {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  min-width: 0;
+  overflow: hidden;
+  color: #8b8b8b;
+}
+.vscode-sim__arrows {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+.vscode-sim__arrows .lab-ic,
+.vscode-sim__title .lab-ic {
+  width: 14px;
+  height: 14px;
+}
+.vscode-sim__title {
+  position: static;
+  display: flex;
+  flex: 0 1 300px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.12rem 0.8rem;
+  color: #a6a6a6;
+  transform: none;
+}
+.vscode-sim__sect {
+  margin: 0.15rem 0 0;
+  padding: 0.1rem 0.4rem;
+  color: #cccccc;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.vscode-sim__openitem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.25rem;
+  padding: 0.12rem 0.5rem 0.12rem 1rem;
+  background: #2a2d2e;
+  color: #e2e2e2;
+  font-size: 0.78rem;
+}
+.vscode-sim__openitem .lab-ic,
+.vscode-sim__tabs .lab-fi--vs {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  color: #3aa0f3;
+}
+.vscode-sim__nofolder {
+  padding: 0.3rem 1.1rem 0.6rem;
+}
+.vscode-sim__nofolder p {
+  margin: 0.5rem 0 0.6rem;
+  color: #cccccc;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+.vscode-sim__nofolder u {
+  color: #3794ff;
+  text-decoration: none;
+}
+.vscode-sim__nofolder .vscode-sim__bluebtn {
+  display: block;
+  text-align: center;
+}
+.vscode-sim__welcome {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 2.2rem 1.6rem 1.5rem;
+}
+.vscode-sim__welcome-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.vscode-sim__welcome h4 {
+  margin: 0;
+  color: #cccccc;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+.vscode-sim__welcome-sub {
+  margin: 0 0 1.3rem;
+  color: #9d9d9d;
+  font-size: 1.15rem;
+}
+.vscode-sim__welcome-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.5rem 2.5rem;
+}
+.vscode-sim__welcome h5 {
+  margin: 0 0 0.6rem;
+  color: #cccccc;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+.vscode-sim__welcome ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+.vscode-sim__welcome li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3794ff;
+  font-size: 0.84rem;
+}
+.vscode-sim__welcome li .lab-ic {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+}
+.vscode-sim__welcome-none {
+  margin: 0;
+  color: #9d9d9d;
+  font-size: 0.8rem;
+}
+.vscode-sim__walk {
+  position: relative;
+  display: grid;
+  gap: 0.15rem;
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+  padding: 0.6rem 0.9rem 0.75rem;
+  border-radius: 6px;
+  background: #2b2b2b;
+}
+.vscode-sim__walk b {
+  color: #e2e2e2;
+  font-size: 0.82rem;
+}
+.vscode-sim__walk small {
+  color: #b5b5b5;
+  font-size: 0.76rem;
+}
+.vscode-sim__walk i {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 62%;
+  height: 3px;
+  background: #0078d4;
 }
 .lab-trust {
   width: min(100%, 470px);
@@ -2525,310 +2943,918 @@ button.vscode-sim__menuitem.is-open {
 /* ---------- Render ---------- */
 .lab-rd {
   position: relative;
-  min-height: 100%;
-  background: #f6f6f7;
-  color: #16161a;
-  font: 13px/1.5 "Segoe UI", Poppins, "Noto Sans JP", sans-serif;
-}
-.lab-rd__top {
-  position: sticky;
-  z-index: 3;
-  top: 0;
   display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  height: 46px;
-  padding: 0 1rem;
-  border-bottom: 1px solid #e3e3e6;
+  flex-direction: column;
+  min-height: 100%;
   background: #fff;
+  color: #111;
+  font: 12.5px/1.55 "Segoe UI", system-ui, "Noto Sans JP", sans-serif;
 }
-.lab-rd__logo {
-  font: 800 0.95rem/1 Poppins, sans-serif;
-  letter-spacing: -0.02em;
+.lab-rd .lab-ic {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
 }
-.lab-rd__ws {
-  color: #55555e;
-  font-size: 0.78rem;
+.lab-rd p,
+.lab-gh p {
+  margin: 0;
+  color: inherit;
+}
+.lab-rd u {
+  color: #6b2ee0;
+  text-decoration: none;
+}
+/* 抽象的な目印（Render の実物のロゴではない） */
+.lab-rd__mark {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 2px 9px 2px 2px;
+  background: #111;
+}
+.lab-fav--render {
+  background: none;
+}
+.lab-fav--render .lab-rd__mark {
+  width: 12px;
+  height: 12px;
 }
 .lab-rd__sp {
   flex: 1;
 }
-.lab-rd__new {
-  padding: 0.3rem 0.75rem;
-  border: 0;
-  border-radius: 6px;
-  background: #16161a;
+.lab-rd__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font: 600 1.05rem/1 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__black,
+.lab-rd__ghostbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #111;
+  background: #111;
   color: #fff;
   font: inherit;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
+  white-space: nowrap;
 }
-.lab-rd__me {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #8a5cf6;
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-.lab-rd__menu {
-  position: absolute;
-  z-index: 4;
-  top: 44px;
-  right: 3.2rem;
-  display: grid;
-  min-width: 200px;
-  padding: 0.3rem;
-  border: 1px solid #e3e3e6;
-  border-radius: 8px;
+.lab-rd__ghostbtn {
+  border-color: #cfcfcf;
   background: #fff;
-  box-shadow: 0 14px 36px #0003;
-  animation: lab-pop 0.15s ease-out;
+  color: #111;
+  font-weight: 400;
 }
-.lab-rd__menu > * {
-  padding: 0.4rem 0.7rem;
-  border: 0;
-  border-radius: 5px;
-  background: none;
-  color: #16161a;
+.lab-rd__input {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 2.5em;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+  color: #111;
   font: inherit;
   text-align: left;
 }
-.lab-rd__body {
-  width: min(100% - 2rem, 720px);
-  margin: auto;
-  padding: 1.2rem 0 1.6rem;
+.lab-rd__input.is-ph {
+  color: #9a9a9a;
 }
-.lab-rd__body h4 {
-  margin: 0 0 0.8rem;
-  font-size: 1.15rem;
+.lab-rd__input--sel em {
+  margin-left: auto;
+  color: #555;
+  font-style: normal;
 }
-.lab-rd__skeleton {
+.lab-rd__input--cmd {
+  font-family: Consolas, "Courier New", monospace;
+}
+.lab-rd__input--cmd > i:first-child {
+  color: #9a9a9a;
+  font-style: normal;
+}
+.lab-rd__input--cmd.is-focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 1px #1a73e8;
+}
+.lab-rd__input--cmd .is-selected {
+  background: #1a56c4;
+  color: #fff;
+}
+
+/* 公式サイトとログイン */
+.lab-rd__sitenav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 0 0 1.2rem;
+  border-bottom: 1px solid #e6e6e6;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+.lab-rd__sitenav button {
+  padding: 0.3rem 0.4rem;
+  border: 0;
+  background: none;
+  color: #111;
+  font: inherit;
+}
+.lab-rd__cta {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  padding: 1.05rem 1.4rem;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+}
+.lab-rd__hero {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.2rem 1.6rem;
+}
+.lab-rd__hero h4 {
+  margin: 0 0 1rem;
+  font: 400 clamp(1.5rem, 4.2vw, 2.7rem)/1.15 Poppins, "Segoe UI", sans-serif;
+  letter-spacing: -0.02em;
+}
+.lab-rd__hero p {
+  max-width: 30em;
+  color: #555;
+  font-size: 0.98rem;
+}
+.lab-rd__herobtns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  margin-top: 1.2rem;
+}
+.lab-rd__heroart {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+}
+.lab-rd__heroart code {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0;
+  background: #3a3a3a;
+  color: #fff;
+  font: 0.95rem Consolas, monospace;
+}
+.lab-rd__heroart div {
   display: grid;
   gap: 0.6rem;
+  width: 100%;
+  padding: 0.9rem;
+  border: 1px solid #e3e3e3;
 }
-.lab-rd__skeleton i {
-  display: block;
-  height: 54px;
-  border: 1px dashed #d5d5da;
-  border-radius: 8px;
+.lab-rd__heroart small {
+  color: #777;
+  font: 0.68rem Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+.lab-rd__heroart span {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border: 1px solid #e3e3e3;
+}
+.lab-rd__heroart i {
+  height: 26px;
+  border: 1px solid #e3e3e3;
+  background: linear-gradient(170deg, transparent 58%, #8a05ff 59% 62%, transparent 63%);
+}
+.lab-rd--auth {
+  padding: 0.9rem 1rem 1.5rem;
+}
+.lab-rd__signin {
+  display: grid;
+  gap: 0.5rem;
+  width: min(100%, 440px);
+  margin: 2.2rem auto 0;
+}
+.lab-rd__signin h4 {
+  margin: 0 0 0.6rem;
+  font: 500 1.25rem/1.3 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__sso {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+.lab-rd__sso > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.5em;
+  padding: 0.3rem;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+  color: #111;
+  font: inherit;
+}
+.lab-rd__or {
+  text-align: center;
+}
+.lab-rd__flabel {
+  margin-top: 0.4rem !important;
+  font-weight: 600;
+}
+.lab-rd__signin .lab-rd__black {
+  justify-self: start;
+  margin-top: 0.6rem;
+}
+.lab-rd__links {
+  margin-top: 0.8rem !important;
+  color: #555 !important;
+  line-height: 2;
+}
+
+/* GitHub 連携の許可（簡略化した画面） */
+.lab-gh {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  padding: 1.2rem;
+  background: #f6f8fa;
+  color: #1f2328;
+  font: 13px/1.6 "Segoe UI", system-ui, "Noto Sans JP", sans-serif;
+}
+.lab-gh__card {
+  display: grid;
+  gap: 0.7rem;
+  width: min(100%, 400px);
+  padding: 1.3rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
   background: #fff;
 }
-.lab-rd__label {
-  margin: 0 0 0.4rem;
-  color: #55555e;
+.lab-gh__pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  color: #8c959f;
+}
+.lab-gh__pair i {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1f2328;
+  color: #fff;
+}
+.lab-gh__pair i.is-rd {
+  border: 1px solid #d0d7de;
+  background: #fff;
+}
+.lab-gh__pair .lab-ic {
+  width: 20px;
+  height: 20px;
+}
+.lab-gh__pair em {
+  font-style: normal;
+}
+.lab-gh h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: center;
+}
+.lab-gh ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.lab-gh__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: 0.3rem;
+}
+.lab-gh__btns > * {
+  display: grid;
+  place-items: center;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: #1f2328;
+  font: inherit;
+  font-weight: 600;
+}
+.lab-gh__btns button {
+  border-color: #1a7f37;
+  background: #1f883d;
+  color: #fff;
+}
+.lab-gh__note {
+  color: #656d76 !important;
   font-size: 0.76rem;
+}
+
+/* ダッシュボード共通の上部バーと左の一覧 */
+.lab-rd__top {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  min-height: 40px;
+  border-bottom: 1px solid #e3e3e3;
+  background: #fff;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.lab-rd__top > * {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.lab-rd__top > .lab-rd__mark {
+  align-self: center;
+  margin: 0 0.8rem;
+}
+.lab-rd__ws {
+  padding: 0 0.8rem;
+  border-inline: 1px solid #e3e3e3;
+  color: #333;
+}
+.lab-rd__ws i,
+.lab-rd__me {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f6e7a8;
+  color: #6a5200;
+  font-size: 0.62rem;
+  font-style: normal;
   font-weight: 700;
+}
+.lab-rd__me {
+  background: #b9f0c9;
+  color: #14602f;
+}
+.lab-rd__ws em {
+  color: #888;
+  font-size: 0.6rem;
+  font-style: normal;
+}
+.lab-rd__crumbs {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 0.9rem;
+  color: #555;
+}
+.lab-rd__crumbs i {
+  color: #b5b5b5;
+  font-style: normal;
+}
+.lab-rd__tool {
+  padding: 0 0.85rem;
+  border: 0;
+  border-left: 1px solid #e3e3e3;
+  background: none;
+  color: #111;
+  font: inherit;
+}
+.lab-rd__tool kbd {
+  padding: 0 0.25rem;
+  background: #f1f1f1;
+  color: #555;
+  font: 0.66rem Consolas, monospace;
+}
+.lab-rd__new.is-open {
+  background: #e9e9e9;
+}
+.lab-rd__menu {
+  position: absolute;
+  top: 100%;
+  right: 2.6rem;
+  display: grid;
+  min-width: 190px;
+  padding: 0.5rem 0;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+  box-shadow: 0 10px 30px #0003;
+  font-size: 0.8rem;
+  animation: lab-pop 0.15s ease-out;
+}
+.lab-rd__menu > span,
+.lab-rd__menu > button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 1.1rem;
+  border: 0;
+  background: none;
+  color: #111;
+  font: inherit;
+  text-align: left;
+}
+.lab-rd__menu hr {
+  width: calc(100% - 2.2rem);
+  margin: 0.35rem auto;
+  border: 0;
+  border-top: 1px solid #e3e3e3;
+}
+.lab-rd__cols {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 168px minmax(0, 1fr);
+  min-height: 0;
+}
+.lab-rd__side {
+  display: grid;
+  align-content: start;
+  gap: 0.1rem;
+  padding: 0.6rem 0.5rem;
+  border-right: 1px solid #e3e3e3;
+  font-size: 0.82rem;
+}
+.lab-rd__side span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+}
+.lab-rd__side .is-on {
+  background: #f3ecff;
+  color: #6b2ee0;
+}
+.lab-rd__side small {
+  margin-top: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  color: #777;
+  font: 0.66rem Consolas, monospace;
+  letter-spacing: 0.1em;
+}
+.lab-rd__body {
+  min-width: 0;
+  padding: 1.2rem 1.4rem 1.6rem;
+}
+.lab-rd h4.lab-rd__h {
+  margin: 0 0 0.9rem;
+  font: 500 1.35rem/1.3 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd h5 {
+  margin: 1.2rem 0 0.6rem;
+  font: 600 0.98rem/1.4 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__promo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.1rem 1.2rem;
+  background: #f7f7f7;
+}
+.lab-rd__promo b {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+  font: 500 1.05rem/1.3 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__promo b .lab-ic {
+  color: #6b2ee0;
+}
+.lab-rd__promoart {
+  display: grid;
+  align-content: center;
+  gap: 0.4rem;
+  padding: 0.8rem;
+  border: 1px solid #dedede;
+  background: #fff;
+}
+.lab-rd__promoart i {
+  height: 12px;
+  border: 1px solid #e3e3e3;
 }
 .lab-rd__tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
   margin-bottom: 0.7rem;
 }
 .lab-rd__tabs span {
-  padding: 0.3rem 0.7rem;
-  border: 1px solid #e3e3e6;
-  border-radius: 6px;
-  background: #fff;
-  color: #55555e;
-  font-size: 0.76rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid #dcdcdc;
+  margin-right: -1px;
+  color: #444;
+  white-space: nowrap;
 }
 .lab-rd__tabs .is-active {
-  border-color: #16161a;
-  color: #16161a;
-  font-weight: 700;
+  background: #f6f0ff;
+  color: #6b2ee0;
+}
+.lab-rd__thead {
+  display: grid;
+  grid-template-columns: 2.4fr 1fr 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e3e3e3;
+  color: #333;
+  font: 0.66rem Consolas, monospace;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* New Web Service の設定フォーム */
+.lab-rd__body--form {
+  flex: 1;
+}
+.lab-rd__lead {
+  margin: -0.4rem 0 0.4rem !important;
+}
+.lab-rd__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 0.4rem 1.6rem;
+  padding: 0.8rem 0;
+}
+.lab-rd__lab b {
+  font-size: 0.86rem;
+}
+.lab-rd__lab em {
+  margin-left: 0.5rem;
+  color: #888;
+  font-style: normal;
+}
+.lab-rd__help {
+  margin-top: 0.2rem;
+  color: #666;
+  font-size: 0.8rem;
+}
+.lab-rd__help ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.3rem;
+}
+.lab-rd__ctl {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.lab-rd__srch {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+.lab-rd__cred {
+  width: auto;
+  white-space: nowrap;
 }
 .lab-rd__repos {
   display: grid;
-  gap: 0.4rem;
+  border: 1px solid #dcdcdc;
 }
 .lab-rd__repo {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #e3e3e6;
-  border-radius: 8px;
-  background: #fff;
-  color: #16161a;
+  padding: 0.5rem 0.8rem;
+  border: 0;
+  background: none;
+  color: #111;
   font: inherit;
   text-align: left;
 }
-.lab-rd__repo small {
-  margin-left: auto;
-  color: #77777f;
-  font-size: 0.72rem;
+.lab-rd__repo b {
+  font-weight: 400;
 }
-.lab-rd__repo.is-dim,
-.lab-rd__plan.is-dim {
-  opacity: 0.55;
+.lab-rd__repo small,
+.lab-rd__src small {
+  color: #888;
+  font-size: 0.74rem;
+}
+.lab-rd__repo span .lab-ic {
+  width: 11px;
+  height: 11px;
+  color: #888;
 }
 .lab-rd__src {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.9rem;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid #e3e3e6;
-  border-radius: 8px;
-  background: #fff;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #dcdcdc;
 }
-.lab-rd__field {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
+.lab-rd__src em {
+  display: inline-flex;
   align-items: center;
-  gap: 0.2rem 0.9rem;
-  margin: 0.55rem 0;
-}
-.lab-rd__field > span {
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-.lab-rd__field > small {
-  grid-column: 2;
-  color: #77777f;
-  font-size: 0.72rem;
-}
-.lab-rd__input {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  width: 100%;
-  min-height: 34px;
-  padding: 0.3rem 0.7rem;
-  border: 1px solid #d5d5da;
-  border-radius: 6px;
-  background: #fff;
-  color: #16161a;
-  font: inherit;
-  text-align: left;
-}
-.lab-rd__input--cmd {
-  font-family: Consolas, "Courier New", monospace;
-  cursor: text;
-}
-.lab-rd__input--cmd > i:first-child {
-  color: #9a9aa2;
+  gap: 0.3rem;
+  margin-left: auto;
   font-style: normal;
 }
-.lab-rd__plans {
+.lab-rd__proj {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.4rem;
+  justify-items: start;
+  gap: 0.35rem;
+  padding: 1.1rem 12%;
+  border: 1px solid #dcdcdc;
+}
+.lab-rd__proj p {
+  color: #666 !important;
+  font-size: 0.8rem;
+}
+.lab-rd__proj .lab-rd__ghostbtn,
+.lab-rd__compute > .lab-rd__ghostbtn {
+  margin-top: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+}
+.lab-rd__more {
+  color: #333 !important;
+  font-size: 0.78rem;
+  text-align: right;
+}
+.lab-rd__compute {
+  display: grid;
+  justify-items: start;
+  gap: 0.1rem;
+  padding: 0.9rem 0.8rem;
+  border: 1px solid #dcdcdc;
+}
+.lab-rd__selected {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: 0.6rem !important;
+  color: #555 !important;
+}
+.lab-rd__price {
+  color: #555;
+  white-space: nowrap;
+}
+.lab-rd__price b {
+  margin-left: 1em;
+  color: #111;
+}
+.lab-rd__price b:first-child {
+  margin-left: 0;
+}
+.lab-rd__freenote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 0.5rem !important;
+  padding: 0.55rem 0.7rem;
+  background: #f3ecff;
+  color: #111 !important;
+}
+.lab-rd__freenote .lab-ic {
+  margin-top: 0.2rem;
+  color: #8a05ff;
+}
+.lab-rd__freenote > span {
+  flex: 1;
+}
+.lab-rd__freenote u {
+  color: #111;
+  text-decoration: underline;
+  white-space: nowrap;
 }
 .lab-rd__plan {
   display: grid;
-  gap: 0.1rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid #d5d5da;
-  border-radius: 8px;
-  background: #fff;
-  color: #16161a;
+  grid-template-columns: 18px 1.25fr 1fr 1.1fr 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid transparent;
+  border-bottom-color: #e6e6e6;
+  background: none;
+  color: #555;
   font: inherit;
   text-align: left;
 }
 .lab-rd__plan small {
-  color: #77777f;
-  font-size: 0.72rem;
+  color: #555;
+  font: 0.72rem Consolas, monospace;
 }
 .lab-rd__plan.is-selected {
-  border-color: #16161a;
-  background: #f1f1f3;
-  box-shadow: 0 0 0 1px #16161a;
+  border-color: #8a05ff;
+  color: #111;
 }
-.lab-rd__create {
-  margin-top: 1rem;
-  padding: 0.55rem 1rem;
-  border: 0;
-  border-radius: 7px;
-  background: #16161a;
-  color: #fff;
+.lab-rd__region {
+  grid-template-columns: 18px minmax(0, 1fr);
+}
+.lab-rd__region small {
   font: inherit;
-  font-size: 0.82rem;
-  font-weight: 700;
+  color: #666;
 }
-.lab-rd__svc {
+.lab-rd__radio {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #b5b5b5;
+  border-radius: 50%;
+  background: #fff;
+}
+.lab-rd__radio.is-on {
+  border: 4.5px solid #6a00d8;
+}
+.lab-rd__env {
+  margin-top: 0.8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #dcdcdc;
+}
+.lab-rd__env b {
+  font: 500 1rem/1.4 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__env p {
+  color: #666 !important;
+  font-size: 0.8rem;
+}
+.lab-rd__adv {
+  font: 500 0.98rem/1.4 Poppins, "Segoe UI", sans-serif;
+}
+.lab-rd__deploybar {
+  position: sticky;
+  z-index: 3;
+  bottom: 0;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.7rem;
+  padding: 0.6rem 1.4rem;
+  border-top: 1px solid #e3e3e3;
+  background: #fff;
 }
-.lab-rd__svc small {
-  color: #77777f;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.lab-rd__deploybar .lab-rd__black,
+.lab-rd__deploybar .lab-rd__ghostbtn {
+  font-size: 0.86rem;
 }
-.lab-rd__svc h4 {
-  margin: 0.1rem 0 0.2rem;
+.lab-rd__deploybar .lab-rd__price {
+  margin-left: 0.6rem;
 }
-.lab-rd__svc p {
+
+/* デプロイの進行とログ */
+.lab-rd__body--deploy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.lab-rd__dephead {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  margin: 0 0 0.3rem;
-  color: #55555e;
-  font-size: 0.76rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
-.lab-rd__pill {
-  margin-left: 0.3rem;
-  padding: 0.05rem 0.5rem;
-  border: 1px solid #d5d5da;
-  border-radius: 99px;
-  font-size: 0.66rem;
-  font-weight: 600;
-  vertical-align: middle;
+.lab-rd__dephead .lab-rd__h {
+  margin: 0;
+  font-size: 1.05rem;
 }
-.lab-rd__url {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #5b3fd6;
-  font: inherit;
-  font-size: 0.8rem;
-  text-align: left;
-  text-decoration: underline;
-  overflow-wrap: anywhere;
-}
-.lab-rd__url.is-pending {
-  color: #9a9aa2;
-  text-decoration: none;
-}
-.lab-rd__status {
-  padding: 0.2rem 0.7rem;
-  border-radius: 99px;
-  font-size: 0.72rem;
-  font-weight: 700;
+.lab-rd__cancel {
+  color: #c62828;
   white-space: nowrap;
 }
-.lab-rd__status.is-building,
-.lab-rd__status.is-deploying {
-  background: #fff3d6;
-  color: #8a5a00;
+.lab-rd__tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem 1rem;
 }
-.lab-rd__status.is-live {
-  background: #d9f5e3;
-  color: #11703a;
+.lab-rd__tile {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+.lab-rd__tile > i {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  background: #f3f3f3;
+  color: #333;
+}
+.lab-rd__tile > i .lab-ic[viewBox] {
+  width: 14px;
+  height: 14px;
+}
+.lab-rd__tile div {
+  display: grid;
+  min-width: 0;
+}
+.lab-rd__tile small {
+  color: #666;
+  font: 0.64rem Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+.lab-rd__tile span {
+  overflow: hidden;
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lab-rd__tile em {
+  color: #777;
+  font-style: normal;
+}
+.lab-rd__tile u {
+  color: #111;
+  text-decoration: underline;
+}
+.lab-rd__spin {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #cfcfcf;
+  border-top-color: #555;
+  border-radius: 50%;
+  animation: lab-spin 0.9s linear infinite;
+}
+.lab-rd__logbox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid #e3e3e3;
+}
+.lab-rd__logbar {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem;
+}
+.lab-rd__logbar > span {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #dcdcdc;
+  white-space: nowrap;
+}
+.lab-rd__logbar > .lab-rd__input {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+.lab-rd__logdate {
+  padding: 0.15rem 0.6rem;
+  background: #fafafa;
+  color: #555 !important;
+  font: 0.72rem Consolas, monospace;
 }
 .lab-rd__logs {
+  flex: 1 1 172px;
+  min-height: 172px;
   overflow: auto;
-  height: 210px;
-  padding: 0.7rem 0.9rem;
-  border-radius: 8px;
-  background: #101014;
-  color: #d7d7de;
-  font: 12px/1.6 Consolas, "Courier New", monospace;
+  padding: 0.2rem 0.6rem 0.5rem;
+  background: #fafafa;
+  color: #111;
+  font: 11.5px/1.75 Consolas, "Courier New", monospace;
+}
+.lab-rd__logs > div {
+  display: flex;
+  gap: 0.8rem;
+}
+.lab-rd__logs time {
+  flex-shrink: 0;
+  color: #777;
+}
+.lab-rd__logs em {
+  flex-shrink: 0;
+  color: #777;
+  font-style: normal;
+}
+.lab-rd__logs span {
+  min-width: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.lab-rd__logs .is-step {
-  color: #9fe6b8;
+.lab-rd__logs .is-step span {
+  font-weight: 700;
+}
+.lab-rd__logs .is-step b {
+  color: #6a00d8;
+}
+.lab-rd__logs u,
+.lab-rd__logs button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #111;
+  font: inherit;
+  text-decoration: underline;
+}
+.lab-rd__logs button {
+  color: #6a00d8;
+  overflow-wrap: anywhere;
 }
 
 @keyframes lab-guided { 50% { box-shadow: 0 0 0 7px #ff545433; } }
@@ -2874,10 +3900,21 @@ button.vscode-sim__menuitem.is-open {
     padding: 0 0.4rem;
   }
   .lab-br-nav,
-  .lab-rd__ws,
+  .lab-rd__ws > span,
+  .lab-rd__ws em,
+  .lab-rd__crumbs,
+  .lab-rd__tool--wide,
+  .lab-rd__side,
+  .lab-rd__sitenav > span:not(.lab-rd__sp):not(.lab-rd__cta),
+  .lab-rd__heroart,
+  .lab-rd__promoart,
+  .lab-rd__logx,
   .lab-picker__search,
-  .lab-picker__body nav,
-  .vscode-sim__title,
+  .lab-picker__nav .lab-ic:nth-child(n + 3),
+  .lab-picker__view,
+  .lab-picker__help,
+  .lab-picker .lab-picker__pin,
+  .vscode-sim__center,
   .vscode-sim__menuitem:not(button):not(.is-keep) {
     display: none;
   }
@@ -2889,10 +3926,61 @@ button.vscode-sim__menuitem.is-open {
     display: inline;
   }
   .lab-ins-big {
-    grid-template-columns: 84px minmax(0, 1fr);
+    grid-template-columns: 30% minmax(0, 1fr);
   }
-  .lab-ins-btn {
-    min-width: 62px;
+  .lab-nodelogo--big b {
+    font-size: 1.35rem;
+  }
+  .lab-nodelogo--big em {
+    font-size: 0.55rem;
+  }
+  .lab-ins-head .lab-nodelogo b {
+    font-size: 1.3rem;
+  }
+  .lab-ins-head {
+    padding-inline: 0.8rem;
+  }
+  .lab-ins-head > div > small {
+    padding-left: 0.4rem;
+  }
+  .lab-ins-content {
+    padding: 0.9rem 0.8rem 0.5rem;
+  }
+  .lab-ins-main {
+    padding: 1.2rem 0.7rem 0.8rem 0.2rem;
+  }
+  .lab-ins-main h4 {
+    margin-bottom: 1.4rem;
+    font-size: 1.02rem;
+  }
+  .lab-ins-license {
+    height: 132px;
+  }
+  .lab-ins-path {
+    margin-top: 1.2rem;
+  }
+  .lab-ins-custom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lab-ins-tree {
+    min-height: 0;
+  }
+  .lab-ins-desc p {
+    margin-bottom: 0.4rem;
+  }
+  .lab-ins-browse {
+    display: none;
+  }
+  .lab-ins-foot {
+    padding: 0.6rem 0.6rem;
+  }
+  .lab-ins-foot .lab-ins-btn:last-child {
+    margin-left: 0.4rem;
+  }
+  .lab-ins-btn,
+  .lab-ins-foot--wide .lab-ins-btn {
+    min-width: 58px;
+    padding-inline: 0.45rem;
   }
   .vscode-sim__workspace {
     grid-template-columns: 30px 108px minmax(0, 1fr);
@@ -2949,13 +4037,107 @@ button.vscode-sim__menuitem.is-open {
     padding-inline: 0.5rem;
   }
   .lab-picker__body {
+    grid-template-columns: 104px minmax(0, 1fr);
+    height: 204px;
+  }
+  .lab-picker__body nav > span,
+  .lab-picker__body nav > button {
+    padding-left: 0.4rem;
+  }
+  .lab-picker__bar,
+  .lab-picker__tools {
+    gap: 0.5rem;
+    padding-inline: 0.6rem;
+  }
+  .lab-picker__grid {
+    grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+    padding: 0.4rem;
+  }
+  .lab-rd__logbar > .lab-rd__input {
+    display: none;
+  }
+  .lab-rd__logbar {
+    justify-content: space-between;
+  }
+  .lab-picker__foot label {
+    padding-left: 0;
+  }
+  .vscode-sim__nofolder {
+    padding-inline: 0.5rem;
+  }
+  .vscode-sim__welcome {
+    padding: 1rem 0.7rem;
+  }
+  .vscode-sim__welcome h4 {
+    font-size: 1.15rem;
+  }
+  .vscode-sim__welcome-sub {
+    font-size: 0.9rem;
+  }
+  .vscode-sim__welcome-cols {
     grid-template-columns: minmax(0, 1fr);
   }
-  .lab-rd__field {
+  .lab-rd__sitenav {
+    gap: 0.6rem;
+    padding-left: 0.7rem;
+  }
+  .lab-rd__cta {
+    padding: 0.8rem 0.7rem;
+  }
+  .lab-rd__hero,
+  .lab-rd__promo,
+  .lab-rd__cols,
+  .lab-rd__row {
     grid-template-columns: minmax(0, 1fr);
   }
-  .lab-rd__field > small {
-    grid-column: 1;
+  .lab-rd__hero {
+    padding: 1.4rem 0.9rem;
+  }
+  .lab-rd__body {
+    padding: 0.9rem 0.8rem 1.2rem;
+  }
+  .lab-rd__sso {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lab-rd__thead span:nth-child(n + 3) {
+    display: none;
+  }
+  .lab-rd__thead {
+    grid-template-columns: 2fr 1fr;
+  }
+  .lab-rd__proj {
+    padding-inline: 0.8rem;
+  }
+  .lab-rd__plan {
+    grid-template-columns: 18px 1.3fr 1fr 1.2fr;
+    gap: 0.4rem;
+    padding-inline: 0.4rem;
+    font-size: 0.76rem;
+  }
+  .lab-rd__plan small {
+    display: none;
+  }
+  .lab-rd__region {
+    grid-template-columns: 18px minmax(0, 1fr);
+  }
+  .lab-rd__region small {
+    display: inline;
+  }
+  .lab-rd__price b {
+    margin-left: 0.5em;
+  }
+  .lab-rd__deploybar {
+    padding: 0.5rem 0.8rem;
+  }
+  .lab-rd__deploybar .lab-rd__price {
+    margin-left: 0;
+    font-size: 0.74rem;
+  }
+  .lab-rd__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lab-rd__logs time {
+    display: none;
   }
   .lab-rd__menu {
     right: 0.6rem;
