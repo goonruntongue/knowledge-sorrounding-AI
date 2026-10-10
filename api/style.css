@@ -539,6 +539,18 @@ pre {
   white-space: pre;
 }
 .api-use-card small { color: var(--muted); }
+.api-use-note { margin: 1.1rem 0 1.4rem; }
+.api-use-cost {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.65;
+}
+.api-use-cost--free { border-color: #b9d8bb; background: #f1f9f0; color: #286331; }
+.api-use-cost--check { border-color: #ead392; background: #fff9e8; color: #70571a; }
+.api-use-cost--paid { border-color: #e7bbca; background: #fff1f5; color: #84324f; }
 .api-use-card .text-link { margin-top: auto; }
 .api-use-card--ai { border-color: #d6c5ef; background: linear-gradient(150deg, #fff, #faf7ff); }
 .api-use-callout { margin-top: 1.5rem; }

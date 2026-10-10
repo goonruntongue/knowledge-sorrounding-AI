@@ -544,6 +544,7 @@ Node.js の確認 → フォルダー作成 → npm init と Express の導入
           <p class="intro">
             APIを作るだけでなく、すでに公開されているAPIへお願いして、データや機能を自分の画面に組み込めます。最初は<strong>何を送り、何が返り、どこに表示するか</strong>を三つに分けて考えます。
           </p>
+          <p class="note api-use-note"><strong>外部APIには費用と利用条件があります。</strong>無料で試せるものでも、回数制限・表示義務・将来の料金改定があります。使う前に必ず公式の料金と利用規約を確認し、課金が必要なAPIは予算と上限を決めましょう。</p>
           <ol class="api-use-flow" aria-label="外部APIをアプリに使う基本の流れ">
             <li><b>1</b><span>APIの説明書を読む</span><small>URL・送る値・返り方・利用条件を確認</small></li>
             <li><b>2</b><span>お願いを送る</span><small><code>fetch()</code> でリクエストする</small></li>
@@ -561,6 +562,7 @@ const [quote] = await res.json();
 message.textContent = quote.q;
 author.textContent = quote.a;</code></pre>
               <small>返る例：<code>{ q: "名言", a: "著者" }</code></small>
+              <p class="api-use-cost api-use-cost--free"><strong>費用の目安：無料で試せます。</strong>無料版はIPごとに30秒5回までで、ZenQuotesへのリンク表示が必要です。制限を超える使い方や一部機能は、公式のAPIキー・契約条件を確認します。</p>
               <a class="text-link" href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotesの説明書を読む ↗</a>
             </article>
             <article class="api-use-card">
@@ -574,6 +576,7 @@ qrImage.src =
   'https://api.qrserver.com/v1/create-qr-code/' +
   '?size=180x180&data=' + text;</code></pre>
               <small>返るもの：JSONではなく、画像として使えるURL</small>
+              <p class="api-use-cost api-use-cost--check"><strong>費用の目安：公開ドキュメントに料金表の記載はありません。</strong>キーなしで試せますが、乱用は拒否される場合があり、1日1万回を超える定常利用は事前連絡が必要です。商用・大量利用前は利用条件を確認します。</p>
               <a class="text-link" href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code APIの説明書を読む ↗</a>
             </article>
             <article class="api-use-card api-use-card--ai">
@@ -588,6 +591,7 @@ const result = await client.responses.create({
   model: '...', input: question
 });</code></pre>
               <small>画面 → 自分のサーバー → AI API → 自分のサーバー → 画面</small>
+              <p class="api-use-cost api-use-cost--paid"><strong>費用の目安：原則、従量課金です。</strong>Responses APIそのものの追加料金ではなく、選んだモデルの入力・出力トークン量に応じて料金が発生します。API用の課金設定と使用量上限を先に確認します。</p>
               <a class="text-link" href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">Responses APIの説明書を読む ↗</a>
             </article>
           </div>
@@ -648,11 +652,12 @@ const result = await client.responses.create({
             <li><a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare：Workers Freeの利用枠 ↗</a></li>
             <li><a href="https://firebase.google.com/docs/functions/quotas" target="_blank" rel="noopener noreferrer">Firebase：Cloud FunctionsとBlazeプラン ↗</a></li>
           </ul>
-          <p>外部APIの使い方を確認：2026年10月10日</p>
+          <p>外部APIの使い方・費用条件を確認：2026年10月10日</p>
           <ul>
             <li><a href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotes：JSONで名言を受け取るAPI ↗</a></li>
             <li><a href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code API：文字列からQRコード画像を作る ↗</a></li>
             <li><a href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">OpenAI：Responses APIの概要 ↗</a></li>
+            <li><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener noreferrer">OpenAI：API料金（モデルごとのトークン課金）↗</a></li>
           </ul>
         </div>
       </section>
