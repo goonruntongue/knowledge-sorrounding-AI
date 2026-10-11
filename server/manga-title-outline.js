@@ -20,9 +20,9 @@
     if (!window.jQuery || !window.jQuery.fn.outliner) return;
 
     window.jQuery(".hero h1").outliner({
-      // ヒーローのイラストに重なっても読める、太い白の袋文字。
+      // 白文字・黄色文字のどちらにも効く、太い黒の袋文字。
       width: "8px",
-      color: "#fffdf8",
+      color: "#07162d",
       corner: "4px"
     });
     window.jQuery("section:not(.hero) h2").outliner({
