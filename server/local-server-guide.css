@@ -163,7 +163,8 @@
 
 .server-lab-edit {
   margin-top: 1.25rem;
-  padding: 1.15rem clamp(2rem, 7vw, 4.5rem);
+  /* 点線のガイド内に文章を収めるため、左右に十分な逃げを取る。 */
+  padding: 1.2rem clamp(2.5rem, 10vw, 5rem);
   border: 3px solid #164b8e;
   border-radius: 12px;
   background: #e8f3ff;
@@ -190,6 +191,7 @@
   .server-lab-dialog { width: min(100vw - 1rem, 720px); border-radius: 16px; }
   .server-lab-dialog__header { padding: 1.3rem 1.7rem 1rem; }
   .server-lab-dialog__body { padding: 1rem; }
+  .server-lab-edit { padding-inline: 2.6rem; }
   .has-server-lab #toTop { bottom: 9.1rem !important; }
 }
 
