@@ -36,7 +36,8 @@
       corner: "2px"
     });
     // 絵と重なる文字は、白い太めの袋文字で読みやすさを保つ。
-    window.jQuery(".top span, .card--key h3, .card--key > p:not(.kicker)").outliner({
+    // サーバーのカードは絵と本文が重ならない配置なので、袋文字にしない（本文の改行が崩れるため）。
+    window.jQuery(".top span").outliner({
       width: "4px",
       color: "#fffdf8",
       corner: "3px"

@@ -70,6 +70,8 @@ section{position:relative;padding:78px 0 !important}
   text-shadow:none;
 }
 .hero h1 em{color:var(--yellow) !important}
+/* 改行は「お願いに」「返事をする役。」の切れ目だけにし、1文字だけ次の行へ落ちないようにする。 */
+.hero h1 em,.hero h1 .keep{white-space:nowrap}
 .hero .lead{max-width:34rem;color:#f7fbff !important;font-weight:700}
 .hero .tag{color:#bff5ec !important}
 .hero img{
@@ -137,18 +139,20 @@ h1 em,h2 em{color:var(--blue) !important}
   border-color:var(--ink) !important;
   background:#dcfff7 !important;
 }
+/* 絵は見出しの右上に置き、本文には重ねない。 */
 .card--key::after{
   position:absolute;
-  right:-34px;
-  bottom:-44px;
-  width:174px;
-  height:174px;
+  top:-8px;
+  right:-6px;
+  width:108px;
+  height:108px;
   background:url("assets/icon-server-card.png") center/contain no-repeat;
   content:"";
   z-index:0;
   pointer-events:none;
 }
 .card--key > *{position:relative;z-index:1}
+.card--key .kicker,.card--key h3{padding-right:98px}
 .word{
   position:relative;
   overflow:hidden;
