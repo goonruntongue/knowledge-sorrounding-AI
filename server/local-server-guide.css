@@ -1,0 +1,201 @@
+/* ローカルサーバー実習への入口。既存の漫画インク配色とそろえる。 */
+.server-lab-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5em;
+  padding: .7rem 1rem;
+  background: linear-gradient(90deg, #07162d, #143b70 55%, #07162d);
+  border-top: 3px solid #ffcb36;
+  box-shadow: 0 -5px 0 rgba(7, 22, 45, .32);
+}
+
+.server-lab-dock__inside {
+  width: min(100%, 920px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.server-lab-dock p {
+  margin: 0;
+  color: #fff;
+  font-family: Poppins, "Noto Sans JP", sans-serif;
+  font-size: clamp(.82rem, 1.6vw, .98rem);
+  font-weight: 700;
+}
+
+.server-lab-dock strong { color: #ffdc59; }
+
+.server-lab-open {
+  appearance: none;
+  flex: 0 0 auto;
+  padding: .78rem 1.1rem;
+  border: 3px solid #07162d;
+  border-radius: 999px;
+  background: #ffcb36;
+  color: #07162d;
+  box-shadow: 0 3px 0 #fff;
+  font: 800 .95rem Poppins, "Noto Sans JP", sans-serif;
+  cursor: pointer;
+}
+
+.server-lab-open:hover,
+.server-lab-open:focus-visible {
+  transform: translateY(-2px);
+  background: #fff3a9;
+}
+
+.server-lab-dialog {
+  width: min(720px, calc(100vw - 1.5rem));
+  max-height: min(86vh, 780px);
+  padding: 0;
+  overflow: auto;
+  border: 4px solid #07162d;
+  border-radius: 22px;
+  background: #fffdf5;
+  color: #07162d;
+  box-shadow: 8px 8px 0 #07162d;
+}
+
+.server-lab-dialog::backdrop { background: rgba(4, 13, 31, .72); }
+
+.server-lab-dialog__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.55rem 2.5rem 1.3rem;
+  background: #164b8e;
+  color: #fff;
+}
+
+.server-lab-dialog__eyebrow {
+  display: block;
+  margin-bottom: .25rem;
+  color: #ffdc59;
+  font: 800 .75rem Poppins, "Noto Sans JP", sans-serif;
+  letter-spacing: .08em;
+}
+
+.server-lab-dialog h2,
+.server-lab-dialog h3 {
+  font-family: Poppins, "Noto Sans JP", sans-serif;
+}
+
+.server-lab-dialog h2 {
+  margin: 0;
+  color: #fff !important;
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  font-weight: 900;
+  line-height: 1.35;
+  text-shadow: none !important;
+}
+.server-lab-dialog h3 { margin: 0 0 .35rem; font-size: 1.04rem; }
+
+.server-lab-close {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #07162d;
+  color: #fff;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.server-lab-dialog__body { padding: 1.3rem; }
+.server-lab-dialog__lead { margin-top: 0; font-weight: 700; line-height: 1.9; }
+
+.server-lab-download {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin: .2rem 0 1.2rem;
+  padding: .8rem 1.05rem;
+  border: 3px solid #07162d;
+  border-radius: 12px;
+  background: #ffcb36;
+  color: #07162d;
+  box-shadow: 4px 4px 0 #07162d;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.server-lab-download:hover,
+.server-lab-download:focus-visible { background: #fff3a9; transform: translate(-1px, -1px); }
+
+.server-lab-flow { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; counter-reset: server-flow; }
+.server-lab-flow li {
+  position: relative;
+  min-height: 4.35rem;
+  padding: .8rem .9rem .8rem 4.2rem;
+  border: 2px solid #a6c7ee;
+  border-radius: 12px;
+  background: #f3f8ff;
+  counter-increment: server-flow;
+  line-height: 1.65;
+}
+.server-lab-flow li::before {
+  content: counter(server-flow);
+  position: absolute;
+  left: .85rem;
+  top: .8rem;
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 2px solid #07162d;
+  border-radius: 50%;
+  background: #ffcb36;
+  font: 900 1rem Poppins, sans-serif;
+}
+.server-lab-flow strong { display: block; }
+
+.server-lab-edit {
+  margin-top: 1.25rem;
+  padding: 1.15rem clamp(2rem, 7vw, 4.5rem);
+  border: 3px solid #164b8e;
+  border-radius: 12px;
+  background: #e8f3ff;
+}
+.server-lab-edit p { line-height: 1.75; }
+.server-lab-edit code {
+  display: inline-block;
+  margin: .2rem 0;
+  padding: .18rem .4rem;
+  border-radius: 4px;
+  background: #07162d;
+  color: #fff3a9;
+  font-family: ui-monospace, Consolas, monospace;
+  font-weight: 700;
+}
+.server-lab-result { margin: 1.25rem 0 0; padding: 1rem; border-left: 6px solid #f05b35; background: #fff1e8; line-height: 1.75; }
+.server-lab-note { font-size: .87rem; line-height: 1.65; color: #3d4b5e; }
+
+.has-server-lab #toTop { bottom: 6.8rem !important; }
+
+@media (max-width: 620px) {
+  .server-lab-dock__inside { align-items: stretch; flex-direction: column; gap: .45rem; }
+  .server-lab-open { width: 100%; }
+  .server-lab-dialog { width: min(100vw - 1rem, 720px); border-radius: 16px; }
+  .server-lab-dialog__header { padding: 1.3rem 1.7rem 1rem; }
+  .server-lab-dialog__body { padding: 1rem; }
+  .has-server-lab #toTop { bottom: 9.1rem !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .server-lab-open:hover,
+  .server-lab-open:focus-visible,
+  .server-lab-download:hover,
+  .server-lab-download:focus-visible { transform: none; }
+}
