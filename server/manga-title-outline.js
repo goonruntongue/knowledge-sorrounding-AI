@@ -34,6 +34,12 @@
       color: "#07162d",
       corner: "2px"
     });
+    // 絵と重なる文字は、白い太めの袋文字で読みやすさを保つ。
+    window.jQuery(".top span, .card--key h3, .card--key > p:not(.kicker)").outliner({
+      width: "4px",
+      color: "#fffdf8",
+      corner: "3px"
+    });
   }
 
   window.addEventListener("load", applyOutline, { once: true });
