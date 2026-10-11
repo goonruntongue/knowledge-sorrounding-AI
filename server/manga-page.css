@@ -66,7 +66,8 @@ section{position:relative;padding:78px 0 !important}
   color:#fff !important;
   font-weight:900;
   letter-spacing:-.065em !important;
-  text-shadow:5px 5px 0 #07162d;
+  /* 袋文字を主役にし、影で輪郭が濁らないようにする。 */
+  text-shadow:none;
 }
 .hero h1 em{color:var(--yellow) !important}
 .hero .lead{max-width:34rem;color:#f7fbff !important;font-weight:700}

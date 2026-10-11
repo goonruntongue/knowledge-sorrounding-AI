@@ -20,9 +20,10 @@
     if (!window.jQuery || !window.jQuery.fn.outliner) return;
 
     window.jQuery(".hero h1").outliner({
-      width: "2px",
-      color: "#07162d",
-      corner: "2px"
+      // ヒーローのイラストに重なっても読める、太い白の袋文字。
+      width: "8px",
+      color: "#fffdf8",
+      corner: "4px"
     });
     window.jQuery("section:not(.hero) h2").outliner({
       width: "1px",
