@@ -1,0 +1,39 @@
+<svg id="skiil-badge.svg" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e5e5e5;
+      }
+
+      .cls-2 {
+        fill: #ffd400;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill-rule: evenodd;
+      }
+
+      .cls-3 {
+        fill: #bdaaff;
+      }
+
+      .cls-4 {
+        fill: #f75858;
+      }
+
+      .cls-5 {
+        fill: #8166e1;
+      }
+
+      .cls-6 {
+        fill: #ffa43d;
+      }
+    </style>
+  </defs>
+  <rect id="長方形_1" data-name="長方形 1" class="cls-1" width="50" height="50" rx="12.75" ry="12.75"/>
+  <path id="シェイプ_9_のコピー_4" data-name="シェイプ 9 のコピー 4" class="cls-2" d="M713.705,369.084v7.258l7.357,4.688v-7.961Z" transform="translate(-699 -349)"/>
+  <path id="シェイプ_9_のコピー_5" data-name="シェイプ 9 のコピー 5" class="cls-3" d="M713.719,376.347l-0.014,7,7.357,4.627v-6.931Z" transform="translate(-699 -349)"/>
+  <path id="シェイプ_9_のコピー_3" data-name="シェイプ 9 のコピー 3" class="cls-4" d="M735.111,365l-14.033,8.057v7.767l14.047-7.756Z" transform="translate(-699 -349)"/>
+  <path id="シェイプ_9_のコピー_6" data-name="シェイプ 9 のコピー 6" class="cls-5" d="M735.125,373.069l-14.063,7.969v6.936l13.987-8.171Z" transform="translate(-699 -349)"/>
+  <path id="シェイプ_9_のコピー_2" data-name="シェイプ 9 のコピー 2" class="cls-6" d="M728.177,360.4l-14.458,8.7,7.343,3.975L735.125,365Z" transform="translate(-699 -349)"/>
+</svg>
