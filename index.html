@@ -84,7 +84,8 @@
     }
     @media (max-width:640px) and (hover:none) and (pointer:coarse) {
       .card-illustration img { transform:scale(1.4); transform-origin:center bottom; }
-      .card-illustration--website img { transform:scale(.85); }
+      /* この絵は枠いっぱいに描かれているので、少し持ち上げて下の説明文にかからないようにする */
+      .card-illustration--website img { transform:translateY(-42px) scale(1.1); }
     }
     @media (prefers-reduced-motion:reduce) {
       main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; }
