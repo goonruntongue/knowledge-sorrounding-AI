@@ -4,6 +4,7 @@ import { indexOfProblem, prefetchAi, takeAi, tiersForLevel } from '../aiProblems
 import { grade, type Grade } from '../game/grading';
 import { balancedSizes, levelDef, MAX_LEVEL, sizesForLevel, STARS_TO_LEVEL_UP } from '../game/levels';
 import { THEMES, type ThemeId } from '../theme/themes';
+import { PORTAL } from '../edition';
 
 export const TRAY_GLYPHS = ['◆', '●', '▲', '■', '★'] as const;
 export const MIN_TRAYS = 3;
@@ -230,6 +231,8 @@ function freshBoard(problemIndex: number, sizes: number[], showCapacity: boolean
     resultOpen: false,
     levelUpTo: null as number | null,
     briefingOpen: true,
+    // A new board: the note about what was missing on the last one no longer applies.
+    nudge: null as GameState['nudge'],
   };
 }
 
@@ -313,6 +316,12 @@ export interface GameState {
   nudgeSubmit(reason: 'pending' | 'labels'): void;
   /** Fix 7: animated how-to-play; opens by itself on the very first visit. */
   tutorialOpen: boolean;
+  /** The opening (ui/Intro.tsx) is on screen: at every launch, and when replayed from the settings. */
+  introOpen: boolean;
+  /** Replayed from the settings: the whole story again, not just the title. */
+  introReplay: boolean;
+  replayIntro(): void;
+  closeIntro(): void;
   openTutorial(): void;
   closeTutorial(): void;
   /** Debug: play the level-up show for any level without touching progress. */
@@ -359,7 +368,8 @@ export interface GameState {
   slotBlocked(slot: number): string | null;
 }
 
-const initialProgress = loadProgress();
+// The portal edition has no levels: it is always the free mode (any topic, any number of blocks).
+const initialProgress = PORTAL ? { ...loadProgress(), mode: 'free' as Mode } : loadProgress();
 const initialBlockCount = loadBlockCount();
 const initialTopic = topicFor(initialProgress.mode, initialProgress.level, -1);
 const initialSaveSlots = loadSaveSlots();
@@ -394,6 +404,10 @@ export const useGame = create<GameState>()((set, get) => {
     nudge: null,
     nudgeSubmit: (reason) => set({ nudge: { reason, seq: (get().nudge?.seq ?? 0) + 1 } }),
     tutorialOpen: !load<boolean>('practice-ia:tutorial-seen', false, () => true),
+    introOpen: !PORTAL,
+    introReplay: false,
+    replayIntro: () => set({ introOpen: true, introReplay: true, tuningOpen: false }),
+    closeIntro: () => set({ introOpen: false, introReplay: false }),
     openTutorial: () => set({ tutorialOpen: true }),
     closeTutorial: () => set({ tutorialOpen: false }),
     reveal: null,
@@ -432,6 +446,7 @@ export const useGame = create<GameState>()((set, get) => {
     },
 
     setMode: (mode) => {
+      if (PORTAL) return;
       const { level, problemIndex, blockCount } = get();
       const topic = topicFor(mode, level, problemIndex);
       set({ mode, ...boardFor(mode, level, topic, blockCount) });

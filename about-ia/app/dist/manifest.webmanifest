@@ -1,17 +1,32 @@
 {
-  "name": "Label Drop — practice IA",
-  "short_name": "Label Drop",
-  "description": "キーワードを箱に投げ入れて名前を付ける、情報アーキテクチャ（グルーピングとラベリング）の練習ゲーム",
+  "name": "IA仕分け練習",
+  "short_name": "IA仕分け練習",
+  "description": "キーワードを箱に仕分けて名前を付ける、情報アーキテクチャ（グルーピングとラベリング）の練習",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#050C1C",
+  "background_color": "#EAF0F8",
   "theme_color": "#050C1C",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png?v=83f2a3de",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png?v=83f2a3de",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png?v=83f2a3de",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
