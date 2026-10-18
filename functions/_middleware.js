@@ -4,6 +4,8 @@ import { ADMIN_BAR, GATE_SCRIPT, blockedPage, loginPage } from './_lib/pages.js'
 
 // 公開しないファイル（ログイン機能のソースや設定）
 const HIDDEN = ['/functions', '/migrations', '/wrangler.toml', '/.wrangler'];
+// ログインの処理（functions/auth/）。これ以外の /auth/ は、ないページとして扱う
+const AUTH_ROUTES = new Set(['/auth/start', '/auth/login', '/auth/callback', '/auth/logout']);
 // 入口やログインの画面が使う画像とアイコン。ログイン前でも読めるようにする
 const PUBLIC = new Set([
   '/Sphere_rotating.webp', '/Sphere_rotating.gif', '/pwa-icon-web-knowledge-navy-512.png',
@@ -23,7 +25,9 @@ export async function onRequest(context) {
     return new Response('Not Found', { status: 404 });
   }
   // ログインの処理そのものと、入口の画面が使う画像は、ここでは止めない
-  if (path.startsWith('/auth/') || PUBLIC.has(path)) return next();
+  if (AUTH_ROUTES.has(path) || PUBLIC.has(path)) return next();
+  // それ以外の /auth/ を通すと、ないページの代わりにポータルが返ってしまうので止める
+  if (path === '/auth' || path.startsWith('/auth/')) return new Response('Not Found', { status: 404 });
 
   const session = await readSession(request, env);
   const blocked = session ? await isBlocked(env, session.email) : false;
