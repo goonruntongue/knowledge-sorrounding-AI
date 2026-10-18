@@ -1,0 +1,14 @@
+# Cloudflare Pages の設定（knowledge-surrounding-ai）
+# このファイルがあると、ダッシュボードではなくここに書いた内容が使われる。
+# 秘密の値（Google のクライアント ID・シークレット、署名用の鍵、管理者のメールアドレス）は
+# ここには書かず、`wrangler pages secret put` で登録する。
+name = "knowledge-surrounding-ai"
+pages_build_output_dir = "."
+compatibility_date = "2026-10-01"
+
+# ログインした人の一覧と、ログイン機能のオン／オフを保存する D1
+[[d1_databases]]
+binding = "DB"
+database_name = "knowledge-surrounding-ai-auth"
+database_id = "6171f1d9-9822-4bb0-b734-106bc7cc07a1"
+migrations_dir = "migrations"

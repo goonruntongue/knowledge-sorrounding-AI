@@ -33,12 +33,18 @@
    # 公開しないもの（AI 向けのルールや設定）を除く
    rm -f  "$OUT/AGENTS.md"
    rm -rf "$OUT/.codex"
-   npx wrangler pages deploy "$OUT" \
-     --project-name knowledge-surrounding-ai \
+   # 取り出したフォルダーの中で実行する。そこにある wrangler.toml（D1 の設定）と
+   # functions/（ログイン機能）が、そのコミットのものとして一緒に上がる
+   cd "$OUT"
+   npx wrangler pages deploy \
      --branch main \
      --commit-hash "$SHA" \
-     --commit-message "Deploy $(git log -1 --format=%s "$SHA")"
+     --commit-message "Deploy $(git -C C:/Users/owner/Desktop/knowledge-sorrounding-AI log -1 --format=%s "$SHA")"
    ```
+
+   - ログイン機能（2026-10-18 追加）: `functions/` が入口の判定・Googleログイン・管理画面、`migrations/` が D1 の表、`wrangler.toml` が D1 の設定。`functions/`、`migrations/`、`wrangler.toml` は公開先では 404 を返す。
+   - 秘密の値（`GOOGLE_CLIENT_ID`、`GOOGLE_CLIENT_SECRET`、`SESSION_SECRET`、`ADMIN_EMAIL`）は `npx wrangler pages secret put <名前> --project-name knowledge-surrounding-ai` で登録する。リポジトリには書かない。登録や変更のあとは、デプロイし直すまで反映されない。
+   - `migrations/` に表の変更を足したときは、デプロイの前に `npx wrangler d1 migrations apply knowledge-surrounding-ai-auth --remote` を実行する。
 
 4. **確認する**: 次の URL が 200 で開き、新しい版になっていること。
    - https://knowledge-surrounding-ai.pages.dev/
@@ -51,7 +57,7 @@
 
 - アカウント（goonruntongue@gmail.com）は **Workers / Pages とも無料プランのまま**。アップグレード、有料のアドオン、カードの登録はしない。
 - 無料枠を超えたときに**課金ではなくエラーになる**ものだけを使う。
-- 作業してよい Cloudflare のプロジェクトは `knowledge-surrounding-ai` だけ。**同じアカウントにある他の Pages / Worker / D1 には触らない**（作成・上書き・削除しない）。
+- 作業してよい Cloudflare のプロジェクトは `knowledge-surrounding-ai` と、そのログイン機能用の D1 `knowledge-surrounding-ai-auth`（2026-10-18 にユーザーが作成を承認）だけ。**同じアカウントにある他の Pages / Worker / D1 には触らない**（作成・上書き・削除しない）。
 - 新しいプロジェクトを作るときは、事前にユーザーに確認する。`*.pages.dev` の名前が他の人に取られていて、後ろに文字が付きそうなときは、作らずに止めてユーザーに知らせる。
 
 ## 4. Label Drop（`about-ia/app/`）について
