@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>GASでGoogleサービスをつなぐ | Knowledge Surrounding AI</title>
+    <meta
+      name="description"
+      content="Google Apps Script（GAS）の2つの型、ドキュメントのメニューと報告書のひな形、カレンダーとスプレッドシートの連携、スプレッドシートをWeb APIにする作例を学ぶガイドです。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
+    <link rel="stylesheet" href="style.css?v=gas-v1" />
+    <link rel="stylesheet" href="../copyright.css" />
+    <link rel="stylesheet" href="../mobile-safe.css" />
+    <link rel="stylesheet" href="../page-reveal.css" />
+    <script src="guide.js?v=gas-v1" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="portal-link" href="../index.html">ポータルへ戻る</a
+        ><span>11 / GAS &amp; GOOGLE</span>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">SCRIPT / DOCS / CALENDAR / WEB APP</p>
+            <h1>GASで、<br /><em>Googleサービスを</em><span class="keep"><em>つなぐ。</em></span></h1>
+            <p class="lead">
+              スプレッドシート、ドキュメント、カレンダー。<br />いつものGoogleサービスを、少しのJavaScriptでつなぎます。
+            </p>
+            <nav class="jump" aria-label="ページ内メニュー">
+              <a href="#what">GASとは ↓</a><a href="#webapi">Web APIを作る</a
+              ><button type="button" data-open-lab>練習画面で試す</button>
+            </nav>
+          </div>
+          <picture
+            ><source
+              type="image/webp"
+              srcset="../portal-gas-calendar-card-640.webp 640w, ../portal-gas-calendar-card-1024.webp 1024w"
+              sizes="(max-width:760px) 90vw, 480px" />
+            <img
+              class="hero-art"
+              src="../portal-gas-calendar-card.png"
+              width="1536"
+              height="1024"
+              alt="スプレッドシートからカレンダーへ矢印が伸び、歯車がつないでいる3Dイラスト"
+          /></picture>
+        </div>
+      </section>
+
+      <section id="what">
+        <div class="wrap">
+          <p class="eyebrow">01 / GASとは</p>
+          <h2>GASは、<em>Googleサービスを動かす</em><span class="keep">JavaScript。</span></h2>
+          <p class="lead">
+            <strong>Google Apps Script</strong>（GAS、ガス）は、Googleのサービスを操作するためのプログラムを書いて動かすしくみです。書き方はJavaScriptと同じで、Googleアカウントがあれば、ブラウザーだけで始められます。
+          </p>
+          <div class="cards">
+            <article class="card">
+              <p class="kicker">書く場所</p>
+              <h3>ブラウザーのエディタ</h3>
+              <p>インストールは要りません。スプレッドシートやドキュメントの「拡張機能」→「Apps Script」から、専用のエディタが開きます。</p>
+            </article>
+            <article class="card">
+              <p class="kicker">動く場所</p>
+              <h3>Googleのサーバー</h3>
+              <p>書いたコードは自分のPCではなく、Googleのサーバーで動きます。PCを閉じていても、決まった時刻に動かすこともできます。</p>
+            </article>
+            <article class="card">
+              <p class="kicker">つなげる相手</p>
+              <h3>Googleのサービス</h3>
+              <p>スプレッドシート、ドキュメント、カレンダー、Gmail、ドライブなど。<code>SpreadsheetApp</code> や <code>CalendarApp</code> のような名前の道具で操作します。</p>
+            </article>
+          </div>
+          <div class="flow" aria-label="このページで作るもの">
+            <p class="flow__title">このページで作るもの</p>
+            <ol>
+              <li><b>ドキュメント</b>にメニューを足して、報告書のひな形を入れる</li>
+              <li><b>カレンダー</b>の予定をスプレッドシートへ読み込む・書き出す</li>
+              <li><b>スプレッドシート</b>をWeb APIにして、HTMLの画面とつなぐ</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="types" class="tint">
+        <div class="wrap">
+          <p class="eyebrow">02 / 2つの型</p>
+          <h2>ファイルに<em>くっつける</em>か、<br /><em>単独で</em>置くか。</h2>
+          <p class="lead">GASのプログラム（プロジェクト）には、置き方が2種類あります。どちらも書き方は同じで、違うのは「どこから作るか」と「親になるファイルがあるか」です。</p>
+          <div class="pair">
+            <article class="card card--bound">
+              <p class="kicker">CONTAINER-BOUND</p>
+              <h3>コンテナバインド型</h3>
+              <p>スプレッドシートやドキュメントなど、<strong>1つのファイル（コンテナ）にくっついた</strong>スクリプトです。そのファイルを開き、「拡張機能」→「Apps Script」で作ります。</p>
+              <div class="mini mini--bound" aria-hidden="true"><span class="mini__file">報告書（ドキュメント）</span><span class="mini__script">GAS</span></div>
+            </article>
+            <article class="card card--standalone">
+              <p class="kicker">STANDALONE</p>
+              <h3>スタンドアロン型</h3>
+              <p>どのファイルにもくっつかず、<strong>ドライブに単独で置く</strong>スクリプトです。<code>script.google.com</code> で新しいプロジェクトを作るか、ドライブの「新規」→「その他」→「Google Apps Script」で作ります。</p>
+              <div class="mini mini--standalone" aria-hidden="true"><span class="mini__script">GAS</span></div>
+            </article>
+          </div>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th scope="col">くらべる点</th><th scope="col">コンテナバインド型</th><th scope="col">スタンドアロン型</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">ドライブでの見え方</th><td>ドライブには出てこない。親ファイルから開く</td><td>1つのファイルとしてドライブに並ぶ</td></tr>
+                <tr><th scope="row">親ファイルの操作</th><td><code>getActiveSpreadsheet()</code> などで、IDを書かずに親ファイルを扱える</td><td>親がないので、<code>openById()</code> などでIDを指定して開く</td></tr>
+                <tr><th scope="row">メニュー・ダイアログ</th><td><code>getUi()</code> で、親ファイルの画面にメニューやダイアログを足せる</td><td>ファイルの画面にメニューは足せない</td></tr>
+                <tr><th scope="row">ウェブアプリにする</th><td>できる</td><td>できる</td></tr>
+                <tr><th scope="row">向いている用途</th><td>「このシート専用」「この文書専用」の便利機能</td><td>複数のファイルをまたぐ処理、ドライブの整理などの道具</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="notice"><strong>覚えておくこと：</strong>コンテナバインド型は、あとから親ファイルと切り離せません。このページの作例は、すべてコンテナバインド型で作ります。</p>
+        </div>
+      </section>
+
+      <section id="auth">
+        <div class="wrap">
+          <p class="eyebrow">03 / 最初の実行と承認</p>
+          <h2>初めて動かすときは、<br /><em>権限の承認</em>が出る。</h2>
+          <p class="lead">GASが自分のドキュメントやカレンダーを操作するには、あなたの許可が必要です。初めて実行したとき（使う道具が増えたときも）に、承認を求める画面が続けて出ます。</p>
+          <ol class="steps">
+            <li><b>承認が必要です</b><span>「続行」または「権限を確認」を押す</span></li>
+            <li><b>アカウントを選ぶ</b><span>スクリプトを作った自分のGoogleアカウントを選ぶ</span></li>
+            <li><b>確認されていないアプリ</b><span>自分で書いたスクリプトはGoogleの審査を受けていないので、警告が出る。「詳細」から先へ進む</span></li>
+            <li><b>権限の一覧を読んで許可</b><span>何を見たり変えたりできるようになるのかを読んでから許可する</span></li>
+          </ol>
+          <p class="notice notice--warn"><strong>安全メモ：</strong>警告を進めてよいのは、<strong>自分で書いた、または中身を理解したスクリプト</strong>だけです。人から渡されたスクリプトや、知らない人のファイルに入っていたスクリプトは、権限の一覧を見て、むやみに許可しないでください。</p>
+          <p class="small">画面の文言や順番は、Googleの画面の更新で変わることがあります。練習画面では、この流れを簡略化して再現しています。</p>
+        </div>
+      </section>
+
+      <section id="docs" class="tint">
+        <div class="wrap">
+          <p class="eyebrow">04 / ドキュメント × メニュー</p>
+          <h2>ドキュメントに<em>メニュー</em>を足して、<br /><em>報告書のひな形</em>を作る。</h2>
+          <p class="lead">報告書を書くたびに、見出しや表を一から作るのは手間です。ドキュメントのメニューに「報告書」を足し、選ぶだけでひな形が入るようにします。</p>
+          <div class="two">
+            <div>
+              <div class="code-block">
+                <div class="code-block__head"><span>Code.gs（ドキュメントのコンテナバインド型）</span><button type="button" class="copy" data-copy="code-report">コピー</button></div>
+<pre id="code-report"><code><span class="c">// ドキュメントを開いたときに自動で動く</span>
+function onOpen() {
+  DocumentApp.getUi()
+    .createMenu('報告書')
+    .addItem('報告書のひな形を挿入', 'insertReportTemplate')
+    .addToUi();
+}
+
+<span class="c">// メニューから呼ばれる。文書の末尾にひな形を書き足す</span>
+function insertReportTemplate() {
+  const body = DocumentApp.getActiveDocument().getBody();
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年M月d日');
+
+  body.appendParagraph('報告書')
+    .setHeading(DocumentApp.ParagraphHeading.TITLE);
+  body.appendTable([
+    ['作成日', today],
+    ['報告者', ''],
+    ['件名', ''],
+  ]);
+
+  ['1. 概要', '2. 経過', '3. 結果', '4. 今後の対応'].forEach((title) =&gt; {
+    body.appendParagraph(title)
+      .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    body.appendParagraph('');
+  });
+}</code></pre>
+              </div>
+            </div>
+            <div>
+              <figure class="doc-mock" aria-label="メニューからひな形を入れたドキュメントの例">
+                <div class="doc-mock__bar"><span>ファイル</span><span>編集</span><span>表示</span><span>挿入</span><span>拡張機能</span><span class="is-new">報告書</span></div>
+                <div class="doc-mock__menu"><span>報告書のひな形を挿入</span></div>
+                <div class="doc-mock__page">
+                  <p class="doc-mock__title">報告書</p>
+                  <table><tr><th>作成日</th><td>2026年10月18日</td></tr><tr><th>報告者</th><td></td></tr><tr><th>件名</th><td></td></tr></table>
+                  <p class="doc-mock__h">1. 概要</p><p class="doc-mock__line"></p>
+                  <p class="doc-mock__h">2. 経過</p><p class="doc-mock__line"></p>
+                  <p class="doc-mock__h">3. 結果</p>
+                </div>
+                <figcaption>メニューの「報告書」→「報告書のひな形を挿入」で、見出しと表が入ります。</figcaption>
+              </figure>
+              <dl class="terms">
+                <dt><code>onOpen()</code></dt>
+                <dd>この名前の関数は、ファイルを開いたときに自動で動きます（<strong>シンプルトリガー</strong>）。メニューを足す処理はここに書きます。</dd>
+                <dt><code>createMenu()</code> と <code>addItem()</code></dt>
+                <dd>メニューの名前と、項目を選んだときに動く関数の名前を決めます。</dd>
+                <dt><code>appendParagraph()</code> と <code>setHeading()</code></dt>
+                <dd>段落を文書の末尾に足し、「タイトル」「見出し1」などのスタイルを付けます。</dd>
+              </dl>
+            </div>
+          </div>
+          <p class="notice"><strong>シンプルトリガーの決まり：</strong><code>onOpen</code> は編集できる人が開いたときだけ動き、30秒より長くは動けません。承認が必要な処理は、<code>onOpen</code> では動かせません。だから、ひな形を入れる処理はメニューから呼ぶ別の関数に分けています。</p>
+        </div>
+      </section>
+
+      <section id="calendar">
+        <div class="wrap">
+          <p class="eyebrow">05 / カレンダー ⇄ スプレッドシート</p>
+          <h2>カレンダーの予定を、<br /><em>シートに読み込む・書き出す。</em></h2>
+          <p class="lead">スプレッドシートのメニューから、カレンダーの予定を一覧にしたり、シートに書いた予定をまとめてカレンダーに登録したりします。</p>
+          <div class="sync" aria-hidden="true">
+            <div class="sync__box sync__box--cal"><b>Googleカレンダー</b><span>10/20 定例ミーティング</span><span>10/22 打ち合わせ</span><span>10/25 研修</span></div>
+            <div class="sync__arrows"><span>読み込む →</span><span>← 書き出す</span></div>
+            <div class="sync__box sync__box--sheet"><b>スプレッドシート</b><span>タイトル｜開始｜終了</span><span>定例ミーティング｜10/20 10:00</span><span>打ち合わせ｜10/22 14:00</span></div>
+          </div>
+          <div class="cards cards--3">
+            <article class="card">
+              <span class="num">1</span>
+              <h3>カレンダー一覧を出す</h3>
+              <p><code>CalendarApp.getAllCalendars()</code> で、自分が見られるカレンダーの名前とIDをシートに並べます。使うカレンダーのIDを、ここで確かめます。</p>
+            </article>
+            <article class="card">
+              <span class="num">2</span>
+              <h3>予定を読み込む</h3>
+              <p><code>getEvents(開始, 終了)</code> で期間内の予定を取り出し、タイトル・日時・場所をシートに書き込みます。</p>
+            </article>
+            <article class="card">
+              <span class="num">3</span>
+              <h3>予定を書き出す</h3>
+              <p>シートの行を読み、<code>createEvent()</code> で指定したカレンダーに予定を作ります。作った予定のIDをシートに書き戻します。</p>
+            </article>
+          </div>
+          <div class="code-block">
+            <div class="code-block__head"><span>Code.gs（一部。全体はサンプルに入っています）</span><button type="button" class="copy" data-copy="code-calendar">コピー</button></div>
+<pre id="code-calendar"><code><span class="c">// カレンダー → スプレッドシート（今日から30日分）</span>
+function importEvents() {
+  const calendar = CalendarApp.getCalendarById(IMPORT_CALENDAR_ID);
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 30);
+
+  const rows = calendar.getEvents(start, end).map((ev) =&gt; [
+    ev.getTitle(), ev.getStartTime(), ev.getEndTime(), ev.getLocation(),
+  ]);
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('読み込み');
+  sheet.clearContents();
+  sheet.appendRow(['タイトル', '開始', '終了', '場所']);
+  if (rows.length) sheet.getRange(2, 1, rows.length, 4).setValues(rows);
+}
+
+<span class="c">// スプレッドシート → カレンダー</span>
+function exportEvents() {
+  const calendar = CalendarApp.getCalendarById(EXPORT_CALENDAR_ID);
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('書き出し');
+  const values = sheet.getDataRange().getValues(); <span class="c">// 1行目は見出し</span>
+
+  for (let i = 1; i &lt; values.length; i++) {
+    const [title, start, end, location, eventId] = values[i];
+    if (!title || eventId) continue; <span class="c">// 書き出し済みの行は飛ばす</span>
+    const ev = calendar.createEvent(title, start, end, { location: location });
+    sheet.getRange(i + 1, 5).setValue(ev.getId());
+  }
+}</code></pre>
+          </div>
+          <div class="cards cards--2">
+            <article class="card card--tip">
+              <h3>同じ予定が2つできないように</h3>
+              <p>書き出しを2回押すと、同じ予定が二重に登録されてしまいます。作った予定のIDを「予定ID」の列に書き戻し、IDが入っている行は飛ばすようにしています。</p>
+            </article>
+            <article class="card card--tip">
+              <h3>決まった時刻に自動で動かす</h3>
+              <p>エディタ左の「トリガー」から<strong>時間主導型</strong>のトリガーを足すと、「毎朝7時に読み込む」のように自動で動かせます。1日に作れる予定の数など、使える量には上限があります。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="webapi" class="tint">
+        <div class="wrap">
+          <p class="eyebrow">06 / GASでWeb APIを作る</p>
+          <h2>スプレッドシートを、<br /><em>URLで呼べるAPI</em>にする。</h2>
+          <p class="lead">GASのプロジェクトは、<strong>ウェブアプリ</strong>として公開できます。URLにアクセスがあると決まった関数が動き、シートのデータをJSONで返したり、送られてきたデータをシートに書き込んだりできます。APIそのものの考え方は、<a href="../api/index.html">APIのしくみを体験しよう</a>で紹介しています。</p>
+          <div class="api-flow" aria-label="HTMLの画面からGASのウェブアプリを呼ぶ流れ">
+            <div class="api-flow__node"><b>HTMLの画面</b><span>fetch でURLを呼ぶ</span></div>
+            <div class="api-flow__arrow"><span>GET / POST →</span><span>← JSON</span></div>
+            <div class="api-flow__node api-flow__node--gas"><b>GASのウェブアプリ</b><span>doGet / doPost が動く</span></div>
+            <div class="api-flow__arrow"><span>読む・書く →</span></div>
+            <div class="api-flow__node api-flow__node--sheet"><b>スプレッドシート</b><span>データの置き場所</span></div>
+          </div>
+          <div class="cards cards--3">
+            <article class="card">
+              <p class="kicker">GETで呼ばれたら</p>
+              <h3><code>doGet(e)</code></h3>
+              <p>ブラウザーでURLを開いたときや、<code>fetch(URL)</code> で呼ばれたときに動きます。URLの <code>?id=3</code> のような値は <code>e.parameter</code> に入ります。</p>
+            </article>
+            <article class="card">
+              <p class="kicker">POSTで呼ばれたら</p>
+              <h3><code>doPost(e)</code></h3>
+              <p>フォームなどからデータを送られたときに動きます。送られてきた本文は <code>e.postData.contents</code> に文字列で入ります。</p>
+            </article>
+            <article class="card">
+              <p class="kicker">返すもの</p>
+              <h3><code>ContentService</code></h3>
+              <p><code>createTextOutput(JSON.stringify(データ))</code> に <code>setMimeType(ContentService.MimeType.JSON)</code> を付けて、JSONとして返します。</p>
+            </article>
+          </div>
+          <h3 class="sub">ウェブアプリとしてデプロイする</h3>
+          <ol class="steps">
+            <li><b>「デプロイ」→「新しいデプロイ」</b><span>エディタ右上の「デプロイ」から選ぶ</span></li>
+            <li><b>種類の選択で「ウェブアプリ」</b><span>歯車のアイコンを押して選ぶ</span></li>
+            <li><b>実行するユーザーと、アクセスできるユーザーを決める</b><span>作例では「自分」として実行し、アクセスできるユーザーは「全員」にする</span></li>
+            <li><b>「デプロイ」を押して承認する</b><span>初回は承認の画面が出る。終わると <code>/exec</code> で終わるURLが表示される</span></li>
+          </ol>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th scope="col">設定</th><th scope="col">選べるもの</th><th scope="col">意味</th></tr></thead>
+              <tbody>
+                <tr><th scope="row" rowspan="2">次のユーザーとして実行</th><td>自分</td><td>誰がアクセスしても、デプロイした自分の権限で動く。シートを読み書きするのは自分のアカウント</td></tr>
+                <tr><td>アクセスしているユーザー</td><td>アクセスした人の権限で動く。その人にも承認の画面が出る</td></tr>
+                <tr><th scope="row" rowspan="3">アクセスできるユーザー</th><td>自分のみ</td><td>デプロイした本人だけが使える</td></tr>
+                <tr><td>Googleアカウントを持つ全員</td><td>Googleにログインしている人なら使える</td></tr>
+                <tr><td>全員</td><td>ログインしていない人も含めて、URLを知っていれば誰でも使える</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="notice"><strong>ウェブアプリでは「アクティブなファイル」がない：</strong>公式資料では、ウェブアプリとして動くときは <code>getActiveSpreadsheet()</code> などが使えないとされています。作例では、スプレッドシートの<strong>ID</strong>（URLの <code>/d/</code> と <code>/edit</code> のあいだの文字列）を書き、<code>SpreadsheetApp.openById()</code> で開きます。</p>
+        </div>
+      </section>
+
+      <section id="example-a">
+        <div class="wrap">
+          <p class="eyebrow">07 / 作例A ― 読むだけ（GET）</p>
+          <h2>シートの<em>お知らせ一覧</em>を、<br />HTMLの画面に出す。</h2>
+          <p class="lead">スプレッドシートに書いたお知らせのうち、「公開」にチェックを入れたものだけを、Webページに一覧表示します。お知らせを直したいときは、シートを書き換えるだけです。</p>
+          <div class="sheet-mock" aria-label="お知らせシートの例">
+            <div class="sheet-mock__tab">お知らせ</div>
+            <table>
+              <thead><tr><th></th><th>A 日付</th><th>B タイトル</th><th>C 本文</th><th>D 公開</th></tr></thead>
+              <tbody>
+                <tr><th>2</th><td>2026/10/14</td><td>秋の勉強会のお知らせ</td><td>10月25日に開きます。</td><td class="ck is-on">✓</td></tr>
+                <tr><th>3</th><td>2026/10/16</td><td>資料を公開しました</td><td>第3回のスライドです。</td><td class="ck is-on">✓</td></tr>
+                <tr><th>4</th><td>2026/10/17</td><td>（下書き）次回の日程</td><td>調整中</td><td class="ck"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="two two--code">
+            <div class="code-block">
+              <div class="code-block__head"><span>Code.gs（GAS側）</span><button type="button" class="copy" data-copy="code-a-gas">コピー</button></div>
+<pre id="code-a-gas"><code>const SPREADSHEET_ID = 'ここにスプレッドシートのIDを入れる';
+
+function doGet() {
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID)
+    .getSheetByName('お知らせ');
+  const rows = sheet.getDataRange().getValues().slice(1);
+
+  const items = rows
+    .filter((row) =&gt; row[3] === true) <span class="c">// 公開にチェック</span>
+    .map((row) =&gt; ({
+      date: Utilities.formatDate(new Date(row[0]), 'Asia/Tokyo', 'yyyy-MM-dd'),
+      title: String(row[1]),
+      body: String(row[2]),
+    }));
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ items: items }))
+    .setMimeType(ContentService.MimeType.JSON);
+}</code></pre>
+            </div>
+            <div class="code-block">
+              <div class="code-block__head"><span>index.html の script（画面側・一部）</span><button type="button" class="copy" data-copy="code-a-html">コピー</button></div>
+<pre id="code-a-html"><code><span class="c">// デプロイで表示された /exec で終わるURL</span>
+const API_URL = 'https://script.google.com/macros/s/…/exec';
+
+async function load() {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+  data.items.forEach((item) =&gt; {
+    const li = document.createElement('li');
+    li.textContent = item.date + '　' + item.title;
+    document.getElementById('list').append(li);
+  });
+}
+load();</code></pre>
+            </div>
+          </div>
+          <div class="result">
+            <div class="result__json">
+              <p class="result__label">GASが返すJSON</p>
+<pre><code>{
+  "items": [
+    { "date": "2026-10-14", "title": "秋の勉強会のお知らせ", "body": "10月25日に開きます。" },
+    { "date": "2026-10-16", "title": "資料を公開しました", "body": "第3回のスライドです。" }
+  ]
+}</code></pre>
+            </div>
+            <div class="result__view">
+              <p class="result__label">画面に出る一覧</p>
+              <ul class="notice-list">
+                <li><time>2026-10-14</time><b>秋の勉強会のお知らせ</b><span>10月25日に開きます。</span></li>
+                <li><time>2026-10-16</time><b>資料を公開しました</b><span>第3回のスライドです。</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="small">チェックを入れていない「（下書き）次回の日程」は、JSONに入りません。見せたくないデータは、GASの側で外してから返します。</p>
+        </div>
+      </section>
+
+      <section id="example-b" class="tint">
+        <div class="wrap">
+          <p class="eyebrow">08 / 作例B ― 書き込む（POST）</p>
+          <h2>フォームの<em>出欠</em>を、<br />シートに書き込む。</h2>
+          <p class="lead">HTMLのフォームで名前と出欠を送ると、GASが受け取って「出欠」シートの最後の行に書き足します。集計はスプレッドシートでそのまま行えます。</p>
+          <div class="two two--code">
+            <div class="code-block">
+              <div class="code-block__head"><span>Code.gs（GAS側・要点）</span><button type="button" class="copy" data-copy="code-b-gas">コピー</button></div>
+<pre id="code-b-gas"><code>function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+
+  <span class="c">// 受け取った値は、そのまま信じずに確かめる</span>
+  const name = clean(data.name, 40);
+  const answer = ['出席', '欠席', '未定'].includes(data.answer) ? data.answer : '';
+  if (!name || !answer) {
+    return json({ ok: false, message: '名前と出欠を入れてください。' });
+  }
+
+  SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName('出欠')
+    .appendRow([new Date(), name, answer, clean(data.comment, 200)]);
+  return json({ ok: true, message: '受け付けました。' });
+}
+
+<span class="c">// = + - @ で始まる値は、数式にならないよう ' を付ける</span>
+function clean(value, max) {
+  const text = String(value || '').trim().slice(0, max);
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
+}
+
+function json(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}</code></pre>
+            </div>
+            <div>
+              <div class="code-block">
+                <div class="code-block__head"><span>index.html の script（画面側・要点）</span><button type="button" class="copy" data-copy="code-b-html">コピー</button></div>
+<pre id="code-b-html"><code>const res = await fetch(API_URL, {
+  method: 'POST',
+  <span class="c">// Content-Type は付けない（text/plain で送られる）</span>
+  body: JSON.stringify({ name, answer, comment }),
+});
+const data = await res.json();
+result.textContent = data.message;</code></pre>
+              </div>
+              <div class="form-mock" aria-label="出欠フォームの例">
+                <p class="form-mock__title">出欠フォーム</p>
+                <p class="form-mock__field"><span>名前</span><i>山田 花子</i></p>
+                <p class="form-mock__radio"><span class="is-on">出席</span><span>欠席</span><span>未定</span></p>
+                <p class="form-mock__btn">送信する</p>
+                <p class="form-mock__ok">山田 花子 さんの「出席」を受け付けました。</p>
+              </div>
+            </div>
+          </div>
+          <div class="cards cards--2">
+            <article class="card card--tip">
+              <h3>なぜ Content-Type を付けないの？</h3>
+              <p><code>application/json</code> を付けると、ブラウザーは本番の前に「送ってよいか」を確かめるリクエスト（<strong>プリフライト</strong>）を送ります。GASのウェブアプリが受け付けるのは <code>doGet</code> と <code>doPost</code> だけなので、この確認に応えられません。<code>text/plain</code> のままなら確認は送られず、本文のJSONは <code>JSON.parse</code> で読めます。</p>
+            </article>
+            <article class="card card--tip">
+              <h3>書き込むAPIは、いたずらに注意</h3>
+              <p>「全員」に公開したURLは、画面を通さなくても呼べます。長さや選択肢をGASの側で確かめ、数式として扱われる値を防いでいます。大事な用途では、Googleフォームなどの専用のしくみも検討してください。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="publish">
+        <div class="wrap">
+          <p class="eyebrow">09 / 公開するときの注意</p>
+          <h2>動いたあとに、<br /><em>確かめておくこと。</em></h2>
+          <div class="cards cards--2">
+            <article class="card">
+              <span class="num">1</span>
+              <h3>URLを知っていれば使える</h3>
+              <p>「全員」に公開すると、URLを知っている人は誰でもAPIを呼べます。名前やメールアドレスなどの個人情報は、返すデータに入れないでください。</p>
+            </article>
+            <article class="card">
+              <span class="num">2</span>
+              <h3>直したら、デプロイし直す</h3>
+              <p>公開中のURLは、デプロイしたときのバージョンで動きます。コードを直したら「デプロイ」→「デプロイを管理」→ 編集で新しいバージョンを選ぶと、同じURLのまま更新できます。</p>
+            </article>
+            <article class="card">
+              <span class="num">3</span>
+              <h3>使える量には上限がある</h3>
+              <p>無料のGoogleアカウントでは、1回の実行は6分まで、カレンダーの予定作成は1日5,000件まで、などの上限があります。上限は変わることがあるので、公式資料で確かめてください。</p>
+            </article>
+            <article class="card">
+              <span class="num">4</span>
+              <h3>テスト用のURLもある</h3>
+              <p>「デプロイをテスト」の <code>/dev</code> で終わるURLは、編集できる人だけが開け、保存した最新のコードで動きます。人に渡すのは <code>/exec</code> のURLです。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" class="tint">
+        <div class="wrap download">
+          <div>
+            <p class="eyebrow">10 / サンプル</p>
+            <h2>このページのコードを、<br /><em>まとめてダウンロード。</em></h2>
+            <p>報告書のひな形、カレンダー連携、作例A・Bの <code>Code.gs</code> と <code>index.html</code> が入っています。各ファイルの先頭に、準備することを書いています。<code>index.html</code> は、<code>API_URL</code> に自分のウェブアプリのURLを入れてから開きます。</p>
+          </div>
+          <a class="download__btn" href="downloads/gas-samples.zip" download>サンプル一式（ZIP）をダウンロード</a>
+        </div>
+      </section>
+
+      <section class="sources">
+        <div class="wrap">
+          <h2>出典・確認日</h2>
+          <p>公式資料を確認：2026年10月18日</p>
+          <ul>
+            <li><a href="https://developers.google.com/apps-script/guides/bound" target="_blank" rel="noopener noreferrer">Google Apps Script：コンテナバインド型スクリプト ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/standalone" target="_blank" rel="noopener noreferrer">Google Apps Script：スタンドアロン型スクリプト ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/menus" target="_blank" rel="noopener noreferrer">Google Apps Script：カスタムメニュー ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/triggers" target="_blank" rel="noopener noreferrer">Google Apps Script：シンプルトリガー ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/reference/document/body" target="_blank" rel="noopener noreferrer">Google Apps Script：Document の Body クラス ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/reference/calendar/calendar-app" target="_blank" rel="noopener noreferrer">Google Apps Script：CalendarApp ↗</a>・<a href="https://developers.google.com/apps-script/reference/calendar/calendar" target="_blank" rel="noopener noreferrer">Calendar ↗</a>・<a href="https://developers.google.com/apps-script/reference/calendar/calendar-event" target="_blank" rel="noopener noreferrer">CalendarEvent ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/web" target="_blank" rel="noopener noreferrer">Google Apps Script：ウェブアプリ ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/content" target="_blank" rel="noopener noreferrer">Google Apps Script：Content Service ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/concepts/deployments" target="_blank" rel="noopener noreferrer">Google Apps Script：デプロイの作成と管理 ↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/manifest/web-app-api-executable?hl=ja" target="_blank" rel="noopener noreferrer">Google Apps Script：ウェブアプリのマニフェスト（実行ユーザーとアクセス）↗</a></li>
+            <li><a href="https://developers.google.com/apps-script/guides/services/quotas" target="_blank" rel="noopener noreferrer">Google Apps Script：割り当てと上限 ↗</a></li>
+            <li><a href="https://support.google.com/cloud/answer/7454865" target="_blank" rel="noopener noreferrer">Google Cloud ヘルプ：未確認のアプリ ↗</a></li>
+            <li><a href="https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/CORS" target="_blank" rel="noopener noreferrer">MDN：オリジン間リソース共有（CORS）と単純リクエスト ↗</a></li>
+          </ul>
+          <p>メニューやボタンの日本語の表記は、公式資料の英語の表記をもとにした訳で、実際の画面と違うことがあります。ページ内の日付、名前、お知らせ、URLは説明用の例です。</p>
+        </div>
+      </section>
+    </main>
+    <footer class="guide-footer">
+      <div class="wrap footer-content">
+        <a class="portal-link" href="../index.html">ポータルへ戻る</a>
+        <nav class="page-pagination" aria-label="学習ページの移動">
+          <a href="../api/index.html" rel="prev"><small>前のページ</small><strong>← APIのしくみを体験しよう</strong></a>
+        </nav>
+        <div class="site-copyright">
+          <span>Copyright &copy; 2026 Flashmelody Katsuyori M</span
+          ><img class="site-copyright__logo" src="../assets/maishilogo_white_outlined.svg" alt="FlashMelody" />
+        </div>
+      </div>
+    </footer>
+    <div class="gas-lab-dock">
+      <button type="button" data-open-lab>GASを練習する <span>メニュー追加とウェブアプリ公開のシミュレーター</span></button>
+    </div>
+    <button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
+    <dialog id="gas-lab" aria-labelledby="lab-title">
+      <div class="lab-head">
+        <h2 id="lab-title">GASの練習</h2>
+        <button id="close-lab" type="button" aria-label="練習を閉じる">閉じる ×</button>
+      </div>
+      <div class="lab-content">
+        <div class="lab-notice">
+          <p><strong>学習用の再現です。</strong>実際のGoogleアカウント、ドキュメント、スプレッドシート、Apps Script、通信には一切つながりません。赤枠の場所を順に押すと、画面がどう変わるかを見られます。</p>
+          <p><strong>本物とは見た目が違うところがあります。</strong>練習用に簡略化しているため、画面のデザイン・文言・手順の細かい部分は、実際のGoogleの画面と異なります。アカウント名、ファイル名、URLは架空です。</p>
+        </div>
+        <ol id="lab-chapters" class="lab-chapters" aria-label="練習の章"></ol>
+        <div class="lab-status">
+          <p id="lab-progress"></p>
+          <h3 id="lab-task"></h3>
+          <p id="lab-hint" class="lab-hint"></p>
+        </div>
+        <div class="lab-stage-wrap">
+          <div id="lab-stage" class="lab-stage" aria-label="パソコン画面の学習用再現"></div>
+          <p id="lab-guide" class="guide-label" hidden></p>
+        </div>
+        <p id="lab-explanation" class="lab-explanation" role="status"></p>
+        <div class="lab-foot">
+          <button id="reset-lab" type="button">最初から練習する</button>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
