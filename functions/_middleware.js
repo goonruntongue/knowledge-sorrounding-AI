@@ -1,11 +1,14 @@
 // すべてのリクエストの入口。ログイン機能のオン／オフに合わせて、ポータルを見せるかどうかを決める
-import {
-  ENTERED_COOKIE, SESSION_COOKIE, clearCookie, getSettings, isAdminEmail, isBlocked, readCookie, readSession,
-} from './_lib/auth.js';
-import { ADMIN_BAR, blockedPage, loginPage, landingPage } from './_lib/pages.js';
+import { SESSION_COOKIE, clearCookie, getSettings, isAdminEmail, isBlocked, readSession } from './_lib/auth.js';
+import { ADMIN_BAR, GATE_SCRIPT, blockedPage, loginPage } from './_lib/pages.js';
 
 // 公開しないファイル（ログイン機能のソースや設定）
 const HIDDEN = ['/functions', '/migrations', '/wrangler.toml', '/.wrangler'];
+// 入口やログインの画面が使う画像とアイコン。ログイン前でも読めるようにする
+const PUBLIC = new Set([
+  '/Sphere_rotating.webp', '/Sphere_rotating.gif', '/pwa-icon-web-knowledge-navy-512.png',
+  '/pwa-icon-web-knowledge-navy-192.png', '/manifest.webmanifest',
+]);
 
 function wantsHtml(request) {
   return request.method === 'GET' && (request.headers.get('Accept') || '').includes('text/html');
@@ -19,8 +22,8 @@ export async function onRequest(context) {
   if (HIDDEN.some((p) => path === p || path.startsWith(`${p}/`))) {
     return new Response('Not Found', { status: 404 });
   }
-  // ログインの処理そのものは、ここでは止めない
-  if (path.startsWith('/auth/')) return next();
+  // ログインの処理そのものと、入口の画面が使う画像は、ここでは止めない
+  if (path.startsWith('/auth/') || PUBLIC.has(path)) return next();
 
   const session = await readSession(request, env);
   const blocked = session ? await isBlocked(env, session.email) : false;
@@ -39,19 +42,21 @@ export async function onRequest(context) {
     return new Response('ログインが必要です', { status: 401, headers: { 'Cache-Control': 'no-store' } });
   }
 
-  // ログインがオフのとき、最初の画面（ポータルへ／管理者ログイン）を出す
-  if (!loginRequired && !session && path === '/' && wantsHtml(request) && !readCookie(request, ENTERED_COOKIE)) {
-    return landingPage();
-  }
-
   const response = await next();
-  const isPortal = path === '/' && (response.headers.get('Content-Type') || '').includes('text/html');
-  if (admin && isPortal) {
-    const rewritten = new HTMLRewriter()
-      .on('body', { element(el) { el.prepend(ADMIN_BAR, { html: true }); } })
-      .transform(response);
+  const isHtml = (response.headers.get('Content-Type') || '').includes('text/html');
+  if (isHtml) {
+    // 起動して最初に開いたときは、どのページからでも入口の画面（/auth/start）を通す
+    // 「ログインしたままにする」でログインした人には入れない
+    let rewriter = new HTMLRewriter();
+    if (!(session && session.remember)) {
+      rewriter = rewriter.on('head', { element(el) { el.prepend(GATE_SCRIPT, { html: true }); } });
+    }
+    if (admin && path === '/') {
+      rewriter = rewriter.on('body', { element(el) { el.prepend(ADMIN_BAR, { html: true }); } });
+    }
+    const rewritten = rewriter.transform(response);
     const out = new Response(rewritten.body, rewritten);
-    out.headers.set('Cache-Control', 'no-store');
+    out.headers.set('Cache-Control', 'private, no-store');
     return out;
   }
   if (loginRequired || session) {

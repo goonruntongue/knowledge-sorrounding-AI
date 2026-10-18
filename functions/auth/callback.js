@@ -1,9 +1,9 @@
 // Google から戻ってきたところ。本人を確かめて、ログイン状態を作る
 import {
   OAUTH_COOKIE, SESSION_COOKIE, clearCookie, createSession, decodeJwtPayload, isAdminEmail, isConfigured,
-  readCookie, recordLogin, redirect, verify,
+  readCookie, recordLogin, verify,
 } from '../_lib/auth.js';
-import { blockedPage, messagePage, notAdminPage, notConfiguredPage } from '../_lib/pages.js';
+import { blockedPage, messagePage, notAdminPage, notConfiguredPage, passThrough } from '../_lib/pages.js';
 
 const ISSUERS = ['https://accounts.google.com', 'accounts.google.com'];
 
@@ -59,12 +59,12 @@ export async function onRequestGet({ request, env }) {
     return page;
   }
 
-  const session = await createSession(env, profile);
+  const session = await createSession(env, profile, saved.remember === true);
   if (saved.admin && !isAdminEmail(env, profile.email)) {
     const page = notAdminPage();
     page.headers.append('Set-Cookie', session);
     page.headers.append('Set-Cookie', clearOauth);
     return page;
   }
-  return redirect(saved.next || '/', [session, clearOauth]);
+  return passThrough(saved.next || '/', {}, [session, clearOauth]);
 }

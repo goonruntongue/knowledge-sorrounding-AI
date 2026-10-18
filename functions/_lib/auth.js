@@ -9,8 +9,8 @@
 
 export const SESSION_COOKIE = 'ksa_session';
 export const OAUTH_COOKIE = 'ksa_oauth';
-export const ENTERED_COOKIE = 'ksa_entered';
-const SESSION_DAYS = 7;
+const REMEMBER_DAYS = 30; // 「ログインしたままにする」を選んだとき
+const SESSION_HOURS = 12; // 選ばなかったとき（ブラウザーやアプリを閉じても、長くは残さない）
 const CACHE_MS = 30 * 1000;
 
 const encoder = new TextEncoder();
@@ -93,10 +93,11 @@ export function clearCookie(name, path = '/') {
 }
 
 /* ---------- ログイン状態 ---------- */
-export async function createSession(env, user) {
-  const exp = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
-  const token = await sign(env, { email: user.email, name: user.name, exp });
-  return cookie(SESSION_COOKIE, token, { maxAge: SESSION_DAYS * 24 * 60 * 60 });
+export async function createSession(env, user, remember = false) {
+  const seconds = remember ? REMEMBER_DAYS * 24 * 60 * 60 : SESSION_HOURS * 60 * 60;
+  const token = await sign(env, { email: user.email, name: user.name, remember: Boolean(remember), exp: Date.now() + seconds * 1000 });
+  // 選ばなかったときは、ブラウザーを閉じたら消える cookie にする
+  return cookie(SESSION_COOKIE, token, remember ? { maxAge: seconds } : {});
 }
 
 export async function readSession(request, env) {

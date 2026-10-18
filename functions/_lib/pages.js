@@ -23,6 +23,8 @@ a{color:var(--accent)}
 .btn--primary:active{box-shadow:0 1px 0 #48416f}
 .g-mark{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#4285f4;font:800 15px/1 Poppins,sans-serif;box-shadow:0 0 0 1px #e1e1e1}
 .note{margin-top:1.2rem!important;font-size:.8rem!important}
+.remember{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;color:var(--ink);font-size:.92rem;font-weight:700;cursor:pointer}
+.remember input{width:18px;height:18px;margin:0;accent-color:#625b91;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
 `;
 
@@ -40,27 +42,50 @@ function gate(eyebrow, title, text, actions, note = '') {
   return `<main class="gate">${ORB}<div class="gate__card"><p class="gate__eyebrow">${eyebrow}</p><h1>${title}</h1><p>${text}</p><div class="gate__actions">${actions}</div>${note ? `<p class="note">${note}</p>` : ''}</div></main>`;
 }
 
-const googleButton = (href, label) => `<a class="btn btn--primary" href="${esc(href)}"><span class="g-mark" aria-hidden="true">G</span>${label}</a>`;
+const googleButton = (href, label, primary = true) => `<a class="btn${primary ? ' btn--primary' : ''}" href="${esc(href)}" data-login><span class="g-mark" aria-hidden="true">G</span>${label}</a>`;
 
-// ログインがオフのときの最初の画面
-export function landingPage() {
+// 「ログインしたままにする」。チェックを入れてログインすると、次からは入口の画面を飛ばす
+const REMEMBER_BOX = '<label class="remember"><input type="checkbox" id="remember"> ログインしたままにする</label>';
+const REMEMBER_SCRIPT = `<script>document.addEventListener('click',function(e){var a=e.target.closest('a[data-login]');var c=document.getElementById('remember');if(!a||!c||!c.checked)return;e.preventDefault();location.href=a.href+(a.href.indexOf('?')>-1?'&':'?')+'remember=1'});</script>`;
+
+// 起動ごとに入口を通ったかの記録。sessionStorage はアプリやタブを閉じると消える
+export const GATE_KEY = 'ksa-gate';
+
+// 各ページの <head> の先頭に入れる。この起動でまだ入口を通っていなければ、入口の画面へ送る
+export const GATE_SCRIPT = `<script>try{if(!sessionStorage.getItem('${GATE_KEY}')){location.replace('/auth/start?next='+encodeURIComponent(location.pathname+location.search+location.hash))}}catch(e){}</script>`;
+
+// 入口を通った記録を残してから、行き先へ進むボタン
+const passButton = (next, label, primary = true) => `<button type="button" class="btn${primary ? ' btn--primary' : ''}" data-pass="${esc(next)}">${label}</button>`;
+const PASS_SCRIPT = `<script>document.addEventListener('click',function(e){var b=e.target.closest('[data-pass]');if(!b)return;try{sessionStorage.setItem('${GATE_KEY}','1')}catch(x){}location.replace(b.getAttribute('data-pass'))});</script>`;
+
+// 入口を通った記録を残して、行き先へ移るだけのページ（ログイン直後・ログアウト直後に使う）
+export function passThrough(next, { clear = false } = {}, headers = []) {
+  const action = clear ? `sessionStorage.removeItem('${GATE_KEY}')` : `sessionStorage.setItem('${GATE_KEY}','1')`;
+  const response = html(`<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>移動しています</title><script>try{${action}}catch(e){}location.replace(${JSON.stringify(next)})</script></head><body><p><a href="${esc(next)}">移動しています…</a></p></body></html>`);
+  headers.forEach((value) => response.headers.append('Set-Cookie', value));
+  return response;
+}
+
+// ログインがオフのときの入口
+export function landingPage(next) {
+  const label = next === '/' ? 'ポータルへ' : 'このページへ進む';
   return html(shell('ようこそ', gate(
     'KNOWLEDGE SURROUNDING AI',
     'Web技術の<br>周辺知識',
     'AIと一緒にWebをつくるための、まわりの知識を学ぶポータルです。',
-    `<a class="btn btn--primary" href="/auth/enter">ポータルへ</a><a class="btn" href="/auth/login?admin=1">管理者ログイン</a>`
-  )));
+    `${passButton(next, label)}<a class="btn" href="/auth/login?admin=1" data-login>管理者ログイン</a>${REMEMBER_BOX}`
+  ) + PASS_SCRIPT + REMEMBER_SCRIPT));
 }
 
-// ログインがオンのときの最初の画面
+// ログインがオンのときの入口
 export function loginPage(next) {
   return html(shell('ログイン', gate(
     'KNOWLEDGE SURROUNDING AI',
     'ログインして<br>ポータルへ',
     'このポータルを見るには、Googleアカウントでのログインが必要です。',
-    googleButton(`/auth/login?next=${encodeURIComponent(next)}`, 'Googleでログイン'),
-    'ログインすると、メールアドレスと名前が管理者に記録されます。'
-  )), 401);
+    googleButton(`/auth/login?next=${encodeURIComponent(next)}`, 'Googleでログイン') + REMEMBER_BOX,
+    'ログインすると、メールアドレスと名前が管理者に記録されます。「ログインしたままにする」に✓を入れると、次からはこの画面を飛ばして開きます（30日間）。'
+  ) + REMEMBER_SCRIPT), 401);
 }
 
 export function blockedPage(clearCookie) {
@@ -77,7 +102,7 @@ export function notAdminPage() {
     'ADMIN ONLY',
     '管理者ではありません',
     'このアカウントには管理画面を開く権限がありません。',
-    '<a class="btn btn--primary" href="/">ポータルへ</a><a class="btn" href="/auth/logout?next=/auth/login%3Fadmin%3D1">別のアカウントでログインする</a>'
+    `${passButton('/', 'ポータルへ')}<a class="btn" href="/auth/logout?next=/auth/login%3Fadmin%3D1">別のアカウントでログインする</a>` + PASS_SCRIPT
   )), 403);
 }
 

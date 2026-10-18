@@ -7,6 +7,7 @@ export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   const admin = url.searchParams.get('admin') === '1';
   const next = safeNext(url.searchParams.get('next'), admin ? '/admin/' : '/');
+  const remember = url.searchParams.get('remember') === '1';
   const state = randomId();
   const nonce = randomId();
 
@@ -20,7 +21,7 @@ export async function onRequestGet({ request, env }) {
     prompt: 'select_account',
   });
   // state と nonce を署名付きの cookie に入れておき、戻ってきたときに照らし合わせる
-  const token = await sign(env, { state, nonce, next, admin, exp: Date.now() + 10 * 60 * 1000 });
+  const token = await sign(env, { state, nonce, next, admin, remember, exp: Date.now() + 10 * 60 * 1000 });
   return redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`, [
     cookie(OAUTH_COOKIE, token, { maxAge: 600, path: '/auth/' }),
   ]);
