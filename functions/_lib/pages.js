@@ -8,8 +8,11 @@ const BASE_STYLE = `
 body{min-height:100vh;margin:0;color:var(--ink);background:var(--bg);font-family:"Noto Sans JP",sans-serif;line-height:1.8}
 a{color:var(--accent)}
 .gate{position:relative;display:grid;place-items:center;min-height:100vh;padding:24px 16px;overflow:hidden}
-.gate__orb{position:absolute;top:-6%;right:-14%;width:min(70vw,620px);height:auto;opacity:.7;pointer-events:none;filter:saturate(1.6) drop-shadow(0 12px 24px rgba(72,120,190,.2))}
-.gate__card{position:relative;width:min(100%,460px);padding:36px 28px;border:1px solid var(--line);border-radius:24px;background:var(--card);backdrop-filter:blur(10px);box-shadow:0 20px 50px #4a3f6a1f;text-align:center}
+/* 地球の画像は、ポータル（index.html の .hero-orb）と同じ大きさ・位置にする */
+.gate__frame{position:absolute;top:0;left:50%;z-index:0;width:min(90%,960px);height:0;transform:translateX(-50%);pointer-events:none}
+.gate__orb{position:absolute;top:-1.5rem;right:-9rem;width:min(54vw,510px);height:auto;scale:2;opacity:.78;pointer-events:none;filter:saturate(1.8) brightness(1) blur(.2px) drop-shadow(0 12px 24px rgba(72,120,190,.2))}
+@media (max-width:640px){.gate__orb{top:-2.5rem;right:-5.5rem;width:340px;opacity:.408}}
+.gate__card{position:relative;z-index:1;width:min(100%,460px);padding:36px 28px;border:1px solid var(--line);border-radius:24px;background:var(--card);backdrop-filter:blur(10px);box-shadow:0 20px 50px #4a3f6a1f;text-align:center}
 .gate__eyebrow{margin:0;color:var(--accent-2);font:700 .78rem/1.4 Poppins,sans-serif;letter-spacing:.12em}
 .gate h1{margin:.4rem 0 .6rem;font:800 clamp(1.6rem,6vw,2.1rem)/1.3 Poppins,"Noto Sans JP",sans-serif;letter-spacing:-.02em}
 .gate p{margin:0 0 1.2rem;color:var(--muted);font-size:.95rem}
@@ -36,7 +39,7 @@ function html(markup, status = 200, headers = {}) {
   return new Response(markup, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', ...headers } });
 }
 
-const ORB = '<picture><source srcset="/Sphere_rotating.webp" type="image/webp"><img class="gate__orb" src="/Sphere_rotating.gif" width="800" height="450" alt="" aria-hidden="true"></picture>';
+const ORB = '<div class="gate__frame" aria-hidden="true"><picture><source srcset="/Sphere_rotating.webp" type="image/webp"><img class="gate__orb" src="/Sphere_rotating.gif" width="800" height="450" alt=""></picture></div>';
 
 function gate(eyebrow, title, text, actions, note = '') {
   return `<main class="gate">${ORB}<div class="gate__card"><p class="gate__eyebrow">${eyebrow}</p><h1>${title}</h1><p>${text}</p><div class="gate__actions">${actions}</div>${note ? `<p class="note">${note}</p>` : ''}</div></main>`;
