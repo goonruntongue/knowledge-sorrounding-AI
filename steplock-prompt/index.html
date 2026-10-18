@@ -45,6 +45,26 @@ article.prompt{background:#eaf2fc;border-color:#dce7f3;box-shadow:inset 0 0 10px
   (() => {
     const button = document.getElementById('toTop');
     if (!button) return;
+    const syncOrderedListStarts = markdown => {
+      const starts = [];
+      let previousWasOrdered = false;
+      markdown.replace(/\r/g, '').split('\n').forEach(line => {
+        const match = line.match(/^(\d+)\.\s+/);
+        if (match && !previousWasOrdered) starts.push(Number(match[1]));
+        previousWasOrdered = Boolean(match);
+      });
+      content.querySelectorAll('ol').forEach((list, index) => {
+        list.start = starts[index] || 1;
+      });
+    };
+    const listObserver = new MutationObserver(() => {
+      if (!content.children.length) return;
+      listObserver.disconnect();
+      fetch('steplock-prompt.md')
+        .then(response => response.ok ? response.text() : '')
+        .then(syncOrderedListStarts);
+    });
+    listObserver.observe(content, { childList: true });
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const update = () => button.classList.toggle('is-visible', window.scrollY > 360);
     window.addEventListener('scroll', update, { passive: true });
