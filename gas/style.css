@@ -770,3 +770,7 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Official product icon, aligned with the first title line. */
+.gas-title-brand{display:inline-flex;align-items:center;gap:.22em}
+.gas-title-icon{display:block;flex:none;width:.85em;height:.85em;object-fit:contain}
