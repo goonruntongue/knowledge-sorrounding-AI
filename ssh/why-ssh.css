@@ -1,0 +1,22 @@
+#why { background:linear-gradient(135deg,#0b293b99,#06152055); border-block:1px solid var(--line); }
+.why-compare { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:30px; }
+.why-card { min-width:0; padding:28px; border:1px solid var(--line); border-radius:24px; background:#0b2334; }
+.why-card--key { border-color:#68ebc288; background:linear-gradient(145deg,#103c42,#0b2334); }
+.why-card img { display:block; width:170px; height:140px; margin:0 auto 18px; }
+.why-card h3 { margin:8px 0 16px; font-size:1.25rem; line-height:1.6; }
+.why-label { color:var(--amber); font:700 .75rem/1.6 Poppins,"Noto Sans JP",sans-serif; letter-spacing:.1em; }
+.why-card--key .why-label { color:var(--mint); }
+.why-chat { padding:16px 18px; border:1px solid var(--line); border-radius:16px; background:#06152099; }
+.why-chat p { margin:0; }
+.why-chat p+p { margin-top:12px; padding-top:12px; border-top:1px dashed var(--line); }
+.why-chat b { display:block; margin-bottom:4px; color:var(--cyan); font-size:.75rem; }
+.why-card>p { color:var(--muted); line-height:1.9; }
+.why-flow { display:grid; grid-template-columns:140px 1fr; align-items:center; gap:24px; margin-top:24px; padding:26px; border:1px solid #48d6ff66; border-radius:24px; background:#0b293b; }
+.why-flow img { width:140px; height:140px; }
+.why-flow h3 { margin:0 0 10px; font-size:1.25rem; }
+.why-flow p { margin:0; line-height:1.9; color:var(--muted); }
+.why-steps { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:16px 0; color:var(--cyan); font-weight:800; }
+.why-steps span { padding:8px 12px; border:1px solid var(--line); border-radius:12px; background:#061520; }
+.why-note { margin:20px 0 0; padding-left:16px; border-left:3px solid var(--mint); color:var(--muted); font-size:.9rem; line-height:1.9; }
+.why-note strong { color:var(--ink); }
+@media(max-width:700px) { .why-compare { grid-template-columns:1fr; gap:18px; } .why-card { padding:22px; } .why-flow { grid-template-columns:1fr; gap:12px; padding:22px; } .why-flow img { margin:auto; } }

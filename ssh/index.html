@@ -1473,6 +1473,7 @@
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
 <link rel="stylesheet" href="../footer-pagination.css?v=20261024">
+    <link rel="stylesheet" href="why-ssh.css?v=20261024" />
 </head>
   <body>
     <header class="hero">
@@ -1480,13 +1481,13 @@
         <a class="portal-link" href="../index.html">ポータルへ戻る</a>
         <div class="hero-grid">
           <div>
-            <p class="eyebrow">BEGINNER'S GUIDE / SSH</p>
+            <p class="eyebrow">12 / BEGINNER'S GUIDE / SSH</p>
             <h1>SSHで、離れたサーバーに<em>安全につながる。</em></h1>
             <p class="lead">
               SSHは、手元のPCからサーバーへ暗号化された通り道をつくる仕組みです。鍵を使えば、サーバーのパスワードを毎回入力せずに本人確認できます。
             </p>
             <nav class="jump">
-              <a href="#what">SSH鍵接続とは</a><a href="#use">役立つ場面</a
+              <a href="#what">SSH鍵接続とは</a><a href="#why">なぜSSHを使う？</a><a href="#use">役立つ場面</a
               ><a href="#how">やり方</a><a href="#ai">AIに任せる</a>
             </nav>
           </div>
@@ -1567,9 +1568,43 @@
           </div>
         </div>
       </section>
+      <section class="section" id="why" aria-labelledby="why-title">
+        <div class="wrap reveal">
+          <p class="eyebrow">02 / WHY SSH WITH AI?</p>
+          <h2 id="why-title">パスワードをチャットに出さずに、<br />AIへ接続を頼める。</h2>
+          <p class="section-lead">「サーバーの中を確認して」とAIエージェントに頼むとき、ログインに必要な秘密はどう扱うのでしょう。SSHの<strong>公開鍵認証</strong>を準備すると、パスワードをチャットに渡さずに接続できます。</p>
+          <div class="why-compare">
+            <article class="why-card">
+              <img src="assets/why-password.svg" width="170" height="140" alt="パスワードの入力で作業が止まるチャットとログイン画面" loading="lazy" />
+              <span class="why-label">BEFORE / 接続の準備がない場合</span>
+              <h3>接続を頼んでも、ログインで止まる。</h3>
+              <div class="why-chat"><p><b>あなた</b>このサーバーに接続して、中を確認して。</p><p><b>AIエージェント</b>ログインが必要です。入力画面で操作をお願いします。</p></div>
+              <p>SSH鍵などの接続手段を用意せず、パスワードでログインする場面を考えてみましょう。接続のたびに人の入力が必要になり、AIだけでは作業を続けられません。</p>
+              <p>ここでパスワードをチャットに貼ると、会話履歴やAIの処理に秘密を渡すことになります。<strong>パスワードはチャットに書かず、必要な入力画面で自分が直接入力します。</strong></p>
+            </article>
+            <article class="why-card why-card--key">
+              <img src="assets/why-local-key.svg" width="170" height="140" alt="秘密鍵をPCに残したまま、公開鍵を登録したサーバーへ接続する図" loading="lazy" />
+              <span class="why-label">AFTER / SSH公開鍵認証を準備</span>
+              <h3>伝えるのは、接続名と頼みたいこと。</h3>
+              <div class="why-chat"><p><b>あなた</b>接続名「my-server」でログインして、ファイル一覧を確認して。</p><p><b>AIエージェント</b>PCに設定済みのSSHを使って接続し、一覧を確認します。</p></div>
+              <p>秘密鍵はPCに置き、対応する公開鍵をサーバーへ登録します。AIエージェントは、許可されたPCのターミナルからSSHを実行します。<strong>秘密鍵の中身やサーバーのパスワードを、チャットに貼る必要はありません。</strong></p>
+              <p>接続先を短い名前で保存すれば、<code>ssh my-server</code>で接続できます。サーバーへの本人確認は、手元の鍵を使ってSSHが行います。</p>
+            </article>
+          </div>
+          <article class="why-flow">
+            <img src="assets/why-zero-touch.svg" width="140" height="140" alt="AIエージェントからSSHを通じて接続できたサーバーとチェックマーク" loading="lazy" />
+            <div><h3>最初に準備して、次回からはゼロタッチへ。</h3>
+              <div class="why-steps" aria-label="接続の流れ"><span>言葉で依頼</span> → <span>PCのSSHが認証</span> → <span>サーバーへ接続</span></div>
+              <p>公開鍵の登録・接続先の設定・初回のホスト鍵確認を済ませ、必要なら<strong>ssh-agent</strong>（鍵を使った認証を手伝う常駐プログラム）へ鍵を読み込ませます。その状態なら、以後はサーバーのログインパスワードを毎回入力せずに接続できます。これが、AIに作業を頼むときの「ゼロタッチ接続」です。</p>
+            </div>
+          </article>
+          <p class="why-note"><strong>SSHにもパスワード認証があります。</strong>ここで入力を省けるのは「公開鍵認証」を設定した場合です。鍵のパスフレーズ入力や追加認証が必要な環境もあります。AIエージェントがそのPCのSSHを使える権限・実行環境も必要です。</p>
+          <p class="why-note"><strong>秘密をチャットへ渡さないことと、AIに許可する操作の範囲は別です。</strong>鍵を使えるAIは、その接続先で許可された操作ができます。ゼロタッチは接続時の入力を省く意味で、ファイルの変更・削除まで無確認で任せる意味ではありません。</p>
+        </div>
+      </section>
       <section class="section" id="use">
         <div class="wrap reveal">
-          <p class="eyebrow">02 / WHEN IT HELPS</p>
+          <p class="eyebrow">03 / WHEN IT HELPS</p>
           <h2>公開中のサイトを、安全にお手入れする入口。</h2>
           <p class="section-lead">
             Webサイトは、インターネット上の「サーバー」というコンピューターから表示されています。SSHを使うと、自分のPCからそのサーバーへ安全に入り、サイトの中身を確認したり更新したりできます。
@@ -1611,7 +1646,7 @@
       </section>
       <section class="section" id="how">
         <div class="wrap reveal">
-          <p class="eyebrow">03 / FIRST TIME SETUP</p>
+          <p class="eyebrow">04 / FIRST TIME SETUP</p>
           <h2>やることは、最初に一度だけ。4つを順番どおりで大丈夫。</h2>
           <p class="section-lead">
             難しい設定を全部覚える必要はありません。①PCで鍵を作る、②公開鍵だけを管理画面に貼る、③秘密鍵はPCの中に置いておく、④接続コマンドを1行入力する。このページ下のシミュレーターで、同じ順番を画面を見ながら練習できます。
@@ -1677,7 +1712,7 @@
       </section>
       <section class="section" id="ai">
         <div class="wrap reveal">
-          <p class="eyebrow">04 / ZERO-TOUCH WITH AI</p>
+          <p class="eyebrow">05 / ZERO-TOUCH WITH AI</p>
           <h2>SSH公開鍵接続を、ゼロからAIに整えてもらう。</h2>
           <p class="section-lead">
             設定ファイルの名前や書き方を覚えなくても大丈夫です。下の「〇〇」を自分のサーバー情報に置き換えて渡すと、情報収集、鍵の作成、接続テスト、次回から使うグローバルスキルの作成まで、順番に依頼できます。
@@ -1912,6 +1947,7 @@
         </div>
       </section>
       <div class="wrap sources">
+        <p>「なぜSSHを使う？」の公式情報確認日：2026年10月24日。出典：<a href="https://man.openbsd.org/ssh">OpenSSH ssh（公開鍵認証・ホスト鍵の確認）</a>／<a href="https://man.openbsd.org/ssh_config">ssh_config（Host・IdentityFile）</a>／<a href="https://man.openbsd.org/ssh-agent">ssh-agent（鍵を使う認証）</a></p>
         公式情報の確認日：2026年9月29日<br />出典：<a
           href="https://help.sakura.ad.jp/rs/2804/"
           >さくら「SSH公開鍵認証の設定をしたい」</a
@@ -1927,14 +1963,7 @@
     <footer class="guide-footer">
       <div class="wrap">
         <a class="portal-link" href="../index.html">ポータルへ戻る</a>
-        <nav class="page-pagination" aria-label="学習ページの移動">
-          <a href="../deploy/index.html" rel="prev"
-            ><small>前のページ</small><strong>← ウェブアプリの公開先を選ぶ</strong></a
-          ><a href="../api/index.html" rel="next"
-            ><small>次のページ</small
-            ><strong>APIのしくみを体験しよう →</strong></a
-          >
-        </nav>
+        <nav class="page-pagination" aria-label="学習ページの移動"><a href="../deploy/index.html" rel="prev"><small>前のページ</small><strong>← ウェブアプリのデプロイ</strong></a></nav>
         <div class="site-copyright">
           <span>Copyright &copy; 2026 Flashmelody Katsuyori M</span
           ><img
