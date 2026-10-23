@@ -62,9 +62,10 @@
     .deployment-choice-scroll .scroll-hint-icon{top:.65rem;left:auto;right:.65rem}
     .service-comparison-scroll{width:100%;max-width:100%;margin-inline:auto;position:relative;overflow-x:auto;overscroll-behavior-inline:contain}
     .scroll .service-comparison{width:1400px;min-width:1400px;table-layout:fixed}
+    /* このページの表だけ、共通CSSによるインライン方向の幅上限を解除する */
+    table{max-inline-size:none !important}
     @media(max-width:760px){
-      table.service-comparison{max-inline-size:unset !important}
-      .scroll table.deployment-choice-table{width:640px;min-width:640px;max-inline-size:unset !important}
+      .scroll table.deployment-choice-table{width:640px;min-width:640px}
     }
     .service-comparison caption{text-align:left;padding:.8rem;background:#fff;font-weight:700}
     .service-comparison thead th{white-space:nowrap}
