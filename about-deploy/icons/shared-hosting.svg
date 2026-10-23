@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">共用サーバー</title>
+  <desc id="desc">複数の利用者が一台のサーバーを共有することを表したアイコン</desc>
+  <rect x="42" y="60" width="172" height="156" rx="24" fill="#FFF4BE" stroke="#18213D" stroke-width="10"/>
+  <path d="M47 112h162M47 164h162" stroke="#18213D" stroke-width="8"/>
+  <circle cx="72" cy="86" r="10" fill="#FF8B94" stroke="#18213D" stroke-width="5"/>
+  <circle cx="72" cy="138" r="10" fill="#35C9A1" stroke="#18213D" stroke-width="5"/>
+  <circle cx="72" cy="190" r="10" fill="#1769E0" stroke="#18213D" stroke-width="5"/>
+  <path d="M98 86h75M98 138h75M98 190h75" stroke="#18213D" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="46" cy="34" r="20" fill="#FF8B94" stroke="#18213D" stroke-width="7"/>
+  <circle cx="128" cy="34" r="20" fill="#35C9A1" stroke="#18213D" stroke-width="7"/>
+  <circle cx="210" cy="34" r="20" fill="#1769E0" stroke="#18213D" stroke-width="7"/>
+  <path d="M46 54v20M128 54v20M210 54v20" stroke="#18213D" stroke-width="7" stroke-linecap="round"/>
+  <path d="M34 34h24M116 34h24M198 34h24" stroke="#FFFDF7" stroke-width="5" stroke-linecap="round"/>
+</svg>
