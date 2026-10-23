@@ -6,7 +6,7 @@
     <title>GASでGoogleサービスをつなぐ | Knowledge Surrounding AI</title>
     <meta
       name="description"
-      content="Google Apps Script（GAS）の2つの型、ドキュメントのメニューと報告書のひな形、カレンダーとスプレッドシートの連携、スプレッドシートをWeb APIにする作例を学ぶガイドです。"
+      content="Google Apps Script（GAS）の2つの型、ドキュメントのメニューと差し込みフォーム、カレンダーとスプレッドシートの連携、スプレッドシートをWeb APIにする作例を学ぶガイドです。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -14,11 +14,11 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=gas-types-20261024" />
+    <link rel="stylesheet" href="style.css?v=gas-sidebar-20261024" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
-    <script src="guide.js?v=gas-v1" defer></script>
+    <script src="guide.js?v=gas-sidebar-20261024" defer></script>
 <link rel="stylesheet" href="../footer-pagination.css?v=20261024">
 <link rel="stylesheet" href="../portal-context.css?v=20261024"><script src="../portal-context.js?v=20261024"></script></head>
   <body>
@@ -84,7 +84,7 @@
           <div class="flow" aria-label="このページで作るもの">
             <p class="flow__title">このページで作るもの</p>
             <ol>
-              <li><b>ドキュメント</b>にメニューを足して、報告書のひな形を入れる</li>
+              <li><b>ドキュメント</b>にメニューを足して、雛形を右側のフォームから埋める</li>
               <li><b>カレンダー</b>の予定をスプレッドシートへ読み込む・書き出す</li>
               <li><b>スプレッドシート</b>をWeb APIにして、HTMLの画面とつなぐ</li>
             </ol>
@@ -145,70 +145,86 @@
         </div>
       </section>
 
-      <section id="docs" class="tint">
-        <div class="wrap">
-          <p class="eyebrow">04 / ドキュメント × メニュー</p>
-          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>ドキュメントに<em>メニュー</em>を足して、<br /><em>報告書のひな形</em>を作る。</span></h2>
-          <p class="lead">報告書を書くたびに、見出しや表を一から作るのは手間です。ドキュメントのメニューに「報告書」を足し、選ぶだけでひな形が入るようにします。</p>
-          <div class="two">
-            <div>
-              <div class="code-block">
-                <div class="code-block__head"><span>Code.gs（ドキュメントのコンテナバインド型）</span><button type="button" class="copy" data-copy="code-report">コピー</button></div>
-<pre id="code-report"><code><span class="c">// ドキュメントを開いたときに自動で動く</span>
+      <section id="docs" class="tint"><div class="wrap">
+<p class="eyebrow">04 / ドキュメント × 入力フォーム</p>
+<h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>ドキュメントの雛形を、<br /><em>右側のフォームから埋める。</em></span></h2>
+<p class="lead">案内文やお礼状の書式はドキュメントで作り、変わる部分だけを <code>{名前}</code>・<code>{日付}</code>・<code>{内容}</code> にしておきます。メニューから右側の入力パネルを開き、入力した値を文書に差し込みます。</p>
+<figure class="docs-form-demo"><div class="doc-mock__bar">ファイル　編集　拡張機能　 <strong>差し込み → 入力フォームを開く</strong></div><div class="docs-form-layout"><div class="docs-template"><p>{名前}様</p><p>{日付}</p><p>{内容}</p></div><div class="docs-panel"><strong>文書への差し込み</strong><label>名前<span>山田 太郎</span></label><label>日付<span>2026-10-24</span></label><label>内容<span>先日はありがとうございました。</span></label><b>文書に差し込む</b></div></div><figcaption>学習用の画面イメージ。右のフォームから、本文のプレースホルダーを埋めます。</figcaption></figure>
+<ol class="docs-steps">
+<li><strong>雛形を作る：</strong>パソコンのGoogleドキュメントで、上の例のように本文を用意します。置き換える目印を「プレースホルダー」と呼びます。<code>様</code> は目印の外に書きます。</li>
+<li><strong>スクリプトを追加：</strong>「拡張機能」→「Apps Script」を開き、<code>Code.gs</code> に下のコードを貼ります。左の「＋」→「HTML」で名前を <code>Sidebar</code> にして、もう一方のコードを貼ります。</li>
+<li><strong>保存して開き直す：</strong>ドキュメントを再読み込みすると「差し込み」メニューが現れます。元の雛形を残し、「ファイル」→「コピーを作成」で作業用の文書を作ります。コピーには紐づくスクリプトも付いてきます。</li>
+<li><strong>フォームを開く：</strong>作業用の文書で「差し込み」→「入力フォームを開く」を選びます。初回は内容を理解したスクリプトの権限を確認して承認します。必要ならメニューを選び直します。</li>
+<li><strong>入力して差し込む：</strong>名前・日付・内容を入力して「文書に差し込む」を押します。<code>{名前}様</code> は「山田 太郎様」に変わります。この例にウェブアプリのデプロイは必要ありません。</li>
+</ol>
+<details class="docs-code"><summary>Code.gs（ドキュメントに紐づくスクリプト）</summary><div class="code-block"><div class="code-block__head"><span>Code.gs（ドキュメントに紐づくスクリプト）</span><button type="button" class="copy" data-copy="code-report">コピー</button></div><pre id="code-report"><code>/** @OnlyCurrentDoc */
 function onOpen() {
-  DocumentApp.getUi()
-    .createMenu('報告書')
-    .addItem('報告書のひな形を挿入', 'insertReportTemplate')
-    .addToUi();
+  DocumentApp.getUi().createMenu(&#x27;差し込み&#x27;)
+    .addItem(&#x27;入力フォームを開く&#x27;, &#x27;showSidebar&#x27;).addToUi();
 }
-
-<span class="c">// メニューから呼ばれる。文書の末尾にひな形を書き足す</span>
-function insertReportTemplate() {
-  const body = DocumentApp.getActiveDocument().getBody();
-  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年M月d日');
-
-  body.appendParagraph('報告書')
-    .setHeading(DocumentApp.ParagraphHeading.TITLE);
-  body.appendTable([
-    ['作成日', today],
-    ['報告者', ''],
-    ['件名', ''],
-  ]);
-
-  ['1. 概要', '2. 経過', '3. 結果', '4. 今後の対応'].forEach((title) =&gt; {
-    body.appendParagraph(title)
-      .setHeading(DocumentApp.ParagraphHeading.HEADING1);
-    body.appendParagraph('');
-  });
-}</code></pre>
-              </div>
-            </div>
-            <div>
-              <figure class="doc-mock" aria-label="メニューからひな形を入れたドキュメントの例">
-                <div class="doc-mock__bar"><span>ファイル</span><span>編集</span><span>表示</span><span>挿入</span><span>拡張機能</span><span class="is-new">報告書</span></div>
-                <div class="doc-mock__menu"><span>報告書のひな形を挿入</span></div>
-                <div class="doc-mock__page">
-                  <p class="doc-mock__title">報告書</p>
-                  <table><tr><th>作成日</th><td>2026年10月18日</td></tr><tr><th>報告者</th><td></td></tr><tr><th>件名</th><td></td></tr></table>
-                  <p class="doc-mock__h">1. 概要</p><p class="doc-mock__line"></p>
-                  <p class="doc-mock__h">2. 経過</p><p class="doc-mock__line"></p>
-                  <p class="doc-mock__h">3. 結果</p>
-                </div>
-                <figcaption>メニューの「報告書」→「報告書のひな形を挿入」で、見出しと表が入ります。</figcaption>
-              </figure>
-              <dl class="terms">
-                <dt><code>onOpen()</code></dt>
-                <dd>この名前の関数は、ファイルを開いたときに自動で動きます（<strong>シンプルトリガー</strong>）。メニューを足す処理はここに書きます。</dd>
-                <dt><code>createMenu()</code> と <code>addItem()</code></dt>
-                <dd>メニューの名前と、項目を選んだときに動く関数の名前を決めます。</dd>
-                <dt><code>appendParagraph()</code> と <code>setHeading()</code></dt>
-                <dd>段落を文書の末尾に足し、「タイトル」「見出し1」などのスタイルを付けます。</dd>
-              </dl>
-            </div>
-          </div>
-          <p class="notice"><strong>シンプルトリガーの決まり：</strong><code>onOpen</code> は編集できる人が開いたときだけ動き、30秒より長くは動けません。承認が必要な処理は、<code>onOpen</code> では動かせません。だから、ひな形を入れる処理はメニューから呼ぶ別の関数に分けています。</p>
-        </div>
-      </section>
+function showSidebar() {
+  DocumentApp.getUi().showSidebar(
+    HtmlService.createHtmlOutputFromFile(&#x27;Sidebar&#x27;).setTitle(&#x27;文書への差し込み&#x27;));
+}
+function fillTemplate(data) {
+  const values = {&#x27;名前&#x27;: String(data.name || &#x27;&#x27;).trim(), &#x27;日付&#x27;: String(data.date || &#x27;&#x27;).trim(), &#x27;内容&#x27;: String(data.content || &#x27;&#x27;).trim()};
+  if (Object.values(values).some(value =&gt; !value)) throw new Error(&#x27;すべての欄を入力してください。&#x27;);
+  const lock = LockService.getDocumentLock();
+  lock.waitLock(10000);
+  try {
+    const body = DocumentApp.getActiveDocument().getActiveTab().asDocumentTab().getBody();
+    const changes = [], found = new Set();
+    const pattern = &#x27;\\{(名前|日付|内容)\\}&#x27;;
+    let match = body.findText(pattern);
+    while (match) {
+      const text = match.getElement().asText();
+      const start = match.getStartOffset(), end = match.getEndOffsetInclusive();
+      const key = text.getText().slice(start + 1, end);
+      changes.push({text, start, end, value: values[key]});
+      found.add(key);
+      match = body.findText(pattern, match);
+    }
+    if (found.size !== 3) throw new Error(&#x27;本文に {名前}・{日付}・{内容} をそろえてください。差し込み済みなら元の雛形をコピーし直します。&#x27;);
+    changes.reverse().forEach(c =&gt; {
+      c.text.insertText(c.start, c.value);
+      c.text.deleteText(c.start + c.value.length, c.end + c.value.length);
+    });
+    return &#x27;差し込みました。文書を確認してください。&#x27;;
+  } finally { lock.releaseLock(); }
+}
+</code></pre></div></details>
+<details class="docs-code"><summary>Sidebar.html（右側のフォーム）</summary><div class="code-block"><div class="code-block__head"><span>Sidebar.html（右側のフォーム）</span><button type="button" class="copy" data-copy="code-sidebar">コピー</button></div><pre id="code-sidebar"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;&lt;head&gt;&lt;base target=&quot;_top&quot;&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;style&gt;
+body{font:14px sans-serif;padding:12px;color:#203c32}label{display:block;margin:16px 0}input,textarea,button{box-sizing:border-box;width:100%;padding:10px;margin-top:6px;font:inherit}textarea{min-height:130px}button{background:#23865e;color:white;border:0;border-radius:6px}button:disabled{opacity:.6}#status{white-space:pre-wrap}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;p&gt;開いている文書の {名前}・{日付}・{内容} を埋めます。&lt;/p&gt;
+&lt;form id=&quot;form&quot;&gt;
+&lt;label&gt;名前&lt;input name=&quot;name&quot; required&gt;&lt;/label&gt;
+&lt;label&gt;日付&lt;input name=&quot;date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
+&lt;label&gt;内容&lt;textarea name=&quot;content&quot; required&gt;&lt;/textarea&gt;&lt;/label&gt;
+&lt;button id=&quot;submit&quot; type=&quot;submit&quot;&gt;文書に差し込む&lt;/button&gt;
+&lt;/form&gt;&lt;p id=&quot;status&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+&lt;script&gt;
+const form = document.getElementById(&#x27;form&#x27;);
+const button = document.getElementById(&#x27;submit&#x27;);
+const status = document.getElementById(&#x27;status&#x27;);
+form.addEventListener(&#x27;submit&#x27;, event =&gt; {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  button.disabled = true;
+  status.textContent = &#x27;差し込んでいます…&#x27;;
+  google.script.run.withSuccessHandler(message =&gt; {
+    status.textContent = message; button.disabled = false;
+  }).withFailureHandler(error =&gt; {
+    status.textContent = error.message; button.disabled = false;
+  }).fillTemplate(Object.fromEntries(new FormData(form)));
+});
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div></details>
+<dl class="terms"><dt><code>onOpen()</code> / <code>showSidebar()</code></dt><dd>文書を開いたときにメニューを作り、メニューを選ぶとHTMLのパネルを右側に開きます。</dd><dt><code>google.script.run</code></dt><dd>フォームの値をGAS側の <code>fillTemplate()</code> に渡します。処理は非同期なので、成功・失敗の通知をそれぞれ受け取ります。</dd><dt>プレースホルダーの置き換え</dt><dd>本文の目印だけを入力値に置き換え、周囲の文面やレイアウトを残します。入力値に記号が含まれていても、そのまま文字として差し込みます。</dd></dl>
+<p class="notice"><strong>使うたびに雛形をコピー：</strong>差し込むと目印は入力値に変わります。別の文書を作るときは元の雛形からコピーしてください。この例は<strong>現在開いているタブの本文（表の中も含む）</strong>が対象です。ヘッダー・フッター・他のタブは対象にしていません。各目印は途中で改行せず、ひと続きの文字として書きます。</p>
+</div></section>
 
       <section id="calendar">
         <div class="wrap">
@@ -514,7 +530,7 @@ result.textContent = data.message;</code></pre>
           <div>
             <p class="eyebrow">10 / サンプル</p>
             <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>このページのコードを、<br /><em>まとめてダウンロード。</em></span></h2>
-            <p>報告書のひな形、カレンダー連携、作例A・Bの <code>Code.gs</code> と <code>index.html</code> が入っています。各ファイルの先頭に、準備することを書いています。<code>index.html</code> は、<code>API_URL</code> に自分のウェブアプリのURLを入れてから開きます。</p>
+            <p>ドキュメントの差し込みフォーム（Code.gs・Sidebar.html）、カレンダー連携、作例A・Bの <code>Code.gs</code> と <code>index.html</code> が入っています。準備と使い方は同梱の README.txt で確認できます。<code>index.html</code> は、<code>API_URL</code> に自分のウェブアプリのURLを入れてから開きます。</p>
           </div>
           <a class="download__btn" href="downloads/gas-samples.zip" download>サンプル一式（ZIP）をダウンロード</a>
         </div>
@@ -540,7 +556,8 @@ result.textContent = data.message;</code></pre>
             <li><a href="https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/CORS" target="_blank" rel="noopener noreferrer">MDN：オリジン間リソース共有（CORS）と単純リクエスト ↗</a></li>
             <li>タイトルのアイコン：<a href="https://www.gstatic.com/images/branding/productlogos/apps_script/v10/192px.svg" target="_blank" rel="noopener noreferrer">Google配信のGoogle Apps Script公式アイコン</a>（確認日：2026年10月24日）。</li>
           </ul>
-          <p>メニューやボタンの日本語の表記は、公式資料の英語の表記をもとにした訳で、実際の画面と違うことがあります。ページ内の日付、名前、お知らせ、URLは説明用の例です。</p>
+          <p>差し込みフォームの確認：2026年10月24日。<a href="https://developers.google.com/apps-script/guides/dialogs" target="_blank" rel="noopener">公式：ダイアログとサイドバー</a> ／ <a href="https://developers.google.com/apps-script/guides/html/communication" target="_blank" rel="noopener">HTMLとGASの通信</a> ／ <a href="https://developers.google.com/apps-script/reference/document/body" target="_blank" rel="noopener">本文の文字検索</a></p>
+<p>メニューやボタンの日本語の表記は、公式資料の英語の表記をもとにした訳で、実際の画面と違うことがあります。ページ内の日付、名前、お知らせ、URLは説明用の例です。</p>
         </div>
       </section>
     </main>

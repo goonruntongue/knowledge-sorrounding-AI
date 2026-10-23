@@ -43,25 +43,13 @@
   const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
   const ACCOUNT = { name: 'you', mail: 'you@example.com' };
-  const DOC_NAME = '週次の報告';
+  const DOC_NAME = '案内文の雛形（作業用コピー）';
   const SHEET_NAME = '勉強会のお知らせ';
-  const DOC_PROJECT = '報告書テンプレート';
+  const DOC_PROJECT = '文書への差し込み';
   const SHEET_PROJECT = 'お知らせAPI';
   const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbx-sample-0000/exec';
 
-  const REPORT_CODE = `function onOpen() {
-  DocumentApp.getUi()
-    .createMenu('報告書')
-    .addItem('報告書のひな形を挿入', 'insertReportTemplate')
-    .addToUi();
-}
-
-function insertReportTemplate() {
-  const body = DocumentApp.getActiveDocument().getBody();
-  body.appendParagraph('報告書')
-    .setHeading(DocumentApp.ParagraphHeading.TITLE);
-  // …（作成日・報告者・件名の表と、見出しを足す）
-}`;
+  const REPORT_CODE = document.getElementById('code-report').textContent;
 
   const API_CODE = `const SPREADSHEET_ID = '1AbC…（このシートのID）';
 
@@ -79,7 +67,7 @@ function doGet() {
   const chapters = ['スクリプトを書く', 'メニューを使う', 'ウェブアプリにする', 'HTMLとつなぐ'];
   const chapterTitles = [
     'ドキュメントからApps Scriptを開き、コードを書いて保存する',
-    '開き直してメニューを出し、承認してひな形を入れる',
+    'メニューから右のフォームを開き、文書に差し込む',
     'スプレッドシートのGASを、ウェブアプリとしてデプロイする',
     'ウェブアプリのURLをHTMLに貼り、お知らせを表示する',
   ];
@@ -97,6 +85,8 @@ function doGet() {
       reloaded: false,
       authorized: false,
       template: false,
+      sidebar: false,
+      formValues: {name: '山田 太郎', date: '2026-10-24', content: '先日はありがとうございました。'},
       edMenu: false,
       modal: null, // authreq / account / unverified / consent / deploy / approve / deployed
       unverifiedOpen: false,
@@ -156,7 +146,7 @@ function doGet() {
     {
       ch: 1, act: 'code', label: 'クリックでコードを書く',
       hint: 'エディタの中身を、メニューを足すコードに書き換えます。',
-      explain: 'onOpen はドキュメントを開いたときに自動で動く関数、insertReportTemplate はメニューから呼ぶ関数です。',
+      explain: 'onOpen はドキュメントを開いたときに自動で動く関数、showSidebar はメニューからフォームを開く関数です。この練習では Sidebar.html も用意済みとして進めます。',
       run: async (s, f) => { await f.type(REPORT_CODE); },
     },
     {
@@ -175,18 +165,18 @@ function doGet() {
     {
       ch: 2, act: 'reload', label: 'クリックで再読み込み',
       hint: 'ブラウザーの再読み込みで、ドキュメントを開き直します。',
-      explain: 'メニューの右端に「報告書」が増えました。onOpen が動いて、メニューを足したからです。',
+      explain: 'メニューの右端に「差し込み」が増えました。onOpen が動いて、メニューを足したからです。',
       run: async (s, f) => { s.reloaded = false; f.render(); await f.wait(500); s.reloaded = true; },
     },
     {
-      ch: 2, act: 'menu-report', label: 'クリックで「報告書」を開く',
-      hint: '増えた「報告書」のメニューを開きます。',
-      explain: 'addItem で決めた「報告書のひな形を挿入」が出ています。',
+      ch: 2, act: 'menu-report', label: 'クリックで「差し込み」を開く',
+      hint: '増えた「差し込み」のメニューを開きます。',
+      explain: 'addItem で決めた「入力フォームを開く」が出ています。',
       run: (s) => { s.fileMenu = 'report'; },
     },
     {
-      ch: 2, act: 'insert', label: 'クリックでひな形を挿入',
-      hint: '項目を選ぶと、insertReportTemplate が動きます。',
+      ch: 2, act: 'insert', label: 'クリックで入力フォームを開く',
+      hint: '項目を選ぶと、showSidebar が動きます。',
       explain: '初めてなので「承認が必要です」と出ました。ドキュメントを書き換えるには、あなたの許可が要ります。',
       run: (s) => { s.fileMenu = null; s.modal = 'authreq'; },
     },
@@ -198,16 +188,26 @@ function doGet() {
     },
     ...consentSteps(2, DOC_PROJECT, '承認が終わりました。承認の前の操作は取り消されているので、もう一度メニューから選びます。'),
     {
-      ch: 2, act: 'menu-report', label: 'もう一度「報告書」を開く',
+      ch: 2, act: 'menu-report', label: 'もう一度「差し込み」を開く',
       hint: '承認が済んだので、もう一度メニューを開きます。',
       explain: '同じ項目を選びます。',
       run: (s) => { s.fileMenu = 'report'; },
     },
     {
-      ch: 2, act: 'insert', label: 'クリックでひな形を挿入',
+      ch: 2, act: 'insert', label: 'クリックで入力フォームを開く',
       hint: '今度は承認が済んでいるので、すぐに動きます。',
-      explain: '報告書のタイトル、表、見出しが入りました。次からは、メニューを選ぶだけで同じひな形が入ります。',
-      run: (s) => { s.fileMenu = null; s.template = true; },
+      explain: '右側にフォームが開きました。ここから本文の目印を埋めます。',
+      run: (s) => { s.fileMenu = null; s.sidebar = true; },
+    },
+    {
+      ch: 2, act: 'apply-form', label: '入力して「文書に差し込む」を押す',
+      hint: '右の入力欄は書き換えられます。名前・日付・内容をすべて入力して差し込みます。',
+      explain: '本文の目印が入力値に変わりました。次の文書は元の雛形をコピーして作ります。実際のGoogleドキュメントには作用しません。',
+      run: (s) => {
+        const fields = stage.querySelectorAll('[data-form-field]');
+        fields.forEach(field => { s.formValues[field.dataset.formField] = field.value; });
+        s.template = true;
+      },
     },
     // ---- 3章 ----
     {
@@ -339,24 +339,25 @@ function doGet() {
     const help = '<span>ヘルプ</span>';
     const hasReport = s.scene === 'doc' && s.reloaded && s.active === 'file';
     const reportDrop = s.fileMenu === 'report'
-      ? '<div class="sim-dropdown is-right"><button type="button" data-act="insert">報告書のひな形を挿入</button></div>'
+      ? '<div class="sim-dropdown is-right"><button type="button" data-act="insert">入力フォームを開く</button></div>'
       : '';
     const report = hasReport
-      ? `<span class="sim-menu-wrap"><span class="sim-menu-item is-added ${s.fileMenu === 'report' ? 'is-open' : ''}" data-act="menu-report">報告書</span>${reportDrop}</span>`
+      ? `<span class="sim-menu-wrap"><span class="sim-menu-item is-added ${s.fileMenu === 'report' ? 'is-open' : ''}" data-act="menu-report">差し込み</span>${reportDrop}</span>`
       : '';
     return `<div class="sim-menubar">${items}${ext}${help}${report}</div>`;
   }
 
   function docView(s) {
-    let page;
-    if (s.template) {
-      page = `<p class="sim-doc-title">報告書</p>
-        <table><tr><td>作成日</td><td>2026年10月18日</td></tr><tr><td>報告者</td><td></td></tr><tr><td>件名</td><td></td></tr></table>
-        <p class="sim-doc-h">1. 概要</p><p>&nbsp;</p><p class="sim-doc-h">2. 経過</p><p>&nbsp;</p><p class="sim-doc-h">3. 結果</p><p>&nbsp;</p><p class="sim-doc-h">4. 今後の対応</p>`;
-    } else {
-      page = '<p class="sim-doc-placeholder">（まだ何も書いていません）</p>';
-    }
-    return `<div class="sim-app-head"><span class="sim-app-icon"></span><span class="sim-app-title">${esc(DOC_NAME)}</span></div>${fileMenuBar(s)}<div class="sim-docpage">${page}</div>`;
+    const v = s.formValues;
+    const page = s.template
+      ? `<p>${esc(v.name)}様</p><p>${esc(v.date)}</p><p style="white-space:pre-wrap">${esc(v.content)}</p>`
+      : '<p>{名前}様</p><p>{日付}</p><p>{内容}</p>';
+    const panel = s.sidebar ? `<aside class="sim-doc-panel"><strong>文書への差し込み</strong>
+      <label>名前<input data-form-field="name" value="${esc(v.name)}" required></label>
+      <label>日付<input data-form-field="date" type="date" value="${esc(v.date)}" required></label>
+      <label>内容<textarea data-form-field="content" required>${esc(v.content)}</textarea></label>
+      <button type="button" data-act="apply-form">文書に差し込む</button></aside>` : '';
+    return `<div class="sim-app-head"><span class="sim-app-icon"></span><span class="sim-app-title">${esc(DOC_NAME)}</span></div>${fileMenuBar(s)}<div class="sim-doc-workspace"><div class="sim-docpage">${page}</div>${panel}</div>`;
   }
 
   function sheetView(s) {
@@ -378,7 +379,7 @@ function doGet() {
     const menu = s.edMenu ? '<div class="sim-ed-menu"><button type="button" data-act="new-deploy">新しいデプロイ</button><span class="is-muted">デプロイをテスト</span><span class="is-muted">デプロイを管理</span></div>' : '';
     const caret = s.typing ? '<span class="caret"></span>' : '';
     return `<div class="sim-editor">
-      <div class="sim-ed-side"><p>ファイル</p><span>コード.gs</span></div>
+      <div class="sim-ed-side"><p>ファイル</p><span>コード.gs</span>${s.scene === 'doc' ? '<span>Sidebar.html</span>' : ''}</div>
       <div class="sim-ed-main">
         <div class="sim-ed-bar"><span class="sim-ed-name">${esc(name)}</span><button type="button" data-act="save" aria-label="プロジェクトを保存">💾 保存</button><button type="button" tabindex="-1">▷ 実行</button>${deployBtn}</div>
         <div class="sim-ed-wrap"><pre class="sim-ed-code" data-act="code" id="sim-code">${esc(s.code)}${caret}</pre>${menu}</div>
@@ -558,6 +559,10 @@ function doGet() {
   async function runStep() {
     const step = current();
     if (!step || busy) return;
+    if (step.act === 'apply-form') {
+      const invalid = [...stage.querySelectorAll('[data-form-field]')].find(field => !field.value.trim() || !field.checkValidity());
+      if (invalid) { invalid.focus(); invalid.reportValidity(); return; }
+    }
     busy = true;
     const myToken = token;
     guide.hidden = true;

@@ -782,3 +782,16 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 .gas-type-figure{margin:1.2rem 0 0;text-align:center}
 .gas-type-figure img{display:block;width:100%;max-width:380px;height:auto;margin:auto;object-fit:contain}
 .gas-type-figure figcaption{margin-top:.35rem;color:var(--muted);font-size:.8rem;font-weight:700}
+
+/* ドキュメントの差し込みフォーム */
+.docs-form-demo{margin:2rem 0;border:1px solid #b9d8ca;border-radius:16px;overflow:hidden;background:#fff}
+.docs-form-layout{display:grid;grid-template-columns:1fr minmax(180px,32%);min-height:310px;background:#edf1ef}
+.docs-template{margin:20px;padding:24px;background:white;line-height:2.5;box-shadow:0 2px 9px #193d2512}
+.docs-panel,.sim-doc-panel{padding:16px;background:#fff;border-left:1px solid #ccd8d2;font-size:14px}
+.docs-panel label,.sim-doc-panel label{display:block;margin:14px 0}
+.docs-panel label span{display:block;border:1px solid #b5c8be;border-radius:5px;padding:7px;margin-top:5px}
+.docs-panel b,.sim-doc-panel button{display:block;background:#26835e;color:#fff;padding:10px;border-radius:6px;border:0}
+.docs-form-demo figcaption{padding:14px;font-size:.85rem}
+.docs-steps li{margin:1rem 0;line-height:1.9}.docs-code{margin:20px 0}.docs-code summary{cursor:pointer;font-weight:700;padding:12px}
+.sim-doc-workspace{display:flex;align-items:stretch}.sim-doc-workspace .sim-docpage{flex:1;min-width:0}.sim-doc-panel{width:230px;flex-shrink:0}.sim-doc-panel input,.sim-doc-panel textarea{box-sizing:border-box;width:100%;padding:7px;font:inherit;border:1px solid #b5c8be;border-radius:4px}.sim-doc-panel textarea{min-height:80px}
+@media(max-width:600px){.docs-form-layout{grid-template-columns:1fr 46%}.docs-template{margin:10px;padding:12px;font-size:14px}.docs-panel{padding:10px;font-size:12px}.sim-doc-panel{width:44%;padding:10px;font-size:12px}.sim-doc-workspace .sim-docpage{padding:14px;margin:10px}.docs-form-demo .doc-mock__bar{font-size:11px;white-space:normal}}
