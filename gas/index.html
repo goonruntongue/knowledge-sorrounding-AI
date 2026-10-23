@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=gas-icon-20261024" />
+    <link rel="stylesheet" href="style.css?v=gas-icon-20261024b" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
@@ -60,7 +60,7 @@
       <section id="what">
         <div class="wrap">
           <p class="eyebrow">01 / GASとは</p>
-          <h2>GASは、<em>Googleサービスを動かす</em><span class="keep">JavaScript。</span></h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>GASは、<em>Googleサービスを動かす</em><span class="keep">JavaScript。</span></span></h2>
           <p class="lead">
             <strong>Google Apps Script</strong>（GAS、ガス）は、Googleのサービスを操作するためのプログラムを書いて動かすしくみです。書き方はJavaScriptと同じで、Googleアカウントがあれば、ブラウザーだけで始められます。
           </p>
@@ -95,7 +95,7 @@
       <section id="types" class="tint">
         <div class="wrap">
           <p class="eyebrow">02 / 2つの型</p>
-          <h2>ファイルに<em>くっつける</em>か、<br /><em>単独で</em>置くか。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>ファイルに<em>くっつける</em>か、<br /><em>単独で</em>置くか。</span></h2>
           <p class="lead">GASのプログラム（プロジェクト）には、置き方が2種類あります。どちらも書き方は同じで、違うのは「どこから作るか」と「親になるファイルがあるか」です。</p>
           <div class="pair">
             <article class="card card--bound">
@@ -132,7 +132,7 @@
       <section id="auth">
         <div class="wrap">
           <p class="eyebrow">03 / 最初の実行と承認</p>
-          <h2>初めて動かすときは、<br /><em>権限の承認</em>が出る。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>初めて動かすときは、<br /><em>権限の承認</em>が出る。</span></h2>
           <p class="lead">GASが自分のドキュメントやカレンダーを操作するには、あなたの許可が必要です。初めて実行したとき（使う道具が増えたときも）に、承認を求める画面が続けて出ます。</p>
           <ol class="steps">
             <li><b>承認が必要です</b><span>「続行」または「権限を確認」を押す</span></li>
@@ -148,7 +148,7 @@
       <section id="docs" class="tint">
         <div class="wrap">
           <p class="eyebrow">04 / ドキュメント × メニュー</p>
-          <h2>ドキュメントに<em>メニュー</em>を足して、<br /><em>報告書のひな形</em>を作る。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>ドキュメントに<em>メニュー</em>を足して、<br /><em>報告書のひな形</em>を作る。</span></h2>
           <p class="lead">報告書を書くたびに、見出しや表を一から作るのは手間です。ドキュメントのメニューに「報告書」を足し、選ぶだけでひな形が入るようにします。</p>
           <div class="two">
             <div>
@@ -213,7 +213,7 @@ function insertReportTemplate() {
       <section id="calendar">
         <div class="wrap">
           <p class="eyebrow">05 / カレンダー ⇄ スプレッドシート</p>
-          <h2>カレンダーの予定を、<br /><em>シートに読み込む・書き出す。</em></h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>カレンダーの予定を、<br /><em>シートに読み込む・書き出す。</em></span></h2>
           <p class="lead">スプレッドシートのメニューから、カレンダーの予定を一覧にしたり、シートに書いた予定をまとめてカレンダーに登録したりします。</p>
           <div class="sync" aria-hidden="true">
             <div class="sync__box sync__box--cal"><b>Googleカレンダー</b><span>10/20 定例ミーティング</span><span>10/22 打ち合わせ</span><span>10/25 研修</span></div>
@@ -286,7 +286,7 @@ function exportEvents() {
       <section id="webapi" class="tint">
         <div class="wrap">
           <p class="eyebrow">06 / GASでWeb APIを作る</p>
-          <h2>スプレッドシートを、<br /><em>URLで呼べるAPI</em>にする。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>スプレッドシートを、<br /><em>URLで呼べるAPI</em>にする。</span></h2>
           <p class="lead">GASのプロジェクトは、<strong>ウェブアプリ</strong>として公開できます。URLにアクセスがあると決まった関数が動き、シートのデータをJSONで返したり、送られてきたデータをシートに書き込んだりできます。APIそのものの考え方は、<a href="../api/index.html">APIのしくみを体験しよう</a>で紹介しています。</p>
           <div class="api-flow" aria-label="HTMLの画面からGASのウェブアプリを呼ぶ流れ">
             <div class="api-flow__node"><b>HTMLの画面</b><span>fetch でURLを呼ぶ</span></div>
@@ -338,7 +338,7 @@ function exportEvents() {
       <section id="example-a">
         <div class="wrap">
           <p class="eyebrow">07 / 作例A ― 読むだけ（GET）</p>
-          <h2>シートの<em>お知らせ一覧</em>を、<br />HTMLの画面に出す。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>シートの<em>お知らせ一覧</em>を、<br />HTMLの画面に出す。</span></h2>
           <p class="lead">スプレッドシートに書いたお知らせのうち、「公開」にチェックを入れたものだけを、Webページに一覧表示します。お知らせを直したいときは、シートを書き換えるだけです。</p>
           <div class="sheet-mock" aria-label="お知らせシートの例">
             <div class="sheet-mock__tab">お知らせ</div>
@@ -416,7 +416,7 @@ load();</code></pre>
       <section id="example-b" class="tint">
         <div class="wrap">
           <p class="eyebrow">08 / 作例B ― 書き込む（POST）</p>
-          <h2>フォームの<em>出欠</em>を、<br />シートに書き込む。</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>フォームの<em>出欠</em>を、<br />シートに書き込む。</span></h2>
           <p class="lead">HTMLのフォームで名前と出欠を送ると、GASが受け取って「出欠」シートの最後の行に書き足します。集計はスプレッドシートでそのまま行えます。</p>
           <div class="two two--code">
             <div class="code-block">
@@ -483,7 +483,7 @@ result.textContent = data.message;</code></pre>
       <section id="publish">
         <div class="wrap">
           <p class="eyebrow">09 / 公開するときの注意</p>
-          <h2>動いたあとに、<br /><em>確かめておくこと。</em></h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>動いたあとに、<br /><em>確かめておくこと。</em></span></h2>
           <div class="cards cards--2">
             <article class="card">
               <span class="num">1</span>
@@ -513,7 +513,7 @@ result.textContent = data.message;</code></pre>
         <div class="wrap download">
           <div>
             <p class="eyebrow">10 / サンプル</p>
-            <h2>このページのコードを、<br /><em>まとめてダウンロード。</em></h2>
+            <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>このページのコードを、<br /><em>まとめてダウンロード。</em></span></h2>
             <p>報告書のひな形、カレンダー連携、作例A・Bの <code>Code.gs</code> と <code>index.html</code> が入っています。各ファイルの先頭に、準備することを書いています。<code>index.html</code> は、<code>API_URL</code> に自分のウェブアプリのURLを入れてから開きます。</p>
           </div>
           <a class="download__btn" href="downloads/gas-samples.zip" download>サンプル一式（ZIP）をダウンロード</a>
@@ -522,7 +522,7 @@ result.textContent = data.message;</code></pre>
 
       <section class="sources">
         <div class="wrap">
-          <h2>出典・確認日</h2>
+          <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>出典・確認日</span></h2>
           <p>公式資料を確認：2026年10月18日</p>
           <ul>
             <li><a href="https://developers.google.com/apps-script/guides/bound" target="_blank" rel="noopener noreferrer">Google Apps Script：コンテナバインド型スクリプト ↗</a></li>

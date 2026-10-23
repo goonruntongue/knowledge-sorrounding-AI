@@ -774,3 +774,7 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 /* Official product icon, aligned with the first title line. */
 .gas-title-brand{display:inline-flex;align-items:center;gap:.22em}
 .gas-title-icon{display:block;flex:none;width:.85em;height:.85em;object-fit:contain}
+
+.gas-section-heading{display:flex;align-items:flex-start;gap:.35em}
+.gas-section-heading>img{flex:none;width:.78em;height:.78em;margin-top:.27em;object-fit:contain}
+.gas-section-heading>span{min-width:0}
