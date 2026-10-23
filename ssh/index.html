@@ -1575,7 +1575,7 @@
           <p class="section-lead">「サーバーの中を確認して」とAIエージェントに頼むとき、ログインに必要な秘密はどう扱うのでしょう。SSHの<strong>公開鍵認証</strong>を準備すると、パスワードをチャットに渡さずに接続できます。</p>
           <div class="why-compare">
             <article class="why-card">
-              <img src="assets/why-password.svg" width="170" height="140" alt="パスワードの入力で作業が止まるチャットとログイン画面" loading="lazy" />
+              <img src="assets/why-password.png" width="170" height="140" alt="パスワードの入力で作業が止まるチャットとログイン画面" loading="lazy" />
               <span class="why-label">BEFORE / 接続の準備がない場合</span>
               <h3>接続を頼んでも、ログインで止まる。</h3>
               <div class="why-chat"><p><b>あなた</b>このサーバーに接続して、中を確認して。</p><p><b>AIエージェント</b>ログインが必要です。入力画面で操作をお願いします。</p></div>
@@ -1583,7 +1583,7 @@
               <p>ここでパスワードをチャットに貼ると、会話履歴やAIの処理に秘密を渡すことになります。<strong>パスワードはチャットに書かず、必要な入力画面で自分が直接入力します。</strong></p>
             </article>
             <article class="why-card why-card--key">
-              <img src="assets/why-local-key.svg" width="170" height="140" alt="秘密鍵をPCに残したまま、公開鍵を登録したサーバーへ接続する図" loading="lazy" />
+              <img src="assets/why-local-key.png" width="170" height="140" alt="秘密鍵をPCに残したまま、公開鍵を登録したサーバーへ接続する図" loading="lazy" />
               <span class="why-label">AFTER / SSH公開鍵認証を準備</span>
               <h3>伝えるのは、接続名と頼みたいこと。</h3>
               <div class="why-chat"><p><b>あなた</b>接続名「my-server」でログインして、ファイル一覧を確認して。</p><p><b>AIエージェント</b>PCに設定済みのSSHを使って接続し、一覧を確認します。</p></div>
@@ -1592,7 +1592,7 @@
             </article>
           </div>
           <article class="why-flow">
-            <img src="assets/why-zero-touch.svg" width="140" height="140" alt="AIエージェントからSSHを通じて接続できたサーバーとチェックマーク" loading="lazy" />
+            <img src="assets/why-zero-touch.png" width="140" height="140" alt="AIエージェントからSSHを通じて接続できたサーバーとチェックマーク" loading="lazy" />
             <div><h3>最初に準備して、次回からはゼロタッチへ。</h3>
               <div class="why-steps" aria-label="接続の流れ"><span>言葉で依頼</span> → <span>PCのSSHが認証</span> → <span>サーバーへ接続</span></div>
               <p>公開鍵の登録・接続先の設定・初回のホスト鍵確認を済ませ、必要なら<strong>ssh-agent</strong>（鍵を使った認証を手伝う常駐プログラム）へ鍵を読み込ませます。その状態なら、以後はサーバーのログインパスワードを毎回入力せずに接続できます。これが、AIに作業を頼むときの「ゼロタッチ接続」です。</p>

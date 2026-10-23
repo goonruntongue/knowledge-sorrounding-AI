@@ -2,7 +2,7 @@
 .why-compare { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:30px; }
 .why-card { min-width:0; padding:28px; border:1px solid var(--line); border-radius:24px; background:#0b2334; }
 .why-card--key { border-color:#68ebc288; background:linear-gradient(145deg,#103c42,#0b2334); }
-.why-card img { display:block; width:170px; height:140px; margin:0 auto 18px; }
+.why-card img { display:block; width:170px; height:140px; object-fit:contain; margin:0 auto 18px; }
 .why-card h3 { margin:8px 0 16px; font-size:1.25rem; line-height:1.6; }
 .why-label { color:var(--amber); font:700 .75rem/1.6 Poppins,"Noto Sans JP",sans-serif; letter-spacing:.1em; }
 .why-card--key .why-label { color:var(--mint); }
@@ -12,7 +12,7 @@
 .why-chat b { display:block; margin-bottom:4px; color:var(--cyan); font-size:.75rem; }
 .why-card>p { color:var(--muted); line-height:1.9; }
 .why-flow { display:grid; grid-template-columns:140px 1fr; align-items:center; gap:24px; margin-top:24px; padding:26px; border:1px solid #48d6ff66; border-radius:24px; background:#0b293b; }
-.why-flow img { width:140px; height:140px; }
+.why-flow img { width:140px; height:140px; object-fit:contain; }
 .why-flow h3 { margin:0 0 10px; font-size:1.25rem; }
 .why-flow p { margin:0; line-height:1.9; color:var(--muted); }
 .why-steps { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:16px 0; color:var(--cyan); font-weight:800; }
