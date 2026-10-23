@@ -170,7 +170,9 @@
       <h2>作りたいものと、<em>公開したい場所を伝える。</em></h2>
       <p class="intro">下の「〇〇」を入れ替えて、AIに頼んでみましょう。アプリの目的と、使いたい機能を少し添えると、必要な部品も考えてもらいやすくなります。</p>
       <h3>そのまま使えるプロンプト</h3>
-      <div class="note" style="white-space:pre-wrap">〇〇というウェブアプリを作って、〇〇へデプロイしてください。
+      <button class="portal-link" id="copy-deployment-prompt" type="button" aria-controls="deployment-prompt-text" style="font:inherit;font-weight:700;cursor:pointer">プロンプトをコピー</button>
+      <span id="deployment-copy-status" role="status" style="margin-left:.6rem"></span>
+      <div class="note" id="deployment-prompt-text" style="white-space:pre-wrap">〇〇というウェブアプリを作って、〇〇へデプロイしてください。
 
 【アプリの目的】〇〇するためのアプリです。
 【使いたい機能】〇〇、〇〇、〇〇。
@@ -188,6 +190,21 @@
   </main>
   <footer class="guide-footer"><div class="wrap"><a class="portal-link" href="../index.html">ポータルへ戻る</a><nav class="pagination" aria-label="学習ページの移動"><a href="../server/index.html" rel="prev">← サーバーとは？</a><a href="../ssh/index.html" rel="next">SSH鍵をつくって登録する →</a></nav><div class="site-copyright"><span>Copyright &copy; 2026 Flashmelody Katsuyori M</span><img class="site-copyright__logo" src="../assets/maishilogo_white_outlined.svg" alt="FlashMelody"></div></div></footer>
   <button id="toTop" type="button" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
+  <script>
+    document.getElementById('copy-deployment-prompt').addEventListener('click',async function(){
+      const text=document.getElementById('deployment-prompt-text').innerText.trim();
+      const status=document.getElementById('deployment-copy-status');
+      try{
+        if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(text);}
+        else{
+          const field=document.createElement('textarea');field.value=text;field.style.cssText='position:fixed;opacity:0;pointer-events:none';document.body.appendChild(field);field.select();
+          let copied=false;try{copied=document.execCommand('copy');}finally{field.remove();this.focus();}
+          if(!copied)throw new Error('Copy unavailable');
+        }
+        status.textContent='コピーしました';
+      }catch(error){status.textContent='コピーできませんでした。本文を選択してコピーしてください。';}
+    });
+  </script>
   <script src="scroll-hint.min.js"></script>
   <script src="outliner-vanilla.min.js"></script>
   <script>const toTop=document.getElementById('toTop'),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;addEventListener('scroll',()=>toTop.classList.toggle('is-visible',scrollY>360),{passive:true});toTop.addEventListener('click',()=>scrollTo({top:0,behavior:reduced?'auto':'smooth'}));Outliner.apply('.analogy-copy',{width:'3px',color:'#fffdf7',corner:'10px'});Outliner.apply('.request-flow-copy',{width:'4px',color:'#fffdf7',corner:'9px'});new ScrollHint('.scroll',{i18n:{scrollable:'横にスクロールできます'}});</script>
