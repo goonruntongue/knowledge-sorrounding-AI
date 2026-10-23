@@ -4,6 +4,7 @@
 .hosting-brand{height:112px;display:flex;align-items:center;justify-content:center;padding:24px;margin-bottom:20px;background:#f1f6fd;border-radius:8px;text-align:center}
 .hosting-brand img{display:block;width:auto;height:auto;max-width:100%;max-height:56px;object-fit:contain}
 .hosting-brand--dark{background:#10213d}
+.hosting-brand--white{background:#fff}
 .hosting-brand--text{font-family:Poppins,"Noto Sans JP",sans-serif;font-size:clamp(1.15rem,2.5vw,1.65rem);font-weight:800;line-height:1.45}
 .hosting-card h3{font-size:1.22rem;margin:0 0 12px}
 .hosting-card p{margin:0 0 16px}
