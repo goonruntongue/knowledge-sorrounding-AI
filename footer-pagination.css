@@ -1,0 +1,39 @@
+/* Shared guide pagination; retain each guide's desktop colors and layout. */
+.guide-footer .pagination > a {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  padding: .85rem 1.1rem;
+  border: 2px solid currentColor;
+  border-radius: 14px;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  /* Higher specificity also covers the older, page-specific footer styles. */
+  footer :is(.page-pagination, .pagination, .footer-nav) {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+  }
+
+  footer :is(.page-pagination, .pagination, .footer-nav) > a {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 1rem 1.1rem;
+    text-align: left !important;
+    align-items: flex-start !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+}
