@@ -795,3 +795,15 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 .docs-steps li{margin:1rem 0;line-height:1.9}.docs-code{margin:20px 0}.docs-code summary{cursor:pointer;font-weight:700;padding:12px}
 .sim-doc-workspace{display:flex;align-items:stretch}.sim-doc-workspace .sim-docpage{flex:1;min-width:0}.sim-doc-panel{width:230px;flex-shrink:0}.sim-doc-panel input,.sim-doc-panel textarea{box-sizing:border-box;width:100%;padding:7px;font:inherit;border:1px solid #b5c8be;border-radius:4px}.sim-doc-panel textarea{min-height:80px}
 @media(max-width:600px){.docs-form-layout{grid-template-columns:1fr 46%}.docs-template{margin:10px;padding:12px;font-size:14px}.docs-panel{padding:10px;font-size:12px}.sim-doc-panel{width:44%;padding:10px;font-size:12px}.sim-doc-workspace .sim-docpage{padding:14px;margin:10px}.docs-form-demo .doc-mock__bar{font-size:11px;white-space:normal}}
+
+/* 表そのものの幅を固定し、外側だけを画面幅に収める。 */
+.table-wrap.gas-type-comparison{position:relative;box-sizing:border-box;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.gas-type-comparison table.compare{table-layout:fixed;width:1200px;min-width:1200px;max-width:none}
+.gas-type-comparison .compare th,.gas-type-comparison .compare td{box-sizing:border-box}
+.gas-type-comparison .compare th:first-child{width:240px}
+.gas-type-comparison .compare thead th:not(:first-child){width:400px}
+.gas-type-comparison .compare thead th,.gas-type-comparison .compare tbody th{white-space:nowrap}
+.gas-type-comparison .compare td{overflow-wrap:break-word;word-break:normal}
+.gas-type-comparison .compare code{white-space:nowrap;overflow-wrap:normal;word-break:normal}
+.gas-type-comparison:focus-visible{outline:3px solid var(--green-dark);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.gas-type-comparison .scroll-hint-icon:before{animation:none}}

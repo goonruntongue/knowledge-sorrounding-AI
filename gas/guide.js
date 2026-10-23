@@ -3,6 +3,8 @@
 (function () {
   'use strict';
 
+  new ScrollHint('.gas-type-comparison', { i18n: { scrollable: '横にスクロールできます' } });
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- コードのコピー ---------- */
