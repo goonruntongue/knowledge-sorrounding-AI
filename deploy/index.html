@@ -50,7 +50,8 @@
     .part-grid--illustrated .part{display:flex;flex-direction:column;overflow:hidden}.part-grid--illustrated .part h3{margin:.2rem 0 .25rem;color:var(--navy);font-size:1.08rem}.part-grid--illustrated .part p{margin:.25rem 0 1rem}.part-illustration{display:block;width:100%;max-height:12rem;margin-top:auto;object-fit:contain;object-position:center}
     .service-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:1.6rem}.service-card{padding:1rem;border:3px solid var(--ink);border-radius:10px;background:#fff;box-shadow:5px 5px 0 var(--ink)}.service-card:nth-child(2n){background:#e8f4ff}.service-card:nth-child(3n){background:#fff2b9}.service-card:nth-child(5){background:#e7fff6}.service-icon{display:block;width:min(100%,10.8rem);height:4rem;margin:0 0 .75rem;object-fit:contain;object-position:left center}.service-icon--invert{filter:invert(1)}.service-card h3{margin:0 0 .65rem;color:var(--navy);font-size:1.1rem;line-height:1.3}.service-card p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.65}.service-card p strong{color:var(--navy)}.service-card--named .service-brand{display:flex;align-items:center;gap:.7rem;margin:0 0 .75rem}.service-card--named .service-icon{flex:0 0 4rem;width:4rem;margin:0}.service-card--named h3{margin:0;font-size:1.65rem;line-height:1.2;white-space:nowrap}
     /* 目的別の表は、スマホでも列をつぶさず横スクロールで読む */
-    .deployment-choice-table{min-width:1280px;table-layout:fixed}
+    /* .scroll table の幅指定より優先し、列幅を実際に固定する */
+    .scroll .deployment-choice-table{width:1320px;min-width:1320px;table-layout:fixed}
     .deployment-choice-table th{white-space:nowrap}
     .deployment-choice-table th:nth-child(1),.deployment-choice-table td:nth-child(1){width:36%}
     .deployment-choice-table th:nth-child(2),.deployment-choice-table td:nth-child(2){width:24%}
