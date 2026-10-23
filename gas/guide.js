@@ -209,6 +209,12 @@ function doGet() {
         s.template = true;
       },
     },
+    {
+      ch: 2, act: 'confirm-doc', label: '文書を確認して次の章へ',
+      hint: '左の本文に入力した内容が入りました。様は目印の外なので、そのまま残ります。',
+      explain: '差し込みの練習が完了しました。次はスプレッドシートを使います。',
+      run: () => {},
+    },
     // ---- 3章 ----
     {
       ch: 3, act: 'menu-ext', label: 'クリックで「拡張機能」を開く',
@@ -356,7 +362,7 @@ function doGet() {
       <label>名前<input data-form-field="name" value="${esc(v.name)}" required></label>
       <label>日付<input data-form-field="date" type="date" value="${esc(v.date)}" required></label>
       <label>内容<textarea data-form-field="content" required>${esc(v.content)}</textarea></label>
-      <button type="button" data-act="apply-form">文書に差し込む</button></aside>` : '';
+      ${s.template ? '<p role="status">差し込みました。</p><button type="button" data-act="confirm-doc">確認して次の章へ</button>' : '<button type="button" data-act="apply-form">文書に差し込む</button>'}</aside>` : '';
     return `<div class="sim-app-head"><span class="sim-app-icon"></span><span class="sim-app-title">${esc(DOC_NAME)}</span></div>${fileMenuBar(s)}<div class="sim-doc-workspace"><div class="sim-docpage">${page}</div>${panel}</div>`;
   }
 
