@@ -7,6 +7,20 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* 手順からコード欄へ移動するときは、先にアコーディオンを開く */
+  function openLinkedCode() {
+    const target = document.getElementById(window.location.hash.slice(1));
+    if (target && target.matches('details.docs-code')) target.open = true;
+  }
+  document.querySelectorAll('a.code-jump').forEach((link) => {
+    link.addEventListener('click', () => {
+      const target = document.getElementById(link.hash.slice(1));
+      if (target) target.open = true;
+    });
+  });
+  window.addEventListener('hashchange', openLinkedCode);
+  openLinkedCode();
+
   /* ---------- コードのコピー ---------- */
   document.querySelectorAll('[data-copy]').forEach((button) => {
     button.addEventListener('click', async () => {

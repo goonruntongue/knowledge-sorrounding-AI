@@ -853,3 +853,7 @@ ol.docs-steps > li {
     border-bottom: 1px solid #2c9164;
 }
 .calendar-steps .docs-live-shot img { max-height: 320px; object-fit: contain; }
+
+/* 手順からリンクしたコード欄の位置とリンクの目印 */
+.docs-code[id]{scroll-margin-top:24px}
+.code-jump{text-decoration:underline;text-underline-offset:.2em;font-weight:700}
