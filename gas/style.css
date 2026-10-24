@@ -852,3 +852,4 @@ ol.docs-steps > li {
     margin: 0;
     border-bottom: 1px solid #2c9164;
 }
+.calendar-steps .docs-live-shot img { max-height: 320px; object-fit: contain; }
