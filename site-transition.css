@@ -51,6 +51,14 @@ html[data-theme="dark"] .site-warp {
   to { transform: translateY(-8px) rotate(-1.5deg); }
 }
 
+/* ポータルへ戻るときのアプリアイコン */
+.site-warp__art--icon {
+  width: min(128px, 34vw);
+  border-radius: 28%;
+  box-shadow: 0 16px 36px rgba(7, 26, 67, .45), 0 0 0 4px rgba(255, 255, 255, .55);
+  animation: site-warp-bounce 700ms cubic-bezier(.3, 1.5, .5, 1) 220ms infinite alternate;
+}
+
 /* 絵がないリンク用の、ぷるぷる弾む丸いキャラクター */
 .site-warp__blob {
   position: relative;

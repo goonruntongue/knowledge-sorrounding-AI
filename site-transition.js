@@ -96,7 +96,9 @@
     const toPortal = page === siteRoot || page === `${siteRoot}index.html`;
     const named = textOf(link.querySelector('strong')) || textOf(link);
     return {
-      art: '',
+      // ポータルへ戻るときは、ポータルのアプリアイコン（ファビコンと同じ図柄）を出す
+      art: toPortal ? `${siteRoot}pwa-icon-web-knowledge-navy-192.png` : '',
+      icon: toPortal,
       label: toPortal ? 'PORTAL' : 'NEXT PAGE',
       title: toPortal ? 'ポータルへもどります' : named.replace(/^[←→\s]+|[←→\s]+$/g, '') || 'つぎのページへ',
     };
@@ -114,7 +116,7 @@
     stage.className = 'site-warp__stage';
     if (info.art) {
       const img = document.createElement('img');
-      img.className = 'site-warp__art';
+      img.className = info.icon ? 'site-warp__art site-warp__art--icon' : 'site-warp__art';
       img.src = info.art;
       img.alt = '';
       stage.append(img);
