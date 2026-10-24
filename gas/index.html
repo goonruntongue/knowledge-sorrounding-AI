@@ -136,25 +136,23 @@
           <p class="eyebrow">03 / 最初の実行と承認</p>
           <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>初めて動かすときは、<br /><em>権限の承認</em>が出る。</span></h2>
           <p class="lead">GASが自分のドキュメントやカレンダーを操作するには、あなたの許可が必要です。初めて実行したとき（使う道具が増えたときも）に、承認を求める画面が続けて出ます。</p>
-          <p class="small auth-photo-note">実際のGoogle Apps Scriptで撮影しました（2026年10月24日）。個人情報は非表示にし、操作・確認する箇所を赤枠で示しています。画像を押すと大きく表示できます。</p>
+          <p class="small auth-photo-note">実際のGoogle Apps Scriptで撮影しました（2026年10月24日）。個人情報は加工して隠しています。一部の画像では操作・確認する箇所を赤枠で示しています。画像を押すと大きく表示できます。</p>
           <ol class="steps auth-steps">
             <li><b>承認が必要です</b><p>初めて関数を実行すると、この案内が出ます。「権限を確認」を押して、Googleの承認画面へ進みます。</p>
-              <figure><a href="assets/auth-step1.png" target="_blank" rel="noopener" aria-label="STEP1：承認が必要ですの実画面を拡大"><img src="assets/auth-step1.png" width="1220" height="692" loading="lazy" alt="実際の承認ダイアログ。「権限を確認」ボタンを赤枠で表示。" /></a><figcaption>エディタで「実行」を押した直後の画面です。</figcaption></figure>
+              <figure><a href="assets/auth-step1.png" target="_blank" rel="noopener" aria-label="STEP1：承認の案内を拡大"><img src="assets/auth-step1.png" width="1220" height="692" loading="lazy" alt="承認が必要ですという案内。「権限を確認」ボタンを赤枠で表示。" /></a><figcaption>エディタで「実行」を押した直後の画面です。</figcaption></figure>
             </li>
-            <li><b>アカウントを選ぶ・確認する</b><p>アカウントの選択画面が出たら、スクリプトを作った自分のアカウントを選びます。すでに使用中のアカウントが決まっていると、この選択が省略される場合もあります。</p>
-              <figure><a href="assets/auth-step2.png" target="_blank" rel="noopener" aria-label="STEP2：使用アカウントの確認画面を拡大"><img src="assets/auth-step2.png" width="872" height="1072" loading="lazy" alt="Apps Script右上のGoogleアカウント確認パネル。使用中のアカウントの行を赤枠で表示。名前・メール・写真は非表示。" /></a><figcaption>今回の撮影では承認時の選択画面が省略されました。画像は、実行前に右上のアイコンから使用アカウントを確認する画面です。</figcaption></figure>
+            <li><b>未確認アプリの警告を確認する</b><p>「このアプリは Google で確認されていません」と出ることがあります。自分で作り、内容を理解したスクリプトであることを確認して「詳細」を開きます。</p>
+              <figure><a href="assets/auth-step3-warning.png" target="_blank" rel="noopener" aria-label="STEP2：未確認アプリの警告画面を拡大"><img src="assets/auth-step3-warning.png" width="1300" height="832" loading="lazy" alt="Googleの未確認アプリ警告画面。「詳細」を赤枠で表示。" /></a><figcaption>Googleによる確認を受けていないアプリの注意画面です。</figcaption></figure>
             </li>
-            <li><b>確認されていないアプリ</b><p>未確認のアプリという警告が出ることがあります。自分で作り、内容を理解したスクリプトであることを確認したうえで「詳細」を押します。</p>
-              <figure><a href="assets/auth-step3-warning.png" target="_blank" rel="noopener" aria-label="STEP3：未確認アプリの警告画面を拡大"><img src="assets/auth-step3-warning.png" width="1300" height="832" loading="lazy" alt="Googleの未確認アプリ警告画面。「詳細」を赤枠で表示。" /></a><figcaption>① 警告の内容を確認し、「詳細」を開きます。</figcaption></figure>
-              <figure><a href="assets/auth-step3-details.png" target="_blank" rel="noopener" aria-label="STEP3：詳細を開いた実画面を拡大"><img src="assets/auth-step3-details.png" width="1300" height="1102" loading="lazy" alt="警告の詳細を開いた実画面。撮影用スクリプトへの移動リンクを赤枠で表示。" /></a><figcaption>② 内容を理解した自分のスクリプトだけ、下に現れた移動リンクから進みます。心当たりがなければ戻ります。</figcaption></figure>
+            <li><b>自分のスクリプトであることを確認して進む</b><p>「詳細」を開くと、プロジェクトへの移動リンクが現れます。名前と内容を確認し、信頼できる自分のスクリプトの場合だけ進みます。</p>
+              <figure><a href="assets/auth-step3-details.png" target="_blank" rel="noopener" aria-label="STEP3：警告の詳細画面を拡大"><img src="assets/auth-step3-details.png" width="1300" height="1102" loading="lazy" alt="警告の詳細を開いた画面。撮影用プロジェクトへの移動リンクを赤枠で表示。" /></a><figcaption>心当たりのないアプリや、内容を理解していないスクリプトの場合は戻ります。</figcaption></figure>
             </li>
-            <li><b>権限の一覧を読んで許可</b><p>何を見たり変えたりできるようになるかを読みます。必要な権限だと納得した場合だけ「次へ」などのボタンで進みます。表示される権限やボタン名は、コードやアカウントによって変わります。</p>
-              <figure><a href="assets/auth-step4-permissions.png" target="_blank" rel="noopener" aria-label="STEP4：アクセス権の一覧を拡大"><img src="assets/auth-step4-permissions.png" width="1096" height="492" loading="lazy" alt="実際のアクセス権一覧。Googleドキュメントの参照・編集・作成・削除の権限を赤枠で表示。" /></a><figcaption>① 撮影用の文書作成スクリプトが要求した権限です。次の差し込みフォームの例は、対象文書に権限を限定しているため表示が異なります。</figcaption></figure>
-              <figure><a href="assets/auth-step4-bottom.png" target="_blank" rel="noopener" aria-label="STEP4：承認前の最終確認画面を拡大"><img src="assets/auth-step4-bottom.png" width="1070" height="942" loading="lazy" alt="承認画面を下へスクロールした実画面。「次へ」ボタンを赤枠で表示。" /></a><figcaption>② 下まで確認します。今回の撮影では権限を付与せず、「キャンセル」で終了しました。</figcaption></figure>
+            <li><b>求められる権限を確認する</b><p>アプリ名と、何を見たり変えたりできるようになるかを読みます。必要な権限だと納得した場合だけ、画面の案内に沿って承認します。表示される権限やボタン名は、コードやアカウントによって変わります。</p>
+              <figure><a href="assets/authorize-gas.png" target="_blank" rel="noopener" aria-label="STEP4：Googleアカウントへのアクセス権確認画面を拡大"><img src="assets/authorize-gas.png" width="643" height="573" loading="lazy" alt="GAS承認の練習がGoogleアカウントへのアクセスを求める正規の権限確認画面。Googleドキュメントの参照・編集・作成・削除の権限と「次へ」ボタンが表示されています。個人情報は加工済み。" /></a><figcaption>文書を作成する撮影用スクリプトの実画面です。撮影は「次へ」を押す前で止めており、権限は付与していません。次の差し込みフォームの例は対象文書に権限を限定しているため、表示が異なります。</figcaption></figure>
             </li>
           </ol>
           <p class="notice notice--warn"><strong>安全メモ：</strong>警告を進めてよいのは、<strong>自分で書いた、または中身を理解したスクリプト</strong>だけです。人から渡されたスクリプトや、知らない人のファイルに入っていたスクリプトは、権限の一覧を見て、むやみに許可しないでください。</p>
-          <p class="small">画面の文言や順番は、Googleの画面の更新で変わることがあります。練習画面では、この流れを簡略化して再現しています。</p>
+          <p class="small">途中でアカウント選択画面が表示された場合は、使用するGoogleアカウントを選びます。今回の撮影ではこの選択は省略されました。画面の文言や順番は、Googleの画面の更新で変わることがあります。練習画面では、この流れを簡略化して再現しています。</p>
         </div>
       </section>
 
