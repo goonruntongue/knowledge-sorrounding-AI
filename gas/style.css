@@ -814,3 +814,18 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 .gas-type-badge{position:absolute;left:-8px;top:-24px;display:grid;place-items:center;width:88px;height:70px;border:2px solid var(--line);border-radius:18px;background:rgba(255,255,255,.96);box-shadow:4px 5px 4px 0px #173c256b;pointer-events:none}
 .gas-type-badge img{width:100%;max-width:none;height:100%;margin:0;object-fit:contain}
 @media(max-width:600px){.gas-type-badge{width:68px;height:54px;left:-5px;top:-20px;border-radius:14px}}
+
+/* Real authorization screenshots: keep controls legible and offer full-size originals. */
+.auth-steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.auth-steps li{min-width:0;padding:48px 22px 22px;gap:12px}
+.auth-steps li::before{left:22px;top:17px}
+.auth-steps li>b{font-size:1.13rem}
+.auth-steps p{margin:0;font-size:.94rem;line-height:1.9}
+.auth-steps figure{margin:0}
+.auth-steps figure+figure{margin-top:10px}
+.auth-steps figure a{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.auth-steps img{display:block;width:100%;height:auto}
+.auth-steps figcaption{font-size:.8rem;color:var(--muted);line-height:1.8;margin-top:8px}
+.auth-steps a:focus-visible{outline:3px solid var(--green-dark);outline-offset:4px}
+.auth-photo-note{margin-top:22px}
+@media(max-width:760px){.auth-steps{grid-template-columns:1fr}.auth-steps li{padding:46px 16px 18px}.auth-steps li::before{left:16px}}

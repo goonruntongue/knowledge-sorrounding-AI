@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=gas-badge-shadow-20261024" />
+    <link rel="stylesheet" href="style.css?v=gas-auth-shots-20261024" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
@@ -136,11 +136,22 @@
           <p class="eyebrow">03 / 最初の実行と承認</p>
           <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>初めて動かすときは、<br /><em>権限の承認</em>が出る。</span></h2>
           <p class="lead">GASが自分のドキュメントやカレンダーを操作するには、あなたの許可が必要です。初めて実行したとき（使う道具が増えたときも）に、承認を求める画面が続けて出ます。</p>
-          <ol class="steps">
-            <li><b>承認が必要です</b><span>「続行」または「権限を確認」を押す</span></li>
-            <li><b>アカウントを選ぶ</b><span>スクリプトを作った自分のGoogleアカウントを選ぶ</span></li>
-            <li><b>確認されていないアプリ</b><span>自分で書いたスクリプトはGoogleの審査を受けていないので、警告が出る。「詳細」から先へ進む</span></li>
-            <li><b>権限の一覧を読んで許可</b><span>何を見たり変えたりできるようになるのかを読んでから許可する</span></li>
+          <p class="small auth-photo-note">実際のGoogle Apps Scriptで撮影しました（2026年10月24日）。個人情報は非表示にし、操作・確認する箇所を赤枠で示しています。画像を押すと大きく表示できます。</p>
+          <ol class="steps auth-steps">
+            <li><b>承認が必要です</b><p>初めて関数を実行すると、この案内が出ます。「権限を確認」を押して、Googleの承認画面へ進みます。</p>
+              <figure><a href="assets/auth-step1.png" target="_blank" rel="noopener" aria-label="STEP1：承認が必要ですの実画面を拡大"><img src="assets/auth-step1.png" width="1220" height="692" loading="lazy" alt="実際の承認ダイアログ。「権限を確認」ボタンを赤枠で表示。" /></a><figcaption>エディタで「実行」を押した直後の画面です。</figcaption></figure>
+            </li>
+            <li><b>アカウントを選ぶ・確認する</b><p>アカウントの選択画面が出たら、スクリプトを作った自分のアカウントを選びます。すでに使用中のアカウントが決まっていると、この選択が省略される場合もあります。</p>
+              <figure><a href="assets/auth-step2.png" target="_blank" rel="noopener" aria-label="STEP2：使用アカウントの確認画面を拡大"><img src="assets/auth-step2.png" width="872" height="1072" loading="lazy" alt="Apps Script右上のGoogleアカウント確認パネル。使用中のアカウントの行を赤枠で表示。名前・メール・写真は非表示。" /></a><figcaption>今回の撮影では承認時の選択画面が省略されました。画像は、実行前に右上のアイコンから使用アカウントを確認する画面です。</figcaption></figure>
+            </li>
+            <li><b>確認されていないアプリ</b><p>未確認のアプリという警告が出ることがあります。自分で作り、内容を理解したスクリプトであることを確認したうえで「詳細」を押します。</p>
+              <figure><a href="assets/auth-step3-warning.png" target="_blank" rel="noopener" aria-label="STEP3：未確認アプリの警告画面を拡大"><img src="assets/auth-step3-warning.png" width="1300" height="832" loading="lazy" alt="Googleの未確認アプリ警告画面。「詳細」を赤枠で表示。" /></a><figcaption>① 警告の内容を確認し、「詳細」を開きます。</figcaption></figure>
+              <figure><a href="assets/auth-step3-details.png" target="_blank" rel="noopener" aria-label="STEP3：詳細を開いた実画面を拡大"><img src="assets/auth-step3-details.png" width="1300" height="1102" loading="lazy" alt="警告の詳細を開いた実画面。撮影用スクリプトへの移動リンクを赤枠で表示。" /></a><figcaption>② 内容を理解した自分のスクリプトだけ、下に現れた移動リンクから進みます。心当たりがなければ戻ります。</figcaption></figure>
+            </li>
+            <li><b>権限の一覧を読んで許可</b><p>何を見たり変えたりできるようになるかを読みます。必要な権限だと納得した場合だけ「次へ」などのボタンで進みます。表示される権限やボタン名は、コードやアカウントによって変わります。</p>
+              <figure><a href="assets/auth-step4-permissions.png" target="_blank" rel="noopener" aria-label="STEP4：アクセス権の一覧を拡大"><img src="assets/auth-step4-permissions.png" width="1096" height="492" loading="lazy" alt="実際のアクセス権一覧。Googleドキュメントの参照・編集・作成・削除の権限を赤枠で表示。" /></a><figcaption>① 撮影用の文書作成スクリプトが要求した権限です。次の差し込みフォームの例は、対象文書に権限を限定しているため表示が異なります。</figcaption></figure>
+              <figure><a href="assets/auth-step4-bottom.png" target="_blank" rel="noopener" aria-label="STEP4：承認前の最終確認画面を拡大"><img src="assets/auth-step4-bottom.png" width="1070" height="942" loading="lazy" alt="承認画面を下へスクロールした実画面。「次へ」ボタンを赤枠で表示。" /></a><figcaption>② 下まで確認します。今回の撮影では権限を付与せず、「キャンセル」で終了しました。</figcaption></figure>
+            </li>
           </ol>
           <p class="notice notice--warn"><strong>安全メモ：</strong>警告を進めてよいのは、<strong>自分で書いた、または中身を理解したスクリプト</strong>だけです。人から渡されたスクリプトや、知らない人のファイルに入っていたスクリプトは、権限の一覧を見て、むやみに許可しないでください。</p>
           <p class="small">画面の文言や順番は、Googleの画面の更新で変わることがあります。練習画面では、この流れを簡略化して再現しています。</p>
@@ -542,6 +553,7 @@ result.textContent = data.message;</code></pre>
         <div class="wrap">
           <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>出典・確認日</span></h2>
           <p>公式資料を確認：2026年10月18日</p>
+          <p>承認画面の撮影・確認：2026年10月24日。<a href="https://developers.google.com/apps-script/guides/services/authorization?hl=ja" target="_blank" rel="noopener noreferrer">Google Apps Script：Googleサービスの承認</a>。このページの実画面は教材撮影用プロジェクトで取得し、個人情報のマスクと赤枠を追加しています。</p>
           <ul>
             <li><a href="https://developers.google.com/apps-script/guides/bound" target="_blank" rel="noopener noreferrer">Google Apps Script：コンテナバインド型スクリプト ↗</a></li>
             <li><a href="https://developers.google.com/apps-script/guides/standalone" target="_blank" rel="noopener noreferrer">Google Apps Script：スタンドアロン型スクリプト ↗</a></li>
