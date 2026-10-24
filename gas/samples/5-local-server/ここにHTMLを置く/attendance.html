@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>出欠フォーム</title>
+    <style>
+      body { margin: 0; padding: 24px; background: #f4f8f5; color: #1d3328; font-family: sans-serif; line-height: 1.7; }
+      form { display: grid; gap: 14px; max-width: 480px; margin: auto; padding: 20px; border: 1px solid #cfe3d6; border-radius: 14px; background: #fff; }
+      h1 { margin: 0; font-size: 1.4rem; }
+      label { display: grid; gap: 4px; font-weight: bold; }
+      input, textarea, button { font: inherit; }
+      input, textarea { padding: 8px 10px; border: 1px solid #b9d3c3; border-radius: 8px; }
+      fieldset { display: flex; gap: 16px; margin: 0; border: 0; padding: 0; }
+      fieldset label { display: flex; gap: 4px; font-weight: normal; }
+      button { padding: 10px; border: 0; border-radius: 99px; background: #2f8a5b; color: #fff; font-weight: bold; cursor: pointer; }
+      button:disabled { opacity: .6; }
+      #result { margin: 0; min-height: 1.7em; }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <h1>出欠フォーム</h1>
+      <label>名前 <input name="name" maxlength="40" required /></label>
+      <fieldset>
+        <legend>出欠</legend>
+        <label><input type="radio" name="answer" value="出席" required /> 出席</label>
+        <label><input type="radio" name="answer" value="欠席" /> 欠席</label>
+        <label><input type="radio" name="answer" value="未定" /> 未定</label>
+      </fieldset>
+      <label>ひとこと <textarea name="comment" rows="3" maxlength="200"></textarea></label>
+      <button type="submit">送信する</button>
+      <p id="result" role="status"></p>
+    </form>
+    <script>
+      // デプロイしたときに表示された「ウェブアプリ URL」（/exec で終わる）を入れる
+      const API_URL = '';
+
+      const form = document.getElementById('form');
+      const result = document.getElementById('result');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!API_URL) {
+          result.textContent = 'API_URL に、ウェブアプリの URL を入れてください。';
+          return;
+        }
+        const button = form.querySelector('button');
+        const fd = new FormData(form);
+        button.disabled = true;
+        result.textContent = '送信しています…';
+        try {
+          // Content-Type を付けずに文字列を送る（text/plain として送られる）。
+          // application/json にすると、ブラウザーが先に確認のリクエスト（プリフライト）を送り、
+          // GAS のウェブアプリはそれに応えられないため失敗する。
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              name: fd.get('name'),
+              answer: fd.get('answer'),
+              comment: fd.get('comment'),
+            }),
+          });
+          const data = await res.json();
+          result.textContent = data.message;
+          if (data.ok) form.reset();
+        } catch (error) {
+          result.textContent = '送信できませんでした。URL と公開の設定を確かめてください。';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

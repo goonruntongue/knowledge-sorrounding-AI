@@ -886,3 +886,24 @@ ol.docs-steps > li {
 @keyframes photo-backdrop-enter{from{opacity:0}to{opacity:1}}
 @keyframes photo-spinner{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.photo-viewer[open],.photo-viewer[open]::backdrop,.photo-viewer__spinner{animation:none}.photo-viewer__body img{transition:none;transform:none}}
+
+/* 07「このページで試す」 */
+.api-tester { margin-top: 2.4rem; padding: 4px 24px 24px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.api-tester .sub { margin-top: 1.4rem; }
+.api-tester__form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: end; margin-top: 16px; }
+.api-tester__field { display: grid; gap: 6px; min-width: 0; }
+.api-tester__label { color: var(--muted); font-size: 0.86rem; font-weight: 700; }
+.api-tester__field input { width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 0.92rem; }
+.api-tester__field input:focus-visible { outline: 3px solid var(--green-dark); outline-offset: 2px; }
+.api-tester__action { display: grid; gap: 6px; justify-items: start; }
+.api-tester__action button { padding: 12px 26px; border: 0; border-radius: 999px; background: var(--green); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.api-tester__action button:disabled { opacity: 0.6; cursor: progress; }
+.api-tester__status { min-height: 1.8em; margin: 14px 0 0; color: var(--green-dark); font-weight: 700; }
+.api-tester__list:empty { display: none; }
+.api-tester__list { margin-top: 8px; padding: 0; }
+.api-tester__list b { margin: 2px 0; }
+.tester-guide { justify-self: start; padding: 2px 10px; border: 2px solid #d93025; border-radius: 6px; background: #d93025; color: #fff; font-size: 0.78rem; font-weight: 800; line-height: 1.6; }
+@media (max-width: 760px) {
+  .api-tester { padding: 2px 16px 18px; }
+  .api-tester__form { grid-template-columns: 1fr; }
+}

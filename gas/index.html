@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=webapi-shots-20261024" />
+    <link rel="stylesheet" href="style.css?v=examples-20261024" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
@@ -597,6 +597,32 @@ load();</code></pre>
             </div>
           </div>
           <p class="small">チェックを入れていない「（下書き）次回の日程」は、JSONに入りません。見せたくないデータは、GASの側で外してから返します。</p>
+
+          <h3 class="sub">実際の画面で試す</h3>
+          <p class="auth-photo-note">教材用のスプレッドシートで作例Aを実際に動かして撮影しました（2026年10月24日）。緑の角丸枠が操作・確認する場所です。画像は押すと拡大でき、上の「元の画面に戻る」で閉じられます。</p>
+          <ol class="docs-steps webapi-steps">
+            <li><strong>「お知らせ」シートを作る：</strong>新しいスプレッドシートのシート名を「お知らせ」にし、1行目に「日付・タイトル・本文・公開」を書きます。2行目から内容を入れ、「公開」の列は「挿入」→「チェックボックス」にします。<figure class="docs-live-shot"><a href="assets/notice-sheet-marked.svg" aria-label="「公開」の列をチェックボックスにします。チェックを入れた行だけがJSONに入ります。を拡大"><img src="assets/notice-sheet-marked.svg" width="1364" height="534" loading="lazy" alt="「公開」の列をチェックボックスにします。チェックを入れた行だけがJSONに入ります。" /></a><figcaption>「公開」の列をチェックボックスにします。チェックを入れた行だけがJSONに入ります。</figcaption></figure></li>
+            <li><strong>コードを貼り、IDを入れる：</strong>「拡張機能」→「Apps Script」で、ダウンロードした <code>3-notice-api/Code.gs</code> を貼ります。<code>SPREADSHEET_ID</code> の <code>''</code> の中に、このスプレッドシートのID（アドレス欄の <code>/d/</code> と <code>/edit</code> のあいだの文字列）を入れて保存します。<figure class="docs-live-shot"><a href="assets/notice-editor-marked.svg" aria-label="SPREADSHEET_ID にスプレッドシートのIDを入れて保存します。を拡大"><img src="assets/notice-editor-marked.svg" width="1364" height="534" loading="lazy" alt="SPREADSHEET_ID にスプレッドシートのIDを入れて保存します。" /></a><figcaption><code>SPREADSHEET_ID</code> にスプレッドシートのIDを入れて保存します。IDはモザイクにしています。</figcaption></figure></li>
+            <li><strong>「デプロイ」→「新しいデプロイ」：</strong>エディタ右上の「デプロイ」を押し、「新しいデプロイ」を選びます。<figure class="docs-live-shot"><a href="assets/webapi-deploy-menu-marked.svg" aria-label="「デプロイ」のメニューから「新しいデプロイ」を選びます。を拡大"><img src="assets/webapi-deploy-menu-marked.svg" width="1364" height="534" loading="lazy" alt="「デプロイ」のメニューから「新しいデプロイ」を選びます。" /></a><figcaption>「デプロイ」のメニューから「新しいデプロイ」を選びます。</figcaption></figure></li>
+            <li><strong>種類の選択で「ウェブアプリ」：</strong>「種類の選択」の横の歯車を押し、「ウェブアプリ」を選びます。<figure class="docs-live-shot"><a href="assets/webapi-type-menu-marked.svg" aria-label="歯車のアイコンから「ウェブアプリ」を選びます。を拡大"><img src="assets/webapi-type-menu-marked.svg" width="1364" height="534" loading="lazy" alt="歯車のアイコンから「ウェブアプリ」を選びます。" /></a><figcaption>歯車のアイコンから「ウェブアプリ」を選びます。</figcaption></figure></li>
+            <li><strong>「自分」として実行し、「全員」にする：</strong>「次のユーザーとして実行」は「自分」、「アクセスできるユーザー」は「全員」にして、「デプロイ」を押します。<figure class="docs-live-shot"><a href="assets/webapi-access-settings-marked.svg" aria-label="「自分」として実行し、アクセスできるユーザーを「全員」にします。を拡大"><img src="assets/webapi-access-settings-marked.svg" width="1238" height="534" loading="lazy" alt="「自分」として実行し、アクセスできるユーザーを「全員」にします。" /></a><figcaption>「自分」として実行し、アクセスできるユーザーを「全員」にします。メールアドレスはマスクしています。</figcaption></figure></li>
+            <li><strong>承認して、URLをコピーする：</strong>初回は「アクセスを承認」から、03節の手順でアプリ名と権限を確かめて承認します。終わると <code>/exec</code> で終わるURLが表示されるので、「コピー」を押します。<figure class="docs-live-shot"><a href="assets/webapi-authorize-marked.svg" aria-label="初回は「アクセスを承認」から権限を承認します。を拡大"><img src="assets/webapi-authorize-marked.svg" width="1238" height="534" loading="lazy" alt="初回は「アクセスを承認」から権限を承認します。" /></a><figcaption>初回は「アクセスを承認」から権限を承認します。</figcaption></figure><figure class="docs-live-shot"><a href="assets/webapi-deploy-done-marked.svg" aria-label="/exec で終わるウェブアプリのURLをコピーします。を拡大"><img src="assets/webapi-deploy-done-marked.svg" width="1364" height="534" loading="lazy" alt="/exec で終わるウェブアプリのURLをコピーします。" /></a><figcaption><code>/exec</code> で終わるウェブアプリのURLをコピーします。デプロイIDとURLの固有部分はモザイクにしています。</figcaption></figure></li>
+            <li><strong>URLを開いて、JSONを確かめる：</strong>コピーしたURLをブラウザーのアドレス欄に貼って開くと、GASが返すJSONがそのまま表示されます。「公開」にチェックを入れた行だけが入っていれば成功です。<figure class="docs-live-shot"><a href="assets/notice-json-marked.svg" aria-label="URLを開くと、公開にしたお知らせだけがJSONで返ります。を拡大"><img src="assets/notice-json-marked.svg" width="760" height="240" loading="lazy" alt="URLを開くと、公開にしたお知らせだけがJSONで返ります。" /></a><figcaption>URLを開くと、公開にしたお知らせだけがJSONで返ります（Chromeの「プリティ プリント」で整形した表示）。</figcaption></figure></li>
+            <li><strong>HTMLにURLを入れて、ローカルサーバーで開く：</strong>ダウンロードしたZIPの <code>5-local-server</code> フォルダーにある「ここにHTMLを置く」の <code>notice.html</code> をメモ帳で開き、<code>const API_URL = '';</code> の <code>''</code> にURLを貼って保存します。続けて「サーバーを起動（Windows）.bat」をダブルクリックすると、黒い画面が開き、ブラウザーで <code>http://localhost:8000/</code> が開きます。Macは「サーバーを起動（Mac）.command」を使います。詳しい手順は同梱の「使い方.txt」にあります。<figure class="docs-live-shot"><a href="assets/local-server-window-marked.svg" aria-label="サーバーが動くと、開くアドレスが表示されます。を拡大"><img src="assets/local-server-window-marked.svg" width="900" height="420" loading="lazy" alt="サーバーが動くと、開くアドレスが表示されます。" /></a><figcaption>サーバーが動くと、開くアドレスが表示されます。止めるときは、この画面を閉じます。</figcaption></figure></li>
+            <li><strong>一覧が表示される：</strong>入口のページから「作例A：お知らせ一覧」を開くと、シートで公開にしたお知らせが並びます。シートを書き換えてからページを再読み込みすると、一覧も変わります。<figure class="docs-live-shot"><a href="assets/notice-page-marked.svg" aria-label="notice.html がGASのURLを呼び、お知らせを一覧にします。を拡大"><img src="assets/notice-page-marked.svg" width="1364" height="534" loading="lazy" alt="notice.html がGASのURLを呼び、お知らせを一覧にします。" /></a><figcaption><code>notice.html</code> がGASのURLを呼び、お知らせを一覧にします。</figcaption></figure></li>
+          </ol>
+          <p class="notice"><strong>HTMLはサーバーから開く：</strong>HTMLファイルをダブルクリックで直接開くと、ブラウザーの安全のしくみによって読み込みに失敗することがあります。サンプルに同梱したローカルサーバー（WindowsはPowerShell、MacはPython 3で動き、追加のインストールはいりません）を使うか、ご自身が契約しているレンタルサーバーなどにHTMLをアップロードして開いてください。同梱のローカルサーバーは、そのパソコンの中からしか見られません。</p>
+
+          <div class="api-tester" id="notice-tester">
+            <h3 class="sub">このページで試す</h3>
+            <p>デプロイしたウェブアプリのURLを入れて「読み込む」を押すと、<code>notice.html</code> と同じ処理でお知らせを一覧にします。<strong>入力したURLへ実際にアクセスします</strong>（読み取るだけで、シートは変わりません）。URLはどこにも保存しません。</p>
+            <form class="api-tester__form">
+              <label class="api-tester__field"><span class="tester-guide">① ここにURLを貼る</span><span class="api-tester__label">ウェブアプリのURL（/exec で終わる）</span><input type="url" name="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" required /></label>
+              <div class="api-tester__action"><span class="tester-guide">② 押す</span><button type="submit">読み込む</button></div>
+            </form>
+            <p class="api-tester__status" role="status"></p>
+            <ul class="notice-list api-tester__list"></ul>
+          </div>
         </div>
       </section>
 
@@ -664,6 +690,17 @@ result.textContent = data.message;</code></pre>
               <p>「全員」に公開したURLは、画面を通さなくても呼べます。長さや選択肢をGASの側で確かめ、数式として扱われる値を防いでいます。大事な用途では、Googleフォームなどの専用のしくみも検討してください。</p>
             </article>
           </div>
+
+          <h3 class="sub">実際の画面で試す</h3>
+          <p class="auth-photo-note">教材用のスプレッドシートで作例Bを実際に動かして撮影しました（2026年10月24日）。緑の角丸枠が操作・確認する場所です。フォームの名前は説明用の架空の名前です。</p>
+          <ol class="docs-steps webapi-steps">
+            <li><strong>「出欠」シートを作る：</strong>スプレッドシートに「出欠」という名前のシートを作り、1行目に「受付日時・名前・出欠・ひとこと」を書きます。2行目からは、フォームから送るたびにGASが書き足します。<figure class="docs-live-shot"><a href="assets/attendance-sheet-marked.svg" aria-label="「出欠」シートの1行目に見出しを書きます。を拡大"><img src="assets/attendance-sheet-marked.svg" width="1364" height="534" loading="lazy" alt="「出欠」シートの1行目に見出しを書きます。" /></a><figcaption>「出欠」シートの1行目に見出しを書きます。</figcaption></figure></li>
+            <li><strong>コードを貼り、IDを入れる：</strong>「拡張機能」→「Apps Script」で <code>4-attendance-api/Code.gs</code> を貼り、<code>SPREADSHEET_ID</code> にこのスプレッドシートのIDを入れて保存します。送られたデータは <code>doPost</code> で受け取ります。<figure class="docs-live-shot"><a href="assets/attendance-editor-marked.svg" aria-label="IDを入れて保存します。POSTで呼ばれると doPost が動きます。を拡大"><img src="assets/attendance-editor-marked.svg" width="1364" height="534" loading="lazy" alt="IDを入れて保存します。POSTで呼ばれると doPost が動きます。" /></a><figcaption>IDを入れて保存します。POSTで呼ばれると <code>doPost</code> が動きます。IDはモザイクにしています。</figcaption></figure></li>
+            <li><strong>ウェブアプリとしてデプロイする：</strong>手順は<a href="#webapi">06</a>・<a href="#example-a">07</a>と同じです。「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」で、「自分」として実行、アクセスできるユーザーを「全員」にしてデプロイします。表示された <code>/exec</code> で終わるURLをコピーします。作例Aとは別のURLになります。</li>
+            <li><strong>フォームから送る：</strong>「ここにHTMLを置く」の <code>attendance.html</code> の <code>API_URL</code> にURLを貼って保存し、ローカルサーバーを起動します。入口のページから「作例B：出欠フォーム」を開き、名前・出欠・ひとことを入れて「送信する」を押します。<figure class="docs-live-shot"><a href="assets/attendance-form-marked.svg" aria-label="名前と出欠を入れて「送信する」を押します。を拡大"><img src="assets/attendance-form-marked.svg" width="1364" height="534" loading="lazy" alt="名前と出欠を入れて「送信する」を押します。" /></a><figcaption>名前と出欠を入れて「送信する」を押します。</figcaption></figure></li>
+            <li><strong>受付のメッセージを確かめる：</strong>GASが返したJSONの <code>message</code> が、フォームの下に表示されます。入力欄は空に戻ります。<figure class="docs-live-shot"><a href="assets/attendance-sent-marked.svg" aria-label="GASが返したメッセージが表示されます。を拡大"><img src="assets/attendance-sent-marked.svg" width="1364" height="534" loading="lazy" alt="GASが返したメッセージが表示されます。" /></a><figcaption>GASが返したメッセージが表示されます。</figcaption></figure></li>
+            <li><strong>シートに1行増える：</strong>「出欠」シートを開くと、受付日時・名前・出欠・ひとことが最後の行に書き足されています。<figure class="docs-live-shot"><a href="assets/attendance-row-marked.svg" aria-label="送った内容が「出欠」シートの最後の行に書き足されます。を拡大"><img src="assets/attendance-row-marked.svg" width="1364" height="534" loading="lazy" alt="送った内容が「出欠」シートの最後の行に書き足されます。" /></a><figcaption>送った内容が「出欠」シートの最後の行に書き足されます。</figcaption></figure></li>
+          </ol>
         </div>
       </section>
 
@@ -702,6 +739,7 @@ result.textContent = data.message;</code></pre>
             <p class="eyebrow">10 / サンプル</p>
             <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>このページのコードを、<br /><em>まとめてダウンロード。</em></span></h2>
             <p>ドキュメントの差し込みフォーム（Code.gs・Sidebar.html）、カレンダー連携、作例A・Bの <code>Code.gs</code> と <code>index.html</code> が入っています。準備と使い方は同梱の README.txt で確認できます。<code>index.html</code> は、<code>API_URL</code> に自分のウェブアプリのURLを入れてから開きます。</p>
+            <p><code>5-local-server</code> フォルダーには、作例のHTMLを自分のパソコンで開くためのローカルサーバー（Windows用の .bat と Mac用の .command）と、手順を書いた「使い方.txt」が入っています。追加のソフトのインストールはいりません。</p>
           </div>
           <a class="download__btn" href="downloads/gas-samples.zip" download>サンプル一式（ZIP）をダウンロード</a>
         </div>
@@ -730,6 +768,7 @@ result.textContent = data.message;</code></pre>
           </ul>
           <p>カレンダー選択方式の確認：2026年10月24日。<a href="https://developers.google.com/apps-script/reference/calendar/calendar-app#getAllCalendars()" target="_blank" rel="noopener">利用可能なカレンダーの取得</a> ／ <a href="https://developers.google.com/apps-script/guides/properties" target="_blank" rel="noopener">利用者ごとの設定保存</a> ／ <a href="https://developers.google.com/apps-script/guides/support/troubleshooting#multiple_google_accounts" target="_blank" rel="noopener">複数アカウントでの実行に関する注意</a></p>
           <p>差し込みフォームの確認：2026年10月24日。<a href="https://developers.google.com/apps-script/guides/dialogs" target="_blank" rel="noopener">公式：ダイアログとサイドバー</a> ／ <a href="https://developers.google.com/apps-script/guides/html/communication" target="_blank" rel="noopener">HTMLとGASの通信</a> ／ <a href="https://developers.google.com/apps-script/reference/document/body" target="_blank" rel="noopener">本文の文字検索</a></p>
+<p>ローカルサーバーの確認：2026年10月24日。<a href="https://learn.microsoft.com/ja-jp/dotnet/api/system.net.httplistener" target="_blank" rel="noopener">Microsoft Learn：HttpListener クラス（Windows用）</a> ／ <a href="https://docs.python.org/ja/3/library/http.server.html" target="_blank" rel="noopener">Python ドキュメント：http.server（Mac用）</a>。どちらも手元での確認用で、本番の公開には使いません。</p>
 <p>メニューやボタンの日本語の表記は、公式資料の英語の表記をもとにした訳で、実際の画面と違うことがあります。ページ内の日付、名前、お知らせ、URLは説明用の例です。</p>
         </div>
       </section>
@@ -775,5 +814,6 @@ result.textContent = data.message;</code></pre>
       </div>
     </dialog>
     <script src="image-viewer.js?v=photo-motion-20261024" defer></script>
+    <script src="api-tester.js?v=examples-20261024" defer></script>
   </body>
 </html>

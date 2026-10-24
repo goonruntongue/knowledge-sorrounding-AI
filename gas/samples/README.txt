@@ -9,11 +9,16 @@ GAS でGoogleサービスをつなぐ ― サンプル一式
   3-notice-api/index.html       作例 A の画面。API_URL にウェブアプリの URL を入れて開く
   4-attendance-api/Code.gs      作例 B: 出欠をシートに書き込むウェブアプリ（POST）
   4-attendance-api/index.html   作例 B の画面。API_URL にウェブアプリの URL を入れて開く
+  5-local-server/               作例の HTML を自分のパソコンで開くためのローカルサーバー
+                                （Windows 用 .bat、Mac 用 .command。手順は「使い方.txt」）
 
 使い方
   .gs のファイルは、Google ドキュメントまたはスプレッドシートの
   「拡張機能」→「Apps Script」で開いたエディタに貼り付けて保存します。
   各ファイルの先頭に、準備することを書いています。
+  作例 A・B の HTML は、5-local-server の「ここにHTMLを置く」フォルダーにも入っています。
+  ダブルクリックで直接開くと読み込みに失敗することがあるため、ローカルサーバーか
+  レンタルサーバーなどに置いて開きます。
 
 注意
   - 初めて実行するときは、権限の承認を求める画面が出ます。表示される権限の内容を読んでから許可してください。
