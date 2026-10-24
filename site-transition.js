@@ -24,6 +24,36 @@
     }
   } catch (error) { /* 保存できない環境では到着の演出を省く */ }
 
+  // ---------- 表示できなかった画像の読み込み直し ----------
+  // 通信が一瞬途切れて画像が出なかったときは、少し待って最大2回読み込み直す
+  const IMAGE_RETRY_WAITS = [800, 2500];
+  function withRetryMark(url, attempt) {
+    try {
+      const next = new URL(url, location.href);
+      next.searchParams.set('retry', String(attempt));
+      return next.href;
+    } catch (error) {
+      return url;
+    }
+  }
+  window.addEventListener('error', (event) => {
+    const img = event.target;
+    if (!(img instanceof HTMLImageElement) || !img.currentSrc && !img.getAttribute('src')) return;
+    const attempt = Number(img.dataset.retry || 0);
+    if (attempt >= IMAGE_RETRY_WAITS.length) return;
+    img.dataset.retry = String(attempt + 1);
+    setTimeout(() => {
+      const picture = img.parentElement instanceof HTMLPictureElement ? img.parentElement : null;
+      picture?.querySelectorAll('source[srcset]').forEach((source) => {
+        source.srcset = source.srcset.split(',').map((part) => {
+          const [url, size] = part.trim().split(/\s+/);
+          return size ? `${withRetryMark(url, attempt + 1)} ${size}` : withRetryMark(url, attempt + 1);
+        }).join(', ');
+      });
+      img.src = withRetryMark(img.getAttribute('src'), attempt + 1);
+    }, IMAGE_RETRY_WAITS[attempt]);
+  }, true);
+
   // ---------- 出発 ----------
   function pageLink(target) {
     const link = target instanceof Element ? target.closest('a[href]') : null;

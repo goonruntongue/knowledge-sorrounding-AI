@@ -73,7 +73,13 @@ function importEvents() {
   book.toast(rows.length + '件を読み込みました。', 'カレンダー連携');
 }
 
+function isDate_(value) {
+  return value instanceof Date && !isNaN(value.getTime());
+}
+
 // 「書き出し」シート → カレンダー。予定IDがある行は再登録しない。
+// 列：タイトル | 開始 | 終了 | 場所 | 予定ID | 終日
+// 「終日」の列に「終日」と書いた行は終日の予定にする。終了日を入れると、その日までの連日の予定になる。
 function exportEvents() {
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(5000)) throw new Error('処理中です。少し待ってから実行してください。');
@@ -84,20 +90,33 @@ function exportEvents() {
     if (!sheet) throw new Error('「書き出し」シートを作り、予定を入力してください。');
     const values = sheet.getDataRange().getValues();
     for (let i = 1; i < values.length; i++) {
-      const [title, start, end, , eventId] = values[i];
+      const [title, start, end, , eventId, allDay] = values[i];
       if (!title || eventId) continue;
-      if (!(start instanceof Date) || isNaN(start.getTime()) ||
-          !(end instanceof Date) || isNaN(end.getTime()) || end <= start) {
+      if (String(allDay).trim() === '終日') {
+        if (!isDate_(start) || (end !== '' && (!isDate_(end) || end < start))) {
+          throw new Error((i + 1) + '行目の開始を日付で入力し、終了日を入れるときは開始日以降にしてください。');
+        }
+      } else if (!isDate_(start) || !isDate_(end) || end <= start) {
         throw new Error((i + 1) + '行目の開始・終了を日時で入力し、終了を開始より後にしてください。');
       }
     }
     let count = 0;
     for (let i = 1; i < values.length; i++) {
-      const [title, start, end, location, eventId] = values[i];
+      const [title, start, end, location, eventId, allDay] = values[i];
       if (!title || eventId) continue;
+      const options = { location: String(location || '') };
       let ev;
       try {
-        ev = calendar.createEvent(String(title), start, end, { location: String(location || '') });
+        if (String(allDay).trim() === '終日') {
+          // カレンダーの終日予定は「最終日の翌日」で終わるため、1日足して渡す
+          const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+          const lastDay = isDate_(end) ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : startDay;
+          const endDay = new Date(lastDay);
+          endDay.setDate(endDay.getDate() + 1);
+          ev = calendar.createAllDayEvent(String(title), startDay, endDay, options);
+        } else {
+          ev = calendar.createEvent(String(title), start, end, options);
+        }
       } catch (error) {
         throw new Error((i + 1) + '行目を書き出せませんでした。書き込み権限を確認してください。詳細: ' + error.message);
       }
