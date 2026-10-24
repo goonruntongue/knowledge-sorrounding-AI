@@ -811,6 +811,6 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 /* 実画面を主役にし、立体イメージは左上の小さなバッジにする。 */
 .gas-type-visual{position:relative;margin-top:1.8rem}
 .gas-type-figure .gas-type-screenshot{width:100%;max-width:none;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
-.gas-type-badge{position:absolute;left:-8px;top:-24px;display:grid;place-items:center;width:88px;height:70px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 3px 10px #173c2520;pointer-events:none}
+.gas-type-badge{position:absolute;left:-8px;top:-24px;display:grid;place-items:center;width:88px;height:70px;border:2px solid var(--line);border-radius:18px;background:rgba(255,255,255,.96);box-shadow:4px 5px 4px 0px #173c256b;pointer-events:none}
 .gas-type-badge img{width:100%;max-width:none;height:100%;margin:0;object-fit:contain}
 @media(max-width:600px){.gas-type-badge{width:68px;height:54px;left:-5px;top:-20px;border-radius:14px}}
