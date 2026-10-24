@@ -252,8 +252,8 @@ form.addEventListener(&#x27;submit&#x27;, event =&gt; {
           <div class="cards cards--3">
             <article class="card">
               <span class="num">1</span>
-              <h3>カレンダー一覧を出す</h3>
-              <p><code>CalendarApp.getAllCalendars()</code> で、自分が見られるカレンダーの名前とIDをシートに並べます。使うカレンダーのIDを、ここで確かめます。</p>
+              <h3>カレンダーを選ぶ</h3>
+              <p>右側のパネルに、実行アカウントが所有・登録しているカレンダーを表示します。読み込み用と書き込み用を、それぞれ名前で選んで保存します。IDの手入力は不要です。</p>
             </article>
             <article class="card">
               <span class="num">2</span>
@@ -266,87 +266,185 @@ form.addEventListener(&#x27;submit&#x27;, event =&gt; {
               <p>シートの行を読み、<code>createEvent()</code> で指定したカレンダーに予定を作ります。作った予定のIDをシートに書き戻します。</p>
             </article>
           </div>
-<h3>実際の画面で試す</h3><p class="auth-photo-note">教材用のシートとカレンダーで実行・撮影しました（2026年10月24日）。緑の角丸枠が操作・確認する場所です。画像は押すと拡大でき、上の「元の画面に戻る」で閉じられます。</p><ol class="docs-steps calendar-steps"><li><strong>シートとコードを用意する：</strong>新しいスプレッドシートに「読み込み」「書き出し」の2枚のシートを作り、「拡張機能」→「Apps Script」を開きます。<a class="code-jump" href="#calendar-code">下の<code>2-calendar-sheet/Code.gs</code> のコード</a>を貼り、保存します。<figure class="docs-live-shot"><a href="assets/calendar-extensions-marked.svg" aria-label="スプレッドシートの「拡張機能」から「Apps Script」を開きます。を拡大"><img src="assets/calendar-extensions-marked.svg" width="1536" height="695" loading="lazy" alt="スプレッドシートの「拡張機能」から「Apps Script」を開きます。" /></a><figcaption>スプレッドシートの「拡張機能」から「Apps Script」を開きます。</figcaption></figure></li><li><strong>使うカレンダーを指定する：</strong>シートを開き直すと「カレンダー連携」が現れます。「カレンダー一覧を書き出す」でIDを確認し、コードの <code>IMPORT_CALENDAR_ID</code> と <code>EXPORT_CALENDAR_ID</code> に貼って保存します。初回に承認が出たら次の手順で内容を確認します。練習用カレンダーを使うと、普段の予定と分けて試せます。<figure class="docs-live-shot"><a href="assets/calendar-list-menu-marked.svg" aria-label="「カレンダー連携」→「カレンダー一覧を書き出す」で、使うカレンダーのIDを確認します。を拡大"><img src="assets/calendar-list-menu-marked.svg" width="1536" height="695" loading="lazy" alt="「カレンダー連携」→「カレンダー一覧を書き出す」で、使うカレンダーのIDを確認します。" /></a><figcaption>「カレンダー連携」→「カレンダー一覧を書き出す」で、使うカレンダーのIDを確認します。</figcaption></figure></li><li><strong>必要な権限を確認する：</strong>初回は03節の承認手順に進みます。この例ではスプレッドシートとカレンダーへのアクセスを求められます。自分で用意したコードと権限の内容を確認し、必要な項目を選んで「次へ」を押します。撮影例のアプリ名は「無題のプロジェクト」です。<figure class="docs-live-shot"><a href="assets/calendar-permissions-marked.svg" aria-label="権限を選択した実画面。個人情報はマスクしています。カレンダーに関する追加の権限も確認します。を拡大"><img src="assets/calendar-permissions-marked.svg" width="1183" height="1329" loading="lazy" alt="権限を選択した実画面。個人情報はマスクしています。カレンダーに関する追加の権限も確認します。" /></a><figcaption>権限を選択した実画面。個人情報はマスクしています。カレンダーに関する追加の権限も確認します。</figcaption></figure></li><li><strong>予定を書き出す：</strong>「書き出し」の1行目を「タイトル・開始・終了・場所・予定ID」にし、2行目から予定を入力します。開始と終了は日時として入力し、予定IDは空欄にします。「カレンダー連携」→「予定をカレンダーへ書き出す」を選びます。<figure class="docs-live-shot"><a href="assets/calendar-menu-marked.svg" aria-label="入力した行を登録するときは、緑枠の「予定をカレンダーへ書き出す」を選びます。を拡大"><img src="assets/calendar-menu-marked.svg" width="1536" height="695" loading="lazy" alt="入力した行を登録するときは、緑枠の「予定をカレンダーへ書き出す」を選びます。" /></a><figcaption>入力した行を登録するときは、緑枠の「予定をカレンダーへ書き出す」を選びます。</figcaption></figure></li><li><strong>登録結果を確認する：</strong>実行後、「予定ID」に値が入れば、この行の予定が作成されています。予定IDが入った行は次回の書き出しで飛ばすため、同じ行の二重登録を防げます。<figure class="docs-live-shot"><a href="assets/calendar-export-result-marked.svg" aria-label="教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。を拡大"><img src="assets/calendar-export-result-marked.svg" width="1944" height="809" loading="lazy" alt="教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。" /></a><figcaption>教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。</figcaption></figure></li><li><strong>予定を読み戻す：</strong>「カレンダー連携」→「予定を読み込む（今日から30日分）」を選び、「読み込み」シートを開きます。指定したカレンダーの予定が一覧になります。日時が日付だけの表示になった場合は、開始・終了のセルを「表示形式」→「数字」→「日時」に変更します。<figure class="docs-live-shot"><a href="assets/calendar-import-result-marked.svg" aria-label="登録した「資料確認（練習）」をカレンダーから読み込みました。開始・終了・場所も取得できています。を拡大"><img src="assets/calendar-import-result-marked.svg" width="1944" height="809" loading="lazy" alt="登録した「資料確認（練習）」をカレンダーから読み込みました。開始・終了・場所も取得できています。" /></a><figcaption>登録した「資料確認（練習）」をカレンダーから読み込みました。開始・終了・場所も取得できています。</figcaption></figure></li></ol>
+<h3>実際の画面で試す</h3><p class="auth-photo-note">教材用のシートとカレンダーで実行・撮影しました（2026年10月24日）。緑の角丸枠が操作・確認する場所です。画像は押すと拡大でき、上の「元の画面に戻る」で閉じられます。</p><ol class="docs-steps calendar-steps"><li><strong>アカウントとシートを用意する：</strong>使いたいGoogleアカウントで新しいスプレッドシートを開き、「読み込み」「書き出し」の2枚のシートを作ります。「拡張機能」→「Apps Script」を開きます。複数アカウントでログインしてうまく動かない場合は、使うアカウントだけでログインしたブラウザで開き直します。<figure class="docs-live-shot"><a href="assets/calendar-extensions-marked.svg" aria-label="スプレッドシートの「拡張機能」から「Apps Script」を開きます。を拡大"><img src="assets/calendar-extensions-marked.svg" width="1536" height="695" loading="lazy" alt="スプレッドシートの「拡張機能」から「Apps Script」を開きます。" /></a><figcaption>スプレッドシートの「拡張機能」から「Apps Script」を開きます。</figcaption></figure></li><li><strong>2つのコードを保存する：</strong><a class="code-jump" href="#calendar-code">下の<code>2-calendar-sheet/Code.gs</code> のコード</a>を、最初からあるコードとすべて置き換えて保存します。続いて左の「＋」→「HTML」で名前を <code>CalendarSettings</code> にし、<a class="code-jump" href="#calendar-settings-code">下の<code>CalendarSettings.html</code> のコード</a>をすべて貼り、保存します。拡張子の <code>.html</code> は自動で付きます。<figure class="docs-live-shot"><a href="assets/calendar-settings-editor-marked.svg" aria-label="CalendarSettings.htmlを追加した実画面を拡大"><img src="assets/calendar-settings-editor-marked.svg" width="1536" height="695" loading="lazy" alt="Code.gsに加え、HTMLファイルCalendarSettingsを同じプロジェクトに保存します。" /></a><figcaption>Code.gsに加え、HTMLファイルCalendarSettingsを同じプロジェクトに保存します。</figcaption></figure></li><li><strong>選択パネルを開く：</strong>シートを開き直し、「カレンダー連携」→「カレンダーを選ぶ」を選びます。承認後にパネルが開かなければ、同じメニューを選び直します。<figure class="docs-live-shot"><a href="assets/calendar-choose-menu-marked.svg" aria-label="追加された「カレンダーを選ぶ」から右側の設定パネルを開きます。を拡大"><img src="assets/calendar-choose-menu-marked.svg" width="1536" height="695" loading="lazy" alt="追加された「カレンダーを選ぶ」から右側の設定パネルを開きます。" /></a><figcaption>追加された「カレンダーを選ぶ」から右側の設定パネルを開きます。</figcaption></figure></li><li><strong>必要な権限を確認する：</strong>初回に承認が表示されたら、03節の手順でアプリ名と権限を確認します。この例ではスプレッドシートとカレンダーへのアクセス、シート内にパネルを表示する権限を使用します。ご自身のコードと照らし合わせ、必要な権限を選んで承認します。撮影時とアプリ名や画面の順番が異なる場合があります。<figure class="docs-live-shot"><a href="assets/calendar-permissions-marked.svg" aria-label="権限選択の実画面。個人情報はマスクしています。必要なアクセス内容を確認します。を拡大"><img src="assets/calendar-permissions-marked.svg" width="1183" height="1329" loading="lazy" alt="権限選択の実画面。個人情報はマスクしています。必要なアクセス内容を確認します。" /></a><figcaption>権限選択の実画面。個人情報はマスクしています。必要なアクセス内容を確認します。</figcaption></figure></li><li><strong>読み込み用・書き込み用を選ぶ：</strong>右側パネルの2つの一覧から、それぞれのカレンダーを選び、「この組み合わせを保存」を押します。同じカレンダーでも、別々のカレンダーでも構いません。最初は練習用カレンダーを選びます。<strong>このパネルはGoogleアカウントを切り替えるものではありません。</strong>実行アカウントが所有・登録しているカレンダーが対象で、共有カレンダーへの書き込みには編集権限が必要です。選択内容はこのスクリプトの利用者ごとに保存されます。<figure class="docs-live-shot"><a href="assets/calendar-settings-marked.svg" aria-label="読み込むカレンダー・書き込むカレンダーを名前で選び、組み合わせを保存します。を拡大"><img src="assets/calendar-settings-marked.svg" width="1536" height="639" loading="lazy" alt="読み込むカレンダー・書き込むカレンダーを名前で選び、組み合わせを保存します。" /></a><figcaption>読み込むカレンダー・書き込むカレンダーを名前で選び、組み合わせを保存します。</figcaption></figure></li><li><strong>予定を書き出す：</strong>「書き出し」の1行目を「タイトル・開始・終了・場所・予定ID」にし、2行目から予定を入力します。開始と終了は日時として入力し、予定IDは空欄にします。「カレンダー連携」→「予定をカレンダーへ書き出す」を選ぶと、パネルで選んだ書き込み先に登録します。<figure class="docs-live-shot"><a href="assets/calendar-menu-marked.svg" aria-label="入力した行を登録するときは「予定をカレンダーへ書き出す」を選びます。を拡大"><img src="assets/calendar-menu-marked.svg" width="1536" height="695" loading="lazy" alt="入力した行を登録するときは「予定をカレンダーへ書き出す」を選びます。" /></a><figcaption>入力した行を登録するときは「予定をカレンダーへ書き出す」を選びます。</figcaption></figure></li><li><strong>登録結果を確認する：</strong>実行後、「予定ID」に値が入れば、この行の予定が作成されています。予定IDが入った行は次回の書き出しで飛ばすため、同じ行の再登録を防げます。書き込み先を変更しても、予定IDがある行は飛ばします。<figure class="docs-live-shot"><a href="assets/calendar-export-result-marked.svg" aria-label="教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。を拡大"><img src="assets/calendar-export-result-marked.svg" width="1944" height="809" loading="lazy" alt="教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。" /></a><figcaption>教材用の「資料確認（練習）」を登録し、予定IDがシートに書き戻されました。</figcaption></figure></li><li><strong>予定を読み戻す：</strong>「カレンダー連携」→「予定を読み込む（今日から30日分）」を選びます。「読み込み」シートの内容が、選んだ読み込み先の予定一覧に置き換わります。開始・終了は日時の形式で表示します。<figure class="docs-live-shot"><a href="assets/calendar-selected-import-marked.svg" aria-label="選択した練習用カレンダーから予定を読み込み、開始・終了の時刻まで表示します。を拡大"><img src="assets/calendar-selected-import-marked.svg" width="1536" height="639" loading="lazy" alt="選択した練習用カレンダーから予定を読み込み、開始・終了の時刻まで表示します。" /></a><figcaption>選択した練習用カレンダーから予定を読み込み、開始・終了の時刻まで表示します。</figcaption></figure></li></ol>
           <details class="docs-code" id="calendar-code"><summary>2-calendar-sheet/Code.gs（全文）</summary><div class="code-block"><div class="code-block__head"><span>2-calendar-sheet/Code.gs（全文）</span><button type="button" class="copy" data-copy="code-calendar">コピー</button></div><pre id="code-calendar"><code>/**
- * Google カレンダーとスプレッドシートをつなぐ（スプレッドシートのコンテナバインド型）
- *
- * 準備
- * - スプレッドシートに「読み込み」「書き出し」の 2 つのシートを作る
- * - 「書き出し」シートの 1 行目に見出しを書く:
- *     タイトル | 開始 | 終了 | 場所 | 予定ID
- *   2 行目から、書き出したい予定を入れる（開始・終了は日時の形式で）
- * - まず「カレンダー一覧を書き出す」を実行し、使うカレンダーの ID を下の定数に入れる
+ * スプレッドシートに紐づけるカレンダー連携。
+ * Code.gs と HTML ファイル CalendarSettings を保存してシートを開き直す。
+ * Google側で使うアカウントを選び、「カレンダー連携」→「カレンダーを選ぶ」。
+ * IDの手入力は不要。選択内容はこのスクリプトの利用者ごとに保存する。
  */
-
-// 予定を読み込むカレンダーと、書き出すカレンダーの ID
-const IMPORT_CALENDAR_ID = 'ここに読み込むカレンダーのIDを入れる';
-const EXPORT_CALENDAR_ID = 'ここに書き出すカレンダーのIDを入れる';
-
 function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('カレンダー連携')
-    .addItem('カレンダー一覧を書き出す', 'listCalendars')
+  SpreadsheetApp.getUi().createMenu('カレンダー連携')
+    .addItem('カレンダーを選ぶ', 'showCalendarSettings')
     .addSeparator()
     .addItem('予定を読み込む（今日から30日分）', 'importEvents')
     .addItem('予定をカレンダーへ書き出す', 'exportEvents')
     .addToUi();
 }
 
-// 自分が見られるカレンダーの名前と ID を「カレンダー一覧」シートに並べる
-function listCalendars() {
-  const book = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = book.getSheetByName('カレンダー一覧') || book.insertSheet('カレンダー一覧');
-  const rows = CalendarApp.getAllCalendars().map((cal) =&gt; [
-    cal.getName(),
-    cal.getId(),
-    cal.isOwnedByMe() ? '自分' : 'ほかの人',
-  ]);
-  sheet.clearContents();
-  sheet.appendRow(['名前', 'カレンダーID', '持ち主']);
-  if (rows.length) sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
+function showCalendarSettings() {
+  SpreadsheetApp.getUi().showSidebar(
+    HtmlService.createHtmlOutputFromFile('CalendarSettings').setTitle('カレンダーの選択')
+  );
 }
 
-// カレンダー → スプレッドシート
-function importEvents() {
-  const calendar = CalendarApp.getCalendarById(IMPORT_CALENDAR_ID);
-  if (!calendar) throw new Error('読み込むカレンダーが見つかりません。ID を確かめてください。');
+// 現在の実行アカウントが所有・登録しているカレンダーを取得する。
+function getCalendarSettings() {
+  const props = PropertiesService.getUserProperties();
+  return {
+    calendars: CalendarApp.getAllCalendars().map(cal =&gt; ({
+      id: cal.getId(), name: cal.getName(), owned: cal.isOwnedByMe()
+    })),
+    importId: props.getProperty('importCalendarId') || '',
+    exportId: props.getProperty('exportCalendarId') || ''
+  };
+}
 
+function saveCalendarSettings(importId, exportId) {
+  const ids = CalendarApp.getAllCalendars().map(cal =&gt; cal.getId());
+  if (!ids.includes(importId) || !ids.includes(exportId)) {
+    throw new Error('両方のカレンダーを一覧から選んでください。');
+  }
+  PropertiesService.getUserProperties().setProperties({
+    importCalendarId: importId, exportCalendarId: exportId
+  });
+  return '保存しました。メニューから読み込み・書き出しを実行できます。';
+}
+
+function selectedCalendar_(key) {
+  const id = PropertiesService.getUserProperties().getProperty(key);
+  if (!id) throw new Error('先に「カレンダー連携」→「カレンダーを選ぶ」で保存してください。');
+  const calendar = CalendarApp.getCalendarById(id);
+  if (!calendar) throw new Error('選択したカレンダーにアクセスできません。選び直してください。');
+  return calendar;
+}
+
+// カレンダー → 「読み込み」シート。今日の0時から30日分。
+function importEvents() {
+  const calendar = selectedCalendar_('importCalendarId');
   const start = new Date();
   start.setHours(0, 0, 0, 0);
   const end = new Date(start);
   end.setDate(end.getDate() + 30);
-
-  const rows = calendar.getEvents(start, end).map((ev) =&gt; [
-    ev.getTitle(),
-    ev.getStartTime(),
-    ev.getEndTime(),
-    ev.getLocation(),
-    ev.isAllDayEvent() ? '終日' : '',
+  const rows = calendar.getEvents(start, end).map(ev =&gt; [
+    ev.getTitle(), ev.getStartTime(), ev.getEndTime(), ev.getLocation(),
+    ev.isAllDayEvent() ? '終日' : ''
   ]);
-
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('読み込み');
+  const book = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = book.getSheetByName('読み込み') || book.insertSheet('読み込み');
   sheet.clearContents();
   sheet.appendRow(['タイトル', '開始', '終了', '場所', '終日']);
-  if (rows.length) sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
-}
-
-// スプレッドシート → カレンダー
-function exportEvents() {
-  const calendar = CalendarApp.getCalendarById(EXPORT_CALENDAR_ID);
-  if (!calendar) throw new Error('書き出すカレンダーが見つかりません。ID を確かめてください。');
-
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('書き出し');
-  const values = sheet.getDataRange().getValues(); // 1 行目は見出し
-
-  for (let i = 1; i &lt; values.length; i++) {
-    const [title, start, end, location, eventId] = values[i];
-    // 空の行と、もう書き出した行（予定IDが入っている行）は飛ばす。二重登録を防ぐため
-    if (!title || eventId) continue;
-    const ev = calendar.createEvent(title, start, end, { location: location });
-    sheet.getRange(i + 1, 5).setValue(ev.getId());
+  if (rows.length) {
+    sheet.getRange(2, 1, rows.length, 5).setValues(rows);
+    sheet.getRange(2, 2, rows.length, 2).setNumberFormat('yyyy/mm/dd hh:mm');
   }
+  book.setActiveSheet(sheet);
+  book.toast(rows.length + '件を読み込みました。', 'カレンダー連携');
 }
-</code></pre></div></details>
+
+// 「書き出し」シート → カレンダー。予定IDがある行は再登録しない。
+function exportEvents() {
+  const lock = LockService.getDocumentLock();
+  if (!lock.tryLock(5000)) throw new Error('処理中です。少し待ってから実行してください。');
+  try {
+    const calendar = selectedCalendar_('exportCalendarId');
+    const book = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = book.getSheetByName('書き出し');
+    if (!sheet) throw new Error('「書き出し」シートを作り、予定を入力してください。');
+    const values = sheet.getDataRange().getValues();
+    for (let i = 1; i &lt; values.length; i++) {
+      const [title, start, end, , eventId] = values[i];
+      if (!title || eventId) continue;
+      if (!(start instanceof Date) || isNaN(start.getTime()) ||
+          !(end instanceof Date) || isNaN(end.getTime()) || end &lt;= start) {
+        throw new Error((i + 1) + '行目の開始・終了を日時で入力し、終了を開始より後にしてください。');
+      }
+    }
+    let count = 0;
+    for (let i = 1; i &lt; values.length; i++) {
+      const [title, start, end, location, eventId] = values[i];
+      if (!title || eventId) continue;
+      let ev;
+      try {
+        ev = calendar.createEvent(String(title), start, end, { location: String(location || '') });
+      } catch (error) {
+        throw new Error((i + 1) + '行目を書き出せませんでした。書き込み権限を確認してください。詳細: ' + error.message);
+      }
+      sheet.getRange(i + 1, 5).setValue(ev.getId());
+      SpreadsheetApp.flush();
+      count++;
+    }
+    book.toast(count + '件を書き出しました。予定IDがある行はスキップします。', 'カレンダー連携');
+  } finally {
+    lock.releaseLock();
+  }
+}</code></pre></div></details>
+          <details class="docs-code" id="calendar-settings-code"><summary>2-calendar-sheet/CalendarSettings.html（全文）</summary><div class="code-block"><div class="code-block__head"><span>CalendarSettings.html（全文）</span><button type="button" class="copy" data-copy="code-calendar-settings">コピー</button></div><pre id="code-calendar-settings"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    body{font:14px/1.7 Arial,sans-serif;color:#173c25;margin:0;padding:18px;background:#f6faf8}
+    h2{font-size:19px;margin:0 0 16px}p{margin:8px 0 16px}
+    .account{padding:12px;background:#e2f6ea;border-left:5px solid #2c9164;border-radius:4px}
+    label{display:block;font-weight:bold;margin-top:20px}
+    select,button{width:100%;box-sizing:border-box;min-height:44px;border-radius:6px;font:inherit}
+    select{margin:8px 0;padding:8px;background:white;border:1px solid #9cb7a8}
+    button{padding:10px;border:0;background:#287c58;color:white;font-weight:bold;cursor:pointer;margin-top:18px}
+    button:disabled{opacity:.55;cursor:wait}.note{font-size:12px;color:#52695d}
+    #status{white-space:pre-wrap}#status.error{color:#a22}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;カレンダーの選択&lt;/h2&gt;
+  &lt;p class="account"&gt;&lt;strong&gt;使用するGoogleアカウント&lt;/strong&gt;&lt;br&gt;このシートを開いて実行しているアカウント&lt;/p&gt;
+  &lt;p class="note"&gt;別のアカウントを使う場合は、そのアカウントだけでログインしたブラウザでシートを開き直してください。このパネル内では切り替えません。&lt;/p&gt;
+  &lt;form id="settings"&gt;
+    &lt;label for="importId"&gt;読み込むカレンダー&lt;/label&gt;
+    &lt;select id="importId" required disabled&gt;&lt;option value=""&gt;読み込み中…&lt;/option&gt;&lt;/select&gt;
+    &lt;label for="exportId"&gt;書き込むカレンダー&lt;/label&gt;
+    &lt;select id="exportId" required disabled&gt;&lt;option value=""&gt;読み込み中…&lt;/option&gt;&lt;/select&gt;
+    &lt;p class="note"&gt;共有カレンダーへの書き込みには編集権限が必要です。「共有・登録」には読み取り専用も含まれます。最初は自分の練習用カレンダーを選びます。&lt;/p&gt;
+    &lt;button id="save" disabled&gt;この組み合わせを保存&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id="status" role="status" aria-live="polite"&gt;カレンダー一覧を取得しています…&lt;/p&gt;
+  &lt;script&gt;
+    const status = document.getElementById('status');
+    const button = document.getElementById('save');
+    function showError(error) {
+      status.className = 'error';
+      status.textContent = error.message || String(error);
+    }
+    google.script.run.withSuccessHandler(data =&gt; {
+      ['importId', 'exportId'].forEach(key =&gt; {
+        const select = document.getElementById(key);
+        select.replaceChildren(new Option('カレンダーを選んでください', ''));
+        data.calendars.forEach(cal =&gt; select.add(new Option(
+          cal.name + (cal.owned ? '（自分）' : '（共有・登録）'), cal.id
+        )));
+        select.value = data[key];
+        select.disabled = false;
+      });
+      button.disabled = data.calendars.length === 0;
+      status.textContent = data.calendars.length ? '読み込み先と書き込み先を選んで保存してください。' : '利用できるカレンダーがありません。Googleカレンダーを確認してください。';
+    }).withFailureHandler(showError).getCalendarSettings();
+    document.getElementById('settings').addEventListener('submit', event =&gt; {
+      event.preventDefault();
+      button.disabled = true;
+      status.className = '';
+      status.textContent = '保存しています…';
+      google.script.run.withSuccessHandler(message =&gt; {
+        button.disabled = false;
+        status.textContent = message;
+      }).withFailureHandler(error =&gt; {
+        button.disabled = false;
+        showError(error);
+      }).saveCalendarSettings(document.getElementById('importId').value, document.getElementById('exportId').value);
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details>
           <div class="cards cards--2">
             <article class="card card--tip">
               <h3>同じ予定が2つできないように</h3>
@@ -618,6 +716,7 @@ result.textContent = data.message;</code></pre>
             <li><a href="https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/CORS" target="_blank" rel="noopener noreferrer">MDN：オリジン間リソース共有（CORS）と単純リクエスト ↗</a></li>
             <li>タイトルのアイコン：<a href="https://www.gstatic.com/images/branding/productlogos/apps_script/v10/192px.svg" target="_blank" rel="noopener noreferrer">Google配信のGoogle Apps Script公式アイコン</a>（確認日：2026年10月24日）。</li>
           </ul>
+          <p>カレンダー選択方式の確認：2026年10月24日。<a href="https://developers.google.com/apps-script/reference/calendar/calendar-app#getAllCalendars()" target="_blank" rel="noopener">利用可能なカレンダーの取得</a> ／ <a href="https://developers.google.com/apps-script/guides/properties" target="_blank" rel="noopener">利用者ごとの設定保存</a> ／ <a href="https://developers.google.com/apps-script/guides/support/troubleshooting#multiple_google_accounts" target="_blank" rel="noopener">複数アカウントでの実行に関する注意</a></p>
           <p>差し込みフォームの確認：2026年10月24日。<a href="https://developers.google.com/apps-script/guides/dialogs" target="_blank" rel="noopener">公式：ダイアログとサイドバー</a> ／ <a href="https://developers.google.com/apps-script/guides/html/communication" target="_blank" rel="noopener">HTMLとGASの通信</a> ／ <a href="https://developers.google.com/apps-script/reference/document/body" target="_blank" rel="noopener">本文の文字検索</a></p>
 <p>メニューやボタンの日本語の表記は、公式資料の英語の表記をもとにした訳で、実際の画面と違うことがあります。ページ内の日付、名前、お知らせ、URLは説明用の例です。</p>
         </div>
