@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../portal-gas-calendar-card-640.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=photo-motion-20261024" />
+    <link rel="stylesheet" href="style.css?v=webapi-shots-20261024" />
     <link rel="stylesheet" href="../copyright.css" />
     <link rel="stylesheet" href="../mobile-safe.css" />
     <link rel="stylesheet" href="../page-reveal.css" />
@@ -462,7 +462,10 @@ function exportEvents() {
         <div class="wrap">
           <p class="eyebrow">06 / GASでWeb APIを作る</p>
           <h2 class="gas-section-heading"><img src="assets/google-apps-script.svg" width="32" height="32" alt="" aria-hidden="true" /><span>スプレッドシートを、<br /><em>URLで呼べるAPI</em>にする。</span></h2>
-          <p class="lead">GASのプロジェクトは、<strong>ウェブアプリ</strong>として公開できます。URLにアクセスがあると決まった関数が動き、シートのデータをJSONで返したり、送られてきたデータをシートに書き込んだりできます。APIそのものの考え方は、<a href="../api/index.html">APIのしくみを体験しよう</a>で紹介しています。</p>
+          <div class="eyecatch-row">
+            <p class="lead">GASのプロジェクトは、<strong>ウェブアプリ</strong>として公開できます。URLにアクセスがあると決まった関数が動き、シートのデータをJSONで返したり、送られてきたデータをシートに書き込んだりできます。APIそのものの考え方は、<a href="../api/index.html">APIのしくみを体験しよう</a>で紹介しています。</p>
+            <img class="section-eyecatch" src="assets/webapi-eyecatch-code.webp" width="360" height="355" loading="lazy" alt="" aria-hidden="true" />
+          </div>
           <div class="api-flow" aria-label="HTMLの画面からGASのウェブアプリを呼ぶ流れ">
             <div class="api-flow__node"><b>HTMLの画面</b><span>fetch でURLを呼ぶ</span></div>
             <div class="api-flow__arrow"><span>GET / POST →</span><span>← JSON</span></div>
@@ -487,13 +490,20 @@ function exportEvents() {
               <p><code>createTextOutput(JSON.stringify(データ))</code> に <code>setMimeType(ContentService.MimeType.JSON)</code> を付けて、JSONとして返します。</p>
             </article>
           </div>
-          <h3 class="sub">ウェブアプリとしてデプロイする</h3>
-          <ol class="steps">
-            <li><b>「デプロイ」→「新しいデプロイ」</b><span>エディタ右上の「デプロイ」から選ぶ</span></li>
-            <li><b>種類の選択で「ウェブアプリ」</b><span>歯車のアイコンを押して選ぶ</span></li>
-            <li><b>実行するユーザーと、アクセスできるユーザーを決める</b><span>作例では「自分」として実行し、アクセスできるユーザーは「全員」にする</span></li>
-            <li><b>「デプロイ」を押して承認する</b><span>初回は承認の画面が出る。終わると <code>/exec</code> で終わるURLが表示される</span></li>
+          <div class="eyecatch-row">
+            <div>
+              <h3 class="sub">ウェブアプリとしてデプロイする</h3>
+              <p class="auth-photo-note">教材用のスプレッドシートに作例Aのコードを入れ、実際にデプロイして撮影しました（2026年10月24日）。緑の角丸枠が操作・確認する場所です。画像は押すと拡大でき、上の「元の画面に戻る」で閉じられます。</p>
+            </div>
+            <img class="section-eyecatch" src="assets/webapi-eyecatch-deploy.webp" width="360" height="351" loading="lazy" alt="" aria-hidden="true" />
+          </div>
+          <ol class="docs-steps webapi-steps">
+            <li><strong>「デプロイ」→「新しいデプロイ」：</strong>エディタ右上の「デプロイ」を押し、メニューから「新しいデプロイ」を選びます。<figure class="docs-live-shot"><a href="assets/webapi-deploy-menu-marked.svg" aria-label="「デプロイ」のメニューから「新しいデプロイ」を選びます。を拡大"><img src="assets/webapi-deploy-menu-marked.svg" width="1364" height="534" loading="lazy" alt="「デプロイ」のメニューから「新しいデプロイ」を選びます。" /></a><figcaption>「デプロイ」のメニューから「新しいデプロイ」を選びます。</figcaption></figure></li>
+            <li><strong>種類の選択で「ウェブアプリ」：</strong>「種類の選択」の横にある歯車のアイコンを押し、一覧から「ウェブアプリ」を選びます。<figure class="docs-live-shot"><a href="assets/webapi-type-menu-marked.svg" aria-label="歯車のアイコンから「ウェブアプリ」を選びます。を拡大"><img src="assets/webapi-type-menu-marked.svg" width="1364" height="534" loading="lazy" alt="歯車のアイコンから「ウェブアプリ」を選びます。" /></a><figcaption>歯車のアイコンから「ウェブアプリ」を選びます。</figcaption></figure></li>
+            <li><strong>実行するユーザーと、アクセスできるユーザーを決める：</strong>作例では「次のユーザーとして実行」を「自分」、「アクセスできるユーザー」を「全員」にします。「全員」にすると、URLを知っている人なら、Googleにログインしていなくても使えます。それぞれの意味は下の表にまとめています。<figure class="docs-live-shot"><a href="assets/webapi-access-settings-marked.svg" aria-label="「自分」として実行し、アクセスできるユーザーを「全員」にします。を拡大"><img src="assets/webapi-access-settings-marked.svg" width="1238" height="534" loading="lazy" alt="「自分」として実行し、アクセスできるユーザーを「全員」にします。" /></a><figcaption>「自分」として実行し、アクセスできるユーザーを「全員」にします。メールアドレスはマスクしています。</figcaption></figure></li>
+            <li><strong>「デプロイ」を押して承認する：</strong>初回は「アクセスを承認」が表示されます。03節の手順でアプリ名と権限を確かめて承認すると、<code>/exec</code> で終わるURLが表示されます。作例では、このURLを画面側のコードに貼ります。<figure class="docs-live-shot"><a href="assets/webapi-authorize-marked.svg" aria-label="初回は「アクセスを承認」から権限を承認します。を拡大"><img src="assets/webapi-authorize-marked.svg" width="1238" height="534" loading="lazy" alt="初回は「アクセスを承認」から権限を承認します。" /></a><figcaption>初回は「アクセスを承認」から権限を承認します。</figcaption></figure><figure class="docs-live-shot"><a href="assets/webapi-deploy-done-marked.svg" aria-label="デプロイが終わると、/exec で終わるウェブアプリのURLが表示されます。を拡大"><img src="assets/webapi-deploy-done-marked.svg" width="1364" height="534" loading="lazy" alt="デプロイが終わると、/exec で終わるウェブアプリのURLが表示されます。" /></a><figcaption>デプロイが終わると、<code>/exec</code> で終わるウェブアプリのURLが表示されます。デプロイIDとURLの固有部分はモザイクにしています。</figcaption></figure></li>
           </ol>
+          <div class="eyecatch-row eyecatch-row--table">
           <div class="table-wrap">
             <table class="compare">
               <thead><tr><th scope="col">設定</th><th scope="col">選べるもの</th><th scope="col">意味</th></tr></thead>
@@ -505,6 +515,8 @@ function exportEvents() {
                 <tr><td>全員</td><td>ログインしていない人も含めて、URLを知っていれば誰でも使える</td></tr>
               </tbody>
             </table>
+          </div>
+            <img class="section-eyecatch" src="assets/webapi-eyecatch-access.webp" width="359" height="360" loading="lazy" alt="" aria-hidden="true" />
           </div>
           <p class="notice"><strong>ウェブアプリでは「アクティブなファイル」がない：</strong>公式資料では、ウェブアプリとして動くときは <code>getActiveSpreadsheet()</code> などが使えないとされています。作例では、スプレッドシートの<strong>ID</strong>（URLの <code>/d/</code> と <code>/edit</code> のあいだの文字列）を書き、<code>SpreadsheetApp.openById()</code> で開きます。</p>
         </div>

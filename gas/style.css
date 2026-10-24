@@ -852,7 +852,21 @@ ol.docs-steps > li {
     margin: 0;
     border-bottom: 1px solid #2c9164;
 }
-.calendar-steps .docs-live-shot img { max-height: 320px; object-fit: contain; }
+.calendar-steps .docs-live-shot img,
+.webapi-steps .docs-live-shot img { max-height: 320px; object-fit: contain; }
+
+/* 06の本文の横に置く飾りのイラスト */
+.eyecatch-row { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 32px; align-items: center; }
+.eyecatch-row > * { min-width: 0; }
+.eyecatch-row--table { margin-top: 20px; }
+.eyecatch-row--table .table-wrap { margin-top: 0; }
+.section-eyecatch { display: block; width: 150px; height: auto; }
+@media (max-width: 760px) {
+  .eyecatch-row { grid-template-columns: minmax(0, 1fr) 88px; gap: 16px; }
+  .section-eyecatch { width: 88px; }
+  .eyecatch-row--table { grid-template-columns: 1fr; }
+  .eyecatch-row--table .section-eyecatch { display: none; }
+}
 
 /* 手順からリンクしたコード欄の位置とリンクの目印 */
 .docs-code[id]{scroll-margin-top:24px}
