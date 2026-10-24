@@ -829,3 +829,5 @@ dialog#gas-lab::backdrop { background: #0b1f1799; }
 .auth-steps a:focus-visible{outline:3px solid var(--green-dark);outline-offset:4px}
 .auth-photo-note{margin-top:22px}
 @media(max-width:760px){.auth-steps{grid-template-columns:1fr}.auth-steps li{padding:46px 16px 18px}.auth-steps li::before{left:16px}}
+
+.docs-live-shot{margin:20px 0 28px;max-width:100%;min-width:0}.docs-live-shot a{display:block;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.docs-live-shot img{display:block;width:100%;height:auto}.docs-live-shot figcaption{margin-top:8px;color:var(--muted);font-size:.83rem;line-height:1.8}.docs-live-shot a:focus-visible{outline:3px solid var(--green-dark);outline-offset:4px}
