@@ -1,0 +1,186 @@
+/* サイト内でページを移るときの演出（site-transition.js） */
+.site-warp {
+  --warp-x: 50vw;
+  --warp-y: 50vh;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #7f83c5, #9b8fd6 45%, #6da990);
+  clip-path: circle(0 at var(--warp-x) var(--warp-y));
+  pointer-events: all;
+}
+html[data-theme="dark"] .site-warp {
+  background: linear-gradient(135deg, #3d3f8f, #4b3c86 45%, #1f6b52);
+}
+.site-warp.is-active {
+  animation: site-warp-open 520ms cubic-bezier(.7, 0, .25, 1) forwards;
+}
+@keyframes site-warp-open {
+  to { clip-path: circle(150vmax at var(--warp-x) var(--warp-y)); }
+}
+
+.site-warp__stage {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  max-width: min(640px, 90vw);
+  padding: 24px;
+  color: #fff;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(18px) scale(.85);
+}
+.site-warp.is-active .site-warp__stage {
+  animation: site-warp-pop 420ms cubic-bezier(.3, 1.6, .5, 1) 180ms forwards;
+}
+@keyframes site-warp-pop {
+  to { opacity: 1; transform: none; }
+}
+.site-warp__art {
+  width: min(240px, 56vw);
+  height: auto;
+  margin-bottom: 8px;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(20, 16, 60, .35);
+  animation: site-warp-float 1.6s ease-in-out 600ms infinite alternate;
+}
+@keyframes site-warp-float {
+  to { transform: translateY(-8px) rotate(-1.5deg); }
+}
+
+/* 絵がないリンク用の、ぷるぷる弾む丸いキャラクター */
+.site-warp__blob {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #e9e4ff 55%, #c9bff5);
+  box-shadow: 0 14px 30px rgba(20, 16, 60, .3);
+  animation: site-warp-bounce 700ms cubic-bezier(.3, 1.5, .5, 1) 220ms infinite alternate;
+}
+.site-warp__blob i {
+  position: absolute;
+  top: 36px;
+  width: 9px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4b3c86;
+}
+.site-warp__blob i:first-child { left: 27px; }
+.site-warp__blob i:last-child { right: 27px; }
+.site-warp__blob::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 52px;
+  width: 16px;
+  height: 8px;
+  margin-left: -8px;
+  border-radius: 0 0 16px 16px;
+  background: #f28fb0;
+}
+@keyframes site-warp-bounce {
+  from { transform: translateY(0) scale(1.06, .94); }
+  to { transform: translateY(-14px) scale(.96, 1.04); }
+}
+
+.site-warp__label {
+  margin: 0;
+  font: 800 .78rem/1.4 'Poppins', 'Noto Sans JP', sans-serif;
+  letter-spacing: .12em;
+  opacity: .85;
+}
+.site-warp__title {
+  margin: 0;
+  font: 800 clamp(1.3rem, 4.4vw, 2rem)/1.35 'Noto Sans JP', sans-serif;
+  text-shadow: 0 2px 12px rgba(20, 16, 60, .3);
+}
+.site-warp__dots {
+  margin: 6px 0 0;
+  font: 700 .9rem/1.6 'Noto Sans JP', sans-serif;
+  opacity: .9;
+}
+.site-warp__dots span {
+  display: inline-block;
+  animation: site-warp-dot 900ms ease-in-out infinite;
+}
+.site-warp__dots span:nth-child(2) { animation-delay: 150ms; }
+.site-warp__dots span:nth-child(3) { animation-delay: 300ms; }
+@keyframes site-warp-dot {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+}
+
+.site-warp__spark {
+  position: absolute;
+  left: var(--warp-x);
+  top: var(--warp-y);
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: hsl(var(--hue) 85% 72%);
+  box-shadow: 0 0 10px hsl(var(--hue) 90% 80%);
+  opacity: 0;
+}
+.site-warp.is-active .site-warp__spark {
+  animation: site-warp-spark 560ms ease-out forwards;
+}
+@keyframes site-warp-spark {
+  0% { opacity: 1; transform: translate(0, 0) scale(1.2); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2); }
+}
+
+/* 円が広がる間、ほかのカードは少し引いて見せる */
+.is-warp-leaving .menu a:not(.is-warp-launching) {
+  transition: opacity 260ms ease, filter 260ms ease;
+  opacity: .55;
+  filter: blur(1px);
+}
+.is-warp-launching { position: relative; z-index: 1; }
+
+/* 到着：色の円が縮んで消え、白い輪が「ぽんっ」と弾ける */
+html.is-warp-arriving::after,
+html.is-warp-arriving::before {
+  content: "";
+  position: fixed;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+html.is-warp-arriving::after {
+  inset: 0;
+  background: linear-gradient(135deg, #7f83c5, #9b8fd6 45%, #6da990);
+  animation: site-warp-arrive 600ms cubic-bezier(.6, 0, .3, 1) forwards;
+}
+html.is-warp-arriving::before {
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  z-index: 2147483001;
+  border: 6px solid #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: site-warp-ring 520ms ease-out 380ms forwards;
+}
+html[data-theme="dark"].is-warp-arriving::after {
+  background: linear-gradient(135deg, #3d3f8f, #4b3c86 45%, #1f6b52);
+}
+@keyframes site-warp-arrive {
+  from { clip-path: circle(150vmax at 50% 50%); }
+  to { clip-path: circle(0 at 50% 50%); }
+}
+@keyframes site-warp-ring {
+  0% { opacity: .9; transform: scale(.2); }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-warp, .site-warp * { animation: none !important; }
+  html.is-warp-arriving::after, html.is-warp-arriving::before { display: none; }
+}

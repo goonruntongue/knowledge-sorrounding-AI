@@ -388,6 +388,17 @@ h3 { line-height: 1.5; }
 .gas-lab-dock button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px #0b3a2455; }
 .gas-lab-dock button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .gas-lab-dock span { margin-left: 0.6rem; color: var(--muted); font-size: 0.75rem; font-weight: 700; }
+/* iPhone などの Safari では、sticky で下に貼った要素が、ツールバーの出入りで画面の途中に止まることがある。
+   iOS だけ画面に固定し、ページ下端の内容が隠れないよう同じ高さの余白を足す */
+@supports (-webkit-touch-callout: none) {
+  .gas-lab-dock {
+    position: fixed;
+    right: 0;
+    left: 0;
+    padding-bottom: max(0.7rem, env(safe-area-inset-bottom));
+  }
+  body { padding-bottom: calc(5em + env(safe-area-inset-bottom)); }
+}
 
 #toTop {
   position: fixed;
@@ -872,20 +883,28 @@ ol.docs-steps > li {
 .docs-code[id]{scroll-margin-top:24px}
 .code-jump{text-decoration:underline;text-underline-offset:.2em;font-weight:700}
 
-/* 拡大画像は待ち時間を足さず、短いフェードで表示する */
-.photo-viewer[open]{animation:photo-viewer-enter 220ms ease-out both}
-.photo-viewer[open]::backdrop{animation:photo-backdrop-enter 220ms ease-out both}
+/* 拡大画像：押したカードの画像がそのまま拡大して開き、閉じるとカードの位置へ戻る（image-viewer.js） */
+.photo-viewer{transition:background-color 320ms ease}
+.photo-viewer::backdrop{background:transparent}
+.photo-viewer.is-zooming{background-color:transparent}
+.photo-viewer__bar{transition:transform 320ms cubic-bezier(.2,.8,.2,1),opacity 240ms ease}
+.photo-viewer.is-zooming .photo-viewer__bar{transform:translateY(-100%);opacity:0}
 .photo-viewer__body{position:relative}
-.photo-viewer__body img{opacity:0;transform:translateY(6px) scale(.99);transition:opacity 180ms ease-out,transform 180ms ease-out}
-.photo-viewer__body img.is-ready{opacity:1;transform:none}
+.photo-viewer__body img{opacity:0;transition:opacity 200ms ease-out}
+.photo-viewer__body img.is-ready{opacity:1}
+.photo-viewer.is-zoom-motion .photo-viewer__body img{transition:none}
+.photo-viewer__ghost{position:fixed;z-index:3;margin:0;pointer-events:none;border-radius:10px;box-shadow:0 24px 60px rgba(23,60,37,.35);transform-origin:0 0;will-change:transform}
 .photo-viewer__loading{position:absolute;top:40px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px}
 .photo-viewer__loading[hidden],.photo-viewer__error[hidden]{display:none}
 .photo-viewer__spinner{width:22px;height:22px;border:3px solid #c9dfd2;border-top-color:#287c58;border-radius:50%;animation:photo-spinner 700ms linear infinite}
 .photo-viewer__error{text-align:center;margin:32px 0}
-@keyframes photo-viewer-enter{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
-@keyframes photo-backdrop-enter{from{opacity:0}to{opacity:1}}
 @keyframes photo-spinner{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.photo-viewer[open],.photo-viewer[open]::backdrop,.photo-viewer__spinner{animation:none}.photo-viewer__body img{transition:none;transform:none}}
+.docs-live-shot a,#auth figure a{cursor:zoom-in;transition:transform 180ms ease,box-shadow 180ms ease}
+.docs-live-shot a:hover,#auth figure a:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(23,60,37,.18)}
+.docs-live-shot a.is-opening,#auth figure a.is-opening{animation:photo-card-press 280ms ease-out}
+.docs-live-shot a.is-source img,#auth figure a.is-source img{visibility:hidden}
+@keyframes photo-card-press{35%{transform:scale(.95)}100%{transform:none}}
+@media(prefers-reduced-motion:reduce){.photo-viewer,.photo-viewer__bar,.photo-viewer__body img,.docs-live-shot a,#auth figure a{transition:none}.photo-viewer__spinner,.docs-live-shot a.is-opening,#auth figure a.is-opening{animation:none}.docs-live-shot a:hover,#auth figure a:hover{transform:none}}
 
 /* 07「このページで試す」 */
 .api-tester { margin-top: 2.4rem; padding: 4px 24px 24px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
