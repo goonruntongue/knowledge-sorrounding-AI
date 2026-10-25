@@ -1,7 +1,7 @@
 const toTop = document.getElementById('toTop');
 
 if (window.jQuery && window.jQuery.fn.outliner) {
-  const outlinedElements = document.querySelectorAll('.language-card h3, .language-card .badge, .language-card p, .role-card h3, .role-card .badge, .role-card p');
+  const outlinedElements = document.querySelectorAll('.language-card h3, .language-card p, .role-card h3, .role-card p');
 
   outlinedElements.forEach(element => {
     while (element.firstChild?.nodeType === Node.TEXT_NODE && !element.firstChild.textContent.trim()) {
