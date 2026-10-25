@@ -1,7 +1,18 @@
 const toTop = document.getElementById('toTop');
 
 if (window.jQuery && window.jQuery.fn.outliner) {
-  window.jQuery('.language-card h3, .language-card .badge, .language-card p, .role-card h3, .role-card .badge, .role-card p').outliner({
+  const outlinedElements = document.querySelectorAll('.language-card h3, .language-card .badge, .language-card p, .role-card h3, .role-card .badge, .role-card p');
+
+  outlinedElements.forEach(element => {
+    while (element.firstChild?.nodeType === Node.TEXT_NODE && !element.firstChild.textContent.trim()) {
+      element.firstChild.remove();
+    }
+    if (element.firstChild?.nodeType === Node.TEXT_NODE) {
+      element.firstChild.textContent = element.firstChild.textContent.trimStart();
+    }
+  });
+
+  window.jQuery(outlinedElements).outliner({
     width: '7px',
     color: '#e8eef1',
     corner: '5px'
