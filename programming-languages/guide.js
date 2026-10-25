@@ -1,4 +1,13 @@
 const toTop = document.getElementById('toTop');
+
+if (window.jQuery && window.jQuery.fn.outliner) {
+  window.jQuery('.language-card h3, .language-card .badge, .language-card p').outliner({
+    width: '7px',
+    color: '#e8eef1',
+    corner: '5px'
+  });
+}
+
 const updateToTop = () => { toTop.hidden = window.scrollY <= 360; };
 window.addEventListener('scroll', updateToTop, { passive: true });
 updateToTop();
