@@ -174,9 +174,24 @@ td.name{white-space:normal;min-width:8em}
 .page-row__title small{display:block;color:var(--muted);font-weight:500}
 .page-row__state{font-size:.8rem;font-weight:700;color:var(--muted)}
 .access-row td{padding:0 8px 14px;white-space:normal;border-bottom:1px solid var(--line)}
+/* スマホの幅では、表を1アカウント1枚のカードに組み替えて、横に隠れる項目をなくす */
+@media (max-width:720px){
+  .users-table,.users-table tbody,.users-table tr,.users-table td{display:block;width:100%}
+  .users-table thead{display:none}
+  .users-table .user-row{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#ffffff8c}
+  .users-table .user-row td{display:flex;gap:10px;padding:3px 0;border:0;white-space:normal;overflow-wrap:anywhere}
+  .users-table .user-row td[data-label]::before{flex:none;width:7.5em;color:var(--muted);font-size:.78rem;font-weight:700;content:attr(data-label)}
+  .users-table .user-row td.email{font-weight:700}
+  .users-table .user-row td.actions{flex-wrap:wrap;gap:8px;padding-top:10px}
+  .users-table .access-row td{padding:8px 0 4px;border:0}
+  .users-table .access-grid{position:static;width:auto}
+  .users-table .empty{display:block}
+}
+@media (max-width:720px) and (prefers-color-scheme:dark){.users-table .user-row{background:#ffffff0d}}
 /* 表が横に長くても、ページ設定の枠は見えている幅に収める（左に固定し、幅は表の外枠に合わせる） */
 .access-grid{position:sticky;left:0;box-sizing:border-box;width:calc(100cqw - 16px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px;padding:12px;border-radius:14px;background:#f6f2fb}
-.access-grid label{display:grid;gap:4px;font-size:.82rem;font-weight:700}
+.access-grid label{display:grid;gap:4px;min-width:0;font-size:.82rem;font-weight:700}
+.access-grid select{width:100%;min-width:0;max-width:100%}
 .access-grid select{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;font-weight:500}
 .access-grid select.is-allow{border:2px solid #5aa883;background:#eef9f3;color:#1f5a3d;font-weight:700}
 .access-grid select.is-deny{border:2px solid #c9a227;background:#fdf6df;color:#6b4f00;font-weight:700}
@@ -210,7 +225,7 @@ export function adminPage(adminEmail) {
   <section class="panel">
     <h2>ログインしたアカウント</h2>
     <p>一度でもログインしたアカウントの一覧です。最初は全員が利用できます。ブロックすると、そのアカウントではポータルを開けなくなります。「ページ設定」では、鍵のかかったページをそのアカウントだけ開けるようにしたり、逆にそのアカウントだけ入れなくしたりできます。</p>
-    <div class="table-wrap"><table><thead><tr><th>メールアドレス</th><th>名前</th><th>最後のログイン</th><th>回数</th><th>状態</th><th></th></tr></thead><tbody id="users"><tr><td colspan="6" class="empty">読み込み中…</td></tr></tbody></table></div>
+    <div class="table-wrap"><table class="users-table"><thead><tr><th>メールアドレス</th><th>名前</th><th>最後のログイン</th><th>回数</th><th>状態</th><th></th></tr></thead><tbody id="users"><tr><td colspan="6" class="empty">読み込み中…</td></tr></tbody></table></div>
     <p class="status" id="users-status" role="status"></p>
   </section>
 </main>
@@ -296,7 +311,7 @@ export function adminPage(adminEmail) {
       if (count) state += ' <span class="tag tag--lock">例外 ' + count + '</span>';
       var block = self ? '' : '<button type="button" class="small-btn' + (u.blocked ? '' : ' small-btn--danger') + '" data-email="' + esc(u.email) + '" data-block="' + (u.blocked ? '0' : '1') + '">' + (u.blocked ? 'ブロックを解除' : 'ブロックする') + '</button> ';
       var pageBtn = '<button type="button" class="small-btn" data-pages="' + esc(u.email) + '" aria-expanded="' + (openEmail === u.email) + '">ページ設定</button>';
-      var row = '<tr><td>' + esc(u.email) + '</td><td class="name">' + esc(u.name) + '</td><td>' + esc(when(u.last_login)) + '</td><td>' + esc(u.login_count) + '</td><td>' + state + '</td><td>' + block + pageBtn + '</td></tr>';
+      var row = '<tr class="user-row"><td class="email" data-label="メール">' + esc(u.email) + '</td><td class="name" data-label="名前">' + esc(u.name) + '</td><td data-label="最後のログイン">' + esc(when(u.last_login)) + '</td><td data-label="回数">' + esc(u.login_count) + '</td><td data-label="状態">' + state + '</td><td class="actions">' + block + pageBtn + '</td></tr>';
       return row + (openEmail === u.email ? accessCell(u) : '');
     }).join('');
   }
