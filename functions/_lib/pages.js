@@ -155,7 +155,7 @@ const ADMIN_STYLE = `
 .switch:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .switch:disabled{opacity:.6;cursor:wait}
 .status{min-height:1.5em;margin-top:8px!important;font-size:.85rem!important}
-.table-wrap{overflow-x:auto;margin-top:14px}
+.table-wrap{overflow-x:auto;margin-top:14px;container-type:inline-size}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 th{color:var(--muted);font-size:.78rem}
@@ -174,12 +174,20 @@ td.name{white-space:normal;min-width:8em}
 .page-row__title small{display:block;color:var(--muted);font-weight:500}
 .page-row__state{font-size:.8rem;font-weight:700;color:var(--muted)}
 .access-row td{padding:0 8px 14px;white-space:normal;border-bottom:1px solid var(--line)}
-.access-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding:12px;border-radius:14px;background:#f6f2fb}
+/* 表が横に長くても、ページ設定の枠は見えている幅に収める（左に固定し、幅は表の外枠に合わせる） */
+.access-grid{position:sticky;left:0;box-sizing:border-box;width:calc(100cqw - 16px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px;padding:12px;border-radius:14px;background:#f6f2fb}
 .access-grid label{display:grid;gap:4px;font-size:.82rem;font-weight:700}
 .access-grid select{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;font-weight:500}
-.access-grid select.is-allow{border-color:#5aa883;background:#eef9f3}
-.access-grid select.is-deny{border-color:#c9a227;background:#fdf6df}
-@media (prefers-color-scheme:dark){.page-row{background:#ffffff0d}.access-grid{background:#ffffff0d}.small-btn,.access-grid select{background:#2a2c4d;color:var(--ink)}}
+.access-grid select.is-allow{border:2px solid #5aa883;background:#eef9f3;color:#1f5a3d;font-weight:700}
+.access-grid select.is-deny{border:2px solid #c9a227;background:#fdf6df;color:#6b4f00;font-weight:700}
+.access-grid option{background:#fff;color:#3d3654}
+@media (prefers-color-scheme:dark){
+  :root{color-scheme:dark}
+  .page-row{background:#ffffff0d}.access-grid{background:#ffffff0d}
+  .small-btn,.access-grid select{background:#2a2c4d;color:var(--ink)}
+  .access-grid select.is-allow{background:#1d3a2e;color:#c4f2da}
+  .access-grid select.is-deny{background:#3b3115;color:#ffe6a1}
+  .access-grid option{background:#2a2c4d;color:#ece8f6}}
 @media (prefers-reduced-motion:reduce){.switch,.switch::after{transition:none}}
 `;
 
