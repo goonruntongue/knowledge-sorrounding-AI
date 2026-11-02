@@ -1,7 +1,7 @@
 // ポータルのカードに鍵（鎖）をかける見た目と、押しても開かない演出
 // _middleware.js が、ポータルの HTML に HTMLRewriter で差し込む
 
-export const LOCK_IMAGE = '/assets/lock-chains.webp';
+export const LOCK_IMAGE = '/assets/lock-padlock.webp';
 
 export const LOCK_STYLE = `<style id="ksa-lock-style">
 .menu a[data-locked]{position:relative;cursor:not-allowed}
@@ -41,7 +41,7 @@ export const LOCK_STYLE = `<style id="ksa-lock-style">
 </style>`;
 
 // カードの中に重ねる鎖
-export const CHAIN_OVERLAY = `<span class="ksa-chain" aria-hidden="true"><img src="${LOCK_IMAGE}" alt="" width="720" height="552" decoding="async"></span>`;
+export const CHAIN_OVERLAY = `<span class="ksa-chain" aria-hidden="true"><img src="${LOCK_IMAGE}" alt="" width="720" height="258" decoding="async"></span>`;
 
 // 押したら揺らすだけで、ページは開かない。ページ遷移の演出より先に止める
 export function lockScript(loggedIn) {

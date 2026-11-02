@@ -93,7 +93,7 @@ export function loginPage(next) {
 
 // 鍵のかかったページを開こうとしたとき
 export function lockedPage(path, session) {
-  const chains = '<img class="locked-art" src="/assets/lock-chains.webp" width="720" height="552" alt="">';
+  const chains = '<img class="locked-art" src="/assets/lock-padlock.webp" width="720" height="258" alt="">';
   const actions = session
     ? `${passButton('/', 'ポータルへ')}<a class="btn" href="/auth/logout?next=${encodeURIComponent(path)}">別のアカウントでログイン</a>`
     : `${googleButton(`/auth/login?next=${encodeURIComponent(path)}`, '許可されたアカウントでログイン')}${passButton('/', 'ポータルへ', false)}${REMEMBER_BOX}`;
