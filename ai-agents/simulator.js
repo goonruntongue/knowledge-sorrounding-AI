@@ -234,7 +234,7 @@
     });
   }
   /* Two launchers: ChatGPT / Codex and Claude / Claude Code open the same dialog with only their own courses. */
-  const suites = { chatgpt: { title: "ChatGPT / Codex", first: "modes" }, claude: { title: "Claude / Claude Code", first: "claude" } };
+  const suites = { chatgpt: { title: "ChatGPT / Codex", first: "codex" }, claude: { title: "Claude / Claude Code", first: "claude" } };
   document.querySelectorAll("[data-launch]").forEach(button => button.addEventListener("click", () => {
     const suite = button.dataset.launch;
     lab.dataset.suite = suite;
