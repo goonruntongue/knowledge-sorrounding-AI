@@ -282,9 +282,9 @@ export function adminPage(adminEmail) {
     return '<tr class="access-row"><td colspan="6"><div class="access-grid">' + pages.map(function (p) {
       var v = mine[p.key] || 'default';
       return '<label>' + esc(p.title) + '<select data-email="' + esc(u.email) + '" data-page="' + esc(p.key) + '" class="' + (v === 'default' ? '' : 'is-' + v) + '">'
-        + '<option value="default"' + (v === 'default' ? ' selected' : '') + '>全体の設定どおり（' + (locked[p.key] ? '鍵あり' : '鍵なし') + '）</option>'
-        + '<option value="allow"' + (v === 'allow' ? ' selected' : '') + '>入れる（鍵を外す）</option>'
-        + '<option value="deny"' + (v === 'deny' ? ' selected' : '') + '>入れない（鍵をかける）</option></select></label>';
+        + '<option value="default"' + (v === 'default' ? ' selected' : '') + '>鍵どおり（いまは' + (locked[p.key] ? '鍵あり' : '鍵なし') + '）</option>'
+        + '<option value="allow"' + (v === 'allow' ? ' selected' : '') + '>この人だけ入れる</option>'
+        + '<option value="deny"' + (v === 'deny' ? ' selected' : '') + '>この人だけ入れない</option></select></label>';
     }).join('') + '</div></td></tr>';
   }
   function renderUsers() {
