@@ -31,3 +31,20 @@ main > .lead {
     animation: none !important;
   }
 }
+
+/* ホーム画面に追加したアプリ（PWA）では、起動直後にアニメーションが進まず、
+   透明のまま止まって画面が真っ黒に見えることがある。アプリでは入場の演出をしない */
+@media (display-mode: standalone) {
+  body > header.hero,
+  main > header.hero,
+  main > section,
+  main > .eyebrow,
+  main > h1,
+  main > .lead,
+  .reveal,
+  .info-card,
+  .step,
+  .answer {
+    animation: none !important;
+  }
+}

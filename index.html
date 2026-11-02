@@ -87,6 +87,10 @@
       /* この絵は枠いっぱいに描かれているので、少し持ち上げて下の説明文にかからないようにする */
       .card-illustration--website img { transform:translateY(-42px) scale(1.1); }
     }
+    /* ホーム画面に追加したアプリ（PWA）では、起動直後にアニメーションが進まず、本文が透明のまま止まって真っ黒に見えることがある。アプリでは現れる演出をしない */
+    @media (display-mode:standalone) {
+      main, footer, .hero-orb--image { animation:none; }
+    }
     @media (prefers-reduced-motion:reduce) {
       main, footer, .hero-orb--aura, .hero-orb--glow, .hero-orb--image { animation:none; }
       .theme-switch__track, .theme-switch__knob { transition:none; }

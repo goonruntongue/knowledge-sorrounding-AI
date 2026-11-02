@@ -24,6 +24,28 @@
     }
   } catch (error) { /* 保存できない環境では到着の演出を省く */ }
 
+  // ---------- 止まった入場の演出を進める ----------
+  // iOS のホーム画面アプリ（PWA）では、起動した直後にアニメーションの時計が進まないことがある。
+  // そのままだと「透明から現れる」演出が始まらず、背景だけの真っ黒な画面になる（アプリを切り替えると直る）。
+  // 少し待っても時計が進んでいなければ、終わりのあるアニメーションを最後の状態まで進めて中身を見せる。
+  function settleIfStalled() {
+    if (!document.getAnimations || !document.timeline) return;
+    const before = document.timeline.currentTime;
+    setTimeout(() => {
+      const after = document.timeline.currentTime;
+      if (before !== null && after !== null && after > before) return;
+      document.getAnimations().forEach((animation) => {
+        const timing = animation.effect && animation.effect.getComputedTiming();
+        if (timing && Number.isFinite(timing.endTime)) animation.finish();
+      });
+    }, 700);
+  }
+  document.addEventListener('DOMContentLoaded', settleIfStalled);
+  window.addEventListener('pageshow', settleIfStalled);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') settleIfStalled();
+  });
+
   // ---------- 表示できなかった画像の読み込み直し ----------
   // 通信が一瞬途切れて画像が出なかったときは、少し待って最大2回読み込み直す
   const IMAGE_RETRY_WAITS = [800, 2500];
