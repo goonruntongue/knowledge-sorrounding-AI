@@ -1,6 +1,9 @@
 // すべてのリクエストの入口。ログイン機能のオン／オフに合わせて、ポータルを見せるかどうかを決める
-import { SESSION_COOKIE, clearCookie, getSettings, isAdminEmail, isBlocked, readSession } from './_lib/auth.js';
-import { ADMIN_BAR, GATE_SCRIPT, blockedPage, loginPage } from './_lib/pages.js';
+import {
+  SESSION_COOKIE, clearCookie, getSettings, isAdminEmail, isBlocked, lockedPagesFor, pageKey, readSession,
+} from './_lib/auth.js';
+import { ADMIN_BAR, GATE_SCRIPT, blockedPage, loginPage, lockedPage } from './_lib/pages.js';
+import { CHAIN_OVERLAY, LOCK_IMAGE, LOCK_STYLE, lockScript } from './_lib/portal-locks.js';
 
 // 公開しないファイル（ログイン機能のソースや設定）
 const HIDDEN = ['/functions', '/migrations', '/wrangler.toml', '/.wrangler'];
@@ -9,7 +12,7 @@ const AUTH_ROUTES = new Set(['/auth/start', '/auth/login', '/auth/callback', '/a
 // 入口やログインの画面が使う画像とアイコン。ログイン前でも読めるようにする
 const PUBLIC = new Set([
   '/Sphere_rotating.webp', '/Sphere_rotating.gif', '/pwa-icon-web-knowledge-navy-512.png',
-  '/pwa-icon-web-knowledge-navy-192.png', '/manifest.webmanifest',
+  '/pwa-icon-web-knowledge-navy-192.png', '/manifest.webmanifest', LOCK_IMAGE,
 ]);
 
 function wantsHtml(request) {
@@ -46,8 +49,13 @@ export async function onRequest(context) {
     return new Response('ログインが必要です', { status: 401, headers: { 'Cache-Control': 'no-store' } });
   }
 
+  // 鍵のかかったガイドは、ページ（HTML）を開けない。カードの絵などの画像はポータルで使うので通す
+  const locked = await lockedPagesFor(env, session, admin);
+  const key = pageKey(path);
+
   const response = await next();
   const isHtml = (response.headers.get('Content-Type') || '').includes('text/html');
+  if (isHtml && key && locked.has(key)) return lockedPage(`/${key}/`, session);
   if (isHtml) {
     // 起動して最初に開いたときは、どのページからでも入口の画面（/auth/start）を通す
     // 「ログインしたままにする」でログインした人には入れない
@@ -57,6 +65,21 @@ export async function onRequest(context) {
     }
     if (admin && path === '/') {
       rewriter = rewriter.on('body', { element(el) { el.prepend(ADMIN_BAR, { html: true }); } });
+    }
+    if (path === '/' && locked.size) {
+      // ポータルのカードのうち、鍵のかかったページへのものに鎖を重ねる
+      rewriter = rewriter
+        .on('head', { element(el) { el.append(LOCK_STYLE, { html: true }); } })
+        .on('.menu a', {
+          element(el) {
+            const target = pageKey(`/${el.getAttribute('href') || ''}`);
+            if (!target || !locked.has(target)) return;
+            el.setAttribute('data-locked', target);
+            el.setAttribute('aria-disabled', 'true');
+            el.append(CHAIN_OVERLAY, { html: true });
+          },
+        })
+        .on('body', { element(el) { el.append(lockScript(Boolean(session)), { html: true }); } });
     }
     const rewritten = rewriter.transform(response);
     const out = new Response(rewritten.body, rewritten);

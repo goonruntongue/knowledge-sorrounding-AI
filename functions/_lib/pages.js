@@ -91,6 +91,24 @@ export function loginPage(next) {
   ) + REMEMBER_SCRIPT), 401);
 }
 
+// 鍵のかかったページを開こうとしたとき
+export function lockedPage(path, session) {
+  const chains = '<img class="locked-art" src="/assets/lock-chains.webp" width="720" height="552" alt="">';
+  const actions = session
+    ? `${passButton('/', 'ポータルへ')}<a class="btn" href="/auth/logout?next=${encodeURIComponent(path)}">別のアカウントでログイン</a>`
+    : `${googleButton(`/auth/login?next=${encodeURIComponent(path)}`, '許可されたアカウントでログイン')}${passButton('/', 'ポータルへ', false)}${REMEMBER_BOX}`;
+  const note = session
+    ? `${esc(session.email)} には、このページの許可がありません。管理者に知らせてください。`
+    : '管理者が許可したアカウントだけが開けます。';
+  return html(shell('鍵がかかっています', gate(
+    'LOCKED',
+    `${chains}このページには<br>鍵がかかっています`,
+    'このガイドは、いまは開けません。',
+    actions,
+    note
+  ) + PASS_SCRIPT + REMEMBER_SCRIPT, '.locked-art{display:block;width:min(100%,260px);height:auto;margin:-8px auto 6px;filter:drop-shadow(0 8px 12px rgba(20,16,40,.3))}'), 403);
+}
+
 export function blockedPage(clearCookie) {
   return html(shell('利用できません', gate(
     'ACCESS BLOCKED',
@@ -132,6 +150,7 @@ const ADMIN_STYLE = `
 .switch{position:relative;width:58px;height:32px;flex:none;border:0;border-radius:999px;background:#c9c2d8;cursor:pointer;transition:background .2s}
 .switch::after{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;content:"";transition:transform .2s}
 .switch[aria-checked="true"]{background:#5aa883}
+.switch--lock[aria-checked="true"]{background:#c9a227}
 .switch[aria-checked="true"]::after{transform:translateX(26px)}
 .switch:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .switch:disabled{opacity:.6;cursor:wait}
@@ -144,10 +163,23 @@ td.name{white-space:normal;min-width:8em}
 .tag{display:inline-block;padding:1px 10px;border-radius:999px;background:#e2f4ea;color:#2f7a55;font-size:.78rem;font-weight:700}
 .tag--blocked{background:#fbe3e3;color:var(--danger)}
 .tag--admin{background:#e7e4fb;color:#4c449a}
+.tag--lock{background:#f8edc8;color:#7a5c00}
 .small-btn{padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:#3d3654;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .small-btn:hover{background:#f4f0fb}
 .small-btn--danger{border-color:#f0c4c4;color:#b23b3b}
 .empty{padding:16px 0;color:var(--muted)}
+.pages{display:grid;gap:8px;margin-top:14px}
+.page-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#ffffff8c}
+.page-row__title{flex:1;min-width:0;font-weight:700}
+.page-row__title small{display:block;color:var(--muted);font-weight:500}
+.page-row__state{font-size:.8rem;font-weight:700;color:var(--muted)}
+.access-row td{padding:0 8px 14px;white-space:normal;border-bottom:1px solid var(--line)}
+.access-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding:12px;border-radius:14px;background:#f6f2fb}
+.access-grid label{display:grid;gap:4px;font-size:.82rem;font-weight:700}
+.access-grid select{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;font-weight:500}
+.access-grid select.is-allow{border-color:#5aa883;background:#eef9f3}
+.access-grid select.is-deny{border-color:#c9a227;background:#fdf6df}
+@media (prefers-color-scheme:dark){.page-row{background:#ffffff0d}.access-grid{background:#ffffff0d}.small-btn,.access-grid select{background:#2a2c4d;color:var(--ink)}}
 @media (prefers-reduced-motion:reduce){.switch,.switch::after{transition:none}}
 `;
 
@@ -161,62 +193,134 @@ export function adminPage(adminEmail) {
     <p class="status" id="settings-status" role="status"></p>
   </section>
   <section class="panel">
+    <h2>ページの鍵</h2>
+    <p>鍵をかけたページは、ポータルのカードに鎖がかかり、押しても開けなくなります。アカウントごとの例外は、下の一覧の「ページ設定」で決めます。反映まで最大30秒ほどかかります。</p>
+    <div class="toggle"><button type="button" class="switch switch--lock" id="obey-switch" role="switch" aria-checked="false" aria-labelledby="obey-label" disabled></button><span id="obey-label">読み込み中…</span></div>
+    <div class="pages" id="pages"><p class="empty">読み込み中…</p></div>
+    <p class="status" id="locks-status" role="status"></p>
+  </section>
+  <section class="panel">
     <h2>ログインしたアカウント</h2>
-    <p>一度でもログインしたアカウントの一覧です。最初は全員が利用できます。ブロックすると、そのアカウントではポータルを開けなくなります（反映まで最大30秒ほどかかります）。</p>
+    <p>一度でもログインしたアカウントの一覧です。最初は全員が利用できます。ブロックすると、そのアカウントではポータルを開けなくなります。「ページ設定」では、鍵のかかったページをそのアカウントだけ開けるようにしたり、逆にそのアカウントだけ入れなくしたりできます。</p>
     <div class="table-wrap"><table><thead><tr><th>メールアドレス</th><th>名前</th><th>最後のログイン</th><th>回数</th><th>状態</th><th></th></tr></thead><tbody id="users"><tr><td colspan="6" class="empty">読み込み中…</td></tr></tbody></table></div>
     <p class="status" id="users-status" role="status"></p>
   </section>
 </main>
 <script>
 (function () {
-  var sw = document.getElementById('login-switch');
-  var label = document.getElementById('login-label');
-  var sStatus = document.getElementById('settings-status');
-  var tbody = document.getElementById('users');
-  var uStatus = document.getElementById('users-status');
   var me = ${JSON.stringify(String(adminEmail).toLowerCase())};
+  var $ = function (id) { return document.getElementById(id); };
+  var pages = [], locked = {}, access = {}, users = [], openEmail = '';
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function when(iso) { if (!iso) return ''; var d = new Date(iso); return d.toLocaleString('ja-JP', { dateStyle: 'medium', timeStyle: 'short' }); }
+  function when(iso) { if (!iso) return ''; return new Date(iso).toLocaleString('ja-JP', { dateStyle: 'medium', timeStyle: 'short' }); }
   function api(path, body) {
     return fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {})
       .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || '失敗しました'); return d; }); });
   }
-  function showSwitch(on) {
-    sw.setAttribute('aria-checked', on ? 'true' : 'false');
-    label.textContent = on ? 'オン（Googleログインが必要）' : 'オフ（ログインなしで開ける）';
-  }
-  api('/admin/api/settings').then(function (d) { showSwitch(d.loginRequired); sw.disabled = false; })
-    .catch(function (e) { label.textContent = '読み込めませんでした'; sStatus.textContent = e.message; });
+
+  /* ログイン機能 */
+  var sw = $('login-switch');
+  function showLogin(on) { sw.setAttribute('aria-checked', on ? 'true' : 'false'); $('login-label').textContent = on ? 'オン（Googleログインが必要）' : 'オフ（ログインなしで開ける）'; }
+  api('/admin/api/settings').then(function (d) { showLogin(d.loginRequired); sw.disabled = false; })
+    .catch(function (e) { $('login-label').textContent = '読み込めませんでした'; $('settings-status').textContent = e.message; });
   sw.addEventListener('click', function () {
     var next = sw.getAttribute('aria-checked') !== 'true';
-    sw.disabled = true; sStatus.textContent = '保存しています…';
+    sw.disabled = true; $('settings-status').textContent = '保存しています…';
     api('/admin/api/settings', { loginRequired: next })
-      .then(function (d) { showSwitch(d.loginRequired); sStatus.textContent = '保存しました。反映まで最大30秒ほどかかります。'; })
-      .catch(function (e) { sStatus.textContent = e.message; })
+      .then(function (d) { showLogin(d.loginRequired); $('settings-status').textContent = '保存しました。反映まで最大30秒ほどかかります。'; })
+      .catch(function (e) { $('settings-status').textContent = e.message; })
       .then(function () { sw.disabled = false; });
   });
-  function load() {
-    api('/admin/api/users').then(function (d) {
-      if (!d.users.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">まだ誰もログインしていません。</td></tr>'; return; }
-      tbody.innerHTML = d.users.map(function (u) {
-        var self = u.email.toLowerCase() === me;
-        var state = self ? '<span class="tag tag--admin">管理者</span>' : u.blocked ? '<span class="tag tag--blocked">ブロック中</span>' : '<span class="tag">利用できる</span>';
-        var action = self ? '' : '<button type="button" class="small-btn' + (u.blocked ? '' : ' small-btn--danger') + '" data-email="' + esc(u.email) + '" data-block="' + (u.blocked ? '0' : '1') + '">' + (u.blocked ? 'ブロックを解除' : 'ブロックする') + '</button>';
-        return '<tr><td>' + esc(u.email) + '</td><td class="name">' + esc(u.name) + '</td><td>' + esc(when(u.last_login)) + '</td><td>' + esc(u.login_count) + '</td><td>' + state + '</td><td>' + action + '</td></tr>';
-      }).join('');
-    }).catch(function (e) { tbody.innerHTML = '<tr><td colspan="6" class="empty">読み込めませんでした</td></tr>'; uStatus.textContent = e.message; });
+
+  /* ページの鍵 */
+  var obey = $('obey-switch');
+  function showObey(on) { obey.setAttribute('aria-checked', on ? 'true' : 'false'); $('obey-label').textContent = on ? '管理者にも鍵を適用する（デバッグ中）' : '管理者は鍵に関係なく入れる'; }
+  function renderPages() {
+    $('pages').innerHTML = pages.map(function (p) {
+      var on = !!locked[p.key];
+      return '<div class="page-row"><span class="page-row__title">' + esc(p.title) + '<small>/' + esc(p.key) + '/</small></span>'
+        + '<span class="page-row__state">' + (on ? '鍵あり' : '鍵なし') + '</span>'
+        + '<button type="button" class="switch switch--lock" role="switch" aria-checked="' + on + '" aria-label="' + esc(p.title) + 'に鍵をかける" data-page="' + esc(p.key) + '"></button></div>';
+    }).join('') || '<p class="empty">ポータルのカードが見つかりません。</p>';
   }
-  tbody.addEventListener('click', function (event) {
-    var b = event.target.closest('button[data-email]');
+  function loadLocks() {
+    return api('/admin/api/locks').then(function (d) {
+      pages = d.pages; locked = {}; access = {};
+      d.locked.forEach(function (k) { locked[k] = true; });
+      d.access.forEach(function (a) { (access[a.email] = access[a.email] || {})[a.page] = a.access; });
+      showObey(d.adminObeys); obey.disabled = false; renderPages();
+    }).catch(function (e) { $('pages').innerHTML = '<p class="empty">読み込めませんでした</p>'; $('locks-status').textContent = e.message; });
+  }
+  $('pages').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-page]'); if (!b) return;
+    var next = b.getAttribute('aria-checked') !== 'true';
+    b.disabled = true;
+    api('/admin/api/locks', { page: b.dataset.page, locked: next })
+      .then(function () { locked[b.dataset.page] = next; renderPages(); renderUsers(); $('locks-status').textContent = (next ? '鍵をかけました。' : '鍵を外しました。') + '反映まで最大30秒ほどかかります。'; })
+      .catch(function (e) { $('locks-status').textContent = e.message; b.disabled = false; });
+  });
+  obey.addEventListener('click', function () {
+    var next = obey.getAttribute('aria-checked') !== 'true';
+    obey.disabled = true;
+    api('/admin/api/locks', { adminObeys: next })
+      .then(function () { showObey(next); $('locks-status').textContent = next ? '管理者にも鍵を適用します。管理画面には、いつでも入れます。' : '管理者は鍵に関係なく入れるようにしました。'; })
+      .catch(function (e) { $('locks-status').textContent = e.message; })
+      .then(function () { obey.disabled = false; });
+  });
+
+  /* アカウント */
+  function accessCell(u) {
+    var mine = access[u.email] || {};
+    return '<tr class="access-row"><td colspan="6"><div class="access-grid">' + pages.map(function (p) {
+      var v = mine[p.key] || 'default';
+      return '<label>' + esc(p.title) + '<select data-email="' + esc(u.email) + '" data-page="' + esc(p.key) + '" class="' + (v === 'default' ? '' : 'is-' + v) + '">'
+        + '<option value="default"' + (v === 'default' ? ' selected' : '') + '>全体の設定どおり（' + (locked[p.key] ? '鍵あり' : '鍵なし') + '）</option>'
+        + '<option value="allow"' + (v === 'allow' ? ' selected' : '') + '>入れる（鍵を外す）</option>'
+        + '<option value="deny"' + (v === 'deny' ? ' selected' : '') + '>入れない（鍵をかける）</option></select></label>';
+    }).join('') + '</div></td></tr>';
+  }
+  function renderUsers() {
+    if (!users.length) { $('users').innerHTML = '<tr><td colspan="6" class="empty">まだ誰もログインしていません。</td></tr>'; return; }
+    $('users').innerHTML = users.map(function (u) {
+      var self = u.email.toLowerCase() === me;
+      var count = Object.keys(access[u.email] || {}).length;
+      var state = self ? '<span class="tag tag--admin">管理者</span>' : u.blocked ? '<span class="tag tag--blocked">ブロック中</span>' : '<span class="tag">利用できる</span>';
+      if (count) state += ' <span class="tag tag--lock">例外 ' + count + '</span>';
+      var block = self ? '' : '<button type="button" class="small-btn' + (u.blocked ? '' : ' small-btn--danger') + '" data-email="' + esc(u.email) + '" data-block="' + (u.blocked ? '0' : '1') + '">' + (u.blocked ? 'ブロックを解除' : 'ブロックする') + '</button> ';
+      var pageBtn = '<button type="button" class="small-btn" data-pages="' + esc(u.email) + '" aria-expanded="' + (openEmail === u.email) + '">ページ設定</button>';
+      var row = '<tr><td>' + esc(u.email) + '</td><td class="name">' + esc(u.name) + '</td><td>' + esc(when(u.last_login)) + '</td><td>' + esc(u.login_count) + '</td><td>' + state + '</td><td>' + block + pageBtn + '</td></tr>';
+      return row + (openEmail === u.email ? accessCell(u) : '');
+    }).join('');
+  }
+  function loadUsers() {
+    return api('/admin/api/users').then(function (d) { users = d.users; renderUsers(); })
+      .catch(function (e) { $('users').innerHTML = '<tr><td colspan="6" class="empty">読み込めませんでした</td></tr>'; $('users-status').textContent = e.message; });
+  }
+  $('users').addEventListener('click', function (event) {
+    var p = event.target.closest('button[data-pages]');
+    if (p) { openEmail = openEmail === p.dataset.pages ? '' : p.dataset.pages; renderUsers(); return; }
+    var b = event.target.closest('button[data-block]');
     if (!b) return;
     var block = b.dataset.block === '1';
     if (block && !confirm(b.dataset.email + ' をブロックしますか？')) return;
     b.disabled = true;
     api('/admin/api/users', { email: b.dataset.email, blocked: block })
-      .then(function () { uStatus.textContent = block ? 'ブロックしました。' : 'ブロックを解除しました。'; load(); })
-      .catch(function (e) { uStatus.textContent = e.message; b.disabled = false; });
+      .then(function () { $('users-status').textContent = block ? 'ブロックしました。' : 'ブロックを解除しました。'; loadUsers(); })
+      .catch(function (e) { $('users-status').textContent = e.message; b.disabled = false; });
   });
-  load();
+  $('users').addEventListener('change', function (event) {
+    var s = event.target.closest('select[data-page]'); if (!s) return;
+    s.disabled = true;
+    api('/admin/api/access', { email: s.dataset.email, page: s.dataset.page, access: s.value })
+      .then(function () {
+        var mine = access[s.dataset.email] = access[s.dataset.email] || {};
+        if (s.value === 'default') delete mine[s.dataset.page]; else mine[s.dataset.page] = s.value;
+        renderUsers(); $('users-status').textContent = '保存しました。反映まで最大30秒ほどかかります。';
+      })
+      .catch(function (e) { $('users-status').textContent = e.message; s.disabled = false; });
+  });
+
+  loadLocks().then(loadUsers);
 })();
 </script>`;
   return html(shell('管理画面', body, ADMIN_STYLE));

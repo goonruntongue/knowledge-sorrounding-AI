@@ -197,3 +197,86 @@ export function sameOrigin(request) {
 export function esc(text) {
   return String(text ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }
+
+/* ---------- ページの鍵 ---------- */
+// パスから、ガイドのフォルダー名を取り出す（/ai-agents/index.html → ai-agents）
+const RESERVED = new Set(['auth', 'admin', 'assets']);
+export function pageKey(path) {
+  const match = /^\/([A-Za-z0-9_-]+)(?:\/|$)/.exec(path);
+  return match && !RESERVED.has(match[1]) ? match[1] : '';
+}
+
+export function getLockState(env) {
+  if (!env.DB) return Promise.resolve({ locked: [], adminObeys: false });
+  return remember('locks', async () => {
+    const [{ results }, row] = await Promise.all([
+      env.DB.prepare('SELECT page FROM page_locks WHERE locked = 1').all(),
+      env.DB.prepare("SELECT value FROM settings WHERE key = 'admin_obeys_locks'").first(),
+    ]);
+    return { locked: results.map((r) => r.page), adminObeys: Boolean(row && row.value === '1') };
+  });
+}
+
+function getAccess(env, email) {
+  return remember(`access:${email}`, async () => {
+    const { results } = await env.DB.prepare('SELECT page, access FROM page_access WHERE email = ?1').bind(email).all();
+    return results;
+  });
+}
+
+// この人にとって鍵がかかっているページの一覧
+export async function lockedPagesFor(env, session, isAdmin) {
+  if (!env.DB) return new Set();
+  const state = await getLockState(env);
+  if (isAdmin && !state.adminObeys) return new Set();
+  const locked = new Set(state.locked);
+  if (session) {
+    for (const { page, access } of await getAccess(env, session.email)) {
+      if (access === 'allow') locked.delete(page);
+      else if (access === 'deny') locked.add(page);
+    }
+  }
+  return locked;
+}
+
+export async function setPageLock(env, page, locked) {
+  await env.DB.prepare('INSERT INTO page_locks (page, locked) VALUES (?1, ?2) ON CONFLICT(page) DO UPDATE SET locked = excluded.locked')
+    .bind(page, locked ? 1 : 0).run();
+  forget('locks');
+}
+
+export async function setAdminObeysLocks(env, on) {
+  await env.DB.prepare("INSERT INTO settings (key, value) VALUES ('admin_obeys_locks', ?1) ON CONFLICT(key) DO UPDATE SET value = excluded.value")
+    .bind(on ? '1' : '0').run();
+  forget('locks');
+}
+
+// access は 'allow'・'deny'、または 'default'（例外を消して、全体の設定に従う）
+export async function setUserAccess(env, email, page, access) {
+  if (access === 'default') {
+    await env.DB.prepare('DELETE FROM page_access WHERE email = ?1 AND page = ?2').bind(email, page).run();
+  } else {
+    await env.DB.prepare('INSERT INTO page_access (email, page, access) VALUES (?1, ?2, ?3) ON CONFLICT(email, page) DO UPDATE SET access = excluded.access')
+      .bind(email, page, access).run();
+  }
+  forget(`access:${email}`);
+}
+
+export async function lockSummary(env) {
+  const [state, { results }] = await Promise.all([
+    getLockState(env),
+    env.DB.prepare('SELECT email, page, access FROM page_access').all(),
+  ]);
+  return { ...state, access: results };
+}
+
+// ポータルのカードの一覧（index.html から、行き先のフォルダー名とタイトルを読む）
+export async function portalPages(env, request) {
+  const response = await env.ASSETS.fetch(new URL('/', request.url));
+  const html = await response.text();
+  const pages = [];
+  const pattern = /<a href="([A-Za-z0-9_-]+)\/index\.html[^"]*"[^>]*>[\s\S]*?<span class="title">([^<]+)<\/span>/g;
+  let match;
+  while ((match = pattern.exec(html))) pages.push({ key: match[1], title: match[2].trim() });
+  return pages;
+}
