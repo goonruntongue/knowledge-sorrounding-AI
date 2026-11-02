@@ -40,10 +40,12 @@ export async function onRequest(context) {
   const session = await readSession(request, env);
   const isAdmin = Boolean(session) && isAdminEmail(env, session.email);
   // データベースへの問い合わせは、順番を待たずに同時に出す（開くまでの待ち時間を短くする）
-  const [blocked, { loginRequired }, locked] = await Promise.all([
+  // 鍵はページ（HTML）にしか関係しないので、画像やCSSのときは問い合わせない
+  const asksForPage = wantsHtml(request);
+  const [blocked, { loginRequired }, pageLocks] = await Promise.all([
     session ? isBlocked(env, session.email) : false,
     getSettings(env),
-    lockedPagesFor(env, session, isAdmin),
+    asksForPage ? lockedPagesFor(env, session, isAdmin) : null,
   ]);
   const admin = isAdmin && !blocked;
 
@@ -59,6 +61,8 @@ export async function onRequest(context) {
 
   const response = await next();
   const isHtml = (response.headers.get('Content-Type') || '').includes('text/html');
+  // HTML なのに Accept で見分けられなかったとき（まれ）だけ、ここで鍵を読む
+  const locked = isHtml ? (pageLocks || await lockedPagesFor(env, session, isAdmin)) : new Set();
   if (isHtml && key && locked.has(key)) return lockedPage(`/${key}/`, session);
   if (isHtml) {
     // 起動して最初に開いたときは、どのページからでも入口の画面（/auth/start）を通す
@@ -91,9 +95,11 @@ export async function onRequest(context) {
     return out;
   }
   if (loginRequired || session) {
-    // ログインが必要なページは、ブラウザーや途中の経路に残さない
+    // ログイン中の画像やCSSは、途中の経路には残さず、本人のブラウザーにだけ残す。
+    // 以前は no-store で毎回すべてを取り直していたため、スマホの回線では画像や練習帳がなかなか開かなかった
+    const type = response.headers.get('Content-Type') || '';
     const out = new Response(response.body, response);
-    out.headers.set('Cache-Control', 'private, no-store');
+    out.headers.set('Cache-Control', /^(image|font)\//.test(type) ? 'private, max-age=86400' : 'private, no-cache');
     return out;
   }
   return response;

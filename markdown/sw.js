@@ -2,7 +2,7 @@
  * Service Worker - オフラインでも使えるようにアプリの部品をキャッシュする
  * ファイルを更新したら CACHE の番号を上げると、古いキャッシュが入れ替わります。
  */
-var CACHE = 'md-learn-v3';
+var CACHE = 'md-learn-v4';
 var ASSETS = [
   './',
   'index.html',
@@ -62,15 +62,19 @@ self.addEventListener('fetch', function (event) {
           });
         });
       }
+      // 部品（CSS・JS・画像）は、手元にあればすぐ返し、裏で最新版に入れ替える。
+      // 毎回ネットを待つと、回線が遅いときに練習帳が真っ白なまま止まって見えるため。
       return cache.match(req, { ignoreSearch: true }).then(function (cached) {
         var network = fetch(req).then(function (res) {
           if (res && res.ok) cache.put(req, res.clone());
           return res;
         }).catch(function () {
-          if (cached) return cached;
-          if (req.mode === 'navigate') return cache.match('md-editor.html');
-          return Response.error();
+          return cached || Response.error();
         });
+        if (cached) {
+          event.waitUntil(network.catch(function () {}));
+          return cached;
+        }
         return network;
       });
     })
