@@ -161,19 +161,24 @@
 }
 .server-lab-flow strong { display: block; }
 
-.server-lab-edit {
+/* manga-page.css の section{padding:78px 0 !important} に負けないよう、詳しい指定と !important で上書きする */
+.server-lab-dialog section.server-lab-edit {
   margin-top: 1.25rem;
-  /* 点線のガイド内に文章を収めるため、左右に十分な逃げを取る。 */
-  padding: 1.2rem clamp(2.5rem, 10vw, 5rem);
+  padding: 1.4rem 1.6rem !important;
   border: 3px solid #164b8e;
   border-radius: 12px;
   background: #e8f3ff;
+  overflow-wrap: anywhere;
 }
-.server-lab-edit p { line-height: 1.75; }
+.server-lab-edit h3 { margin-bottom: .6rem; }
+.server-lab-edit p { margin: .6rem 0 0; line-height: 1.8; }
+/* 黒地の文字も1文字単位で折り返し、行をまたいでも両端に余白を付ける */
 .server-lab-edit code {
-  display: inline-block;
-  margin: .2rem 0;
-  padding: .18rem .4rem;
+  display: inline;
+  margin: 0 .15em;
+  padding: .12rem .4rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   border-radius: 4px;
   background: #07162d;
   color: #fff3a9;
@@ -191,7 +196,7 @@
   .server-lab-dialog { width: min(100vw - 1rem, 720px); border-radius: 16px; }
   .server-lab-dialog__header { padding: 1.3rem 1.7rem 1rem; }
   .server-lab-dialog__body { padding: 1rem; }
-  .server-lab-edit { padding-inline: 2.6rem; }
+  .server-lab-dialog section.server-lab-edit { padding: 1.2rem 1.25rem !important; }
   .has-server-lab #toTop { bottom: 9.1rem !important; }
 }
 

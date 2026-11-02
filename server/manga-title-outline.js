@@ -8,11 +8,11 @@
 
   var guideStyle = document.createElement("link");
   guideStyle.rel = "stylesheet";
-  guideStyle.href = "local-server-guide.css";
+  guideStyle.href = "local-server-guide.css?v=20261103";
   document.head.appendChild(guideStyle);
 
   var guideScript = document.createElement("script");
-  guideScript.src = "local-server-guide.js";
+  guideScript.src = "local-server-guide.js?v=20261103";
   guideScript.defer = true;
   document.head.appendChild(guideScript);
 
