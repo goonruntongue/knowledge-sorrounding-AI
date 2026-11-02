@@ -32,7 +32,7 @@ a{color:var(--accent)}
 `;
 
 function shell(title, body, extraStyle = '') {
-  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | Knowledge Surrounding AI</title><link rel="icon" href="/pwa-icon-web-knowledge-navy-512.png" type="image/png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"><style>${BASE_STYLE}${extraStyle}</style></head><body>${body}</body></html>`;
+  return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#071a43"><title>${esc(title)} | Knowledge Surrounding AI</title><link rel="icon" href="/pwa-icon-web-knowledge-navy-512.png" type="image/png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>${BASE_STYLE}${extraStyle}</style></head><body>${body}</body></html>`;
 }
 
 function html(markup, status = 200, headers = {}) {
@@ -55,7 +55,7 @@ const REMEMBER_SCRIPT = `<script>document.addEventListener('click',function(e){v
 export const GATE_KEY = 'ksa-gate';
 
 // 各ページの <head> の先頭に入れる。この起動でまだ入口を通っていなければ、入口の画面へ送る
-export const GATE_SCRIPT = `<script>try{if(!sessionStorage.getItem('${GATE_KEY}')){location.replace('/auth/start?next='+encodeURIComponent(location.pathname+location.search+location.hash))}}catch(e){}</script>`;
+export const GATE_SCRIPT = `<meta name="color-scheme" content="light dark"><script>try{if(!sessionStorage.getItem('${GATE_KEY}')){location.replace('/auth/start?next='+encodeURIComponent(location.pathname+location.search+location.hash))}}catch(e){}</script>`;
 
 // 入口を通った記録を残してから、行き先へ進むボタン
 const passButton = (next, label, primary = true) => `<button type="button" class="btn${primary ? ' btn--primary' : ''}" data-pass="${esc(next)}">${label}</button>`;

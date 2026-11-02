@@ -227,11 +227,15 @@ function getAccess(env, email) {
 // この人にとって鍵がかかっているページの一覧
 export async function lockedPagesFor(env, session, isAdmin) {
   if (!env.DB) return new Set();
-  const state = await getLockState(env);
+  // 全体の鍵と、この人の例外は、同時に問い合わせる
+  const [state, exceptions] = await Promise.all([
+    getLockState(env),
+    session ? getAccess(env, session.email) : Promise.resolve([]),
+  ]);
   if (isAdmin && !state.adminObeys) return new Set();
   const locked = new Set(state.locked);
   if (session) {
-    for (const { page, access } of await getAccess(env, session.email)) {
+    for (const { page, access } of exceptions) {
       if (access === 'allow') locked.delete(page);
       else if (access === 'deny') locked.add(page);
     }

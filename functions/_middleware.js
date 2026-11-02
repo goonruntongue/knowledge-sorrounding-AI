@@ -32,25 +32,29 @@ export async function onRequest(context) {
   // それ以外の /auth/ を通すと、ないページの代わりにポータルが返ってしまうので止める
   if (path === '/auth' || path.startsWith('/auth/')) return new Response('Not Found', { status: 404 });
 
-  const session = await readSession(request, env);
-  const blocked = session ? await isBlocked(env, session.email) : false;
-  const admin = Boolean(session) && !blocked && isAdminEmail(env, session.email);
-
   if (path === '/admin' || path.startsWith('/admin/')) {
     // 管理画面の中で、管理者かどうかを確かめる（functions/admin/）
     return next();
   }
 
+  const session = await readSession(request, env);
+  const isAdmin = Boolean(session) && isAdminEmail(env, session.email);
+  // データベースへの問い合わせは、順番を待たずに同時に出す（開くまでの待ち時間を短くする）
+  const [blocked, { loginRequired }, locked] = await Promise.all([
+    session ? isBlocked(env, session.email) : false,
+    getSettings(env),
+    lockedPagesFor(env, session, isAdmin),
+  ]);
+  const admin = isAdmin && !blocked;
+
   if (blocked) return blockedPage(clearCookie(SESSION_COOKIE));
 
-  const { loginRequired } = await getSettings(env);
   if (loginRequired && !session) {
     if (wantsHtml(request)) return loginPage(path + url.search);
     return new Response('ログインが必要です', { status: 401, headers: { 'Cache-Control': 'no-store' } });
   }
 
   // 鍵のかかったガイドは、ページ（HTML）を開けない。カードの絵などの画像はポータルで使うので通す
-  const locked = await lockedPagesFor(env, session, admin);
   const key = pageKey(path);
 
   const response = await next();
