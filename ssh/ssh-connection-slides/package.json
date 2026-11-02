@@ -1,0 +1,11 @@
+{
+  "name": "ssh-connection-slides",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.88 present .",
+    "check": "npx --yes hyperframes@0.8.88 check",
+    "render": "npx --yes hyperframes@0.8.88 render",
+    "publish": "npx --yes hyperframes@0.8.88 publish"
+  }
+}

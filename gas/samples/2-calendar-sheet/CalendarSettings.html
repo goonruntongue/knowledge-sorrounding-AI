@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <style>
+    body{font:14px/1.7 Arial,sans-serif;color:#173c25;margin:0;padding:18px;background:#f6faf8}
+    h2{font-size:19px;margin:0 0 16px}p{margin:8px 0 16px}
+    .account{padding:12px;background:#e2f6ea;border-left:5px solid #2c9164;border-radius:4px}
+    label{display:block;font-weight:bold;margin-top:20px}
+    select,button{width:100%;box-sizing:border-box;min-height:44px;border-radius:6px;font:inherit}
+    select{margin:8px 0;padding:8px;background:white;border:1px solid #9cb7a8}
+    button{padding:10px;border:0;background:#287c58;color:white;font-weight:bold;cursor:pointer;margin-top:18px}
+    button:disabled{opacity:.55;cursor:wait}.note{font-size:12px;color:#52695d}
+    #status{white-space:pre-wrap}#status.error{color:#a22}
+  </style>
+</head>
+<body>
+  <h2>カレンダーの選択</h2>
+  <p class="account"><strong>使用するGoogleアカウント</strong><br>このシートを開いて実行しているアカウント</p>
+  <p class="note">別のアカウントを使う場合は、そのアカウントだけでログインしたブラウザでシートを開き直してください。このパネル内では切り替えません。</p>
+  <form id="settings">
+    <label for="importId">読み込むカレンダー</label>
+    <select id="importId" required disabled><option value="">読み込み中…</option></select>
+    <label for="exportId">書き込むカレンダー</label>
+    <select id="exportId" required disabled><option value="">読み込み中…</option></select>
+    <p class="note">共有カレンダーへの書き込みには編集権限が必要です。「共有・登録」には読み取り専用も含まれます。最初は自分の練習用カレンダーを選びます。</p>
+    <button id="save" disabled>この組み合わせを保存</button>
+  </form>
+  <p id="status" role="status" aria-live="polite">カレンダー一覧を取得しています…</p>
+  <script>
+    const status = document.getElementById('status');
+    const button = document.getElementById('save');
+    function showError(error) {
+      status.className = 'error';
+      status.textContent = error.message || String(error);
+    }
+    google.script.run.withSuccessHandler(data => {
+      ['importId', 'exportId'].forEach(key => {
+        const select = document.getElementById(key);
+        select.replaceChildren(new Option('カレンダーを選んでください', ''));
+        data.calendars.forEach(cal => select.add(new Option(
+          cal.name + (cal.owned ? '（自分）' : '（共有・登録）'), cal.id
+        )));
+        select.value = data[key];
+        select.disabled = false;
+      });
+      button.disabled = data.calendars.length === 0;
+      status.textContent = data.calendars.length ? '読み込み先と書き込み先を選んで保存してください。' : '利用できるカレンダーがありません。Googleカレンダーを確認してください。';
+    }).withFailureHandler(showError).getCalendarSettings();
+    document.getElementById('settings').addEventListener('submit', event => {
+      event.preventDefault();
+      button.disabled = true;
+      status.className = '';
+      status.textContent = '保存しています…';
+      google.script.run.withSuccessHandler(message => {
+        button.disabled = false;
+        status.textContent = message;
+      }).withFailureHandler(error => {
+        button.disabled = false;
+        showError(error);
+      }).saveCalendarSettings(document.getElementById('importId').value, document.getElementById('exportId').value);
+    });
+  </script>
+</body>
+</html>

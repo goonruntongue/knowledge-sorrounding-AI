@@ -1,0 +1,28 @@
+.site-copyright {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.25rem;
+  font-size: .78rem;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+
+img.site-copyright__logo {
+  display: block;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 1.5lh !important;
+  height: 1.5lh !important;
+  max-width: 1.5em;
+  max-height: 1.5em;
+  margin: 0 .5em;
+  vertical-align: middle;
+  padding: .12em .28em;
+  border-radius: .35rem;
+  background: #554b67;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-copyright__logo { transition: none; }
+}

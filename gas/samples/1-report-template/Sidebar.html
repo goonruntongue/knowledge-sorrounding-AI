@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja"><head><base target="_top"><meta charset="utf-8">
+<style>
+body{font:14px sans-serif;padding:12px;color:#203c32}label{display:block;margin:16px 0}input,textarea,button{box-sizing:border-box;width:100%;padding:10px;margin-top:6px;font:inherit}textarea{min-height:130px}button{background:#23865e;color:white;border:0;border-radius:6px}button:disabled{opacity:.6}#status{white-space:pre-wrap}
+</style></head><body>
+<p>開いている文書の {名前}・{日付}・{内容} を埋めます。</p>
+<form id="form">
+<label>名前<input name="name" required></label>
+<label>日付<input name="date" type="date" required></label>
+<label>内容<textarea name="content" required></textarea></label>
+<button id="submit" type="submit">文書に差し込む</button>
+</form><p id="status" role="status"></p>
+<script>
+const form = document.getElementById('form');
+const button = document.getElementById('submit');
+const status = document.getElementById('status');
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  button.disabled = true;
+  status.textContent = '差し込んでいます…';
+  google.script.run.withSuccessHandler(message => {
+    status.textContent = message; button.disabled = false;
+  }).withFailureHandler(error => {
+    status.textContent = error.message; button.disabled = false;
+  }).fillTemplate(Object.fromEntries(new FormData(form)));
+});
+</script></body></html>

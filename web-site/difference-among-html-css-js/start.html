@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="materials/css/routing.css">
+    <link rel="shortcut icon" href="materials/image/favicon.ico">
+    <title>HTMLのみのページ</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .now {
+            background: #000 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ham">
+        <span></span>
+        <span></span>
+    </div>
+    <div class="mainwrap">
+        <header>
+            <div class="container flex-row-space-between-center">
+                <img class="logo" src="materials/image/logo.svg" alt="" width="320px">
+                <nav class="flex-center">
+                    <ul class="flex-row-space-between-center">
+                        <li>
+                            <a href="#HTML_section">HTMLって？</a>
+                        </li>
+                        <li>
+                            <a href="#CSS_section">CSSって？</a>
+                        </li>
+                        <li>
+                            <a href="#JS_section">Javascriptって？</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <article>
+            <div class="container first-view-wrap">
+                <img src="materials/image/dog_pc.jpg" alt="">
+                <img src="materials/image/cat_pc.jpg" alt="">
+                <h1 class="catch">
+                    <span class="title">Coding is modern Magic.</span>
+                    <span class="sub-title">AIがゼロイチを作る時代でも、100にするのは人間だ。</span>
+                </h1>
+            </div>
+            <section id="sec1">
+                <div class="container">
+                    <div class="inner-left-col content">
+                        <h2 id="HTML_section">HTML<span>って…？</span></h2>
+                        <p>HTMLとは、ハイパーテキストマークアップランゲージ(Hyper Text Markup Language)のこと。 <span class="emp">ページの構造</span>のみを記述する特殊な文字（ハイパーテキスト）を書いた文書ファイルです。
+                        </p>
+                        <p>普通の文書との大きな違いは、「ハイパーリンク」と呼ばれる仕組みを任意の箇所に付けてクリックによってほかの場所にジャンプできることでしょう。</p>
+                        <p>ワードで例えるなら、ただ文字を打ったり画像を貼り付けたりしただけのもの。 HTMLだけでは、綺麗な見た目は整わない。 だけどHTMLが書けなければホームページは始まらない。 一番基本で無くてはならない必需品なのです。
+                        </p>
+                    </div>
+                    <div class="inner-right-col">
+                        <img id="dog" src="materials/image/dog_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section id="sec2">
+                <div class="container">
+                    <div class="inner-right-col content">
+                        <h2 id="CSS_section">CSS<span>って…？</span></h2>
+                        <p>CSSとは、カスケーディングスタイルシート(Cascading Style Sheet)。 ページのスタイルを決めるコードを数珠繋ぎに記した文書ファイルです（カスケードとは「どんどん繋ぐ/数珠繋ぎ」という意味）。
+                        </p>
+                        <p>ワードで例えるなら<span class="emp">「書式」設定</span>。太字とか、揃えとか、色とか。 これがあって初めてWebページはデザインが整ってきます。最近ではページの幅に応じて見た目を変えることやカンタンな動きもつけられます。 Webデザイナーの腕の見せどころ。それがCSSなんです。
+
+                        </p>
+                    </div>
+                    <div class="inner-left-col">
+                        <img id="cat" src="materials/image/cat_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section id="sec3">
+                <div class="container">
+                    <div class="inner-left-col content">
+                        <h2 id="JS_section">Javascript<span>って…？</span></h2>
+                        <p>Javascriptとは動きの台本のこと。<span class="emp">Webページに動き</span>をつけてくれます。</p>
+                        <p>メニューがスルスル出てきたり、画像がポップアップしたり。 スマートフォンだと小さい画面でも、動きをうまく使うことで大事な情報をすっきり表示することが出来ます。 色んな動きをつけられるJavascript、最初に学ぶプログラムとしてもおススメです。ここ最近ではjavascript一本だけで本格的にアプリが作れてしまいます。
+                        </p>
+                    </div>
+                    <div class="inner-right-col">
+                        <img id="dogncat" src="materials/image/dogcat_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+        </article>
+        <footer>
+            <div class="container">
+                <p>fin</p>
+            </div>
+        </footer>
+        <div class="modal">
+            <p>
+                右のボタンでそれぞれの表示を切り替えられます
+                <br> （
+                <span class="v_in_h">E</span>
+                <span class="v_in_h">S</span>
+                <span class="v_in_h">C</span> キーで表示・非表示）
+
+            </p>
+            <div class="modal-inner-flex">
+                <button class="now" type="button" id="toHTML">HTMLのみ</button>
+                <button type="button" id="toCSS">HTML+CSS</button>
+                <button type="button" id="toJavascript">
+                        HTML+CSS<br>+JavaScript
+                    
+                    
+                    </button>
+            </div>
+        </div>
+        <script src="materials/js/jquery.js"></script>
+        <script src="materials/js/routing-top.js"></script>
+        <div class="sidebar1"><span>指先から世界を作ろう！</span></div>
+        <div class="sidebar2"><span>Create World at yout fingertips!</span></div>
+</body>
+
+</html>

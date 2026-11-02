@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">VPS</title>
+  <desc id="desc">一台のサーバーを区画に分け、仮想サーバーを使うことを表したアイコン</desc>
+  <rect x="32" y="24" width="192" height="208" rx="24" fill="#E8F4FF" stroke="#18213D" stroke-width="10"/>
+  <path d="M37 78h182M37 132h182M37 186h182" stroke="#18213D" stroke-width="8"/>
+  <rect x="54" y="44" width="36" height="16" rx="8" fill="#FF8B94" stroke="#18213D" stroke-width="5"/>
+  <rect x="103" y="44" width="36" height="16" rx="8" fill="#FFE767" stroke="#18213D" stroke-width="5"/>
+  <rect x="152" y="44" width="36" height="16" rx="8" fill="#35C9A1" stroke="#18213D" stroke-width="5"/>
+  <rect x="53" y="96" width="64" height="24" rx="8" fill="#1769E0" stroke="#18213D" stroke-width="5"/>
+  <rect x="138" y="96" width="64" height="24" rx="8" fill="#B7D9FF" stroke="#18213D" stroke-width="5"/>
+  <rect x="53" y="150" width="64" height="24" rx="8" fill="#B7D9FF" stroke="#18213D" stroke-width="5"/>
+  <rect x="138" y="150" width="64" height="24" rx="8" fill="#1769E0" stroke="#18213D" stroke-width="5"/>
+  <path d="M83 205h90" stroke="#18213D" stroke-width="8" stroke-linecap="round"/>
+  <path d="M196 24v208" stroke="#18213D" stroke-width="7" stroke-dasharray="12 9"/>
+  <path d="M178 203l18 17 18-17" fill="none" stroke="#18213D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

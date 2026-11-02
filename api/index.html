@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>APIのしくみを体験しよう | Knowledge Surrounding AI</title>
+    <meta
+      name="description"
+      content="APIからデータを取得し、JSON・サーバー・Node.jsの役割を体験。最後はAIとAPIを作るための依頼へ。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 横スクロールできる表にヒントを出す ScrollHint（MIT）。版を固定して読み込む -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/scroll-hint@1.2.9/css/scroll-hint.css"
+      integrity="sha384-fYT0C2iZQUIeBdvfHDIRYdeGKJ2qLWbg2I3uKLCpQMpJNhlnK9K0OUkJrRzKbLMM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css?v=sim-v10" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../copyright.css" />
+    <link rel="stylesheet" href="../mobile-safe.css" />
+    <link rel="stylesheet" href="../page-reveal.css" />
+    <script src="guide.js?v=sim-v9" defer></script>
+    <script src="fortune-embed.js" defer></script>
+    <script
+      src="https://unpkg.com/scroll-hint@1.2.9/js/scroll-hint.min.js"
+      integrity="sha384-3B2CnmMHAU9tNvOzGKKOlG/xvsdPr33BKE6SKhF8EYbfPvr7ZHi43Zvr2HPF/Bcb"
+      crossorigin="anonymous"
+      data-scroll-hint
+      async
+    ></script>
+<link rel="stylesheet" href="../footer-pagination.css?v=20261024">
+<link rel="stylesheet" href="../portal-context.css?v=20261024"><script src="../portal-context.js?v=20261024"></script>  <link rel="stylesheet" href="../site-transition.css?v=20261025c"><script src="../site-transition.js?v=20261025b"></script>
+</head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="portal-return" href="../index.html">ポータルへ戻る</a
+        ><span><span class="portal-order-number">09 / </span>API BASICS</span>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">CONNECT / REQUEST / RESPONSE</p>
+            <h1>APIのしくみを、<br /><em>体験しよう。</em></h1>
+            <p class="lead">
+              ボタンを押す。データが届く。<br />その裏側をのぞくと、Webのつながり方が見えてくる。
+            </p>
+            <nav class="jump" aria-label="ページ内メニュー">
+              <a href="#experience">まず体験する ↓</a
+              ><a href="#build">作る流れを見る</a>
+            </nav>
+          </div>
+          <picture
+            ><source
+              type="image/webp"
+              srcset="
+                ../portal-api-automation-card-640.webp   640w,
+                ../portal-api-automation-card-1024.webp 1024w
+              "
+              sizes="(max-width:760px) 90vw, 480px" />
+            <img
+              class="hero-art"
+              src="../portal-api-automation-card.png"
+              width="1536"
+              height="1024"
+              alt="カラフルなサーバーと接続パーツの3Dイラスト"
+          /></picture>
+        </div>
+      </section>
+      <section id="what">
+        <div class="wrap">
+          <p class="eyebrow">01 / APIとは</p>
+          <h2>
+            APIとは、<br /><em><span class="api-initial api-initial--application">A</span>pplication <span class="api-initial api-initial--programming">P</span>rogramming <span class="api-initial api-initial--interface">I</span>nterface</em>です。
+          </h2>
+          <p class="intro">名前を三つの言葉に分けると、役割が見えてきます。</p>
+          <div class="api-word-grid" aria-label="APIの言葉の意味">
+            <article class="api-word-card application">
+              <span>APPLICATION</span>
+              <h3>Application</h3>
+              <p>アプリ：目的に応じた道具</p>
+            </article>
+            <article class="api-word-card programming">
+              <span>PROGRAMMING</span>
+              <h3>Programming</h3>
+              <p>プログラム・機能やデータ</p>
+            </article>
+            <article class="api-word-card interface">
+              <span>INTERFACE</span>
+              <h3>Interface</h3>
+              <p>間に置かれるもの・窓口</p>
+            </article>
+          </div>
+          <p class="api-definition">
+            つまり、<strong>プログラムのデータや機能をやり取りする窓口</strong>です。
+          </p>
+          <p class="intro api-webapi-intro">
+            ここではインターネット上にある窓口へアクセスして、機能やデータを使えるようにする<strong
+              >Web API</strong
+            >を学びます。
+          </p>
+        </div>
+      </section>
+      <section id="experience" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">02 / APIを体感</p>
+          <h2>～ APIを体感してみよう ～<br />ボタンを押したらデータが届く</h2>
+          <section class="fortune-api-demo" aria-labelledby="fortune-title">
+            <div class="fortune-api-demo__intro">
+              <p class="eyebrow">FORTUNE / API MOCKUP</p>
+              <h3 id="fortune-title">
+                誕生月のおたよりを、<br />JSONから受け取る。
+              </h3>
+              <p>
+                誕生月を選ぶと、<code>fortune.json</code>から受け取った60件のデータの中から、画像とひとことを1件表示します。
+              </p>
+            </div>
+            <div class="fortune-api-demo__grid">
+              <form id="fortune-form" class="fortune-request card">
+                <span class="badge">01 / REQUEST</span
+                ><label for="fortune-month">あなたの誕生月</label
+                ><select id="fortune-month" name="month" disabled>
+                  <option value="" selected>月を選択してください</option>
+                  <option value="1">1月</option>
+                  <option value="2">2月</option>
+                  <option value="3">3月</option>
+                  <option value="4">4月</option>
+                  <option value="5">5月</option>
+                  <option value="6">6月</option>
+                  <option value="7">7月</option>
+                  <option value="8">8月</option>
+                  <option value="9">9月</option>
+                  <option value="10">10月</option>
+                  <option value="11">11月</option>
+                  <option value="12">12月</option>
+                </select>
+                <p class="endpoint">
+                  <span>GET</span> <code>fortune-mock/fortune.json</code>
+                </p>
+                <button id="draw-fortune" class="button" type="submit" disabled>
+                  おたよりを受け取る →
+                </button>
+                <p id="fortune-status" role="status" aria-live="polite">
+                  JSONを読み込んでいます…
+                </p>
+                <small
+                  >学習用の架空のおたよりです。誕生月は保存しません。</small
+                >
+              </form>
+              <article class="fortune-result card" aria-live="polite">
+                <div class="fortune-result__head">
+                  <span class="badge">02 / RESPONSE</span
+                  ><span id="fortune-badge">YOUR LETTER</span>
+                </div>
+                <div class="fortune-image-stage">
+                  <img
+                    id="fortune-image"
+                    src="fortune-mock/images/fortune-01-01.png"
+                    width="512"
+                    height="512"
+                    alt="おたよりを届けるマスコット"
+                  />
+                </div>
+                <h4 id="fortune-result-title">どんなおたよりが届くかな？</h4>
+                <p id="fortune-message">
+                  月を選んで、「おたよりを受け取る」を押してみましょう。
+                </p>
+                <small id="fortune-result-id">12 MONTHS × 5 LETTERS</small>
+              </article>
+            </div>
+            <div class="fortune-json">
+              <div>
+                <p class="eyebrow">RESPONSE JSON</p>
+                <p>
+                  画面に表示する文章と画像の情報は、同じデータから取り出します。
+                </p>
+                <a
+                  href="fortune-mock/fortune.json"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >fortune.jsonを直接開く ↗</a
+                >
+              </div>
+              <pre
+                id="fortune-json-output"
+                tabindex="0"
+                aria-label="受け取ったおたよりのJSON"
+              >
+まだおたよりを受け取っていません。</pre>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="json">
+        <div class="wrap">
+          <p class="eyebrow">03 / JSONで中身を見る</p>
+          <h2>届いたのは、<br />完成した画面ではなくデータ。</h2>
+          <div class="two-columns">
+            <div>
+              <p>
+                JSONは、名前と値を組にしてデータを表す書き方です。FORTUNE / API
+                MOCKUPでは、<code>"month"</code>が選んだ月、<code>"message"</code>が文章、<code>"image"</code>が表示する画像の場所を表します。JSONそのものはプログラムではありません。
+              </p>
+              <ol class="instructions">
+                <li>上の体験で誕生月を選び、おたよりを受け取る。</li>
+                <li>表示されたカードと、下に表示されるJSONを見比べる。</li>
+                <li>
+                  <strong>fortune.json</strong
+                  >を直接開き、60件の元データを見る。
+                </li>
+              </ol>
+              <a
+                class="button secondary"
+                href="fortune-mock/fortune.json"
+                target="_blank"
+                rel="noopener noreferrer"
+                >ブラウザでfortune.jsonを開く ↗</a
+              >
+              <p>
+                <small
+                  >新しいタブでJSONそのものを確認できます。画面のデザインと、データの中身は別の役割です。</small
+                >
+              </p>
+            </div>
+            <div>
+              <pre tabindex="0" aria-label="おたよりデータのJSONの例">
+{
+  "month": 5,
+  "id": "05-01",
+  "message": "がんばる日と休む日、どちらも大切にすると調子が整いそうです。",
+  "image": "images/fortune-05-01.png",
+  "alt": "ラベンダー色のクッションを抱くマスコット"
+}</pre>
+              <div class="legend">
+                <span><b>month</b> 選んだ月</span
+                ><span><b>message</b> 表示する文章</span
+                ><span><b>image</b> 表示する画像</span
+                ><span><b>alt</b> 画像の説明</span>
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            このページでは<code>fortune.json</code>を取得しています。Node.jsでサーバーを起動する次の章では、同じようなJSONを「窓口」に応じて返す方法を見ます。
+          </p>
+        </div>
+      </section>
+      <section id="server" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">04 / サーバーの役割</p>
+          <h2>Web APIには、<br /><em>起動しているサーバー</em>が必要。</h2>
+          <p class="intro">
+            Web APIは、サーバー上のデータや機能を使うための窓口です。取得だけでなく、作成・更新・削除も依頼します。<strong>窓口であるURLはAPIエンドポイント</strong>と呼ばれ、お願いに応答するサーバーが起動して初めて動きます。
+          </p>
+          <div class="cards environments">
+            <article class="card">
+              <span class="badge">FILE / サーバーなし</span>
+              <h3>ファイルを直接開く</h3>
+              <picture>
+                <source srcset="assets/file-direct-open.webp" type="image/webp" />
+                <img class="environment-illustration" src="assets/file-direct-open.png" alt="ファイルを直接開くとサーバーのプログラムが起動していないことを表す図" />
+              </picture>
+              <code>file:///…/index.html</code>
+              <p>
+                保存されたHTMLを読む状態。自作APIへのリクエストを受け付けるプログラムは、まだ動いていません。
+              </p>
+              <small
+                >ローカルのHTMLから外部APIを呼べることもあります。外部サーバーは存在し、接続の可否はAPIやブラウザの制限によります。</small
+              >
+            </article>
+            <article class="card">
+              <span class="badge">LOCAL / サーバーあり</span>
+              <h3>自分のPCで起動する</h3>
+              <picture>
+                <source srcset="assets/local-server-program.webp" type="image/webp" />
+                <img class="environment-illustration" src="assets/local-server-program.png" alt="自分のPCでサーバープログラムを起動していることを表す図" />
+              </picture>
+              <code>http://localhost:3000/api/hello</code>
+              <p>
+                Node.jsでサーバーを立ち上げると、自分のPCがお願いを受け付けます。<strong>localhostは、いま操作している端末自身</strong>です。
+              </p>
+              <small
+                >スマホでlocalhostを開いても、PCにはつながりません。まずPC上で試します。</small
+              >
+            </article>
+            <article class="card">
+              <span class="badge">REMOTE / サーバーあり</span>
+              <h3>公開先で動かす</h3>
+              <picture>
+                <source srcset="assets/remote-server-program.webp" type="image/webp" />
+                <img class="environment-illustration" src="assets/remote-server-program.png" alt="公開先のサーバーでプログラムが動いていることを表す図" />
+              </picture>
+              <code>https://example.com/api/hello</code>
+              <p>
+                インターネット上の公開先でサーバーを動かすと、許可された利用者が別の端末から接続できます。
+              </p>
+              <small
+                >このURLは説明用です。公開には配置・HTTPS・必要な認証などの設定が加わります。</small
+              >
+            </article>
+          </div>
+          <p class="note">
+            画面を開く側はローカルのHTMLでもかまいません。一方、APIの向こう側には、応答するサーバーがあります。サーバーそのものは「サーバーとは？」ページで詳しく体験できます。
+          </p>
+        </div>
+      </section>
+      <section id="build">
+        <div class="wrap">
+          <p class="eyebrow">05 / APIを作る実際</p>
+          <h2>APIの作り方</h2>
+          <p>
+            まずは制作の流れを見てください。今、すべてを理解したりインストールしたりする必要はありません。「考えることがいくつもある」と感じられれば、この段階の目的は達成です。<br />ここではnode.jsを使ったローカルサーバーAPIの作り方を見ていきます。
+          </p>
+          <ol class="build-steps">
+            <li>
+              <span>01</span>
+              <div>
+                <h3>Node.jsをインストール</h3>
+                <p>
+                  Node.jsはブラウザの外でJavaScriptを動かす実行環境。公式サイトでOSに合うLTS版を選びます。Windowsならインストーラーを使い、完了後にターミナルを開き直して確認します。
+                </p>
+                <a
+                  href="https://nodejs.org/en/download"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Node.js公式ダウンロード ↗</a
+                >
+                <pre>node --version</pre>
+                <small
+                  >数字のバージョンが表示されれば確認完了。インストール時にOSの確認が出る場合があります。サンプルの起動自体に管理者権限は必要ありません。</small
+                >
+              </div>
+            </li>
+            <li>
+              <span>02</span>
+              <div>
+                <h3>Expressを追加する</h3>
+                <p>
+                  Expressは、URLごとに処理を分けたり、返事を返したりしやすくするNode.js用の小さな道具箱です。まずプロジェクトの情報を作り、Expressを追加します。
+                </p>
+                <pre>npm init -y
+npm install express</pre>
+                <p class="note">
+                  URLで処理を分ける、データをJSONにする、見つからない窓口に404を返す。「ただ文字を表示する」までにも、ルールを決めます。
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>03</span>
+              <div>
+                <h3>JSONを返すサーバーを書く</h3>
+                <p>
+                  <code>server.js</code
+                  >を保存したフォルダでターミナルを開き、次を実行します。
+                </p>
+                <pre>const express = require('express');
+const app = express();
+
+app.get('/api/hello', (req, res) =&gt; {
+  res.json({ message: 'こんにちは、API！' });
+});
+
+app.listen(3000, () =&gt; console.log('http://localhost:3000/api/hello'));</pre>
+                <p>
+                  URLが表示されたら起動中です。ターミナルは開いたままにします。終了は<kbd
+                    >Ctrl</kbd
+                  >
+                  +
+                  <kbd>C</kbd
+                  >。3000番ポートが使用中なら、競合を解消するか別の番号に変更します。
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>04</span>
+              <div>
+                <h3>起動して、エンドポイントに接続する</h3>
+                <pre>node server.js</pre>
+                <p>同じPCのブラウザのアドレス欄に、次を貼り付けます。</p>
+                <pre>http://localhost:3000/api/hello</pre>
+                <p>返ってくるJSON：</p>
+                <pre>{ "message": "こんにちは、API！" }</pre>
+                <small
+                  >サーバーを止めれば接続できなくなります。ファイルが存在するだけでは、APIは応答しません。この例は自分のPCだけで接続できる設定で、インターネットへは公開しません。</small
+                >
+              </div>
+            </li>
+            <li>
+              <span>05</span>
+              <div>
+                <h3>Node.js対応の公開先へデプロイする</h3>
+                <p>
+                  <code>localhost</code>は自分のPCだけで使える住所です。Webアプリとして公開するには、Node.jsを起動し続けられる公開先が必要です。ここでは例として、RenderのWeb ServiceへGitHubのリポジトリを接続します。
+                </p>
+                <p>
+                  まず<code>server.js</code>のポート番号を、公開先が渡す<code>PORT</code>にも対応させます。
+                </p>
+                <pre>const port = process.env.PORT || 3000;
+app.listen(port, '0.0.0.0', () =&gt; console.log('APIを起動しました'));</pre>
+                <ol class="instructions">
+                  <li>作業フォルダーをGitHubのリポジトリへ保存する。</li>
+                  <li>Renderで「New → Web Service」を選び、リポジトリを接続する。</li>
+                  <li>Build Commandに<code>npm install</code>、Start Commandに<code>npm start</code>（または<code>node server.js</code>）を設定する。</li>
+                  <li>デプロイ完了後、表示された公開URLの末尾に<code>/api/hello</code>を付け、JSONが返ることを確認する。</li>
+                </ol>
+                <p>
+                  Renderでは、GitHubに保存した今回のNode.js／Express環境を、ほぼそのままWeb Serviceとして動かせます。ただし無料のWeb Serviceは15分アクセスがないと停止し、次のアクセスでは起動待ちが発生します。教材や個人の試作には便利ですが、常にすぐ応答してほしい本番サービスには向きません。
+                </p>
+                <h4>公開先はRenderだけではありません</h4>
+                <p>「今あるExpressをそのまま動かしたいか」「サーバーレス向けに書き換えてよいか」で選びます。</p>
+                <div class="deploy-table-wrap" role="region" aria-label="Node.jsアプリの公開先の比較" tabindex="0">
+                  <table class="deploy-table">
+                    <thead>
+                      <tr><th>公開先</th><th>個人の無料範囲</th><th>Expressの扱い</th><th>はじめの判断</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Render</th><td>可能（制限あり）</td><td>ほぼそのまま</td><td>今回のような初めてのExpress公開に向く。無料枠は休止・起動待ちあり。</td></tr>
+                      <tr><th>Vercel</th><td>可能（個人・非商用）</td><td>Functions向けに構成する</td><td>フロント画面と小さなAPIを一緒に公開したいとき。</td></tr>
+                      <tr><th>Cloudflare Workers</th><td>可能（制限あり）</td><td>Workers向けに書き換える</td><td>小さく高速なAPI向け。Node.jsサーバーを常駐させる方式とは異なる。</td></tr>
+                      <tr><th>Firebase</th><td>無料利用枠はあるが、FunctionsはBlaze課金プラン登録が必要</td><td>Cloud Functions向けに構成する</td><td>Firestore・認証などFirebaseの機能も使うアプリ向け。</td></tr>
+                      <tr><th>VPS</th><td>通常は有料</td><td>そのまま動かせる</td><td>自由度は高いが、OS更新・HTTPS・セキュリティ対応も自分で行う。</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <small>公開先の設定・無料枠・料金体系は変わることがあります。実際に作成・公開する前に、公式の現在の画面と条件を確認してください。</small>
+              </div>
+            </li>
+          </ol>
+          <div class="callout">
+            <h3>「これは難しい」と感じて大丈夫。</h3>
+            <p>
+              実行環境、コード、起動、URL、エラー対応。初めてなら知らないことが続きます。まず覚えたいのは、<strong>「サーバーを起動して、窓口へお願いすると、データが返る」</strong>という関係です。
+            </p>
+            <button class="button" type="button" data-open-lab>
+              インストールせず、流れだけ練習する
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="ai" class="tinted">
+        <div class="wrap">
+          <p class="eyebrow">06 / AIと一緒に作る</p>
+          <h2>手順とコードは、<br />AIと一緒に進められる。</h2>
+          <p class="intro">
+            AIエージェントは、APIのコード作成や起動の確認、エラーの原因調べを支援できます。あなたは<strong>何を渡して、何を受け取りたいか</strong>を決める。作業を小さく区切れば、全部を一度に理解する必要はありません。
+          </p>
+          <div class="two-columns">
+            <div>
+              <h3>作りたいAPIを書いて、依頼文を作ろう。</h3>
+              <p>
+                APIを作って、Renderで公開するところまでをAIに伴走してもらう依頼文です。下の欄に書いた内容が、依頼文に入ります。
+              </p>
+              <form id="prompt-form" class="prompt-form" autocomplete="off">
+                <p class="prompt-form__free">
+                  <strong>思いつかなければ、空欄のままで大丈夫。</strong>その場合は、あいさつを返すサンプルのAPIを作る依頼になります。
+                </p>
+                <label for="pf-what">どんなAPIを作りたい？</label>
+                <input id="pf-what" type="text" maxlength="120" data-fill-for="what" placeholder="例：今日のおすすめ本を1冊返すAPI" />
+                <label for="pf-in">APIに送るもの（あれば）</label>
+                <input id="pf-in" type="text" maxlength="120" data-fill-for="in" placeholder="例：本のジャンル" />
+                <label for="pf-out">返してほしいもの</label>
+                <input id="pf-out" type="text" maxlength="120" data-fill-for="out" placeholder="例：タイトルとひとことコメント" />
+              </form>
+              <p>
+                インストールや公開など環境を変える作業は、内容を説明してもらってから進めましょう。GitHubやRenderのアカウント作成とログインは、自分の手で行います。APIキーやパスワードをAIに渡す必要はありません。
+              </p>
+              <p>
+                利用するAIの権限や環境によって、実行できる作業は変わります。
+              </p>
+              <a href="../steplock-prompt/index.html" class="text-link"
+                >ステップロック方式で一段ずつ進める →</a
+              >
+            </div>
+            <div>
+              <pre id="ai-prompt" tabindex="0">
+Node.js と Express で Web API を作り、Render で公開するところまで、
+となりで伴走するように手伝ってください。
+私はプログラミング初心者です。
+
+## 作りたいAPI
+・どんなAPIか：<span data-fill="what">（おまかせ）</span>
+・APIに送るもの：<span data-fill="in">（おまかせ）</span>
+・返してほしいもの：<span data-fill="out">（おまかせ）</span>
+※「（おまかせ）」の項目は、あなたが決めてください。
+　3つとも「（おまかせ）」なら、下のサンプルを作ってください。
+
+## サンプル（3つとも「（おまかせ）」のときに作るもの）
+GET /api/hello に接続すると、
+{"message":"こんにちは、API！"} を返す。
+存在しない窓口には、404 と JSON のエラーを返す。
+
+## 進め方
+1. 最初に、作るものと全体の手順を短く示す。
+2. 1回の返信で進めるのは1ステップだけ。
+   私が「できた」と返したら、次へ進む。
+3. コマンドやコードには、何をするものかを一言添える。
+4. インストール、アカウント作成、公開など環境を変える作業は、
+   先に内容を説明して、私の了承を待つ。
+5. エラーが出たら、表示された文を私がそのまま貼る。
+   原因と直し方を、初心者向けに説明する。
+
+## 手順の範囲
+Node.js の確認 → フォルダー作成 → npm init と Express の導入
+→ コード作成 → 自分のPCで起動して確認
+→ .gitignore の作成と GitHub への保存
+→ Render の Web Service で公開 → 公開URLで確認
+
+## 守ってほしいこと
+・Render は無料（Free）の範囲で使う。料金がかかる設定は選ばない。
+・APIキーやパスワードなどの秘密は、コードや GitHub に書かない。
+・ポート番号は process.env.PORT に対応させる。
+・node_modules は GitHub に送らない。
+
+## 完成の基準
+自分のPCと Render の公開URLの両方で、期待した JSON が返る。
+起動・停止の方法と、各手順の意味を、私が説明できる。
+
+まず、私の環境（Windows か Mac か、Node.js と Git が入っているか）を
+質問するところから始めてください。</pre>
+              <button id="copy-prompt" class="button secondary" type="button">
+                この依頼文をコピー
+              </button>
+              <p id="copy-status" role="status"></p>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>次は、Googleサービスをつなぐ。</h3>
+            <p>
+              11では、スプレッドシートからGoogleカレンダーへ。今回学んだ「お願いを送る・データが返る」を、身近なサービスの連携へつなげます。
+            </p>
+            <small>11の教材は準備中です。</small>
+          </div>
+        </div>
+      </section>
+      <section id="use-api">
+        <div class="wrap">
+          <p class="eyebrow">07 / 外部APIを使う</p>
+          <h2>だれかが用意した機能を、<br /><em>自分のアプリにつなぐ。</em></h2>
+          <p class="intro">
+            APIを作るだけでなく、すでに公開されているAPIへお願いして、データや機能を自分の画面に組み込めます。最初は<strong>何を送り、何が返り、どこに表示するか</strong>を三つに分けて考えます。
+          </p>
+          <p class="note api-use-note"><strong>外部APIには費用と利用条件があります。</strong>無料で試せるものでも、回数制限・表示義務・将来の料金改定があります。使う前に必ず公式の料金と利用規約を確認し、課金が必要なAPIは予算と上限を決めましょう。</p>
+          <ol class="api-use-flow" aria-label="外部APIをアプリに使う基本の流れ">
+            <li><b>1</b><span>APIの説明書を読む</span><small>URL・送る値・返り方・利用条件を確認</small></li>
+            <li><b>2</b><span>お願いを送る</span><small><code>fetch()</code> でリクエストする</small></li>
+            <li><b>3</b><span>返り値を表示する</span><small>JSONや画像URLを画面の部品へ渡す</small></li>
+          </ol>
+          <div class="api-use-grid">
+            <article class="api-use-card">
+              <span class="badge">JSON / 文章</span>
+              <h3>名言を表示するAPI</h3>
+              <p>たとえばZenQuotesは、名言と著者名をJSONで返します。スタート画面や「今日のひとこと」に使えます。</p>
+              <pre><code>const res = await fetch(
+  'https://zenquotes.io/api/random'
+);
+const [quote] = await res.json();
+message.textContent = quote.q;
+author.textContent = quote.a;</code></pre>
+              <small>返る例：<code>{ q: "名言", a: "著者" }</code></small>
+              <p class="api-use-cost api-use-cost--free"><strong>費用の目安：無料で試せます。</strong>無料版はIPごとに30秒5回までで、ZenQuotesへのリンク表示が必要です。制限を超える使い方や一部機能は、公式のAPIキー・契約条件を確認します。</p>
+              <a class="text-link" href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotesの説明書を読む ↗</a>
+            </article>
+            <article class="api-use-card">
+              <span class="badge">画像 / URL</span>
+              <h3>QRコードを作るAPI</h3>
+              <p>QR Code APIは、文字やURLを渡すとQRコード画像を返します。イベント案内や共有ボタンに向いています。</p>
+              <pre><code>const text = encodeURIComponent(
+  'https://example.com/event'
+);
+qrImage.src =
+  'https://api.qrserver.com/v1/create-qr-code/' +
+  '?size=180x180&data=' + text;</code></pre>
+              <small>返るもの：JSONではなく、画像として使えるURL</small>
+              <p class="api-use-cost api-use-cost--check"><strong>費用の目安：公開ドキュメントに料金表の記載はありません。</strong>キーなしで試せますが、乱用は拒否される場合があり、1日1万回を超える定常利用は事前連絡が必要です。商用・大量利用前は利用条件を確認します。</p>
+              <a class="text-link" href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code APIの説明書を読む ↗</a>
+            </article>
+            <article class="api-use-card api-use-card--ai">
+              <span class="badge">AI / 秘密の鍵が必要</span>
+              <h3>AIに文章を考えてもらうAPI</h3>
+              <p>AI APIへ質問を送り、返ってきた文章を表示します。APIキーはブラウザへ置かず、自分のNode.jsサーバーにだけ保管します。</p>
+              <pre><code>// server.js 側だけに書く
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+const result = await client.responses.create({
+  model: '...', input: question
+});</code></pre>
+              <small>画面 → 自分のサーバー → AI API → 自分のサーバー → 画面</small>
+              <p class="api-use-cost api-use-cost--paid"><strong>費用の目安：原則、従量課金です。</strong>Responses APIそのものの追加料金ではなく、選んだモデルの入力・出力トークン量に応じて料金が発生します。API用の課金設定と使用量上限を先に確認します。</p>
+              <a class="text-link" href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">Responses APIの説明書を読む ↗</a>
+            </article>
+          </div>
+          <div class="callout api-use-callout">
+            <h3>最初の一歩は、外部APIを一つだけ表示すること。</h3>
+            <p>
+              最初からログインやデータベースを足す必要はありません。名言を1件表示する、入力したURLをQRコードにする、という小さな成功から始めます。APIキーが必要なサービスは、<strong>キーをHTMLやブラウザのJavaScriptへ書かず、自分のサーバー経由にする</strong>ことが大切です。
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="sources">
+        <div class="wrap">
+          <h2>出典・確認日</h2>
+          <p>公式資料を確認：2026年10月5日</p>
+          <ul>
+            <li>
+              <a
+                href="https://nodejs.org/en/download"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Node.js：公式ダウンロード</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://nodejs.org/en/learn/getting-started/introduction-to-nodejs"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Node.js：実行環境とHTTPサーバーの作成</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview"
+                target="_blank"
+                rel="noopener noreferrer"
+                >MDN：クライアントとサーバーのやり取り</a
+              >
+            </li>
+          </ul>
+          <p>RenderのNode.js公開手順を確認：2026年10月10日</p>
+          <ul>
+            <li>
+              <a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener noreferrer">Render：Node.js／Expressアプリを公開する ↗</a>
+            </li>
+            <li>
+              <a href="https://render.com/docs/web-services" target="_blank" rel="noopener noreferrer">Render：Web Serviceの公開ポートとURL ↗</a>
+            </li>
+            <li>
+              <a href="https://render.com/docs/free" target="_blank" rel="noopener noreferrer">Render：無料Web Serviceの休止・利用制限 ↗</a>
+            </li>
+          </ul>
+          <p>ほかの公開先の条件を確認：2026年10月10日</p>
+          <ul>
+            <li><a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener noreferrer">Vercel：Hobbyプラン（個人・非商用）↗</a></li>
+            <li><a href="https://vercel.com/docs/functions/runtimes/node-js" target="_blank" rel="noopener noreferrer">Vercel：Node.js Functions ↗</a></li>
+            <li><a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare：Workers Freeの利用枠 ↗</a></li>
+            <li><a href="https://firebase.google.com/docs/functions/quotas" target="_blank" rel="noopener noreferrer">Firebase：Cloud FunctionsとBlazeプラン ↗</a></li>
+          </ul>
+          <p>外部APIの使い方・費用条件を確認：2026年10月10日</p>
+          <ul>
+            <li><a href="https://docs.zenquotes.io/zenquotes-documentation/" target="_blank" rel="noopener noreferrer">ZenQuotes：JSONで名言を受け取るAPI ↗</a></li>
+            <li><a href="https://goqr.me/api/doc/create-qr-code/" target="_blank" rel="noopener noreferrer">QR Code API：文字列からQRコード画像を作る ↗</a></li>
+            <li><a href="https://developers.openai.com/api/reference/responses/overview" target="_blank" rel="noopener noreferrer">OpenAI：Responses APIの概要 ↗</a></li>
+            <li><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener noreferrer">OpenAI：API料金（モデルごとのトークン課金）↗</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <footer class="guide-footer">
+      <div class="wrap footer-content">
+        <a class="portal-return" href="../index.html">ポータルへ戻る</a>
+        <nav class="page-pagination" aria-label="学習ページの移動"><a href="../server/index.html" rel="prev"><small>前のページ</small><strong>← サーバーとは？</strong></a><a href="../gas/index.html" rel="next"><small>次のページ</small><strong>GASでGoogleサービスをつなぐ →</strong></a></nav>
+        <div class="site-copyright">
+          <span>Copyright &copy; 2026 Flashmelody Katsuyori M</span
+          ><img
+            class="site-copyright__logo"
+            src="../assets/maishilogo_white_outlined.svg"
+            alt="FlashMelody"
+          />
+        </div>
+      </div>
+    </footer>
+    <dialog id="fortune-delivery" aria-labelledby="fortune-delivery-title">
+      <div class="fortune-delivery__content">
+        <img
+          id="fortune-delivery-gif"
+          src="assets/fortune-delivery/get-message.gif"
+              width="463"
+              height="356"
+          alt="紙飛行機がおたよりをメールボックスへ届けるアニメーション"
+        />
+        <p id="fortune-delivery-title" aria-live="polite">
+          おたよりを配達しています…
+        </p>
+      </div>
+    </dialog>
+    <div class="api-lab-dock">
+      <button type="button" data-open-lab>
+        APIづくりを練習する <span>インストール不要のシミュレーター</span>
+      </button>
+    </div>
+    <button id="toTop" type="button" aria-label="ページの先頭へ戻る">↑</button>
+    <dialog id="api-lab" aria-labelledby="lab-title">
+      <div class="lab-head">
+        <h2 id="lab-title">APIづくりの練習</h2>
+        <button id="close-lab" type="button" aria-label="練習を閉じる">
+          閉じる ×
+        </button>
+      </div>
+      <div class="lab-content">
+        <div class="note lab-notice">
+          <p>
+            <strong>学習用の再現です。</strong>実際のダウンロード、インストール、ファイル作成、コマンド実行、サーバー起動、通信、アカウント操作は行いません。赤枠の場所を順に押すと、画面がどう変わるかを見られます。
+          </p>
+          <p>
+            <strong>本物とは見た目が違うところがあります。</strong>練習用に簡略化しているため、画面のデザイン・文言・手順の細かい部分は、実際の Node.js・VS Code・ブラウザー・Render などと異なります。実際に操作するときは、本物の画面の表示を確認しながら進めてください。
+          </p>
+        </div>
+        <ol id="lab-chapters" class="lab-chapters" aria-label="練習の章"></ol>
+        <div class="lab-status">
+          <p id="lab-progress"></p>
+          <h3 id="lab-task"></h3>
+          <p id="lab-hint" class="lab-hint"></p>
+          <div id="lab-about" class="lab-about" hidden>
+            <p class="lab-about__tag">ことばメモ</p>
+            <dl id="lab-about-list"></dl>
+          </div>
+        </div>
+        <div class="lab-stage-wrap">
+          <div id="lab-stage" class="lab-stage" aria-label="パソコン画面の学習用再現"></div>
+          <p id="lab-guide" class="guide-label" hidden></p>
+          <div id="lab-keytoast" class="lab-keytoast" hidden aria-hidden="true"></div>
+        </div>
+        <p id="lab-explanation" role="status"></p>
+        <div class="lab-foot">
+          <button id="reset-lab" type="button" class="button secondary">
+            最初から練習する
+          </button>
+          <label class="lab-speed"><input id="lab-fast" type="checkbox" /> アニメーションを速くする</label>
+        </div>
+        <details class="lab-sources">
+          <summary>再現した画面の出典・確認日（2026年10月10日）</summary>
+          <ul>
+            <li><a href="https://nodejs.org/ja/download" target="_blank" rel="noopener noreferrer">Node.js：ダウンロードページ ↗</a>（LTS は v24.21.0、npm 11.19.0）。インストーラーは、Windows 用セットアップ ウィザード（Node.js Setup）の実際の各ページをもとに再現しています。ロゴは実物の絵柄ではなく、文字と図形で組んだ目印です。</li>
+            <li>VS Code の文言は、VS Code と日本語言語パックの表示に合わせています。「ようこそ」タブと、Windows の「フォルダーを開く」ダイアログは、実際の画面をもとに再現しています（フォルダー名や履歴は架空です）。<a href="https://code.visualstudio.com/docs/editing/workspaces/workspace-trust" target="_blank" rel="noopener noreferrer">VS Code：ワークスペースの信頼 ↗</a></li>
+            <li><a href="https://docs.npmjs.com/cli/commands/npm-init" target="_blank" rel="noopener noreferrer">npm：npm init ↗</a>・<a href="https://docs.npmjs.com/cli/commands/npm-install" target="_blank" rel="noopener noreferrer">npm install ↗</a>・<a href="https://docs.npmjs.com/cli/commands/npm-run" target="_blank" rel="noopener noreferrer">npm run ↗</a>。出力は実際に実行した結果をもとにした例で、パッケージ数やバージョンは時期や環境で変わります（Express 5.3.0）。</li>
+            <li><a href="https://cli.github.com/manual/gh_repo_create" target="_blank" rel="noopener noreferrer">GitHub CLI：gh repo create ↗</a></li>
+            <li><a href="https://render.com/docs/web-services" target="_blank" rel="noopener noreferrer">Render：Web Service の作成手順・PORT・公開URL ↗</a>・<a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener noreferrer">Node.js／Express アプリの公開 ↗</a>。公式サイト、ログイン、ダッシュボード、New Web Service の設定、デプロイのログは、2026年10月10日時点の実際の画面をもとに再現しています。アカウント名・リポジトリ名・公開URLは架空で、GitHub 連携の許可画面は簡略化しています。画面や料金プランは変わることがあります。</li>
+          </ul>
+        </details>
+      </div>
+    </dialog>
+  </body>
+</html>

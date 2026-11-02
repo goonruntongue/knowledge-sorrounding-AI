@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Oswald:wght@200;300;400;500;600;700&display=swap&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="image/favicon.ico">
+    <title>HTML/CSS/JSすべて使ったページ</title>
+    <style>
+        .all {
+            clip-path: circle(0 at 50% 0);
+            animation: reveal 10s forwards 0s ease-in-out;
+        }
+        
+        @keyframes reveal {
+            0% {
+                clip-path: circle(0 at 50% 0);
+            }
+            10% {
+                clip-path: circle(10% at 50% 0);
+            }
+            11% {
+                clip-path: circle(10% at 50% 0);
+            }
+            100% {
+                clip-path: circle(1000% at 50% 0);
+            }
+        }
+    </style>
+
+    <body class="all">
+        <span id="anchor_top"></span>
+        <div id="ham">
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mainwrap">
+            <header>
+                <div class="container flex-row-space-between-center">
+                    <img class="logo" src="image/logo.svg" alt="">
+                    <nav class="flex-center">
+                        <ul class="flex-row-space-between-center">
+                            <li>
+                                <a href="#HTML_section">HTMLって？</a>
+                            </li>
+                            <li>
+                                <a href="#CSS_section">CSSって？</a>
+                            </li>
+                            <li>
+                                <a href="#JS_section">Javascriptって？</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <article>
+                <div class="container first-view-wrap">
+                    <!-- prepare clipping path -->
+                    <svg class="forClip" xmlns="http://www.w3.org/2000/svg" height="0" width="0">
+                        <clipPath id="cp01">
+                            <path d="M1263,172.31c78,101.55-9.45,320.09-45.33,442.8C1185,726.93,999.18,751.22,925,746.75s-165.5-22.51-269.88,32.84c-102.51,54.35-181.85,54.81-284.19-.34C253.76,716.14,50.71,684.64,10.83,531c-31.9-122.9,11.74-260.62,90.36-360C177.72,74.19,305.11,42.69,423.76,8.85,536-23.14,604.14,50,718.74,72.5,843.92,97.09,1185.24,71,1263,172.31Z" fill="#545454">
+                            <animate repeatCount="indefinite" dur="7s" attributeName="d" values="
+    M1263,172.31c78,101.55-9.45,320.09-45.33,442.8C1185,726.93,999.18,751.22,925,746.75s-165.5-22.51-269.88,32.84c-102.51,54.35-181.85,54.81-284.19-.34C253.76,716.14,50.71,684.64,10.83,531c-31.9-122.9,11.74-260.62,90.36-360C177.72,74.19,305.11,42.69,423.76,8.85,536-23.14,604.14,50,718.74,72.5,843.92,97.09,1185.24,71,1263,172.31Z;
+    M1263,172.31c78,101.55,13.56,384-22.32,506.69C1208,790.82,978,825,903.76,820.48s-123.88-70.73-253.64-68c-116,2.4-369.78,76.75-472.12,21.6C60.88,710.92,50.71,684.64,10.83,531c-31.9-122.9,11.74-260.62,90.36-360C177.72,74.19,223,66.36,341.67,32.52,453.88.53,724.36,21.44,839,44,964.14,68.55,1185.24,71,1263,172.31Z;
+    M1227.76,186.52c78,101.54,40.57,364.08-36.18,455.72-74.8,89.32-192.4,109-266.63,104.51s-165.5-22.51-269.88,32.84c-102.51,54.35-181.85,54.81-284.19-.34C253.76,716.14,18.16,739.48,74.32,527.8,106.88,405.06,22.57,270.36,101.19,171,177.72,74.19,284,121,402.64,87.16c112.2-32,319.54-73.08,436.32-71C987.68,18.77,1150,85.24,1227.76,186.52Z;
+    M1263,172.31c78,101.55-9.45,320.09-45.33,442.8-32.7,111.82-107.21,182-181.45,177.55S804.4,808.05,655.07,779.59c-114-21.73-335.85,75.22-438.19,20.07C99.76,736.54,50.71,684.64,10.83,531c-31.9-122.9,11.74-260.62,90.36-360,76.53-96.76,105-67.24,223.69-101.07,112.2-32,410.4-69,540-69C992.46.88,1185.24,71,1263,172.31Z;
+    M1188.88,82.84c94.66,86.24,154.62,560.6,43.2,661-86.57,78-189.29,60.62-263.52,56.16s-209.11-75.72-313.49-20.37c-118.51,45-453.54,40.24-537.55-40.11C18.16,644.44,7.91,588.07.31,432.76-5.91,305.93,13,225.44,91.6,126,168.13,29.27,305.11,42.69,423.76,8.85,536-23.14,604.14,50,718.74,72.5,843.92,97.09,994.48-94.28,1188.88,82.84Z;
+    M1263,172.31c78,101.55-9.45,320.09-45.33,442.8C1185,726.93,999.18,751.22,925,746.75s-165.5-22.51-269.88,32.84c-102.51,54.35-181.85,54.81-284.19-.34C253.76,716.14,50.71,684.64,10.83,531c-31.9-122.9,11.74-260.62,90.36-360C177.72,74.19,305.11,42.69,423.76,8.85,536-23.14,604.14,50,718.74,72.5,843.92,97.09,1185.24,71,1263,172.31Z
+"/></path>
+                        </clipPath>
+                    </svg>
+                    <!-- do clip -->
+                    <div class="first-view">
+                        <svg width="100%" height="100%" viewBox="0 0 1295 821" id="slide">
+                            <image xlink:href="image/cat_pc.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" clip-path="url(#cp01)"/>
+                            <image xlink:href="image/dog_pc.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" clip-path="url(#cp01)"/>
+                        </svg>
+                        <h1 class="catch">
+                            <span class="title">Coding is modern Magic.</span>
+                            <span class="sub-title">AIがゼロイチを作る時代でも、100にするのは人間だ。</span>
+                        </h1>
+                    </div>
+                </div>
+                <section id="sec1">
+                    <div class="container">
+                        <div class="inner-left-col content">
+                            <h2 id="HTML_section">HTML<span>って…？</span></h2>
+                            <p>HTMLとは、ハイパーテキストマークアップランゲージ(Hyper Text Markup Language)のこと。 <span class="emp">ページの構造</span>のみを記述する特殊な文字（ハイパーテキスト）を書いた文書ファイルです。
+                            </p>
+                            <p>普通の文書との大きな違いは、「ハイパーリンク」と呼ばれる仕組みを任意の箇所に付けてクリックによってほかの場所にジャンプできることでしょう。</p>
+                            <p>ワードで例えるなら、ただ文字を打ったり画像を貼り付けたりしただけのもの。 HTMLだけでは、綺麗な見た目は整わない。 だけどHTMLが書けなければホームページは始まらない。 一番基本で無くてはならない必需品なのです。
+
+                            </p>
+                        </div>
+                        <div class="inner-right-col">
+                            <img id="dog" src="image/dog_section_bottom.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section id="sec2">
+                    <div class="container">
+                        <div class="inner-right-col content">
+                            <h2 id="CSS_section">CSS<span>って…？</span></h2>
+                            <p>CSSとは、カスケーディングスタイルシート(Cascading Style Sheet)。 ページのスタイルを決めるコードを数珠繋ぎに記した文書ファイルです（カスケードとは「どんどん繋ぐ/数珠繋ぎ」という意味）。
+                            </p>
+                            <p>ワードで例えるなら<span class="emp">「書式」設定</span>。太字とか、揃えとか、色とか。 これがあって初めてWebページはデザインが整ってきます。最近ではページの幅に応じて見た目を変えることやカンタンな動きもつけられます。 Webデザイナーの腕の見せどころ。それがCSSなんです。
+
+                            </p>
+                        </div>
+                        <div class="inner-left-col">
+                            <img id="cat" src="image/cat_section_bottom.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section id="sec3">
+                    <div class="container">
+                        <div class="inner-left-col content">
+                            <h2 id="JS_section">Javascript<span>って…？</span></h2>
+                            <p>Javascriptとは動きの台本のこと。<span class="emp">Webページに動き</span>をつけてくれます。</p>
+                            <p>メニューがスルスル出てきたり、画像がポップアップしたり。 スマートフォンだと小さい画面でも、動きをうまく使うことで大事な情報をすっきり表示することが出来ます。 色んな動きをつけられるJavascript、最初に学ぶプログラムとしてもおススメです。ここ最近ではjavascript一本だけで本格的にアプリが作れてしまいます。
+                            </p>
+                        </div>
+                        <div class="inner-right-col">
+                            <img id="dogncat" src="image/dogcat_section_bottom.png" alt="">
+                        </div>
+                    </div>
+                </section>
+            </article>
+            <footer>
+                <div class="container">
+                    <p>fin</p>
+                </div>
+            </footer>
+            <div class="modal">
+                <p>
+                    右のボタンでそれぞれの表示を切り替えられます
+                    <br> （
+                    <span class="v_in_h">E</span>
+                    <span class="v_in_h">S</span>
+                    <span class="v_in_h">C</span> キーで表示・非表示）
+
+
+
+
+
+
+
+
+                </p>
+                <div class="modal-inner-flex">
+                    <button type="button" id="toHTML">HTMLのみ</button>
+                    <button type="button" id="toCSS">HTML+CSS</button>
+                    <span>
+                        <button class="now" type="button" id="toJavascript">
+                            HTML+CSS<br>+JavaScript
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="sidebar1 sidebar">
+                <div class="marquee">
+                    <span>指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;</span>
+                    <span>指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;</span>
+                </div>
+            </div>
+
+            <div class="sidebar2 sidebar">
+                <div class="marquee">
+                    <span>Create World at your fingertips!&nbsp;&nbsp;Create World at your fingertips!&nbsp;&nbsp;Create World at your fingertips!&nbsp;&nbsp;</span>
+                    <span>Create World at your fingertips!&nbsp;&nbsp;Create World at your fingertips!&nbsp;&nbsp;Create World at your fingertips!&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <style>
+                .sidebar1.sidebar {
+                    position: fixed;
+                    top: 100vh;
+                    left: 0;
+                    background: #535353;
+                    color: #fff;
+                    transform: rotate(270deg);
+                    transform-origin: left top;
+                    width: 120vh;
+                    padding: 0.5em 0;
+                }
+                
+                .sidebar2.sidebar {
+                    position: fixed;
+                    top: 100vh;
+                    right: 0;
+                    background: #535353;
+                    color: #fff;
+                    transform: rotate(90deg);
+                    transform-origin: right top;
+                    width: 100vh;
+                    padding: 0.5em 0;
+                }
+                
+                .sidebar {
+                    overflow: hidden;
+                }
+                
+                .marquee {
+                    display: flex;
+                    width: max-content;
+                    animation: marqueeMove 12s linear infinite;
+                }
+                
+                .marquee span {
+                    flex: 0 0 auto;
+                    border: 1px dashed #fff;
+                    border-color: #fff transparent;
+                    padding: 0.5em 1em;
+                    white-space: nowrap;
+                }
+                
+                @keyframes marqueeMove {
+                    0% {
+                        transform: translateX(0);
+                    }
+                    100% {
+                        transform: translateX(-50%);
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .sidebar {
+                        display: none;
+                    }
+                }
+            </style>
+            <script src="js/jquery.js"></script>
+            <script src="js/inview.js"></script>
+            <script src="js/routing.js"></script>
+            <!-- <script src="js/easeScroll.js"></script> -->
+            <script src="js/script.js"></script>
+    </body>
+
+</html>

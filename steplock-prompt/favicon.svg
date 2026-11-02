@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">STEP LOCK</title>
+  <desc id="desc">Three progressive steps leading to a lock</desc>
+  <defs>
+    <linearGradient id="surface" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fafdff"/><stop offset="1" stop-color="#dbe8f6"/></linearGradient>
+    <linearGradient id="coral" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9b9e"/><stop offset="1" stop-color="#ff7076"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="#eaf2fc"/>
+  <rect x="22" y="22" width="468" height="468" rx="88" fill="url(#surface)" stroke="#f8fbff" stroke-width="10"/>
+  <path d="M104 372h96v-58h72v-58h72v-58h64v174z" fill="#c5d5e6" opacity=".92"/>
+  <path d="M96 354h96v-58h72v-58h72v-58h64v174H96z" fill="url(#coral)"/>
+  <path d="M96 354h304" stroke="#d75860" stroke-width="12" stroke-linecap="round"/>
+  <path d="M102 347h84v-51h72v-58h72v-58h64" fill="none" stroke="#ffd7d8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+  <rect x="314" y="94" width="116" height="116" rx="22" fill="#fafdff" stroke="#c7d8e8" stroke-width="8"/>
+  <path d="M343 145v-15c0-39 58-39 58 0v15" fill="none" stroke="#60708b" stroke-width="14" stroke-linecap="round"/>
+  <rect x="331" y="142" width="82" height="53" rx="11" fill="#ff777c"/>
+  <circle cx="372" cy="166" r="8" fill="#fff5f5"/>
+  <path d="M372 174v10" stroke="#fff5f5" stroke-width="7" stroke-linecap="round"/>
+</svg>

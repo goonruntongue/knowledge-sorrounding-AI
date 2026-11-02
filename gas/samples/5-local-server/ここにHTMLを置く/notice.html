@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>お知らせ一覧</title>
+    <style>
+      body { margin: 0; padding: 24px; background: #f4f8f5; color: #1d3328; font-family: sans-serif; line-height: 1.7; }
+      main { max-width: 640px; margin: auto; }
+      h1 { font-size: 1.5rem; }
+      ul { padding: 0; list-style: none; }
+      li { margin-bottom: 12px; padding: 14px 16px; border: 1px solid #cfe3d6; border-radius: 12px; background: #fff; }
+      time { color: #2f8a5b; font-size: .85rem; font-weight: bold; }
+      h2 { margin: 4px 0; font-size: 1.05rem; }
+      p { margin: 0; }
+      .status { color: #6a7f73; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>お知らせ</h1>
+      <p class="status" id="status">読み込んでいます…</p>
+      <ul id="list"></ul>
+    </main>
+    <script>
+      // デプロイしたときに表示された「ウェブアプリ URL」（/exec で終わる）を入れる
+      const API_URL = '';
+
+      const statusEl = document.getElementById('status');
+      const listEl = document.getElementById('list');
+
+      async function load() {
+        if (!API_URL) {
+          statusEl.textContent = 'API_URL に、ウェブアプリの URL を入れてください。';
+          return;
+        }
+        try {
+          const res = await fetch(API_URL);
+          const data = await res.json();
+          statusEl.textContent = data.items.length ? '' : 'お知らせはまだありません。';
+          data.items.forEach((item) => {
+            const li = document.createElement('li');
+            const time = document.createElement('time');
+            const h2 = document.createElement('h2');
+            const p = document.createElement('p');
+            time.textContent = item.date;
+            h2.textContent = item.title;
+            p.textContent = item.body;
+            li.append(time, h2, p);
+            listEl.append(li);
+          });
+        } catch (error) {
+          statusEl.textContent = '読み込めませんでした。URL と公開の設定を確かめてください。';
+        }
+      }
+
+      load();
+    </script>
+  </body>
+</html>

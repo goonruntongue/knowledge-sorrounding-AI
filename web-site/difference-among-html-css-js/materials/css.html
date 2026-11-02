@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Oswald:wght@200;300;400;500;600;700&display=swap&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="image/favicon.ico">
+    <title>HTMLとCSSでできたページ</title>
+    <style>
+        .content {
+            opacity: 1;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .logo {
+                position: relative;
+                /* left: 50%; */
+                /* transform: translateX(-50%); */
+                width: 80% !important;
+                top: 24px !important;
+            }
+            header nav ul {
+                display: flex;
+                flex-direction: column;
+                display: none !important;
+            }
+            div#ham {
+                position: fixed;
+                right: 20px;
+                top: 20px;
+                height: 50px;
+                width: 50px;
+                /* border: 1px solid #000; */
+                z-index: 12;
+                cursor: pointer;
+            }
+            div#ham.open {
+                border-color: #fff;
+            }
+            div#ham span {
+                background: #000;
+                height: 4px;
+                width: 30px;
+                display: block;
+                position: absolute;
+                left: 10px;
+                border-radius: 4px;
+                transition: transform 0.5s;
+            }
+            div#ham.open span {
+                background-color: #fff;
+            }
+            div#ham span:last-of-type {
+                top: 30px;
+            }
+            div#ham span:first-of-type {
+                top: 20px;
+            }
+            div#ham.open span:first-of-type {
+                transform: rotate(135deg);
+                top: 25px;
+            }
+            div#ham.open span:last-of-type {
+                transform: rotate(-135deg);
+                top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ham">
+        <span></span>
+        <span></span>
+    </div>
+    <div class="mainwrap">
+        <header>
+            <div class="container flex-row-space-between-center">
+                <img class="logo" src="image/logo.svg" alt="">
+                <nav class="flex-center">
+                    <ul class="flex-row-space-between-center">
+                        <li>
+                            <a href="#HTML_section">HTMLって？</a>
+                        </li>
+                        <li>
+                            <a href="#CSS_section">CSSって？</a>
+                        </li>
+                        <li>
+                            <a href="#JS_section">Javascriptって？</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <article>
+            <div class="container first-view-wrap">
+                <!-- prepare clipping path -->
+                <svg class="forClip" xmlns="http://www.w3.org/2000/svg" height="0" width="0">
+                    <clipPath id="cp01">
+                        <path d="M1263.04 172.308C1341.05 273.856 1253.59 492.4 1217.71 615.112C1185.01 726.933 999.184 751.218 924.95 746.749C850.716 742.28 759.448 724.241 655.07 779.586C552.562 833.939 473.221 834.404 370.884 779.254C253.763 716.137 50.7051 684.637 10.826 530.984C-21.0732 408.077 22.5748 270.356 101.191 170.951C177.717 74.1898 305.108 42.6855 423.763 8.85293C535.966 -23.1397 604.136 49.991 718.74 72.5039C843.924 97.0949 1185.24 71.0284 1263.04 172.308Z" fill="#545454"/>
+                    </clipPath>
+                </svg>
+                <!-- do clip -->
+                <div class="first-view">
+                    <svg width="100%" height="100%" viewBox="0 0 1295 821" id="slide">
+                        <image xlink:href="image/cat_pc.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" clip-path="url(#cp01)"/>
+                        <image xlink:href="image/dog_pc.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" clip-path="url(#cp01)"/>
+                    </svg>
+                    <h1 class="catch">
+                        <span class="title">Coding is modern Magic.</span>
+                        <span class="sub-title">AIがゼロイチを作る時代でも、100にするのは人間だ。</span>
+                    </h1>
+                </div>
+            </div>
+            <span id="HTML_section"></span>
+            <section id="sec1">
+                <div class="container">
+                    <div class="inner-left-col content">
+                        <h2>HTML<span>って…？</span></h2>
+                        <p>HTMLとは、ハイパーテキストマークアップランゲージ(Hyper Text Markup Language)のこと。 <span class="emp view">ページの構造</span>のみを記述する特殊な文字（ハイパーテキスト）を書いた文書ファイルです。
+                        </p>
+                        <p>普通の文書との大きな違いは、「ハイパーリンク」と呼ばれる仕組みを任意の箇所に付けてクリックによってほかの場所にジャンプできることでしょう。</p>
+                        <p>ワードで例えるなら、ただ文字を打ったり画像を貼り付けたりしただけのもの。 HTMLだけでは、綺麗な見た目は整わない。 だけどHTMLが書けなければホームページは始まらない。 一番基本で無くてはならない必需品なのです。
+
+                        </p>
+                    </div>
+                    <div class="inner-right-col">
+                        <img id="dog" src="image/dog_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <span id="CSS_section"></span>
+            <section id="sec2">
+                <div class="container">
+                    <div class="inner-right-col content">
+                        <h2>CSS<span>って…？</span></h2>
+                        <p>CSSとは、カスケーディングスタイルシート(Cascading Style Sheet)。 ページのスタイルを決めるコードを数珠繋ぎに記した文書ファイルです（カスケードとは「どんどん繋ぐ/数珠繋ぎ」という意味）。
+                        </p>
+                        <p>ワードで例えるなら<span class="emp view">「書式」設定</span>。太字とか、揃えとか、色とか。 これがあって初めてWebページはデザインが整ってきます。最近ではページの幅に応じて見た目を変えることやカンタンな動きもつけられます。 Webデザイナーの腕の見せどころ。それがCSSなんです。
+
+                        </p>
+                    </div>
+                    <div class="inner-left-col">
+                        <img id="cat" src="image/cat_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <span id="JS_section"></span>
+            <section id="sec3">
+                <div class="container">
+                    <div class="inner-left-col content">
+                        <h2>Javascript<span>って…？</span></h2>
+                        <p>Javascriptとは動きの台本のこと。<span class="emp view">Webページに動き</span>をつけてくれます。</p>
+                        <p>メニューがスルスル出てきたり、画像がポップアップしたり。 スマートフォンだと小さい画面でも、動きをうまく使うことで大事な情報をすっきり表示することが出来ます。 色んな動きをつけられるJavascript、最初に学ぶプログラムとしてもおススメです。ここ最近ではjavascript一本だけで本格的にアプリが作れてしまいます。
+                        </p>
+                    </div>
+                    <div class="inner-right-col">
+                        <img id="dogncat" src="image/dogcat_section_bottom.png" alt="">
+                    </div>
+                </div>
+            </section>
+        </article>
+        <footer>
+            <div class="container">
+                <p>fin</p>
+            </div>
+        </footer>
+        <div class="modal">
+            <p>
+                右のボタンでそれぞれの表示を切り替えられます
+                <br> （
+                <span class="v_in_h">E</span>
+                <span class="v_in_h">S</span>
+                <span class="v_in_h">C</span> キーで表示・非表示）
+            </p>
+            <div class="modal-inner-flex">
+                <button type="button" id="toHTML">HTMLのみ</button>
+                <button class="now" type="button" id="toCSS">HTML+CSS</button>
+                <button type="button" id="toJavascript">
+                    HTML+CSS<br>+JavaScript
+
+                </button>
+            </div>
+        </div>
+        <div class="sidebar1 sidebar"><span>指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;指先から世界を作ろう！&nbsp;&nbsp;</span></div>
+        <div class="sidebar2 sidebar"><span>Create World at yout fingertips!&nbsp;&nbsp;Create World at yout fingertips!&nbsp;&nbsp;Create World at yout fingertips!</span></div>
+        <script src="js/jquery.js"></script>
+        <script src="js/routing.js"></script>
+</body>
+
+</html>

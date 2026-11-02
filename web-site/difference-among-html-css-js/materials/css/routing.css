@@ -1,0 +1,54 @@
+.modal {
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+    width: 15%;
+    /* background:#fff; */
+    padding: 2% 0 ;
+    display: flex;
+    transform: scale(0.8);
+    right: 74px;
+}
+
+.modal .modal-inner-flex {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.modal p {
+    text-align: center;
+    writing-mode: vertical-rl;
+    background: #000;
+    padding: 13.4% 2.6%;
+    border-radius: 50px;
+    color: #fff;
+}
+
+.modal button {
+    display: inline-block;
+    /* width: 26%; */
+    padding: 2%;
+    height: 100px;
+    width: 100px;
+    word-break: break-all;
+    border-radius: 50px;
+    border-color: transparent;
+    cursor: pointer;
+    background: coral;
+    color: #fff;
+}
+
+.modal button:hover {
+    background: #dd6d44;
+}
+
+.modal button:active {
+    background: #000;
+    color: #fff;
+}
+
+span.v_in_h {
+    writing-mode: initial;
+    line-height: 0.6;
+}

@@ -1,0 +1,18 @@
+{
+ "files": [
+  "./",
+  "assets/index-BMgNSTYV.js",
+  "assets/BuddyScene-BZIgGj7Z.js",
+  "assets/CelebrationScene-BXegyqYg.js",
+  "assets/CharacterViewer-DYIozXhw.js",
+  "assets/Gltf-Cqq80r8m.js",
+  "assets/react-three-fiber.esm-CjXjivYv.js",
+  "assets/index-DdE_MigF.css",
+  "icons/apple-touch-icon.png",
+  "icons/favicon-32.png",
+  "icons/icon-192.png",
+  "icons/icon-512.png",
+  "icons/icon-maskable-512.png",
+  "manifest.webmanifest"
+ ]
+}

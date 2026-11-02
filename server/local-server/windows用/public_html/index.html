@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>ローカルサーバー起動テスト</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <img src="img/favicon.png" alt="">
+    </header>
+    <article>
+        <h1>サーバーが動作中です</h1>
+        <p><span class="edit-target">ここを好きな言葉に書き換えてみましょう</span> のサーバーです。</p>
+        <section class="first-edit" aria-label="はじめての書き換え方">
+            <h2>はじめての書き換え</h2>
+            <p><strong>index.html</strong> をメモ帳で開き、黄色い文字の部分だけを好きな言葉に変えて、保存してからブラウザーを更新してみましょう。</p>
+            <p class="small-note">例：「田中さんのページ」に変えると、このページの表示も変わります。</p>
+        </section>
+        <section>
+            <div class="line">
+                <p>このページが見えていればローカルサーバーは正常に稼働しています。</p>
+                <p>LAN（Local Area Network）内の他のPCやスマホから以下にアクセスしてみましょう</p>
+                <p class="bold">
+                    ※同じWifiにつなぐことで他のデバイスからアクセスできます：
+                </p>
+            </div>
+            <div class="ipAddress"><span>IPアドレス</span><code id="access-url"></code></div>
+            <p class="qr"></p>
+        </section>
+    </article>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -335,7 +335,7 @@ button.gm-x:hover{background:#f0f0f0}
 
 /* ===== Two practice launchers: ChatGPT / Codex and Claude / Claude Code ===== */
 .agents-lab-dock{gap:.7rem;flex-wrap:wrap}
-.dock-label{color:#e3f1e4;font-size:.85rem;font-weight:700}
+.dock-label{flex-basis:100%;color:#e3f1e4;font-size:.85rem;font-weight:700;text-align:center}
 .agents-lab-dock .dock-btn{gap:.5rem;padding:.55rem 1rem .55rem .6rem}
 .agents-lab-dock .dock-btn span{font-size:.85rem;font-weight:700}
 .dock-btn img{width:24px;height:24px;border-radius:6px;background:#fff}
@@ -344,7 +344,7 @@ button.gm-x:hover{background:#f0f0f0}
 #lab-suite{margin-left:.4rem;padding:.1rem .6rem;border-radius:99px;background:#2d3a33;color:#cfe5d3;font-size:.72rem;font-weight:600;vertical-align:1px}
 #lab[data-suite=claude] #lab-suite{background:#4a2e24;color:#ffd3c2}
 @media(max-width:760px){
-.dock-label{display:none}
+.dock-label{display:block;width:100%;font-size:.78rem}
 .agents-lab-dock{gap:.45rem;padding:.6rem .5rem}
 .agents-lab-dock .dock-btn span{display:inline;font-size:.74rem}
 .agents-lab-dock .dock-btn{padding:.45rem .7rem .45rem .45rem}
