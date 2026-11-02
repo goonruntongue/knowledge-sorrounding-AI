@@ -174,20 +174,37 @@ td.name{white-space:normal;min-width:8em}
 .page-row__title small{display:block;color:var(--muted);font-weight:500}
 .page-row__state{font-size:.8rem;font-weight:700;color:var(--muted)}
 .access-row td{padding:0 8px 14px;white-space:normal;border-bottom:1px solid var(--line)}
-/* スマホの幅では、表を1アカウント1枚のカードに組み替えて、横に隠れる項目をなくす */
+/* アカウントが増えても探しやすいように、検索・絞り込み・件数を一覧の上に置く */
+.users-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.users-search{flex:1 1 220px;min-width:0;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:#3d3654;font:inherit;font-size:.88rem}
+.users-search:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.users-filter{display:flex;flex-wrap:wrap;gap:6px}
+.users-filter .small-btn[aria-pressed="true"]{border-color:#7a6fc4;background:#e7e4fb;color:#4c449a}
+.users-count{width:100%;color:var(--muted);font-size:.8rem}
+.more-btn{display:block;margin:12px auto 0}
+td.more{display:none}
+/* スマホの幅では、1アカウント1行（メール・状態・詳細）の一覧にして、横スクロールも縦の長さも出さない。
+   名前・最後のログイン・回数・ボタンは「詳細」を押したときだけ下に開く */
 @media (max-width:720px){
   .users-table,.users-table tbody,.users-table tr,.users-table td{display:block;width:100%}
   .users-table thead{display:none}
-  .users-table .user-row{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#ffffff8c}
-  .users-table .user-row td{display:flex;gap:10px;padding:3px 0;border:0;white-space:normal;overflow-wrap:anywhere}
-  .users-table .user-row td[data-label]::before{flex:none;width:7.5em;color:var(--muted);font-size:.78rem;font-weight:700;content:attr(data-label)}
-  .users-table .user-row td.email{font-weight:700}
-  .users-table .user-row td.actions{flex-wrap:wrap;gap:8px;padding-top:10px}
+  .users-table .user-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:9px 2px;border-bottom:1px solid var(--line)}
+  .users-table .user-row td{width:auto;min-width:0;padding:0;border:0;white-space:normal}
+  .users-table .user-row td.email{flex:1 1 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+  .users-table .user-row td.state{order:1;flex:none;white-space:nowrap}
+  .users-table .user-row td.more{display:block;order:2;flex:none}
+  .users-table .user-row td.meta,.users-table .user-row td.actions{display:none;order:3}
+  .users-table .user-row.is-open td.email{flex-basis:100%;white-space:normal;overflow-wrap:anywhere}
+  .users-table .user-row.is-open td.state{flex:1 1 auto}
+  .users-table .user-row.is-open td.meta{display:block;color:var(--muted);font-size:.78rem}
+  .users-table .user-row.is-open td.name{flex:1 1 100%;color:var(--ink);font-size:.85rem}
+  .users-table .user-row.is-open td.name:empty{display:none}
+  .users-table .user-row td.count::after{content:"回ログイン"}
+  .users-table .user-row.is-open td.actions{display:flex;flex:1 1 100%;flex-wrap:wrap;gap:6px;order:4}
   .users-table .access-row td{padding:8px 0 4px;border:0}
   .users-table .access-grid{position:static;width:auto}
   .users-table .empty{display:block}
 }
-@media (max-width:720px) and (prefers-color-scheme:dark){.users-table .user-row{background:#ffffff0d}}
 /* 表が横に長くても、ページ設定の枠は見えている幅に収める（左に固定し、幅は表の外枠に合わせる） */
 .access-grid{position:sticky;left:0;box-sizing:border-box;width:calc(100cqw - 16px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px;padding:12px;border-radius:14px;background:#f6f2fb}
 .access-grid label{display:grid;gap:4px;min-width:0;font-size:.82rem;font-weight:700}
@@ -199,7 +216,8 @@ td.name{white-space:normal;min-width:8em}
 @media (prefers-color-scheme:dark){
   :root{color-scheme:dark}
   .page-row{background:#ffffff0d}.access-grid{background:#ffffff0d}
-  .small-btn,.access-grid select{background:#2a2c4d;color:var(--ink)}
+  .small-btn,.access-grid select,.users-search{background:#2a2c4d;color:var(--ink)}
+  .users-filter .small-btn[aria-pressed="true"]{border-color:#9d93e6;background:#3b3770;color:#fff}
   .access-grid select.is-allow{background:#1d3a2e;color:#c4f2da}
   .access-grid select.is-deny{background:#3b3115;color:#ffe6a1}
   .access-grid option{background:#2a2c4d;color:#ece8f6}}
@@ -225,7 +243,13 @@ export function adminPage(adminEmail) {
   <section class="panel">
     <h2>ログインしたアカウント</h2>
     <p>一度でもログインしたアカウントの一覧です。最初は全員が利用できます。ブロックすると、そのアカウントではポータルを開けなくなります。「ページ設定」では、鍵のかかったページをそのアカウントだけ開けるようにしたり、逆にそのアカウントだけ入れなくしたりできます。</p>
+    <div class="users-tools">
+      <input type="search" class="users-search" id="users-search" placeholder="メールアドレスか名前で探す" aria-label="メールアドレスか名前で探す" autocomplete="off">
+      <div class="users-filter" id="users-filter" role="group" aria-label="絞り込み"><button type="button" class="small-btn" data-filter="all" aria-pressed="true">すべて</button><button type="button" class="small-btn" data-filter="blocked" aria-pressed="false">ブロック中</button><button type="button" class="small-btn" data-filter="except" aria-pressed="false">例外あり</button></div>
+      <span class="users-count" id="users-count" aria-live="polite"></span>
+    </div>
     <div class="table-wrap"><table class="users-table"><thead><tr><th>メールアドレス</th><th>名前</th><th>最後のログイン</th><th>回数</th><th>状態</th><th></th></tr></thead><tbody id="users"><tr><td colspan="6" class="empty">読み込み中…</td></tr></tbody></table></div>
+    <button type="button" class="small-btn more-btn" id="users-more" hidden></button>
     <p class="status" id="users-status" role="status"></p>
   </section>
 </main>
@@ -302,16 +326,32 @@ export function adminPage(adminEmail) {
         + '<option value="deny"' + (v === 'deny' ? ' selected' : '') + '>この人だけ入れない</option></select></label>';
     }).join('') + '</div></td></tr>';
   }
+  /* 一度に並べるのは最近ログインした順に PAGE 件まで。残りは「もっと表示する」で足す */
+  var PAGE = 20, shown = PAGE, query = '', filter = 'all', detail = {};
+  function matches(u) {
+    if (filter === 'blocked' && !u.blocked) return false;
+    if (filter === 'except' && !Object.keys(access[u.email] || {}).length) return false;
+    return !query || (u.email + ' ' + (u.name || '')).toLowerCase().indexOf(query) !== -1;
+  }
   function renderUsers() {
-    if (!users.length) { $('users').innerHTML = '<tr><td colspan="6" class="empty">まだ誰もログインしていません。</td></tr>'; return; }
-    $('users').innerHTML = users.map(function (u) {
+    var more = $('users-more');
+    if (!users.length) { $('users').innerHTML = '<tr><td colspan="6" class="empty">まだ誰もログインしていません。</td></tr>'; $('users-count').textContent = ''; more.hidden = true; return; }
+    var hits = users.filter(function (u) { return matches(u) || u.email === openEmail; });
+    var list = hits.slice(0, shown);
+    $('users-count').textContent = (hits.length === users.length ? '全' + users.length + '件' : '全' + users.length + '件中 ' + hits.length + '件が当てはまります') + (list.length < hits.length ? '（' + list.length + '件を表示中）' : '');
+    more.hidden = list.length >= hits.length;
+    more.textContent = 'もっと表示する（残り ' + (hits.length - list.length) + '件）';
+    if (!list.length) { $('users').innerHTML = '<tr><td colspan="6" class="empty">当てはまるアカウントはありません。</td></tr>'; return; }
+    $('users').innerHTML = list.map(function (u) {
       var self = u.email.toLowerCase() === me;
       var count = Object.keys(access[u.email] || {}).length;
       var state = self ? '<span class="tag tag--admin">管理者</span>' : u.blocked ? '<span class="tag tag--blocked">ブロック中</span>' : '<span class="tag">利用できる</span>';
       if (count) state += ' <span class="tag tag--lock">例外 ' + count + '</span>';
       var block = self ? '' : '<button type="button" class="small-btn' + (u.blocked ? '' : ' small-btn--danger') + '" data-email="' + esc(u.email) + '" data-block="' + (u.blocked ? '0' : '1') + '">' + (u.blocked ? 'ブロックを解除' : 'ブロックする') + '</button> ';
       var pageBtn = '<button type="button" class="small-btn" data-pages="' + esc(u.email) + '" aria-expanded="' + (openEmail === u.email) + '">ページ設定</button>';
-      var row = '<tr class="user-row"><td class="email" data-label="メール">' + esc(u.email) + '</td><td class="name" data-label="名前">' + esc(u.name) + '</td><td data-label="最後のログイン">' + esc(when(u.last_login)) + '</td><td data-label="回数">' + esc(u.login_count) + '</td><td data-label="状態">' + state + '</td><td class="actions">' + block + pageBtn + '</td></tr>';
+      var open = !!detail[u.email];
+      var row = '<tr class="user-row' + (open ? ' is-open' : '') + '"><td class="email" title="' + esc(u.email) + '">' + esc(u.email) + '</td><td class="meta name">' + esc(u.name) + '</td><td class="meta">' + esc(when(u.last_login)) + '</td><td class="meta count">' + esc(u.login_count) + '</td><td class="state">' + state + '</td><td class="actions">' + block + pageBtn + '</td>'
+        + '<td class="more"><button type="button" class="small-btn" data-detail="' + esc(u.email) + '" aria-expanded="' + open + '" aria-label="' + esc(u.email) + ' の詳細">' + (open ? '閉じる' : '詳細') + '</button></td></tr>';
       return row + (openEmail === u.email ? accessCell(u) : '');
     }).join('');
   }
@@ -319,7 +359,17 @@ export function adminPage(adminEmail) {
     return api('/admin/api/users').then(function (d) { users = d.users; renderUsers(); })
       .catch(function (e) { $('users').innerHTML = '<tr><td colspan="6" class="empty">読み込めませんでした</td></tr>'; $('users-status').textContent = e.message; });
   }
+  $('users-search').addEventListener('input', function (e) { query = e.target.value.trim().toLowerCase(); shown = PAGE; renderUsers(); });
+  $('users-filter').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-filter]'); if (!b) return;
+    filter = b.dataset.filter; shown = PAGE;
+    Array.prototype.forEach.call(this.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    renderUsers();
+  });
+  $('users-more').addEventListener('click', function () { shown += PAGE; renderUsers(); });
   $('users').addEventListener('click', function (event) {
+    var d = event.target.closest('button[data-detail]');
+    if (d) { if (detail[d.dataset.detail]) delete detail[d.dataset.detail]; else detail[d.dataset.detail] = true; renderUsers(); return; }
     var p = event.target.closest('button[data-pages]');
     if (p) { openEmail = openEmail === p.dataset.pages ? '' : p.dataset.pages; renderUsers(); return; }
     var b = event.target.closest('button[data-block]');
