@@ -76,6 +76,40 @@
     }, IMAGE_RETRY_WAITS[attempt]);
   }, true);
 
+  // ---------- 練習ダイアログの文字が出ないままにならないようにする ----------
+  // 日本語フォントは文字の範囲ごとに分かれた多数のファイルで届く。回線が遅いと、ダイアログを開いた時点で
+  // 本文（細字）のファイルがまだ届いておらず、iOS では本文の場所だけあいて文字が出ないことがある。
+  // ダイアログ（最前面に出る）は、フォントが届いたあとも描き直されずに空白のまま残ることがある。
+  // そこで、ページを読み込んだらダイアログの文字のフォントを先に取りに行き、開いたときは届くのを待って描き直させる。
+  function dialogFontLoads(dialog) {
+    if (!document.fonts || !document.fonts.load) return [];
+    const texts = new Map();
+    dialog.querySelectorAll('*').forEach((node) => {
+      const own = [...node.childNodes].filter((child) => child.nodeType === 3).map((child) => child.data).join('').trim();
+      if (!own) return;
+      const style = getComputedStyle(node);
+      const font = `${style.fontStyle} ${style.fontWeight} 16px ${style.fontFamily}`;
+      texts.set(font, (texts.get(font) || '') + own);
+    });
+    return [...texts].map(([font, text]) => document.fonts.load(font, text).catch(() => []));
+  }
+  // 見た目を変えない指定を一瞬だけ付け外しして、ダイアログを描き直させる
+  function repaint(dialog) {
+    const before = dialog.style.willChange;
+    dialog.style.willChange = 'transform';
+    requestAnimationFrame(() => requestAnimationFrame(() => { dialog.style.willChange = before; }));
+  }
+  window.addEventListener('load', () => {
+    document.querySelectorAll('dialog').forEach(dialogFontLoads);
+  });
+  // ほかのスクリプトが後から作るダイアログもあるので、開いた瞬間を見張る
+  new MutationObserver((records) => {
+    records.forEach(({ target }) => {
+      if (!(target instanceof HTMLDialogElement) || !target.open) return;
+      Promise.all(dialogFontLoads(target)).then(() => repaint(target));
+    });
+  }).observe(root, { subtree: true, attributes: true, attributeFilter: ['open'] });
+
   // ---------- 出発 ----------
   function pageLink(target) {
     const link = target instanceof Element ? target.closest('a[href]') : null;
