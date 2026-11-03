@@ -28,6 +28,11 @@ a{color:var(--accent)}
 .note{margin-top:1.2rem!important;font-size:.8rem!important}
 .remember{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;color:var(--ink);font-size:.92rem;font-weight:700;cursor:pointer}
 .remember input{width:18px;height:18px;margin:0;accent-color:#625b91;cursor:pointer}
+.admin-login{display:grid;gap:6px}
+/* 1行なら文字ぴったりの箱が中央に、2行になると箱が横いっぱいに広がって両端がそろう */
+.admin-login .remember{display:flex;align-items:flex-start;margin-top:0;font-size:.88rem;line-height:1.6}
+.admin-login .remember input{flex:0 0 auto;margin-top:calc((1.6em - 18px) / 2)}
+.admin-login .remember span{text-align:justify;text-align-last:left;text-justify:inter-character}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
 `;
 
@@ -49,6 +54,8 @@ const googleButton = (href, label, primary = true) => `<a class="btn${primary ? 
 
 // 「ログインしたままにする」。チェックを入れてログインすると、次からは入口の画面を飛ばす
 const REMEMBER_BOX = '<label class="remember"><input type="checkbox" id="remember"> ログインしたままにする</label>';
+// ログインがオフの入口では、チェックが効くのは管理者ログインだけなので、そのボタンのすぐ下に置いて書き分ける
+const ADMIN_LOGIN = '<div class="admin-login"><a class="btn" href="/auth/login?admin=1" data-login>管理者ログイン</a><label class="remember"><input type="checkbox" id="remember"><span>管理者ログインの時、ログインしたままにする。</span></label></div>';
 const REMEMBER_SCRIPT = `<script>document.addEventListener('click',function(e){var a=e.target.closest('a[data-login]');var c=document.getElementById('remember');if(!a||!c||!c.checked)return;e.preventDefault();location.href=a.href+(a.href.indexOf('?')>-1?'&':'?')+'remember=1'});</script>`;
 
 // 起動ごとに入口を通ったかの記録。sessionStorage はアプリやタブを閉じると消える
@@ -78,7 +85,7 @@ export function landingPage(next) {
     'KNOWLEDGE SURROUNDING AI',
     'Web技術の<br>周辺知識',
     'AIと一緒にWebをつくるための、まわりの知識を学ぶポータルです。',
-    `${passButton(next, label)}<a class="btn" href="/auth/login?admin=1" data-login>管理者ログイン</a>${REMEMBER_BOX}`
+    `${passButton(next, label)}${ADMIN_LOGIN}`
   ) + PASS_SCRIPT + REMEMBER_SCRIPT));
 }
 
