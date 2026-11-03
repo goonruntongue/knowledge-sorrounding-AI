@@ -55,7 +55,9 @@ const REMEMBER_SCRIPT = `<script>document.addEventListener('click',function(e){v
 export const GATE_KEY = 'ksa-gate';
 
 // 各ページの <head> の先頭に入れる。この起動でまだ入口を通っていなければ、入口の画面へ送る
-export const GATE_SCRIPT = `<meta name="color-scheme" content="light dark"><script>try{if(!sessionStorage.getItem('${GATE_KEY}')){location.replace('/auth/start?next='+encodeURIComponent(location.pathname+location.search+location.hash))}}catch(e){}</script>`;
+// ただし、サイト内のページから新しいタブで開いた（練習帳など）ときは、もう入口を通った人なのでそのまま進む。
+// /auth/ からの移動（ログアウト直後など）は除く
+export const GATE_SCRIPT = `<meta name="color-scheme" content="light dark"><script>try{if(!sessionStorage.getItem('${GATE_KEY}')){var r=document.referrer?new URL(document.referrer):null;if(r&&r.origin===location.origin&&r.pathname.indexOf('/auth/')!==0){sessionStorage.setItem('${GATE_KEY}','1')}else{location.replace('/auth/start?next='+encodeURIComponent(location.pathname+location.search+location.hash))}}}catch(e){}</script>`;
 
 // 入口を通った記録を残してから、行き先へ進むボタン
 const passButton = (next, label, primary = true) => `<button type="button" class="btn${primary ? ' btn--primary' : ''}" data-pass="${esc(next)}">${label}</button>`;
