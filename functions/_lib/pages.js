@@ -31,7 +31,8 @@ a{color:var(--accent)}
 .admin-login{display:grid;gap:6px}
 /* 1行なら文字ぴったりの箱が中央に、2行になると箱が横いっぱいに広がって両端がそろう */
 .admin-login .remember{display:flex;align-items:flex-start;margin-top:0;font-size:.88rem;line-height:1.6}
-.admin-login .remember input{flex:0 0 auto;margin-top:calc((1.6em - 18px) / 2)}
+/* 上端を、横の文字の上端（字の形の上の線）にそろえる */
+.admin-login .remember input{flex:0 0 auto;margin-top:.4em}
 .admin-login .remember span{text-align:justify;text-align-last:left;text-justify:inter-character}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
 `;
