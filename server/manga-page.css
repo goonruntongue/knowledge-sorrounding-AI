@@ -30,7 +30,7 @@ body{
   bottom:-48px;
   width:156px;
   height:156px;
-  background:url("assets/icon-header-server.png") center/contain no-repeat;
+  background:url("assets/icon-header-server.webp") center/contain no-repeat;
   content:"";
   pointer-events:none;
 }
@@ -146,7 +146,7 @@ h1 em,h2 em{color:var(--blue) !important}
   right:-6px;
   width:108px;
   height:108px;
-  background:url("assets/icon-server-card.png") center/contain no-repeat;
+  background:url("assets/icon-server-card.webp") center/contain no-repeat;
   content:"";
   z-index:0;
   pointer-events:none;
@@ -167,7 +167,7 @@ h1 em,h2 em{color:var(--blue) !important}
   right:-15px;
   width:152px;
   height:152px;
-  background:url("assets/icon-server-serving.png") center/contain no-repeat;
+  background:url("assets/icon-server-serving.webp") center/contain no-repeat;
   content:"";
   pointer-events:none;
 }

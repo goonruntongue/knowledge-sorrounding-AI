@@ -3,7 +3,7 @@
   var favicon = document.querySelector('link[rel="icon"]') || document.createElement("link");
   favicon.rel = "icon";
   favicon.type = "image/png";
-  favicon.href = "assets/favicon-server.png?v=20261011";
+  favicon.href = "assets/favicon-server-180.png?v=20261011";
   if (!favicon.parentNode) document.head.appendChild(favicon);
 
   var guideStyle = document.createElement("link");
