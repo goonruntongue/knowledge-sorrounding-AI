@@ -75,7 +75,7 @@ main svg:not(.ic){width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
 .keys{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
 .key-card{display:flex;gap:1rem;align-items:flex-start;padding:1rem;border-radius:14px;background:#f3f6ef}
 .key-card kbd{display:grid;place-items:center;flex-shrink:0;width:56px;height:56px;border:1px solid #bfd0bc;border-bottom-width:4px;border-radius:12px;background:#fff;font:700 1.6rem "Poppins",sans-serif;color:var(--ink)}
-.key-card b{display:block;font-size:1rem}
+.key-pair{display:grid;gap:.35rem;flex-shrink:0}.key-card b{display:block;font-size:1rem}
 .key-card p{margin:.3rem 0;font-size:.88rem}
 .key-card .mention-examples{padding:0;background:none}
 .step-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin:1.6rem 0 2rem;padding:0;list-style:none;counter-reset:s}

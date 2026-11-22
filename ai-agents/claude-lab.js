@@ -18,8 +18,8 @@ window.ClaudeLesson = (() => {
     ["plan", "プラン", "変更を加える前に計画を作成"],
     ["bypass", "権限をバイパス", "すべての権限を承認"]
   ];
-  const models = [["Opus 5.5", "デフォルト"], ["Sonnet 5.5"], ["Fable 5.1", "", true], ["Haiku 4.5"]];
-  const moreModels = [["Sonnet 5"], ["Opus 5"], ["Fable 5", "", true], ["Opus 4.8"], ["Opus 4.7"], ["Opus 4.6"], ["Sonnet 4.6"]];
+  const models = [["Opus 5.5", "デフォルト"], ["Sonnet 5.5"], ["Fable 5.1", "", true], ["Haiku 5.5"]];
+  const moreModels = [["Sonnet 5"], ["Opus 5"], ["Fable 5", "", true], ["Haiku 4.5"], ["Opus 4.8"], ["Opus 4.7"], ["Opus 4.6"], ["Sonnet 4.6"]];
   const messages = [
     "左上の </> を押して、Claude Code（Code）に切り替えましょう。",
     "入力欄の上の「ローカル」を押して、Claude の実行場所を選びましょう。",

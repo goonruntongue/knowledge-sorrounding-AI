@@ -218,7 +218,7 @@ window.LabUI = (() => {
       const tall = !chat || !!o.value || !!o.token;
       const area = '<textarea id="' + (o.id || "learn-prompt") + '" class="' + (o.areaGuide ? "guided" : "") + '" rows="' + (tall ? 2 : 1) + '" aria-label="' + (o.label || "練習用チャット入力欄") + '" placeholder="' + escape(o.placeholder || "") + '"' + (o.areaTip ? ' data-tip="' + escape(o.areaTip) + '"' : "") + (o.disabled ? " disabled" : "") + (o.readonly ? " readonly" : "") + ">" + escape(o.value || "") + "</textarea>";
       const perm = chat ? "" : (o.perm || '<span class="gc-perm full">' + icon("warn") + "<span>フルアクセス</span></span>");
-      const model = o.model || (chat ? '<span class="gc-model">中程度' + icon("chevron", "chev") + "</span>" : '<span class="gc-model">' + icon("bolt") + "GPT-5.6 Terra 軽" + icon("chevron", "chev") + "</span>");
+      const model = o.model || (chat ? '<span class="gc-model">中程度' + icon("chevron", "chev") + "</span>" : '<span class="gc-model">' + icon("bolt") + "GPT-6.1 Terra 軽" + icon("chevron", "chev") + "</span>");
       const box = '<div class="gcomp ' + kind + (tall ? " tall" : "") + '"><div class="gc-input">' + (o.token || "") + area + '</div><div class="gc-left"><span class="gc-ic" aria-hidden="true">' + icon("plus") + "</span>" + perm + '</div><div class="gc-right">' + model + '<span class="gc-ic" aria-hidden="true">' + icon("mic") + "</span>" + (o.send || "") + "</div></div>";
       const above = kind === "codex" ? '<div class="gtray above">' + (o.tray || '<span class="gtray-item">' + icon("folder") + "プロジェクトを選択</span>") + "</div>" : "";
       const below = kind === "work" ? '<div class="gtray below">' + (o.tray || '<span class="gtray-item">' + icon("folder") + '<span>プロジェクトを選択</span></span><span class="gtray-item">' + icon("at") + '<span>プラグイン</span></span><span class="gtray-end">' + icon("laptop") + "</span>") + "</div>" : "";
@@ -328,9 +328,9 @@ window.ChatGPTLessons = (() => {
   }
   const convo = (thread, o = { disabled: true }) => top() + '<div class="thread">' + thread + "</div>" + comp(o);
   /* ---------- popups ---------- */
-  function slashPopup(show) {
+  function slashPopup(show, sigil) {
     const cmds = [["plug", "MCP", "MCP サーバーのステータスを表示します", 1], ["target", "ゴール", "ゴールを設定して、達成まで取り組む"], ["pen", "スケッチ", "スケッチを描く"], ["gauge", "ステータス", "チャット ID、コンテキスト使用量、レート制限を表示"], ["note", "フィードバック", "このチャットについてフィードバックを送信します"], ["bulb", "プランモード", "プランモードをオンにする"], ["folder", "プロジェクトで作成", "新しいチャット用のプロジェクトを選択", 1]];
-    return '<div class="gpop" id="mention-results"' + (show ? "" : " hidden") + ">" + cmds.map(([ic, n, d, more], i) => '<span class="gpop-row' + (i === 0 ? " hi" : "") + '">' + icon(ic) + "<b>" + n + "</b><small>" + d + "</small>" + (more ? icon("chevr", "trail") : "") + "</span>").join("") +
+    return '<div class="gpop" id="mention-results"' + (show ? "" : " hidden") + ">" + cmds.map(([ic, n, d, more], i) => '<span class="gpop-row gpop-cmd' + (i === 0 ? " hi" : "") + '"' + (sigil === "$" ? " hidden" : "") + ">" + icon(ic) + "<b>" + n + "</b><small>" + d + "</small>" + (more ? icon("chevr", "trail") : "") + "</span>").join("") +
       '<span class="gpop-label">スキル</span>' + ui("mention", gpt.cube + "<b>依頼文整理</b><small>依頼文を目的・対象・変更内容・条件に整理</small>", { cls: "gpop-row", guide: true, tip: "作ったスキルを選ぶ" }) + '<span class="gpop-row">' + gpt.cube + "<b>Skill Creator</b><small>スキルを作成・更新する</small></span></div>";
   }
   function atPopup(show) {
@@ -358,7 +358,7 @@ window.ChatGPTLessons = (() => {
   }
   function skillThread(saved) {
     let html = userMsg(creatorToken + " " + escape(input)) + botMsg('<div class="activity"><div class="tool-row">' + icon("file") + '<span>request-organizer/SKILL.md を作成</span></div></div><p>スキルの下書きを作りました。保存先：<b>個人のスキル</b></p><div class="code-card"><div class="code-head">' + icon("file") + "SKILL.md</div><pre>---\nname: 依頼文整理\ndescription: 依頼文を目的・対象ファイル・変更内容・条件に整理する\n---\n\n1. 目的を取り出す\n2. 対象ファイルを明確にする\n3. 変更内容と条件を分ける\n4. 不明点は推測せず質問する</pre></div>");
-    if (saved) html += botMsg('<p class="success">' + icon("check") + " スキル「依頼文整理」を保存しました（練習）</p><p>Customize の Skills に表示され、チャット欄の / から呼び出せます。</p>");
+    if (saved) html += botMsg('<p class="success">' + icon("check") + " スキル「依頼文整理」を保存しました（練習）</p><p>Customize の Skills に表示され、チャット欄で <b>$</b>（製品や時期によっては <b>/</b>）を打つと出る一覧から呼び出せます。</p>");
     return html;
   }
   function skillsContent() {
@@ -369,8 +369,8 @@ window.ChatGPTLessons = (() => {
       { token: creatorToken, value: input, noSuggest: true, send: sendBtn("send", { text: !!input.trim(), guide: !!input.trim(), tip: "内容を読んで送信" }), areaGuide: !input.trim(), areaTip: "作りたいスキルの説明を書く" }, "どこから始めましょうか？");
     if (step === 4) return convo(skillThread(false) + lab("<p>自分が繰り返したい手順になっているか確認します。</p>" + button("save-skill", "内容を確認して保存（練習）", true, "SKILL.md を読んだら保存")));
     if (step === 5) return convo(skillThread(true) + lab("<p>作ったスキルを、開発用の Codex から呼び出してみましょう。</p>" + hint("左上の「ChatGPT ▾」から Codex に切り替え")));
-    if (step === 6) return home(lab("<p>課題：「見出しを変えて。色はそのまま」を、作ったスキルで整理します。</p>" + hint(mention ? "依頼を書いて送信" : "入力欄に / を入力し、スキルを選ぶ") + button("example", "依頼文の例を入力")),
-      useComposer(skillToken, slashPopup(trigger(input) && !mention), "/ を入力してスキルを選ぶ", "/ を入力するとコマンドとスキルの一覧が開きます"));
+    if (step === 6) return home(lab("<p>課題：「見出しを変えて。色はそのまま」を、作ったスキルで整理します。</p>" + hint(mention ? "依頼を書いて送信" : "入力欄に $ を入力し、スキルを選ぶ（/ で開く版もあります）") + button("example", "依頼文の例を入力")),
+      useComposer(skillToken, slashPopup(trigger(input) && !mention, input.includes("$") ? "$" : "/"), "$ または / を入力してスキルを選ぶ", "$ を入力するとスキルの一覧が開きます（/ でも開く場合があります）"));
     return convo(userMsg(skillToken + " " + escape(input)) + botMsg('<p><b>依頼文整理</b>を使って整理しました。</p><table class="kv"><tr><th>目的</th><td>見出しを変更する</td></tr><tr><th>対象ファイル</th><td>未指定</td></tr><tr><th>変更内容</th><td>新しい見出しの文章は未指定</td></tr><tr><th>条件</th><td>色は変えない</td></tr></table><p>確認したいこと：どのファイルの見出しを、何という文章に変えますか？</p>') +
       lab("<p>スキルの「不明点を推測しない」という手順も反映されています。</p>" + button("again", "もう一度練習")));
   }
@@ -402,7 +402,7 @@ window.ChatGPTLessons = (() => {
       text.addEventListener("input", () => {
         input = text.value;
         const pop = root.querySelector("#mention-results");
-        if (pop) { const show = !mention && trigger(input); pop.hidden = !show; if (show) pop.scrollTop = pop.scrollHeight; }
+        if (pop) { const show = !mention && trigger(input); pop.hidden = !show; pop.querySelectorAll(".gpop-cmd").forEach(row => { row.hidden = input.includes("$"); }); if (show) pop.scrollTop = pop.scrollHeight; }
         const creating = course === "skills" && step === 3;
         const ready = creating ? !!input.trim() : mention && !!stripTrigger(input).trim();
         const send = root.querySelector('[data-learn="send"]');
@@ -441,12 +441,12 @@ window.ChatGPTLessons = (() => {
     if (action === "mention") { mention = true; input = stripTrigger(input); }
     if (action === "example") {
       if (course === "skills" && step === 3) input = "「依頼文整理」というスキルを作って。依頼文を 目的・対象ファイル・変更内容・条件 に整理し、不明点は推測せず質問する手順にして。";
-      else input = (mention ? "" : course === "skills" ? "/ " : "@ ") + (course === "skills" ? "見出しを変えて。色はそのまま。" : "school-festivalのREADMEを要約して。");
+      else input = (mention ? "" : course === "skills" ? "$ " : "@ ") + (course === "skills" ? "見出しを変えて。色はそのまま。" : "school-festivalのREADMEを要約して。");
     }
     if (action === "send") {
       if (!input.trim()) feedback = "依頼内容を入力してください。例文も使えます。";
       else if (course === "skills" && step === 3) step = 4;
-      else if (!mention) feedback = (course === "skills" ? "/ の一覧からスキルを選んでください。" : "@ の候補からプラグインを選んでください。") + "文字を打つだけでなく、選択する操作を体験しましょう。";
+      else if (!mention) feedback = (course === "skills" ? "$（または /）で開く一覧から、スキルを選んでください。" : "@ の候補からプラグインを選んでください。") + "文字を打つだけでなく、選択する操作を体験しましょう。";
       else if (!stripTrigger(input).trim()) feedback = "機能を選んだら、依頼内容も書きましょう。";
       else step = 7;
     }

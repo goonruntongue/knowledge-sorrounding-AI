@@ -19,9 +19,9 @@
     ["auto", "代わりに承認", "安全でない可能性があると検出された操作についてのみ確認を求めます", "bot"],
     ["full", "フルアクセス", "インターネットとコンピュータ上のすべてのファイルに無制限でアクセスします", "warn"]
   ];
-  const models = [["default", "デフォルト", "おすすめのモデルセット"], ["GPT-6 Astra"], ["GPT-6 Sol"], ["GPT-6 Luna"], ["GPT-5.6 Sol"], ["GPT-5.6 Terra"], ["GPT-5.6 Luna"], ["GPT-5.5"]];
+  const models = [["default", "デフォルト", "おすすめのモデルセット"], ["GPT-6.2 Sol"], ["GPT-6.2 Astra"], ["GPT-6.1 Terra"], ["GPT-6.1 Sol"], ["GPT-6 Astra"], ["GPT-6 Sol"], ["GPT-6 Luna"], ["GPT-5.6 Sol"], ["GPT-5.6 Terra"]];
   const chosen = () => modes.find(m => m[0] === mode);
-  const modelLabel = () => (model === "default" ? "GPT-5.6 Terra" : model) + " 軽";
+  const modelLabel = () => (model === "default" ? "GPT-6.1 Terra" : model) + " 軽";
   const control = (action, label, enabled, guided = false, tip = "") => '<button type="button" class="sim-control' + (guided ? " guided" : "") + '" data-action="' + action + '"' + (tip ? ' data-tip="' + escape(tip) + '"' : "") + (enabled ? "" : " disabled") + ">" + label + "</button>";
   const ui = (action, label, { guide = false, cls = "", disabled = false, pressed, tip = "", aria = "" } = {}) =>
     '<button type="button" class="ui-btn ' + cls + (guide ? " guided" : "") + '" data-action="' + action + '"' + (tip ? ' data-tip="' + escape(tip) + '"' : "") + (aria ? ' aria-label="' + aria + '" data-label="' + aria + '"' : "") + (disabled ? " disabled" : "") + (pressed !== undefined ? ' aria-pressed="' + pressed + '"' : "") + ">" + label + "</button>";
